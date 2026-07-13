@@ -1,0 +1,534 @@
+
+html
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUILDcalc PRO — Професійний калькулятор стяжки</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+
+<style>
+:root {
+    --bg-dark: #0f172a;
+    --card-bg: #ffffff;
+    --primary: #22252a;
+    --accent: #f5a623;
+    --accent-hover: #e0961b;
+    --text-main: #334155;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+}
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-main);
+    margin: 0;
+    padding: 15px;
+}
+.app-container {
+    max-width: 900px;
+    margin: 30px auto;
+    background: var(--card-bg);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+}
+.header {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: white;
+    padding: 35px 25px;
+    text-align: center;
+    position: relative;
+    border-bottom: 4px solid var(--accent);
+}
+.logo {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.logo span { color: var(--accent); }
+.subtitle { font-size: 18px; color: var(--text-muted); margin-top: 8px; }
+.lang-select-wrapper { margin-top: 15px; }
+select {
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: #273549;
+    color: white;
+    border: 1px solid #3d526e;
+    font-weight: 600;
+    cursor: pointer;
+}
+.version-switcher {
+    display: flex;
+    background: #f1f5f9;
+    padding: 6px;
+    border-radius: 14px;
+    margin: 25px;
+    gap: 5px;
+}
+.tab-btn {
+    flex: 1;
+    padding: 12px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.tab-btn.active {
+    background: white;
+    color: var(--bg-dark);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.tab-btn .badge {
+    background: var(--accent);
+    color: #000;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    margin-left: 5px;
+}
+.content-body { padding: 0 25px 30px 25px; }
+h3 {
+    font-size: 20px;
+    color: #1e293b;
+    border-left: 5px solid var(--accent);
+    padding-left: 12px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.grid-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+.input-group { display: flex; flex-direction: column; }
+label { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 6px; }
+input {
+    padding: 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px;
+    color: #1e293b;
+    background: #f8fafc;
+}
+input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: white;
+}
+.buttons-container { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 25px; }
+button.action-btn {
+    padding: 14px 24px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--primary);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+button.action-btn:hover { background: var(--accent); color: #000; }
+button#calcBtn { background: var(--accent); color: #000; flex-grow: 2; }
+.result-box {
+    margin-top: 25px;
+    background: #f8fafc;
+    border: 2px dashed var(--border);
+    padding: 20px;
+    border-radius: 16px;
+}
+.pro-only-block.locked { opacity: 0.35; pointer-events: none; user-select: none; }
+.lock-badge { display: none; background: #ef4444; color: white; font-size: 11px; font-weight: bold; padding: 3px 8px; border-radius: 6px; }
+.locked .lock-badge { display: inline-block; }
+.history-box { margin-top: 25px; background: #f1f5f9; padding: 15px; border-radius: 12px; }
+.buy-pro-banner {
+    background: linear-gradient(135deg, #f5a623, #d97706);
+    color: #000;
+    padding: 20px;
+    border-radius: 16px;
+    margin-top: 20px;
+    text-align: center;
+}
+.buy-pro-banner h4 { margin: 0 0 10px 0; font-size: 20px; font-weight: 800; }
+.buy-btn {
+    background: #0f172a;
+    color: white;
+    border: 0;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 5px;
+}
+.buy-btn:hover { background: #1e293b; }
+@media(max-width: 600px) { .grid-inputs { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <div class="logo">🏗 <span>BUILD</span>calc PRO</div>
+        <div class="subtitle" id="subtitle">Кошторис стяжки</div>
+        <div class="lang-select-wrapper">
+            <select id="language" onchange="changeLanguage()">
+                <option value="ua">🇺🇦 Українська</option>
+                <option value="sk">🇸ким Slovenčina</option>
+                <option value="en">🇬🇧 English</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="version-switcher">
+        <button class="tab-btn active" id="tabFree" onclick="setVersion('free')">Звичайна версія</button>
+        <button class="tab-btn" id="tabPro" onclick="setVersion('pro')">PRO версія <span class="badge">Бізнес</span></button>
+    </div>
+
+    <div class="content-body">
+        <h3 id="objTitle">Об'єкт</h3>
+        <div class="grid-inputs">
+            <div class="input-group"><label id="objectLabel">Назва об'єкта</label><input id="object" value="Новий об'єкт"></div>
+            <div class="input-group"><label id="areaLabel">Площа м²</label><input id="area" type="number" value="100"></div>
+            <div class="input-group"><label id="thicknessLabel">Товщина см</label><input id="thickness" type="number" value="6"></div>
+        </div>
+
+        <div id="secNorms" class="pro-only-block locked">
+            <h3><span id="normTitle">Норми матеріалів на 1 м³</span> <span class="lock-badge">PRO</span></h3>
+            <div class="grid-inputs">
+                <div class="input-group"><label id="cementNormLabel">Цемент (мішків)</label><input id="cementNorm" type="number" value="7.5"></div>
+                <div class="input-group"><label id="sandLabel">Пісок (м³)</label><input id="sandNorm" type="number" value="1"></div>
+                <div class="input-group"><label id="fiberLabel">Фібра (кг)</label><input id="fiberNorm" type="number" value="0.6"></div>
+                <div class="input-group"><label id="plasticLabel">Пластифікатор (л)</label><input id="plasticNorm" type="number" value="0.5"></div>
+            </div>
+        </div>
+
+        <div id="secPrices" class="pro-only-block locked">
+            <h3><span id="priceTitle">Ціни матеріалів</span> <span class="lock-badge">PRO</span></h3>
+            <div class="grid-inputs">
+                <div class="input-group"><label id="cementPriceLabel">Цемент €/мішок</label><input id="cementPrice" type="number" value="5"></div>
+                <div class="input-group"><label id="sandPriceLabel">Пісок €/м³</label><input id="sandPrice" type="number" value="20"></div>
+                <div class="input-group"><label id="fiberPriceLabel">Фібра €/кг</label><input id="fiberPrice" type="number" value="3"></div>
+                <div class="input-group"><label id="plasticPriceLabel">Пластифікатор €/л</label><input id="plasticPrice" type="number" value="4"></div>
+                <div class="input-group"><label id="logisticsLabel">Доставка, податки, інше €/м²</label><input id="logisticsPrice" type="number" value="3.95"></div>
+            </div>
+        </div>
+<div id="secWork" class="pro-only-block locked">
+            <h3><span id="workTitle">Робота</span> <span class="lock-badge">PRO</span></h3>
+            <div class="grid-inputs">
+                <div class="input-group"><label id="salaryLabel">Зарплата €/м²</label><input id="salary" type="number" value="3.5"></div>
+                <div class="input-group"><label id="profitLabel">Прибуток €/м²</label><input id="profit" type="number" value="3.5"></div>
+            </div>
+        </div>
+
+        <div class="buttons-container">
+            <button id="calcBtn" class="action-btn" onclick="calculate()">Розрахувати</button>
+            <button id="copyBtn" class="action-btn" onclick="copyQuote()">Копіювати</button>
+            <button id="newBtn" class="action-btn" onclick="newProject()">Новий об'єкт</button>
+            <button id="saveBtn" class="action-btn" onclick="saveProject()">Зберегти</button>
+            <button id="histBtn" class="action-btn" onclick="showHistory()">Історія</button>
+            <button id="clearBtn" class="action-btn" onclick="clearHistory()">Очистити</button>
+        </div>
+
+        <div class="result-box" id="result">Тут з'явиться ваш розрахунок...</div>
+        
+        <div class="buy-pro-banner" id="promoBanner">
+            <h4 id="bannerTitle">🔓 Відкрийте повну версію PRO</h4>
+            <p id="bannerDesc" style="margin: 5px 0 15px 0;">Точний розхід матеріалів у мішках та кубах, редагування цін, збереження об'єктів та генерація PDF кошторисів для клієнтів!</p>
+            <button id="bannerBtn" class="buy-btn" onclick="trackTeaserClick()">Дізнатися вартість PRO</button>
+        </div>
+
+        <div class="history-box" id="history" style="display:none;"></div>
+
+        <div id="secCompany" class="pro-only-block locked">
+            <h3><span id="companyTitle">Дані фірми</span> <span class="lock-badge">PRO</span></h3>
+            <div class="grid-inputs">
+                <div class="input-group"><label id="companyNameLabel">Назва фірми</label><input id="companyName" value="BUILDcalc PRO"></div>
+                <div class="input-group"><label id="phoneLabel">Телефон</label><input id="companyPhone" value=""></div>
+                <div class="input-group"><label id="emailLabel">Email</label><input id="companyEmail" value=""></div>
+            </div>
+            <div class="buttons-container" style="margin-top: 15px;">
+                <button id="pdfBtn" class="action-btn" onclick="createPDF()" style="background:#10b981;">📄 Згенерувати PDF звіт</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+let report = "";
+let htmlReportForPDF = "";
+let currentVersion = "free";
+
+const words = {
+    ua: {
+        subtitle: "Кошторис стяжки", tabF: "Звичайна версія", tabP: "PRO версія", badge: "Бізнес",
+        object: "Об'єкт", name: "Назва об'єкта", area: "Площа м²", thickness: "Товщина см",
+        normTitle: "Норми матеріалів на 1 м³", cNorm: "Цемент (мішків)", sNorm: "Пісок (м³)", fNorm: "Фібра (кг)", pNorm: "Пластифікатор (л)",
+        priceTitle: "Ціни матеріалів", cPrice: "Цемент €/мішок", sPrice: "Пісок €/м³", fPrice: "Фібра €/кг", pPrice: "Пластифікатор €/л", logPrice: "Доставка, податки, інше €/м²",
+        workTitle: "Робота", salary: "Зарплата €/м²", profit: "Прибуток €/м²",
+        calc: "Розрахувати", copy: "Копіювати", newp: "Новий об'єкт", save: "Зберегти", hist: "Історія", clear: "Очистити",
+        bannerT: "🔓 Відкрийте повну версію PRO", bannerD: "Точний розхід матеріалів у мішках та кубах, редагування цін, збереження об'єктів та генерація PDF кошторисів для клієнтів!", bannerB: "Дізнатися вартість PRO",
+        compTitle: "Дані фірми", compName: "Назва фірми", phone: "Телефон", email: "Email", pdfBtn: "📄 Згенерувати PDF звіт",
+        resEstimate: "Кошторис BUILDcalc PRO", resVolume: "Об'єм", resCement: "Цемент", resSand: "Пісок", resFiber: "Фібра", resPlastic: "Пластифікатор", resMatCost: "Матеріали", resSalary: "Зарплата", resProfit: "Прибуток", resLogTotal: "Доставка та податки", resTotal: "ЦІНА КЛІЄНТА",
+        alertFree: "💡 Детальний розхід матеріалів, кошторис робіт, кнопки збереження та друку заблоковані.", alertNoCalc: "Спочатку зробіть розрахунок", alertCopied: "Скопійовано!", alertSaved: "Збережено!", alertNoHist: "Збережень немає", alertHistTitle: "Історія кошторисів", alertConfirmClear: "Видалити всю історію?", alertHistCleared: "Історія очищена", alertProOnly: "Функція доступна тільки в PRO версії"
+    },
+    sk: {
+        subtitle: "Rozpočet poteru", tabF: "Bežná verzia", tabP: "PRO verzia", badge: "Biznis",
+        object: "Objekt", name: "Názov objektu", area: "Plocha m²", thickness: "Hrúbka cm",
+        normTitle: "Normy materiálu na 1 m³", cNorm: "Cement (vriec)", sNorm: "Piesok (m³)", fNorm: "Vlákno (kg)", pNorm: "Plastifikátor (l)",
+        priceTitle: "Ceny materiálu", cPrice: "Cement €/vrece", sPrice: "Piesok €/m³", fPrice: "Vlákno €/kg", pPrice: "Plastifikátor €/l", logPrice: "Doprava, dane, iné €/m²",
+        workTitle: "Práca", salary: "Mzda €/m²", profit: "Zisk €/m²",
+        calc: "Vypočítať", copy: "Kopírovať", newp: "Nový objekt", save: "Uložiť", hist: "História", clear: "Vymazať",
+        bannerT: "🔓 Otvorte plnú verziu PRO", bannerD: "Presná spotreba materiálu vo vreciach a kubíkoch, úprava cien, ukladanie objektov a generovanie PDF rozpočtov pre klientov!", bannerB: "Zistiť cenu PRO",
+        compTitle: "Údaje o firme", compName: "Názov firmy", phone: "Telefón", email: "Email", pdfBtn: "📄 Vygenerovať PDF správu",
+        resEstimate: "Rozpočet BUILDcalc PRO", resVolume: "Objem", resCement: "Cement", resSand: "Piesok", resFiber: "Vlákno", resPlastic: "Plastifikátor", resMatCost: "Materiály", resSalary: "Mzda", resProfit: "Zisk", resLogTotal: "Doprava a dane", resTotal: "CENA PRE KLIENTA",
+        alertFree: "💡 Detailná spotreba materiálu, rozpočet prác, tlačidlá na uloženie a tlač sú zablokované.", alertNoCalc: "Najprv vykonajte výpočet", alertCopied: "Skopírované!", alertSaved: "Uložené!", alertNoHist: "Žiadne záznamy", alertHistTitle: "História rozpočtov", alertConfirmClear: "Vymazať celú históriu?", alertHistCleared: "História bola vymazaná", alertProOnly: "Funkcia je dostupná iba v PRO verzii"
+    },
+    en: {
+        subtitle: "Screed estimate", tabF: "Free Version", tabP: "PRO Version", badge: "Business",
+        object: "Object", name: "Object name", area: "Area m²", thickness: "Thickness cm",
+normTitle: "Material norms per 1 m³", cNorm: "Cement (bags)", sNorm: "Sand (m³)", fNorm: "Fiber (kg)", pNorm: "Plasticizer (l)",
+        priceTitle: "Material prices", cPrice: "Cement €/bag", sPrice: "Sand €/m³", fPrice: "Fiber €/kg", pPrice: "Plasticizer €/l", logPrice: "Delivery, taxes, etc. €/m²",
+        workTitle: "Work", salary: "Salary €/m²", profit: "Profit €/m²",
+        calc: "Calculate", copy: "Copy", newp: "New project", save: "Save", hist: "History", clear: "Clear",
+        bannerT: "🔓 Unlock full PRO version", bannerD: "Accurate material consumption in bags and cubic meters, price editing, saving objects and generating PDF estimates for clients!", bannerB: "Find out PRO price",
+        compTitle: "Company Info", compName: "Company Name", phone: "Phone", email: "Email", pdfBtn: "📄 Generate PDF report",
+        resEstimate: "BUILDcalc PRO Estimate", resVolume: "Volume", resCement: "Cement", resSand: "Sand", resFiber: "Fiber", resPlastic: "Plasticizer", resMatCost: "Materials", resSalary: "Salary", resProfit: "Profit", resLogTotal: "Delivery & Taxes", resTotal: "CLIENT PRICE",
+        alertFree: "💡 Detailed material consumption, work budget, save and print buttons are locked.", alertNoCalc: "Perform calculation first", alertCopied: "Copied!", alertSaved: "Saved!", alertNoHist: "No records found", alertHistTitle: "Estimate History", alertConfirmClear: "Delete all history?", alertHistCleared: "History cleared", alertProOnly: "Feature available only in PRO version"
+    }
+};
+
+function setVersion(version) {
+    currentVersion = version;
+    const blocks = document.querySelectorAll('.pro-only-block');
+    if(version === 'pro') {
+        document.getElementById('tabPro').classList.add('active');
+        document.getElementById('tabFree').classList.remove('active');
+        document.getElementById('promoBanner').style.display = 'none';
+        blocks.forEach(b => b.classList.remove('locked'));
+    } else {
+        document.getElementById('tabFree').classList.add('active');
+        document.getElementById('tabPro').classList.remove('active');
+        document.getElementById('promoBanner').style.display = 'block';
+        blocks.forEach(b => b.classList.add('locked'));
+    }
+    calculate();
+}
+
+function calculate(){
+    let lang = document.getElementById("language").value;
+    let t = words[lang];
+
+    let object = document.getElementById("object").value || t.object;
+    let area = Number(document.getElementById("area").value) || 0;
+    let thickness = Number(document.getElementById("thickness").value) || 0;
+    let volume = (area * thickness) / 100;
+
+    let cementNorm = Number(document.getElementById("cementNorm").value) || 0;
+    let sandNorm = Number(document.getElementById("sandNorm").value) || 0;
+    let fiberNorm = Number(document.getElementById("fiberNorm").value) || 0;
+    let plasticNorm = Number(document.getElementById("plasticNorm").value) || 0;
+
+    let cementBags = volume * cementNorm;
+    let sandM3 = volume * sandNorm;
+    let fiberKg = volume * fiberNorm;
+    let plasticL = volume * plasticNorm;
+
+    let cementPrice = Number(document.getElementById("cementPrice").value) || 0;
+    let sandPrice = Number(document.getElementById("sandPrice").value) || 0;
+    let fiberPrice = Number(document.getElementById("fiberPrice").value) || 0;
+    let plasticPrice = Number(document.getElementById("plasticPrice").value) || 0;
+    let logisticsPrice = Number(document.getElementById("logisticsPrice").value) || 0;
+
+    let salaryPrice = Number(document.getElementById("salary").value) || 0;
+    let profitPrice = Number(document.getElementById("profit").value) || 0;
+
+    // Математика вартостей
+    let materialsCost = (cementBags * cementPrice) + (sandM3 * sandPrice) + (fiberKg * fiberPrice) + (plasticL * plasticPrice);
+    let salary = area * salaryPrice;
+    let profit = area * profitPrice;
+    let logisticsTotal = area * logisticsPrice;
+    let clientTotal = materialsCost + salary + profit + logisticsTotal;
+if(typeof gtag === 'function') {
+        gtag('event', 'click_calculate', { 'version_type': currentVersion, 'area_size': area });
+    }
+
+    if(currentVersion === 'pro') {
+        report = 
+            t.resEstimate+"\n\n"+t.object+": "+object+"\n"+t.area+": "+area+"\n"+t.thickness+": "+thickness+"\n\n"+
+            t.resVolume+": "+volume.toFixed(2)+" м³\n\n"+t.resCement+": "+cementBags.toFixed(1)+" міш.\n"+t.resSand+": "+sandM3.toFixed(2)+" м³\n"+
+            t.resFiber+": "+fiberKg.toFixed(1)+" кг\n"+t.resPlastic+": "+plasticL.toFixed(1)+" л\n\n"+t.resMatCost+": "+materialsCost.toFixed(2)+" €\n"+
+            t.resSalary+": "+salary.toFixed(2)+" €\n"+t.resProfit+": "+profit.toFixed(2)+" €\n"+t.resLogTotal+": "+logisticsTotal.toFixed(2)+" €\n\n"+t.resTotal+": "+clientTotal.toFixed(2)+" € ("+(clientTotal/area).toFixed(2)+" €/м²)";
+
+        let resultHTML = 
+            "<h3 style='color:#1e293b; border-left-color:green;'>"+t.resEstimate+" (PRO)</h3>"+
+            "<b>"+t.object+":</b> "+object+"<br><b>"+t.area+":</b> "+area+" м²<br><b>"+t.thickness+":</b> "+thickness+" см<br><br>"+
+            "<b>"+t.resVolume+":</b> "+volume.toFixed(2)+" м³<br><hr style='border-color:#e2e8f0'>"+
+            "🧪 <b>"+t.resCement+":</b> "+cementBags.toFixed(1)+" міш.<br>⏳ <b>"+t.resSand+":</b> "+sandM3.toFixed(2)+" м³<br>🕸 <b>"+t.resFiber+":</b> "+fiberKg.toFixed(1)+" кг<br>💧 <b>"+t.resPlastic+":</b> "+plasticL.toFixed(1)+" л<br><hr style='border-color:#e2e8f0'>"+
+            "📦 <b>"+t.resMatCost+":</b> "+materialsCost.toFixed(2)+" €<br>👷‍♂️ <b>"+t.resSalary+":</b> "+salary.toFixed(2)+" €<br>📈 <b>"+t.resProfit+":</b> "+profit.toFixed(2)+" €<br>🚛 <b>"+t.resLogTotal+":</b> "+logisticsTotal.toFixed(2)+" €<br><br>"+
+            "<div style='font-size:20px; background:#dcfce7; padding:10px; border-radius:8px; color:#166534;'><b>"+t.resTotal+": "+clientTotal.toFixed(2)+" € ("+(clientTotal/area).toFixed(2)+" €/м²)</b></div>";
+
+        document.getElementById("result").innerHTML = resultHTML;
+        htmlReportForPDF = resultHTML;
+    } else {
+        report = t.resEstimate+"\n\n"+t.object+": "+object+"\n"+t.area+": "+area+"\n"+t.thickness+": "+thickness+"\n\n"+t.resVolume+": "+volume.toFixed(2)+" м³\n\n"+t.resTotal+": "+clientTotal.toFixed(2)+" € ("+(clientTotal/area).toFixed(2)+" €/м²)";
+        
+        document.getElementById("result").innerHTML = 
+            "<h3>"+t.resEstimate+"</h3>"+
+            "<b>"+t.object+":</b> "+object+"<br><b>"+t.area+":</b> "+area+" м²<br><b>"+t.thickness+":</b> "+thickness+" см<br>"+
+            "<b>"+t.resVolume+":</b> "+volume.toFixed(2)+" м³<br><br>"+
+            "<div style='font-size:20px; background:#e2e8f0; padding:10px; border-radius:8px; color:#1e293b;'><b>"+t.resTotal+": "+clientTotal.toFixed(2)+" € ("+(clientTotal/area).toFixed(2)+" €/м²)</b></div>"+
+            "<p style='color:#ef4444; font-size:13px; margin-top:10px;'>"+t.alertFree+"</p>";
+        htmlReportForPDF = "";
+    }
+}
+
+function changeLanguage(){
+    let lang = document.getElementById("language").value;
+    let t = words[lang];
+    
+    document.getElementById("subtitle").innerHTML = t.subtitle;
+    document.getElementById("tabFree").innerHTML = t.tabF;
+    document.getElementById("tabPro").innerHTML = t.tabP + ' <span class="badge">'+t.badge+'</span>';
+    
+    document.getElementById("objTitle").innerHTML = t.object;
+    document.getElementById("objectLabel").innerHTML = t.name;
+    document.getElementById("areaLabel").innerHTML = t.area;
+    document.getElementById("thicknessLabel").innerHTML = t.thickness;
+    
+    document.getElementById("normTitle").innerHTML = t.normTitle;
+    document.getElementById("cementNormLabel").innerHTML = t.cNorm;
+    document.getElementById("sandLabel").innerHTML = t.sNorm;
+    document.getElementById("fiberLabel").innerHTML = t.fNorm;
+document.getElementById("plasticLabel").innerHTML = t.pNorm;
+    
+    document.getElementById("priceTitle").innerHTML = t.priceTitle;
+    document.getElementById("cementPriceLabel").innerHTML = t.cPrice;
+    document.getElementById("sandPriceLabel").innerHTML = t.sPrice;
+    document.getElementById("fiberPriceLabel").innerHTML = t.fPrice;
+    document.getElementById("plasticPriceLabel").innerHTML = t.pPrice;
+    document.getElementById("logisticsLabel").innerHTML = t.logPrice;
+    
+    document.getElementById("workTitle").innerHTML = t.workTitle;
+    document.getElementById("salaryLabel").innerHTML = t.salary;
+    document.getElementById("profitLabel").innerHTML = t.profit;
+    
+    document.getElementById("calcBtn").innerHTML = t.calc;
+    document.getElementById("copyBtn").innerHTML = t.copy;
+    document.getElementById("newBtn").innerHTML = t.newp;
+    document.getElementById("saveBtn").innerHTML = t.save;
+    document.getElementById("histBtn").innerHTML = t.hist;
+    document.getElementById("clearBtn").innerHTML = t.clear;
+
+    document.getElementById("bannerTitle").innerHTML = t.bannerT;
+    document.getElementById("bannerDesc").innerHTML = t.bannerD;
+    document.getElementById("bannerBtn").innerHTML = t.bannerB;
+
+    document.getElementById("companyTitle").innerHTML = t.compTitle;
+    document.getElementById("companyNameLabel").innerHTML = t.compName;
+    document.getElementById("phoneLabel").innerHTML = t.phone;
+    document.getElementById("emailLabel").innerHTML = t.email;
+    document.getElementById("pdfBtn").innerHTML = t.pdfBtn;
+    
+    calculate();
+}
+
+function trackTeaserClick() {
+    if(typeof gtag === 'function') { gtag('event', 'click_buy_pro_teaser', { 'status': 'interested' }); }
+    alert("Дякуємо за інтерес! Наразі PRO-версія знаходиться в режимі закритого бета-тестування.");
+}
+
+function copyQuote(){
+    let lang = document.getElementById("language").value;
+    if(currentVersion === 'free') { alert(words[lang].alertProOnly); return; }
+    if(report==""){ alert(words[lang].alertNoCalc); return; }
+    navigator.clipboard.writeText(report).then(() => { alert(words[lang].alertCopied); });
+}
+
+function newProject(){
+    document.getElementById("object").value = "Новий об'єкт";
+    document.getElementById("area").value = 100;
+    document.getElementById("thickness").value = 6;
+    document.getElementById("result").innerHTML = "Тут з'явиться ваш розрахунок...";
+    report = ""; htmlReportForPDF = "";
+}
+
+function saveProject(){
+    let lang = document.getElementById("language").value;
+    if(currentVersion === 'free') { alert(words[lang].alertProOnly); return; }
+    let result=document.getElementById("result").innerHTML;
+    if(result=="" || report==""){ alert(words[lang].alertNoCalc); return; }
+    let projects=JSON.parse(localStorage.getItem("buildProjects") || "[]");
+    projects.push({ date:new Date().toLocaleString(), text:result });
+    localStorage.setItem("buildProjects", JSON.stringify(projects));
+    alert(words[lang].alertSaved);
+}
+
+function showHistory(){
+    let lang = document.getElementById("language").value;
+    if(currentVersion === 'free') { alert(words[lang].alertProOnly); return; }
+    let projects=JSON.parse(localStorage.getItem("buildProjects") || "[]");
+    let histDiv = document.getElementById("history");
+    if(projects.length==0){ histDiv.innerHTML=words[lang].alertNoHist; histDiv.style.display="block"; return; }
+    let text="<h3>"+words[lang].alertHistTitle+"</h3>";
+    for(let i=0;i<projects.length;i++){
+        text+="<b>№"+(i+1)+" ("+projects[i].date+")</b><br>"+projects[i].text+"<hr style='border-color:#cbd5e1'>";
+    }
+    histDiv.innerHTML=text;
+    histDiv.style.display="block";
+}
+
+function clearHistory(){
+    let lang = document.getElementById("language").value;
+    if(currentVersion === 'free') { alert(words[lang].alertProOnly); return; }
+    if(confirm(words[lang].alertConfirmClear)){
+        localStorage.removeItem("buildProjects");
+        document.getElementById("history").innerHTML=words[lang].alertHistCleared;
+    }
+}
+function createPDF() {
+    let lang = document.getElementById("language").value;
+    if(currentVersion === 'free') { alert("Друк PDF доступний тільки в PRO версії"); return; }
+    if (htmlReportForPDF == "") { alert(words[lang].alertNoCalc); return; }
+    let compName = document.getElementById("companyName").value;
+    let compPhone = document.getElementById("companyPhone").value;
+    let compEmail = document.getElementById("companyEmail").value;
+    let printWindow = window.open('', '_blank');
+    printWindow.document.write('<html><head><title>Кошторис</title>');
+    printWindow.document.write('<style>body{font-family:Arial,sans-serif; padding:40px; color:#222;} h3{background:#1e293b; color:#fff; padding:12px; border-radius:6px;} hr{border:1px solid #e2e8f0;}</style>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write('<div style="text-align:right; margin-bottom:20px; font-size:14px;">');
+    printWindow.document.write('<strong>' + compName + '</strong><br>');
+    if(compPhone) printWindow.document.write('Тел: ' + compPhone + '<br>');
+    if(compEmail) printWindow.document.write('Email: ' + compEmail + '<br>');
+    printWindow.document.write('</div><hr style="border-color:#cbd5e1">');
+    printWindow.document.write(htmlReportForPDF);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}
+
+window.onload = function() {
+    calculate();
+};
+</script>
+</body>
+</html>
