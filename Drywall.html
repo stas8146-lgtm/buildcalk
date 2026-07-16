@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRO Drywall Calculator</title>
+    <!-- Tailwind CSS for modern premium design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons for premium visual style -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b0b0b;
+        }
+        .gold-glow {
+            box-shadow: 0 0 20px rgba(234, 179, 8, 0.15);
+        }
+        .gold-border-glow:focus {
+            border-color: #eab308;
+            box-shadow: 0 0 10px rgba(234, 179, 8, 0.3);
+        }
+        @media print {
+            body {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            .print-card {
+                border: 1px solid #e5e7eb !important;
+                box-shadow: none !important;
+                background: white !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-neutral-100 min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="no-print border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md sticky top-0 z-50 px-4 lg:px-8 py-4">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3">
+                <div class="p-2.5 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-xl text-black shadow-lg">
+                    <i data-lucide="layers" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-yellow-500 font-bold">BUILDcalc Suite</span>
+                    <h1 class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
+                        DRY<span class="text-yellow-400">WALL</span> <span class="text-xs bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded-full">PRO v3.0</span>
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Mode Switcher & Languages -->
+            <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+                <!-- Mode Toggle (Free vs PRO) -->
+                <div class="flex bg-neutral-900 border border-neutral-800 p-1 rounded-xl">
+                    <button id="btn-free" onclick="setMode('free')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 bg-yellow-500 text-black">
+                        <i data-lucide="unlock" class="w-3.5 h-3.5"></i> <span id="lbl-free-btn">FREE</span>
+                    </button>
+                    <button id="btn-pro" onclick="setMode('pro')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 text-neutral-400 hover:text-white">
+                        <i data-lucide="crown" class="w-3.5 h-3.5 text-yellow-500"></i> <span id="lbl-pro-btn">PRO</span>
+                    </button>
+                </div>
+
+                <!-- Language Dropdown -->
+                <div class="relative">
+                    <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-neutral-900 border border-neutral-800 text-sm font-semibold rounded-xl px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-yellow-500 cursor-pointer">
+                        <option value="en">🇬🇧 EN</option>
+                        <option value="uk">🇺🇦 UKR</option>
+                        <option value="sk">🇸🇰 SK</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+       <!-- MAIN APP WRAPPER -->
+    <main class="max-w-7xl mx-auto px-4 lg:px-8 py-8 w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- LEFT COLUMN: INPUTS & SETTINGS -->
+        <div class="no-print lg:col-span-5 space-y-6">
+            <!-- Dimensions Card -->
+            <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
+                <div class="absolute -right-16 -top-16 w-32 h-32 bg-yellow-500/5 rounded-full blur-3xl"></div>
+                <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
+                    <i data-lucide="sliders" class="w-5 h-5 text-yellow-500"></i>
+                    <span id="t-dimensions">Dimensions & Specifications</span>
+                </h2>
+                
+                <div class="space-y-4">
+                    <!-- Construction Type Toggle -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2" id="t-type">Structure Type</label>
+                        <div class="grid grid-cols-2 gap-2 bg-neutral-900 p-1 rounded-xl border border-neutral-800">
+                            <button id="type-wall" onclick="setStructureType('wall')" class="py-2 text-sm font-bold rounded-lg transition-all bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
+                                <span id="lbl-wall">Wall Partition</span>
+                            </button>
+                            <button id="type-ceiling" onclick="setStructureType('ceiling')" class="py-2 text-sm font-bold rounded-lg transition-all text-neutral-400 hover:text-white">
+                                <span id="lbl-ceiling">Ceiling</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Input Width & Height -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-width">Width (m)</label>
+                            <input type="number" id="inp-width" value="4.5" step="0.1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-height">Height/Length (m)</label>
+                            <input type="number" id="inp-height" value="3.0" step="0.1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
+                        </div>
+                    </div>
+
+                    <!-- Layers of Drywall -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-layers">Drywall Layers</label>
+                        <select id="inp-layers" onchange="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-semibold focus:outline-none gold-border-glow transition-all">
+                            <option value="1">1 Layer (Standard)</option>
+                            <option value="2">2 Layers (Reinforced / Soundproof)</option>
+                        </select>
+                    </div>
+
+                    <!-- Profile Pitch Spacing -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-spacing">Profile Spacing</label>
+                        <select id="inp-spacing" onchange="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-semibold focus:outline-none gold-border-glow transition-all">
+                            <option value="0.6">600 mm (Standard)</option>
+                            <option value="0.4">400 mm (Stronger / Heavy load)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRO BRANDING CARD -->
+            <div id="branding-card" class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden transition-all duration-300">
+                <div class="absolute -right-16 -top-16 w-32 h-32 bg-yellow-500/5 rounded-full blur-3xl"></div>
+                
+                <!-- Lock overlay for Free version -->
+                <div id="brand-lock-overlay" class="absolute inset-0 bg-neutral-950/80 backdrop-blur-sm flex flex-col justify-center items-center p-6 text-center z-20">
+                    <div class="p-3 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 rounded-full mb-3">
+                        <i data-lucide="lock" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-white font-bold text-base" id="t-brand-locked-title">PRO Custom Branding</h3>
+                    <p class="text-xs text-neutral-400 max-w-[280px] mt-1 mb-4" id="t-brand-locked-desc">Unlock custom brand headers (Firm, phone, email) on your exports and reports.</p>
+                    <button onclick="setMode('pro')" class="px-5 py-2 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-black text-xs font-extrabold uppercase tracking-wider rounded-xl transition-all shadow-lg flex items-center gap-1.5">
+                        <i data-lucide="crown" class="w-4 h-4"></i> <span id="lbl-unlock-btn">Go PRO</span>
+                    </button>
+                </div>
+
+                <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
+                    <i data-lucide="building-2" class="w-5 h-5 text-yellow-500"></i>
+                    <span id="t-branding">PDF Brand Header Info</span>
+                </h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-firm">Firm Name</label>
+                        <input type="text" id="brand-firm" value="BuildPro Master Ltd" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-white font-semibold focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-phone">Phone</label>
+                            <input type="text" id="brand-phone" value="+421 900 123 456" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-white font-semibold focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-email">Email</label>
+                            <input type="email" id="brand-email" value="office@buildpro.com" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-white font-semibold focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESET & CALC BUTTONS -->
+            <div class="flex gap-4">
+                <button onclick="resetInputs()" class="flex-1 py-3 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 font-bold rounded-xl transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i> <span id="btn-reset">New Calculation</span>
+                </button>
+            </div>
+        </div>
+              <!-- RIGHT COLUMN: RESULTS & OUTPUTS -->
+        <div class="lg:col-span-7 space-y-6">
+            
+            <!-- Dynamic Result Card -->
+            <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden print-card" id="calculations-result-box">
+                <!-- Decorative top yellow line -->
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-500 to-amber-500"></div>
+                
+                <!-- HEADER FOR EXPORTS / BRANDING -->
+                <div id="print-brand-header" class="hidden print-only mb-6 border-b border-gray-200 pb-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-800" id="print-firm-name">BuildPro Master Ltd</h2>
+                            <p class="text-xs text-gray-500" id="print-firm-contacts">Tel: +421 900 123 456 | Mail: office@buildpro.com</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs uppercase tracking-wider text-yellow-600 font-extrabold">Professional Estimate</span>
+                            <p class="text-sm font-bold text-gray-800" id="print-date">Date: 14.07.2026</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div>
+                        <span class="text-xs uppercase tracking-widest text-yellow-500 font-extrabold" id="t-estimate">Materials Estimate</span>
+                        <h2 class="text-2xl font-black text-white" id="lbl-result-area">Area: 13.50 m²</h2>
+                    </div>
+                    <!-- Export PDF -->
+                    <button id="btn-pdf" onclick="exportToPDF()" class="no-print px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-yellow-400 font-extrabold rounded-xl transition-all shadow-lg flex items-center gap-2 text-xs">
+                        <i data-lucide="file-down" class="w-4 h-4"></i> <span id="lbl-pdf-btn">Export PDF / Print</span>
+                    </button>
+                </div>
+
+                <!-- MATERIALS LIST -->
+                <div class="space-y-3.5" id="materials-container">
+                    <!-- Standard (Free) Materials -->
+                    <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
+                        <div class="col-span-8 flex items-center gap-3">
+                            <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="grid-3x3" class="w-4 h-4"></i></div>
+                            <div>
+                                <h4 class="font-bold text-white" id="lbl-mat-sheets">Drywall Sheets (1.2 x 2.5m)</h4>
+                                <p class="text-xs text-neutral-400" id="lbl-mat-sheets-sub">Based on 3.0m² sheet + 10% waste</p>
+                            </div>
+                        </div>
+                        <div class="col-span-4 text-right">
+                            <span class="text-xl font-extrabold text-yellow-400" id="val-sheets">5</span> <span class="text-xs text-neutral-400" id="unit-sheets">pcs</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
+                        <div class="col-span-8 flex items-center gap-3">
+                            <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="unfold-vertical" class="w-4 h-4"></i></div>
+                            <div>
+                                <h4 class="font-bold text-white" id="lbl-mat-cd">CD Profile (3.0m)</h4>
+                                <p class="text-xs text-neutral-400" id="lbl-mat-cd-sub">Frame spacing: vertical tracks</p>
+                            </div>
+                        </div>
+                        <div class="col-span-4 text-right">
+                            <span class="text-xl font-extrabold text-yellow-400" id="val-cd">9</span> <span class="text-xs text-neutral-400" id="unit-cd">pcs</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
+                        <div class="col-span-8 flex items-center gap-3">
+                            <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="unfold-horizontal" class="w-4 h-4"></i></div>
+                            <div>
+                                <h4 class="font-bold text-white" id="lbl-mat-ud">UD Profile (3.0m)</h4>
+                                <p class="text-xs text-neutral-400" id="lbl-mat-ud-sub">Perimeter boundary tracks</p>
+                            </div>
+                        </div>
+                        <div class="col-span-4 text-right">
+                            <span class="text-xl font-extrabold text-yellow-400" id="val-ud">5</span> <span class="text-xs text-neutral-400" id="unit-ud">pcs</span>
+                        </div>
+                    </div>
+
+                    <!-- PRO / LOCKED MATERIALS -->
+                    <div id="pro-materials-box" class="space-y-3.5 relative">
+                        <div id="pro-items-lock" class="absolute -inset-2 bg-neutral-950/60 backdrop-blur-[4px] flex flex-col justify-center items-center z-10 rounded-2xl border border-yellow-500/10 p-4">
+                            <div class="p-3 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 rounded-full mb-2">
+                                <i data-lucide="crown" class="w-5 h-5"></i>
+                            </div>
+                            <p class="text-xs font-black text-white uppercase tracking-widest text-center" id="t-pro-unlock-items">Unlock Advanced Consumables (Screws, Plugs, Tapes, Hangers, Putty)</p>
+                            <button onclick="setMode('pro')" class="mt-3 px-4 py-1.5 bg-yellow-500 text-black text-xs font-extrabold uppercase rounded-lg transition-all hover:bg-yellow-400">
+                                <span id="lbl-unlock-now">Unlock Now</span>
+                            </button>
+                        </div>
+
+                        <!-- Metal Drywall Screws -->
+                        <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
+                            <div class="col-span-8 flex items-center gap-3">
+                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="pin" class="w-4 h-4"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white" id="lbl-mat-screws">Metal Screws (25mm)</h4>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-screws-sub">Estimated ~15 pcs/m² + safety factor</p>
+                                </div>
+                            </div>
+                            <div class="col-span-4 text-right">
+                                <span class="text-xl font-extrabold text-yellow-400" id="val-screws">223</span> <span class="text-xs text-neutral-400" id="unit-screws">pcs</span>
+                            </div>
+                        </div>
+
+                        <!-- Dowels / Plugs -->
+                        <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
+                            <div class="col-span-8 flex items-center gap-3">
+                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="hammer" class="w-4 h-4"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white" id="lbl-mat-plugs">Nail Wall Plugs (6x40)</h4>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-plugs-sub">For UD profiles (every 50cm) and hangers</p>
+                                </div>
+                            </div>
+                            <div class="col-span-4 text-right">
+                                <span class="text-xl font-extrabold text-yellow-400" id="val-plugs">88</span> <span class="text-xs text-neutral-400" id="unit-plugs">pcs</span>
+                            </div>
+                        </div>
+
+                        <!-- Hangers -->
+                        <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
+                            <div class="col-span-8 flex items-center gap-3">
+                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="anchor" class="w-4 h-4"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white" id="lbl-mat-hangers">Direct Hangers (60/125)</h4>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-hangers-sub">To secure CD profiles every 60cm</p>
+                                </div>
+                            </div>
+                            <div class="col-span-4 text-right">
+                                <span class="text-xl font-extrabold text-yellow-400" id="val-hangers">32</span> <span class="text-xs text-neutral-400" id="unit-hangers">pcs</span>
+                            </div>
+                        </div>
+
+                        <!-- Joint Tape -->
+                        <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
+                            <div class="col-span-8 flex items-center gap-3">
+                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="scroll" class="w-4 h-4"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white" id="lbl-mat-tape">Joint Fiber Tape (Serpyanka)</h4>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-tape-sub">Approx. 1.5m per m² of plasterboard</p>
+                                </div>
+                            </div>
+                            <div class="col-span-4 text-right">
+                                <span class="text-xl font-extrabold text-yellow-400" id="val-tape">23</span> <span class="text-xs text-neutral-400" id="unit-tape">m</span>
+                            </div>
+                        </div>
+
+                        <!-- Putty -->
+                        <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
+                            <div class="col-span-8 flex items-center gap-3">
+                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="paint-bucket" class="w-4 h-4"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white" id="lbl-mat-putty">Joint Putty / Plaster Filler</h4>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-putty-sub">Joint compound ~0.4 kg/m²</p>
+                                </div>
+                            </div>
+                            <div class="col-span-4 text-right">
+                                <span class="text-xl font-extrabold text-yellow-400" id="val-putty">5.4</span> <span class="text-xs text-neutral-400" id="unit-putty">kg</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CALCULATION HISTORY -->
+            <div class="no-print bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
+                <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
+                    <i data-lucide="history" class="w-5 h-5 text-yellow-500"></i>
+                    <span id="t-history">Calculation History</span>
+                </h2>
+                <div id="history-container" class="space-y-2 max-h-[220px] overflow-y-auto pr-2 text-sm text-neutral-400">
+                    <p class="text-xs text-neutral-500 text-center py-4" id="t-history-empty">No calculations saved yet. Change dimensions or save to test.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- INSTRUCTIONS / DETAILED GUIDE SECTION -->
+    <section class="no-print bg-neutral-950 border-t border-neutral-800 py-12 px-4 lg:px-8 mt-12 w-full">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-xl font-bold text-white flex items-center gap-2 mb-6 text-center justify-center">
+                <i data-lucide="book-open" class="text-yellow-500"></i>
+                <span id="t-guide-title">How It Calculates & Practical Tips</span>
+            </h2>
+            
+            <div class="space-y-6 text-sm leading-relaxed text-neutral-300">
+                <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
+                    <h3 class="font-bold text-yellow-500 mb-2" id="t-tip-1-title">📄 Sheets & Structural Integrity</h3>
+                    <p id="t-tip-1-desc">Our calculator automatically appends a standard 10% material buffer to accommodate cuttings, cuts, and irregular angles. A standard drywall sheet dimensions are 1.2 x 2.5 meters (3 m² area). If you utilize double-layering for fireproofing or advanced acoustic insulation, the sheet estimate will automatically double.</p>
+                </div>
+
+                <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
+                    <h3 class="font-bold text-yellow-500 mb-2" id="t-tip-2-title">⚙️ Profiles (CD & UD Skeleton Frame)</h3>
+                    <p id="t-tip-2-desc">UD profile functions as the perimeter guiding track, computed directly from wall borders. CD profile works as the primary load-bearing vertically spaced guide. Our standard vertical pitch is 60cm, but we strongly recommend upgrading to 40cm spacing if your wall partition is designated to host tiling, heavy shelves, or multiple storage components.</p>
+                </div>
+
+                <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
+                    <h3 class="font-bold text-yellow-500 mb-2" id="t-tip-3-title">🔒 Why use PRO Mode?</h3>
+                    <p id="t-tip-3-desc">PRO mode utilizes comprehensive estimation mathematics to provide total count for hardware. It details the exact metal screws needed (plasterboard-to-metal screws spaced every 25cm), direct mounting hangers to minimize core wobelling, wall dowels for masonry connections, joint glassfiber tape, and joint filling compound to seal panels.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="no-print bg-neutral-950 py-6 text-center text-xs text-neutral-500 border-t border-neutral-900">
+        <p>© 2026 BUILDcalc Suite. All rights reserved. Precision engineering for builders.</p>
+    </footer>
+        <!-- JS LOGIC ENGINE -->
+    <script>
+        // State variables
+        let currentMode = 'free'; // 'free' or 'pro'
+        let structureType = 'wall'; // 'wall' or 'ceiling'
+        let currentLang = 'en';
+
+        // Translation Dictionary
+        const translations = {
+            en: {
+                "t-dimensions": "Dimensions & Specifications",
+                "t-type": "Structure Type",
+                "lbl-wall": "Wall Partition",
+                "lbl-ceiling": "Ceiling",
+                "lbl-width": "Width (m)",
+                "lbl-height": "Height/Length (m)",
+                "lbl-layers": "Drywall Layers",
+                "lbl-spacing": "Profile Spacing",
+                "t-branding": "PDF Brand Header Info",
+                "lbl-firm": "Firm Name",
+                "lbl-phone": "Phone",
+                "lbl-email": "Email",
+                "t-brand-locked-title": "PRO Custom Branding",
+                "t-brand-locked-desc": "Unlock custom brand headers (Firm, phone, email) on your exports and reports.",
+                "lbl-unlock-btn": "Go PRO",
+                "btn-reset": "New Calculation",
+                "t-estimate": "Materials Estimate",
+                "lbl-pdf-btn": "Export PDF / Print",
+                "lbl-mat-sheets": "Drywall Sheets (1.2 x 2.5m)",
+                "lbl-mat-sheets-sub": "Based on 3.0m² sheet + 10% waste",
+                "lbl-mat-cd": "CD Profile (3.0m)",
+                "lbl-mat-cd-sub": "Frame spacing: vertical tracks",
+                "lbl-mat-ud": "UD Profile (3.0m)",
+                "lbl-mat-ud-sub": "Perimeter boundary tracks",
+                "t-pro-unlock-items": "Unlock Advanced Consumables (Screws, Plugs, Tapes, Hangers, Putty)",
+                "lbl-unlock-now": "Unlock Now",
+                "lbl-mat-screws": "Metal Screws (25mm)",
+                "lbl-mat-screws-sub": "Estimated ~15 pcs/m² + safety factor",
+                "lbl-mat-plugs": "Nail Wall Plugs (6x40)",
+                "lbl-mat-plugs-sub": "For UD profiles (every 50cm) and hangers",
+                "lbl-mat-hangers": "Direct Hangers (60/125)",
+                "lbl-mat-hangers-sub": "To secure CD profiles every 60cm",
+                "lbl-mat-tape": "Joint Fiber Tape (Serpyanka)",
+                "lbl-mat-tape-sub": "Approx. 1.5m per m² of plasterboard",
+                "lbl-mat-putty": "Joint Putty / Plaster Filler",
+                "lbl-mat-putty-sub": "Joint compound ~0.4 kg/m²",
+                "t-history": "Calculation History",
+                "t-history-empty": "No calculations saved yet.",
+                "t-guide-title": "How It Calculates & Practical Tips",
+                "t-tip-1-title": "📄 Sheets & Structural Integrity",
+                "t-tip-1-desc": "Our calculator automatically appends a standard 10% material buffer to accommodate cuttings, cuts, and irregular angles. A standard drywall sheet dimensions are 1.2 x 2.5 meters (3 m² area). If you utilize double-layering for fireproofing or advanced acoustic insulation, the sheet estimate will automatically double.",
+                "t-tip-2-title": "⚙️ Profiles (CD & UD Skeleton Frame)",
+                "t-tip-2-desc": "UD profile functions as the perimeter guiding track, computed directly from wall borders. CD profile works as the primary load-bearing vertically spaced guide. Our standard vertical pitch is 60cm, but we strongly recommend upgrading to 40cm spacing if your wall partition is designated to host tiling, heavy shelves, or multiple storage components.",
+                "t-tip-3-title": "🔒 Why use PRO Mode?",
+                "t-tip-3-desc": "PRO mode utilizes comprehensive estimation mathematics to provide total count for hardware. It details the exact metal screws needed (plasterboard-to-metal screws spaced every 25cm), direct mounting hangers to minimize core wobbling, wall dowels for masonry connections, joint glassfiber tape, and joint filling compound to seal panels.",
+                "unit-pcs": "pcs",
+                "unit-m": "m",
+                "unit-kg": "kg"
+            },
+            uk: {
+                "t-dimensions": "Розміри та Конфігурація",
+                "t-type": "Тип конструкції",
+                "lbl-wall": "Стіна / Перегородка",
+                "lbl-ceiling": "Стеля",
+                "lbl-width": "Ширина (м)",
+                "lbl-height": "Висота/Довжина (м)",
+                "lbl-layers": "Кількість шарів",
+                "lbl-spacing": "Крок профілю",
+                "t-branding": "Брендування PDF Звіту",
+                "lbl-firm": "Назва компанії",
+                "lbl-phone": "Телефон",
+                "lbl-email": "Пошта",
+                "t-brand-locked-title": "PRO Брендування Звіту",
+                "t-brand-locked-desc": "Увімкніть персоналізовані дані вашої фірми в фірмовий PDF-звіт для клієнтів.",
+                "lbl-unlock-btn": "Активувати PRO",
+                "btn-reset": "Новий розрахунок",
+                "t-estimate": "Кошторис матеріалів",
+                "lbl-pdf-btn": "Експорт в PDF / Друк",
+                "lbl-mat-sheets": "Листи гіпсокартону (1.2 х 2.5м)",
+                "lbl-mat-sheets-sub": "На базі листа 3.0 м² + 10% на підрізку",
+                "lbl-mat-cd": "Профіль CD (3.0м)",
+                "lbl-mat-cd-sub": "Опорний каркас: стійки/рейки",
+                "lbl-mat-ud": "Профіль UD (3.0м)",
+                "lbl-mat-ud-sub": "Направляючий периметр",
+                "t-pro-unlock-items": "Активуйте розширені розхідники (саморізи, дюбелі, стрічки, підвіси, фініш)",
+                "lbl-unlock-now": "Розблокувати PRO",
+                "lbl-mat-screws": "Саморізи по металу (25мм)",
+                "lbl-mat-screws-sub": "Розрахунок ~15 шт/м² + коефіцієнт безпеки",
+                "lbl-mat-plugs": "Дюбель-цвях швидкого монтажу (6х40)",
+                "lbl-mat-plugs-sub": "Для UD профілів (кожні 50см) та підвісів",
+                "lbl-mat-hangers": "П-подібний підвіс (60/125)",
+                "lbl-mat-hangers-sub": "Фіксація CD профілю до стіни через 60см",
+                "lbl-mat-tape": "Стрічка армуюча (Серпянка)",
+                "lbl-mat-tape-sub": "Орієнтовно 1.5м на кожен м² гіпсокартону",
+                "lbl-mat-putty": "Шпаклівка для швів / Стиків",
+                "lbl-mat-putty-sub": "Заповнення зазорів ~0.4 кг/м²",
+                "t-history": "Історія розрахунків",
+                "t-history-empty": "Немає збережених розрахунків.",
+                "t-guide-title": "Методика розрахунку та корисні поради",
+                "t-tip-1-title": "📄 Листи та міцність конструкції",
+                "t-tip-1-desc": "Наш калькулятор автоматично додає 10% буфер на різання та відходи. Стандартний лист гіпсокартону має розмір 1.2 х 2.5 м (площа 3 м²). Якщо ви робите подвійну обшивку для пожежної безпеки або шумоізоляції, кількість листів буде подвоєна автоматично.",
+                "t-tip-2-title": "⚙️ Профілі (Каркас CD та UD)",
+                "t-tip-2-desc": "UD-профіль монтується по периметру стіни чи стелі. CD-профіль є основним несучим елементом каркасу. Стандартний вертикальний крок складає 60 см, але ми рекомендуємо крок 40 см, якщо на стіну буде кластися плитка або планується навішування важких полиць.",
+                "t-tip-3-title": "🔒 Переваги PRO-режиму",
+                "t-tip-3-desc": "PRO-режим включає деталізований розрахунок усього кріплення та оздоблення. Він визначає точну кількість шурупів (крок 25 см), прямих підвісів для усунення вібрацій стіни, дюбелів під перфоратор, серпянки та фінішної шпаклівки.",
+                "unit-pcs": "шт",
+                "unit-m": "м",
+                "unit-kg": "кг"
+            },
+            sk: {
+                "t-dimensions": "Rozmery & Špecifikácia",
+                "t-type": "Typ konštrukcie",
+                "lbl-wall": "Stena / Priečka",
+                "lbl-ceiling": "Strop",
+                "lbl-width": "Šírka (m)",
+                "lbl-height": "Výška/Dĺžka (m)",
+                "lbl-layers": "Vrstvy sadrokartónu",
+                "lbl-spacing": "Rozostup profilov",
+                "t-branding": "Informácie pre PDF Hlavičku",
+                "lbl-firm": "Názov firmy",
+                "lbl-phone": "Telefón",
+                "lbl-email": "E-mail",
+                "t-brand-locked-title": "PRO Vlastná Hlavička",
+                "t-brand-locked-desc": "Odomknite možnosť pridať vlastnú hlavičku s logom, telefónom a emailom na PDF report.",
+                "lbl-unlock-btn": "Aktivovať PRO",
+                "btn-reset": "Nový výpočet",
+                "t-estimate": "Odhad materiálu",
+                "lbl-pdf-btn": "Exportovať PDF / Tlačiť",
+                "lbl-mat-sheets": "Sadrokartónová doska (1.2 x 2.5m)",
+                "lbl-mat-sheets-sub": "Základná plocha 3.0m² dosky + 10% odpadu",
+                "lbl-mat-cd": "CD Profil (3.0m)",
+                "lbl-mat-cd-sub": "Nosná konštrukcia: zvislé koľajnice",
+                "lbl-mat-ud": "UD Profil (3.0m)",
+                "lbl-mat-ud-sub": "Obvodové vodiace profily stien",
+                "t-pro-unlock-items": "Odomknúť spotrebný materiál (skrutky, hmoždinky, pásky, závesy, tmel)",
+                "lbl-unlock-now": "Odomknúť teraz",
+                "lbl-mat-screws": "Rýchloskrutky do kovu (25mm)",
+                "lbl-mat-screws-sub": "Odhadovaná spotreba ~15 ks/m² + rezerva",
+                "lbl-mat-plugs": "Natĺkacie hmoždinky (6x40)",
+                "lbl-mat-plugs-sub": "Pre UD profily (každých 50cm) a priame závesy",
+                "lbl-mat-hangers": "Priamy záves (60/125)",
+                "lbl-mat-hangers-sub": "Uchytenie CD profilov k podkladu každých 60cm",
+                "lbl-mat-tape": "Páska na spoje (Serpanka)",
+                "lbl-mat-tape-sub": "Približne 1.5m pásky na každý m² sadrokartónu",
+                "lbl-mat-putty": "Tmel na špáry a spoje",
+                "lbl-mat-putty-sub": "Približne 0.4 kg zmesi na m² plochy",
+                "t-history": "História výpočtov",
+                "t-history-empty": "Zatiaľ žiadne uložené výpočty.",
+                "t-guide-title": "Návod na výpočet a praktické tipy",
+                "t-tip-1-title": "📄 Sadrokartónové dosky a ich rezanie",
+                "t-tip-1-desc": "Náš kalkulátor automaticky započítava 10% rezervu na dorezy a odpad. Rozmery jednej štandardnej dosky sú 1.2 x 2.5 m (plocha 3 m²). V prípade dvojitého opláštenia kvôli protipožiarnej ochrane alebo lepšej akustike sa množstvo dosiek automaticky zdvojnásobí.",
+                "t-tip-2-title": "⚙️ Profilová konštrukcia (CD & UD profily)",
+                "t-tip-2-desc": "UD profil tvorí obvodový rám. CD profily slúžia ako zvislé nosné stojky. Bežný rozostup profilov je 60 cm, avšak pre náročnejšie inštalácie (napr. lepenie obkladu na priečku) sa odporúča hustejší rozostup 40 cm.",
+                "t-tip-3-title": "🔒 Výhody PRO režimu",
+                "t-tip-3-desc": "PRO režim zahŕňa presný výpočet spojovacieho materiálu. Vypočíta presný počet skrutiek (kotvenie každých 25 cm), priamych závesov pre stabilitu priečok, kotviacich hmoždiniek, sklotextilnej pásky a tmelu na spoje.",
+                "unit-pcs": "ks",
+                "unit-m": "m",
+                "unit-kg": "kg"
+            }
+        };
+              // Initialize Lucide Icons
+        window.onload = function() {
+            lucide.createIcons();
+            loadHistory();
+            calculate();
+        };
+
+        // Switch Languages
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            
+            // Translate static texts via IDs matching keys
+            for (const key in translations[lang]) {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.innerHTML = translations[lang][key];
+                }
+            }
+
+            // Update placeholder or multi-text fields
+            document.getElementById('lbl-free-btn').innerText = (lang === 'uk') ? 'БЕЗКОШТОВНО' : ((lang === 'sk') ? 'FREE' : 'FREE');
+            document.getElementById('lbl-pro-btn').innerText = 'PRO';
+
+            // Specific unit updates
+            updateUnitLabels();
+            calculate();
+        }
+
+        function updateUnitLabels() {
+            const keys = ['sheets', 'cd', 'ud', 'screws', 'plugs', 'hangers', 'tape', 'putty'];
+            keys.forEach(key => {
+                const element = document.getElementById(`unit-${key}`);
+                if (element) {
+                    if (key === 'tape') {
+                        element.innerText = translations[currentLang]['unit-m'];
+                    } else if (key === 'putty') {
+                        element.innerText = translations[currentLang]['unit-kg'];
+                    } else {
+                        element.innerText = translations[currentLang]['unit-pcs'];
+                    }
+                }
+            });
+        }
+
+        // Toggle FREE / PRO mode
+        function setMode(mode) {
+            currentMode = mode;
+            const btnFree = document.getElementById('btn-free');
+            const btnPro = document.getElementById('btn-pro');
+            const proLock = document.getElementById('pro-items-lock');
+            const brandLock = document.getElementById('brand-lock-overlay');
+
+            if (mode === 'free') {
+                btnFree.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 bg-yellow-500 text-black";
+                btnPro.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 text-neutral-400 hover:text-white";
+                
+                proLock.classList.remove('hidden');
+                brandLock.classList.remove('hidden');
+            } else {
+                btnPro.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 bg-yellow-500 text-black";
+                btnFree.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 text-neutral-400 hover:text-white";
+                
+                proLock.classList.add('hidden');
+                brandLock.classList.add('hidden');
+            }
+            calculate();
+        }
+
+        // Structure type wall/ceiling
+        function setStructureType(type) {
+            structureType = type;
+            const wallBtn = document.getElementById('type-wall');
+            const ceilingBtn = document.getElementById('type-ceiling');
+
+            if (type === 'wall') {
+                wallBtn.className = "py-2 text-sm font-bold rounded-lg transition-all bg-yellow-500/10 text-yellow-400 border border-yellow-500/20";
+                ceilingBtn.className = "py-2 text-sm font-bold rounded-lg transition-all text-neutral-400 hover:text-white";
+            } else {
+                ceilingBtn.className = "py-2 text-sm font-bold rounded-lg transition-all bg-yellow-500/10 text-yellow-400 border border-yellow-500/20";
+                wallBtn.className = "py-2 text-sm font-bold rounded-lg transition-all text-neutral-400 hover:text-white";
+            }
+            calculate();
+        }
+
+        // Core Drywall Engine calculation
+        function calculate() {
+            const width = parseFloat(document.getElementById('inp-width').value) || 0;
+            const height = parseFloat(document.getElementById('inp-height').value) || 0;
+            const layers = parseInt(document.getElementById('inp-layers').value) || 1;
+            const spacing = parseFloat(document.getElementById('inp-spacing').value) || 0.6;
+
+            const area = width * height;
+            const titleArea = document.getElementById('lbl-result-area');
+            if (currentLang === 'uk') {
+                titleArea.innerText = `Площа: ${area.toFixed(2)} м²`;
+            } else if (currentLang === 'sk') {
+                titleArea.innerText = `Plocha: ${area.toFixed(2)} m²`;
+            } else {
+                titleArea.innerText = `Area: ${area.toFixed(2)} m²`;
+            }
+
+            // Sheets (1.2 x 2.5 = 3m2) + 10% waste
+            const sheetArea = 3.0;
+            const sheetsTotal = Math.ceil(((area * 1.1) / sheetArea) * layers);
+
+            // UD Profiles (Obvod)
+            const perimeterLength = 2 * (width + height);
+            const udTotalLength = perimeterLength * 1.1; 
+            const udTotalPieces = Math.ceil(udTotalLength / 3.0); 
+
+            // CD Profiles (Stojky)
+            const cdProfilesCount = Math.ceil(width / spacing) + 1;
+            const cdTotalLength = (cdProfilesCount * height) * 1.1; 
+            const cdTotalPieces = Math.ceil(cdTotalLength / 3.0); 
+
+            // Screws (~15 screws per square meter per layer)
+            const screwsCount = Math.ceil(area * 15 * layers * 1.1);
+
+            // Hangers (Direct mounting hangers every 60cm on vertical CD profile)
+            const hangersPerCD = Math.ceil(height / 0.6) - 1;
+            const hangersTotal = (hangersPerCD > 0) ? (cdProfilesCount * hangersPerCD) : 0;
+
+            // Dowels/Wall plugs (UD Profiles spacing every 50cm, plus 2 per hanger)
+            const udDowels = Math.ceil(udTotalLength / 0.5);
+            const plugsTotal = Math.ceil((udDowels + (hangersTotal * 2)) * 1.1);
+
+            // Fiber tape/serpyanka (1.5m of tape per m²)
+            const tapeTotalMeters = Math.ceil(area * 1.5 * 1.1);
+
+            // Putty / Joint filler (approx 0.4kg / m²)
+            const puttyTotalKg = (area * 0.4 * 1.1).toFixed(1);
+
+            // Print to screen
+            document.getElementById('val-sheets').innerText = sheetsTotal;
+            document.getElementById('val-cd').innerText = cdTotalPieces;
+            document.getElementById('val-ud').innerText = udTotalPieces;
+            document.getElementById('val-screws').innerText = screwsCount;
+            document.getElementById('val-plugs').innerText = plugsTotal;
+            document.getElementById('val-hangers').innerText = hangersTotal;
+            document.getElementById('val-tape').innerText = tapeTotalMeters;
+            document.getElementById('val-putty').innerText = puttyTotalKg;
+
+            if (area > 0) {
+                saveToHistoryDebounced(width, height, area);
+            }
+        }
+
+        let debounceTimer;
+        function saveToHistoryDebounced(w, h, a) {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                saveToHistory(w, h, a);
+            }, 1000);
+        }
+
+        function saveToHistory(w, h, a) {
+            let history = JSON.parse(localStorage.getItem('gips_history')) || [];
+            const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            const dateStr = new Date().toLocaleDateString();
+            
+            history.unshift({ w, h, a, structureType, timestamp, dateStr });
+            if (history.length > 5) history.pop(); 
+
+            localStorage.setItem('gips_history', JSON.stringify(history));
+            loadHistory();
+        }
+
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('gips_history')) || [];
+            const container = document.getElementById('history-container');
+            
+            if (history.length === 0) {
+                container.innerHTML = `<p class="text-xs text-neutral-500 text-center py-4" id="t-history-empty">${translations[currentLang]['t-history-empty']}</p>`;
+                return;
+            }
+
+            container.innerHTML = "";
+            history.forEach((item, index) => {
+                const box = document.createElement('div');
+                box.className = "flex justify-between items-center bg-neutral-900 border border-neutral-800 p-3 rounded-xl hover:border-yellow-500/50 cursor-pointer transition-all";
+                box.setAttribute('onclick', `loadHistoryItem(${item.w}, ${item.h}, '${item.structureType}')`);
+                
+                const typeLabel = (item.structureType === 'wall') ? translations[currentLang]['lbl-wall'] : translations[currentLang]['lbl-ceiling'];
+                
+                box.innerHTML = `
+                    <div>
+                        <p class="font-bold text-white text-xs">${typeLabel} (${item.w}m x ${item.h}m)</p>
+                        <p class="text-[10px] text-neutral-500">${item.dateStr} | ${item.timestamp}</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-yellow-400 font-extrabold text-xs">${item.a.toFixed(2)} m²</span>
+                    </div>
+                `;
+                container.appendChild(box);
+            });
+        }
+
+        function loadHistoryItem(w, h, type) {
+            document.getElementById('inp-width').value = w;
+            document.getElementById('inp-height').value = h;
+            setStructureType(type);
+            calculate();
+        }
+
+        function resetInputs() {
+            document.getElementById('inp-width').value = "4.5";
+            document.getElementById('inp-height').value = "3.0";
+            document.getElementById('inp-layers').value = "1";
+            document.getElementById('inp-spacing').value = "0.6";
+            setStructureType('wall');
+            calculate();
+        }
+
+        function exportToPDF() {
+            if (currentMode === 'free') {
+                alert(currentLang === 'uk' 
+                    ? "Брендований PDF доступний тільки в PRO версії! Увімкніть PRO режим зверху." 
+                    : (currentLang === 'sk' ? "Branded PDF je dostupný iba v PRO verzii! Zapnite režim PRO v hornom paneli." : "Branded PDF is available only in PRO mode! Enable PRO mode from the top bar."));
+                return;
+            }
+
+            const firm = document.getElementById('brand-firm').value;
+            const phone = document.getElementById('brand-phone').value;
+            const email = document.getElementById('brand-email').value;
+
+            document.getElementById('print-firm-name').innerText = firm;
+            document.getElementById('print-firm-contacts').innerText = `Tel: ${phone} | Mail: ${email}`;
+            document.getElementById('print-date').innerText = translations[currentLang]['t-estimate'] + ": " + new Date().toLocaleDateString();
+
+            window.print();
+        }
+    </script>
+</body>
+</html>
