@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор Гіпсокартону Pro</title>
+    <title>Калькулятор Гіпсокартону Pro - BUILDCALC</title>
     
     <meta name="google-site-verification" content="google81a9add93ea0f90e" />
 
@@ -11,14 +11,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0B0B0B;
-            --panel-bg: #141414;
-            --accent-gold: #D4AF37;
-            --accent-gold-hover: #F3E5AB;
-            --text-main: #FFFFFF;
-            --text-muted: #8A8A8A;
-            --border-color: #262626;
-            --neon-glow: 0 0 20px rgba(212, 175, 55, 0.15);
+            --bg-dark: #09090b;
+            --panel-bg: #121214;
+            --accent-gold: #eab308;
+            --accent-gold-hover: #facc15;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --border-color: #27272a;
+            --neon-glow: 0 0 20px rgba(234, 179, 8, 0.1);
         }
 
         * {
@@ -33,19 +33,21 @@
             background-color: var(--bg-dark);
             color: var(--text-main);
             min-height: 100vh;
-            padding: 20px 12px 100px 12px;
+            padding: 16px 12px 100px 12px;
         }
 
-        /* Стилі для блоку переходу між калькуляторами */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Навігаційний блок перепосилань для Google */
         .navigation-panel {
             background: var(--panel-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 12px;
-            margin-bottom: 20px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 16px;
             box-shadow: var(--neon-glow);
         }
 
@@ -78,60 +80,136 @@
             text-decoration: none;
             font-size: 13px;
             font-weight: 500;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
         }
 
         .nav-button:hover, .nav-button:active {
-            background: rgba(212, 175, 55, 0.1);
+            background: rgba(234, 179, 8, 0.1);
             border-color: var(--accent-gold);
             color: var(--accent-gold);
         }
-                .container {
-            max-width: 600px;
-            margin: 0 auto;
+
+        /* Шапка з додатку */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 24px;
+        .brand-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #FFF 0%, var(--accent-gold) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 6px;
+        .logo-box {
+            background-color: var(--accent-gold);
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        header p {
+        .brand-text h2 {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             color: var(--text-muted);
-            font-size: 13px;
         }
 
-        .card {
+        .brand-text h1 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .brand-text span {
+            color: var(--accent-gold);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-pro-badge {
+            background: linear-gradient(135deg, var(--accent-gold) 0%, #b45309 100%);
+            border: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .lang-selector {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            outline: none;
+        }
+                .card {
             background-color: var(--panel-bg);
             border: 1px solid var(--border-color);
             border-radius: 20px;
             padding: 20px;
             box-shadow: var(--neon-glow);
-            margin-bottom: 20px;
-        }
-
-        .input-group {
             margin-bottom: 16px;
         }
 
-        .input-group label {
-            display: block;
-            font-size: 12px;
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
             font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 16px;
+        }
+
+        .card-title i {
             color: var(--accent-gold);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .input-group.no-margin {
+            margin-bottom: 0;
+        }
+
+        .input-group label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 6px;
         }
 
         .input-wrapper {
@@ -142,72 +220,85 @@
 
         .input-wrapper input, .input-wrapper select {
             width: 100%;
-            background-color: rgba(255, 255, 255, 0.03);
+            background-color: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 14px 16px;
-            font-size: 16px;
+            padding: 12px 14px;
+            font-size: 15px;
             color: #fff;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
             outline: none;
         }
 
         .input-wrapper input:focus, .input-wrapper select:focus {
             border-color: var(--accent-gold);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: rgba(255, 255, 255, 0.04);
         }
 
         .input-wrapper .unit {
             position: absolute;
-            right: 16px;
+            right: 14px;
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 13px;
             pointer-events: none;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
         }
 
         .btn-calc {
             width: 100%;
-            background: linear-gradient(135deg, var(--accent-gold) 0%, #B8860B 100%);
+            background-color: var(--accent-gold);
             border: none;
-            border-radius: 14px;
-            padding: 16px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 700;
             color: #000;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
-            margin-top: 10px;
+            transition: all 0.2s;
+            margin-top: 6px;
         }
 
         .btn-calc:active {
             transform: scale(0.98);
+            background-color: var(--accent-gold-hover);
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
         }
 
         .results-title {
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--accent-gold);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            border-left: 3px solid var(--accent-gold);
-            padding-left: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-pdf {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
         }
 
         .result-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .result-row:last-child {
@@ -216,12 +307,12 @@
 
         .result-label {
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .result-value {
             font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -231,42 +322,60 @@
         <div class="navigation-title">Інші калькулятори</div>
         <div class="navigation-links">
             <a href="https://stas8146-lgtm.github.io/buildcalk/Styazhka/" class="nav-button">
-                <i data-lucide="layers" style="width: 16px; height: 16px;"></i>
+                <i data-lucide="layers" style="width: 15px; height: 15px;"></i>
                 Стяжка
             </a>
             <a href="https://stas8146-lgtm.github.io/buildcalk/Omietky/" class="nav-button">
-                <i data-lucide="paint-bucket" style="width: 16px; height: 16px;"></i>
+                <i data-lucide="paint-bucket" style="width: 15px; height: 15px;"></i>
                 Штукатурка
             </a>
         </div>
     </div>
 
     <div class="container">
-        <header>
-            <h1>Гіпсокартон Pro</h1>
-            <p>Розрахунок каркасу, ГКЛ та кріплення</p>
+        <header class="app-header">
+            <div class="brand-info">
+                <div class="logo-box">
+                    <i data-lucide="layout-grid" style="color: #000; width: 22px; height: 22px;"></i>
+                </div>
+                <div class="brand-text">
+                    <h2>Пакет програм BUILDCALC</h2>
+                    <h1>СУХА СТІНА <span>PRO v3.0</span></h1>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn-pro-badge">
+                    <i data-lucide="crown" style="width: 12px; height: 12px;"></i> PRO
+                </button>
+                <select class="lang-selector" id="lang-select" onchange="changeLanguage()">
+                    <option value="uk">UA</option>
+                    <option value="en">EN</option>
+                </select>
+            </div>
         </header>
+                <div class="card">
+            <div class="card-title">
+                <i data-lucide="sliders"></i>
+                <span id="txt-params-title">Розміри та характеристики</span>
+            </div>
 
-        <div class="card">
             <div class="grid-2">
-                <div class="input-group">
-                    <label>Довжина стіни/стелі</label>
+                <div class="input-group no-margin">
+                    <label id="lbl-length">Довжина (м)</label>
                     <div class="input-wrapper">
                         <input type="number" id="length" step="0.1" placeholder="4.5">
-                        <span class="unit">м</span>
                     </div>
                 </div>
-                <div class="input-group">
-                    <label>Ширина/Висота</label>
+                <div class="input-group no-margin">
+                    <label id="lbl-width">Ширина (м)</label>
                     <div class="input-wrapper">
                         <input type="number" id="width" step="0.1" placeholder="3.0">
-                        <span class="unit">м</span>
                     </div>
                 </div>
             </div>
 
             <div class="input-group">
-                <label>Тип конструкції</label>
+                <label id="lbl-type">Тип структури</label>
                 <div class="input-wrapper">
                     <select id="type">
                         <option value="wall-1">Стіна (Облицювання 1 шар)</option>
@@ -279,35 +388,95 @@
             </div>
 
             <div class="input-group">
-                <label>Крок профілю (CD-60)</label>
+                <label id="lbl-step">Відстань між профілями</label>
                 <div class="input-wrapper">
                     <select id="step">
-                        <option value="600">600 мм (Стандарт)</option>
-                        <option value="400">400 мм (Посилений)</option>
+                        <option value="600">600 мм (стандарт)</option>
+                        <option value="400">400 мм (посилений)</option>
                     </select>
                 </div>
             </div>
 
-            <button class="btn-calc" onclick="calculate()">Розрахувати матеріали</button>
+            <button class="btn-calc" id="btn-calculate" onclick="calculate()">Розрахувати матеріали</button>
         </div>
 
         <div class="card" id="results-card" style="display: none;">
-            <h3 class="results-title">Необхідні матеріали</h3>
+            <div class="results-header">
+                <h3 class="results-title" id="txt-results-title">Необхідні матеріали</h3>
+                <button class="btn-pdf" onclick="alert('Функція генерації PDF доступна в PRO версії')">
+                    <i data-lucide="file-down" style="width: 14px; height: 14px;"></i> PDF
+                </button>
+            </div>
             <div id="results-list"></div>
         </div>
     </div>
-        <script>
+
+    <script>
         // Ініціалізація іконок Lucide
         lucide.createIcons();
 
-        function calculate() {
+        // Мовні словники для локалізації
+        const locales = {
+            uk: {
+                paramsTitle: "Розміри та характеристики",
+                lblLength: "Довжина (м)",
+                lblWidth: "Ширина/Висота (м)",
+                lblType: "Тип структури",
+                lblStep: "Відстань між профілями",
+                btnCalculate: "Розрахувати матеріали",
+                resultsTitle: "Необхідні матеріали",
+                types: {
+                    "wall-1": "Стіна (Облицювання 1 шар)",
+                    "wall-2": "Стіна (Облицювання 2 шари)",
+                    "ceiling": "Стеля підвісна (1 шар)",
+                    "partition-1": "Перегородка (1 шар з обох боків)",
+                    "partition-2": "Перегородка (2 шари з обох боків)"
+                }
+            },
+            en: {
+                paramsTitle: "Dimensions & Characteristics",
+                lblLength: "Length (m)",
+                lblWidth: "Width/Height (m)",
+                lblType: "Structure Type",
+                lblStep: "Distance between profiles",
+                btnCalculate: "Calculate materials",
+                resultsTitle: "Required Materials",
+                types: {
+                    "wall-1": "Wall (1-layer cladding)",
+                    "wall-2": "Wall (2-layer cladding)",
+                    "ceiling": "Suspended ceiling (1 layer)",
+                    "partition-1": "Partition (1 layer both sides)",
+                    "partition-2": "Partition (2 layers both sides)"
+                }
+            }
+        };
+
+        function changeLanguage() {
+            const lang = document.getElementById('lang-select').value;
+            const t = locales[lang];
+
+            document.getElementById('txt-params-title').textContent = t.paramsTitle;
+            document.getElementById('lbl-length').textContent = t.lblLength;
+            document.getElementById('lbl-width').textContent = t.lblWidth;
+            document.getElementById('lbl-type').textContent = t.lblType;
+            document.getElementById('lbl-step').textContent = t.lblStep;
+            document.getElementById('btn-calculate').textContent = t.btnCalculate;
+            document.getElementById('txt-results-title').textContent = t.resultsTitle;
+
+            const typeSelect = document.getElementById('type');
+            for (let option of typeSelect.options) {
+                option.text = t.types[option.value];
+            }
+        }
+                function calculate() {
             const length = parseFloat(document.getElementById('length').value);
             const width = parseFloat(document.getElementById('width').value);
             const type = document.getElementById('type').value;
             const step = parseInt(document.getElementById('step').value);
+            const lang = document.getElementById('lang-select').value;
 
             if (!length || !width || length <= 0 || width <= 0) {
-                alert("Будь ласка, введіть коректні розміри стіни/стелі.");
+                alert(lang === 'uk' ? "Будь ласка, введіть коректні розміри." : "Please enter correct dimensions.");
                 return;
             }
 
@@ -317,54 +486,43 @@
             let gkl = 0;
             let ud27 = 0;
             let cd60 = 0;
-            let es = 0; // П-подібні підвіси (ПЕШки)
-            let LN = 0; // Саморізи «блошки» 3.5х9.5
-            let TN25 = 0; // Саморізи по металу 25 мм
-            let TN35 = 0; // Саморізи по металу 35 мм
-            let dowel = 0; // Дюбелі швидкого монтажу 6х40
-            let tape = 0; // Стрічка серпянка
-            let fuge = 0; // Шпаклівка для швів (кг)
-            let longitudinal = 0; // Подовжувачі профілю
-            let crab = 0; // З'єднувачі однорівневі (краби)
+            let es = 0;
+            let LN = 0;
+            let TN25 = 0;
+            let TN35 = 0;
+            let dowel = 0;
+            let tape = 0;
+            let fuge = 0;
+            let crab = 0;
 
-            const gklArea = 3.0; // Площа одного листа ГКЛ (1.2м х 2.5м)
+            const gklArea = 3.0;
 
-            // Базові алгоритми розрахунку
             if (type.startsWith('wall-')) {
                 const layers = parseInt(type.split('-')[1]);
                 gkl = (area / gklArea) * layers * 1.05;
-
                 ud27 = perimeter * 1.05 / 3.0;
-                
                 const profilesCount = Math.ceil((length * 1000) / step) + 1;
                 cd60 = (profilesCount * width) * 1.05 / 3.0;
-
                 const esPerProfile = Math.ceil(width / 0.8) - 1;
                 es = profilesCount * esPerProfile;
-
                 dowel = (perimeter / 0.3) + (es * 2);
                 LN = es * 4;
-                
                 if (layers === 1) {
                     TN25 = area * 15;
                 } else {
                     TN25 = area * 8;
                     TN35 = area * 15;
                 }
-                
                 tape = area * 1.5;
                 fuge = area * 0.4;
             } else if (type === 'ceiling') {
                 gkl = (area / gklArea) * 1.05;
                 ud27 = perimeter * 1.05 / 3.0;
-
                 const mainCD = (length / 0.8) * width;
                 const crossCD = (width / 0.4) * length;
                 cd60 = (mainCD + crossCD) * 1.05 / 3.0;
-
                 es = (mainCD / 0.7) * 1.05;
                 crab = (length / 0.8) * (width / 0.4);
-
                 dowel = (perimeter / 0.3) + (es * 2);
                 LN = (es * 4) + (crab * 8);
                 TN25 = area * 17;
@@ -373,47 +531,58 @@
             } else if (type.startsWith('partition-')) {
                 const layers = parseInt(type.split('-')[1]);
                 gkl = (area / gklArea) * layers * 2 * 1.05;
-
                 ud27 = perimeter * 1.05 / 3.0;
-
                 const profilesCount = Math.ceil((length * 1000) / step) + 1;
                 cd60 = (profilesCount * width) * 1.05 / 3.0;
-
                 dowel = perimeter / 0.3;
-                
                 if (layers === 1) {
                     TN25 = area * 30;
                 } else {
                     TN25 = area * 15;
                     TN35 = area * 30;
                 }
-
                 tape = area * 3.0;
                 fuge = area * 0.8;
             }
-                        const results = [
-                { name: "Площа конструкції", val: area.toFixed(2), unit: "м²" },
-                { name: "Гіпсокартонні листи (1.2 х 2.5 м)", val: Math.ceil(gkl), unit: "шт" },
-                { name: "Профіль направляючий UD-27 (3 м)", val: Math.ceil(ud27), unit: "шт" },
-                { name: "Профіль стійковий CD-60 (3 м)", val: Math.ceil(cd60), unit: "шт" },
-                { name: "Підвіс П-подібний (ES 60/125)", val: Math.ceil(es), unit: "шт" },
-                { name: "Дюбель швидкого монтажу (6х40)", val: Math.ceil(dowel / 10) * 10, unit: "шт" },
-                { name: "Саморізи «блошки» (LN 3.5х9.5)", val: Math.ceil(LN / 50) * 50, unit: "шт" }
+
+            const labels = {
+                uk: {
+                    area: "Площа конструкції", gkl: "Гіпсокартонні листи (1.2 х 2.5 м)",
+                    ud: "Профіль направляючий UD-27 (3 м)", cd: "Профіль стійковий CD-60 (3 м)",
+                    es: "Підвіс П-подібний (ES 60/125)", dowel: "Дюбель швидкого монтажу (6х40)",
+                    ln: "Саморізи «блошки» (LN 3.5х9.5)", tn25: "Саморізи по металу TN-25 (25 мм)",
+                    tn35: "Саморізи по металу TN-35 (35 мм)", crab: "З'єднувач «Краб»",
+                    tape: "Стрічка армуюча (серпянка)", fuge: "Шпаклівка для швів"
+                },
+                en: {
+                    area: "Structure Area", gkl: "Gypsum Plasterboards (1.2 x 2.5 m)",
+                    ud: "Guide Profile UD-27 (3 m)", cd: "Stud Profile CD-60 (3 m)",
+                    es: "Wall Hanger (ES 60/125)", dowel: "Nail Plug (6x40)",
+                    ln: "Tiny Screws (LN 3.5x9.5)", tn25: "Metal Screws TN-25 (25 mm)",
+                    tn35: "Metal Screws TN-35 (35 mm)", crab: "Crab Connector",
+                    tape: "Armoring Joint Tape", fuge: "Joint Filler"
+                }
+            };
+
+            const l = labels[lang];
+
+            const results = [
+                { name: l.area, val: area.toFixed(2), unit: "м²" },
+                { name: l.gkl, val: Math.ceil(gkl), unit: lang === 'uk' ? "шт" : "pcs" },
+                { name: l.ud, val: Math.ceil(ud27), unit: lang === 'uk' ? "шт" : "pcs" },
+                { name: l.cd, val: Math.ceil(cd60), unit: lang === 'uk' ? "шт" : "pcs" },
+                { name: l.es, val: Math.ceil(es), unit: lang === 'uk' ? "шт" : "pcs" },
+                { name: l.dowel, val: Math.ceil(dowel / 10) * 10, unit: lang === 'uk' ? "шт" : "pcs" },
+                { name: l.ln, val: Math.ceil(LN / 50) * 50, unit: lang === 'uk' ? "шт" : "pcs" }
             ];
 
-            if (TN25 > 0) {
-                results.push({ name: "Саморізи по металу TN-25 (25 мм)", val: Math.ceil(TN25 / 50) * 50, unit: "шт" });
-            }
-            if (TN35 > 0) {
-                results.push({ name: "Саморізи по металу TN-35 (35 мм)", val: Math.ceil(TN35 / 50) * 50, unit: "шт" });
-            }
-            if (crab > 0) {
-                results.push({ name: "З'єднувач однорівневий «Краб»", val: Math.ceil(crab), unit: "шт" });
-            }
+            if (TN25 > 0) results.push({ name: l.tn25, val: Math.ceil(TN25 / 50) * 50, unit: lang === 'uk' ? "шт" : "pcs" });
+            if (TN35 > 0) results.push({ name: l.tn35, val: Math.ceil(TN35 / 50) * 50, unit: lang === 'uk' ? "шт" : "pcs" });
+            if (crab > 0) results.push({ name: l.crab, val: Math.ceil(crab), unit: lang === 'uk' ? "шт" : "pcs" });
 
             results.push(
-                { name: "Стрічка армуюча (серпянка)", val: Math.ceil(tape), unit: "м.п." },
-                { name: "Шпаклівка для швів (типу Фугенфюллер)", val: Math.ceil(fuge), unit: "кг" }
+                { name: l.tape, val: Math.ceil(tape), unit: lang === 'uk' ? "м.п." : "m" },
+                { name: l.fuge, val: Math.ceil(fuge), unit: lang === 'uk' ? "кг" : "kg" }
             );
 
             const listDiv = document.getElementById('results-list');
