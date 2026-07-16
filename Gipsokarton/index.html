@@ -1,612 +1,347 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPRB8JPVM2"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-RPRB8JPVM2');
-    </script>  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Калькулятор Гіпсокартону Pro - BUILDCALC</title>
     
     <meta name="google-site-verification" content="google81a9add93ea0f90e" />
 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPRB8JPVM2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-RPRB8JPVM2');
+    </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/umd/lucide.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-dark: #09090b;
-            --panel-bg: #121214;
-            --accent-gold: #eab308;
-            --accent-gold-hover: #facc15;
+            --bg-dark: #0a0a0a;
+            --card-bg: #141414;
+            --accent: #facc15;
             --text-main: #ffffff;
             --text-muted: #a1a1aa;
-            --border-color: #27272a;
-            --neon-glow: 0 0 20px rgba(234, 179, 8, 0.1);
+            --border: #27272a;
         }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); padding: 12px 12px 80px 12px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        
+        /* Навігація для Google */
+        .seo-nav { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
+        .seo-nav a { flex: 1; text-align: center; background: var(--card-bg); border: 1px solid var(--border); color: var(--text-muted); text-decoration: none; padding: 10px; border-radius: 12px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+        .seo-nav a.active { border-color: var(--accent); color: var(--accent); background: rgba(250, 204, 21, 0.05); }
+        
+        /* Шапка */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .logo-block { display: flex; align-items: center; gap: 12px; }
+        .logo { background: var(--accent); color: #000; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .title h2 { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .title h1 { font-size: 16px; font-weight: 700; text-transform: uppercase; }
+        .title h1 span { color: var(--accent); font-size: 12px; background: rgba(250, 204, 21, 0.1); padding: 2px 6px; border-radius: 6px; margin-left: 4px; border: 1px solid var(--accent); }
+        
+        .controls { display: flex; gap: 8px; }
+        .btn-pro { background: var(--accent); color: #000; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 12px; display: flex; align-items: center; gap: 4px; }
+        .btn-lang { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border); padding: 6px 10px; border-radius: 8px; font-weight: 600; font-size: 12px; }
+        
+        /* Картки */
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+        .card-header { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; margin-bottom: 16px; color: var(--accent); }
+        .input-group { margin-bottom: 16px; }
+        .input-group label { display: block; font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        input, select { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: #fff; padding: 14px; border-radius: 12px; font-size: 15px; outline: none; }
+        input:focus, select:focus { border-color: var(--accent); }
+        
+        .btn-main { width: 100%; background: var(--accent); color: #000; font-size: 16px; font-weight: 700; border: none; padding: 16px; border-radius: 12px; cursor: pointer; margin-top: 8px; }
+        
+        /* Інфо блоки */
+        .info-box { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 16px; border-radius: 12px; margin-bottom: 12px; }
+        .info-box h4 { display: flex; align-items: center; gap: 8px; color: var(--accent); font-size: 14px; margin-bottom: 8px; }
+        .info-box p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+        
+        /* Результати */
+        .result-item { display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.02); padding: 16px; border-radius: 12px; margin-bottom: 10px; border: 1px solid transparent; }
+        .result-item:hover { border-color: var(--border); }
+        .res-icon { background: rgba(250, 204, 21, 0.1); color: var(--accent); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .res-info { flex: 1; }
+        .res-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        .res-sub { font-size: 11px; color: var(--text-muted); }
+        .res-val { font-size: 18px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+        .res-val span { font-size: 12px; color: var(--text-muted); font-weight: 500; }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            min-height: 100vh;
-            padding: 16px 12px 100px 12px;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Навігаційний блок перепосилань для Google */
-        .navigation-panel {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 12px;
-            margin-bottom: 16px;
-            box-shadow: var(--neon-glow);
-        }
-
-        .navigation-title {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: var(--accent-gold);
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .navigation-links {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .nav-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            padding: 10px;
-            border-radius: 10px;
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .nav-button:hover, .nav-button:active {
-            background: rgba(234, 179, 8, 0.1);
-            border-color: var(--accent-gold);
-            color: var(--accent-gold);
-        }
-
-        /* Шапка з додатку */
-        .app-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 12px 16px;
-            margin-bottom: 16px;
-        }
-
-        .brand-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-box {
-            background-color: var(--accent-gold);
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .brand-text h2 {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-        }
-
-        .brand-text h1 {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .brand-text span {
-            color: var(--accent-gold);
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .btn-pro-badge {
-            background: linear-gradient(135deg, var(--accent-gold) 0%, #b45309 100%);
-            border: none;
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 700;
-            color: #000;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .lang-selector {
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 6px 8px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            outline: none;
-        }
-                .card {
-            background-color: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: var(--neon-glow);
-            margin-bottom: 16px;
-        }
-
-        .card-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 16px;
-        }
-
-        .card-title i {
-            color: var(--accent-gold);
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 14px;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-bottom: 14px;
-        }
-
-        .input-group.no-margin {
-            margin-bottom: 0;
-        }
-
-        .input-group label {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .input-wrapper input, .input-wrapper select {
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 12px 14px;
-            font-size: 15px;
-            color: #fff;
-            transition: all 0.2s;
-            outline: none;
-        }
-
-        .input-wrapper input:focus, .input-wrapper select:focus {
-            border-color: var(--accent-gold);
-            background-color: rgba(255, 255, 255, 0.04);
-        }
-
-        .input-wrapper .unit {
-            position: absolute;
-            right: 14px;
-            color: var(--text-muted);
-            font-size: 13px;
-            pointer-events: none;
-        }
-
-        .btn-calc {
-            width: 100%;
-            background-color: var(--accent-gold);
-            border: none;
-            border-radius: 12px;
-            padding: 14px;
-            font-size: 15px;
-            font-weight: 700;
-            color: #000;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 6px;
-        }
-
-        .btn-calc:active {
-            transform: scale(0.98);
-            background-color: var(--accent-gold-hover);
-        }
-
-        .results-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 14px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-
-        .results-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--accent-gold);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-pdf {
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-        }
-
-        .result-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .result-row:last-child {
-            border-bottom: none;
-        }
-
-        .result-label {
-            color: var(--text-muted);
-            font-size: 13px;
-        }
-
-        .result-value {
-            font-weight: 600;
-            font-size: 14px;
+        @media print {
+            body { background: #fff; color: #000; }
+            .seo-nav, .controls, .btn-main, .info-box, #calc-inputs { display: none !important; }
+            .card { border: none; padding: 0; box-shadow: none; }
+            .res-val { color: #000; }
+            .res-icon { border: 1px solid #ccc; color: #000; }
         }
     </style>
 </head>
 <body>
-
-    <div class="navigation-panel">
-        <div class="navigation-title">Інші калькулятори</div>
-        <div class="navigation-links">
-            <a href="https://stas8146-lgtm.github.io/buildcalk/Styazhka/" class="nav-button">
-                <i data-lucide="layers" style="width: 15px; height: 15px;"></i>
-                Стяжка
-            </a>
-            <a href="https://stas8146-lgtm.github.io/buildcalk/Omietky/" class="nav-button">
-                <i data-lucide="paint-bucket" style="width: 15px; height: 15px;"></i>
-                Штукатурка
-            </a>
-        </div>
-    </div>
-
     <div class="container">
-        <header class="app-header">
-            <div class="brand-info">
-                <div class="logo-box">
-                    <i data-lucide="layout-grid" style="color: #000; width: 22px; height: 22px;"></i>
-                </div>
-                <div class="brand-text">
-                    <h2>Пакет програм BUILDCALC</h2>
-                    <h1>СУХА СТІНА <span>PRO v3.0</span></h1>
-                </div>
-            </div>
-            <div class="header-actions">
-                <button class="btn-pro-badge">
-                    <i data-lucide="crown" style="width: 12px; height: 12px;"></i> PRO
-                </button>
-                <select class="lang-selector" id="lang-select" onchange="changeLanguage()">
-                    <option value="uk">UA</option>
-                    <option value="en">EN</option>
-                </select>
-            </div>
-        </header>
-                <div class="card">
-            <div class="card-title">
-                <i data-lucide="sliders"></i>
-                <span id="txt-params-title">Розміри та характеристики</span>
-            </div>
+    
+    <div class="seo-nav">
+        <a href="https://stas8146-lgtm.github.io/buildcalk/Styazhka/" id="nav-floor">Стяжка</a>
+        <a href="https://stas8146-lgtm.github.io/buildcalk/Omietky/" id="nav-plaster">Штукатурка</a>
+        <a href="#" class="active" id="nav-drywall">Гіпсокартон</a>
+    </div>
 
-            <div class="grid-2">
-                <div class="input-group no-margin">
-                    <label id="lbl-length">Довжина (м)</label>
-                    <div class="input-wrapper">
-                        <input type="number" id="length" step="0.1" placeholder="4.5">
-                    </div>
-                </div>
-                <div class="input-group no-margin">
-                    <label id="lbl-width">Ширина (м)</label>
-                    <div class="input-wrapper">
-                        <input type="number" id="width" step="0.1" placeholder="3.0">
-                    </div>
-                </div>
+    <header class="header">
+        <div class="logo-block">
+            <div class="logo"><i data-lucide="layers"></i></div>
+            <div class="title">
+                <h2 id="app-subtitle">Пакет програм Buildcalc</h2>
+                <h1>Суха Стіна <span>PRO v3.0</span></h1>
             </div>
+        </div>
+        <div class="controls">
+            <button class="btn-pro"><i data-lucide="crown" size="14"></i> PRO</button>
+            <select class="btn-lang" id="lang-select" onchange="changeLang()">
+                <option value="uk">🇺🇦 UA</option>
+                <option value="en">🇬🇧 EN</option>
+            </select>
+        </div>
+    </header>
 
-            <div class="input-group">
-                <label id="lbl-type">Тип структури</label>
-                <div class="input-wrapper">
-                    <select id="type">
-                        <option value="wall-1">Стіна (Облицювання 1 шар)</option>
-                        <option value="wall-2">Стіна (Облицювання 2 шари)</option>
-                        <option value="ceiling">Стеля підвісна (1 шар)</option>
-                        <option value="partition-1">Перегородка (1 шар з обох боків)</option>
-                        <option value="partition-2">Перегородка (2 шари з обох боків)</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label id="lbl-step">Відстань між профілями</label>
-                <div class="input-wrapper">
-                    <select id="step">
-                        <option value="600">600 мм (стандарт)</option>
-                        <option value="400">400 мм (посилений)</option>
-                    </select>
-                </div>
-            </div>
-
-            <button class="btn-calc" id="btn-calculate" onclick="calculate()">Розрахувати матеріали</button>
+    <div class="card" id="calc-inputs">
+        <div class="card-header"><i data-lucide="sliders-horizontal"></i> <span id="t-params">Розміри та характеристики</span></div>
+        
+        <div class="input-group">
+            <label id="t-type">Тип структури</label>
+            <select id="type">
+                <option value="partition">Перегородка (1 шар з 2х сторін)</option>
+                <option value="wall">Стіна (Облицювання 1 шар)</option>
+                <option value="ceiling">Стеля підвісна (1 шар)</option>
+            </select>
         </div>
 
-        <div class="card" id="results-card" style="display: none;">
-            <div class="results-header">
-                <h3 class="results-title" id="txt-results-title">Необхідні матеріали</h3>
-                <button class="btn-pdf" onclick="alert('Функція генерації PDF доступна в PRO версії')">
-                    <i data-lucide="file-down" style="width: 14px; height: 14px;"></i> PDF
-                </button>
+        <div class="grid-2">
+            <div class="input-group">
+                <label id="t-width">Ширина (м)</label>
+                <input type="number" id="width" step="0.1" placeholder="4.5">
             </div>
-            <div id="results-list"></div>
+            <div class="input-group">
+                <label id="t-length">Висота/Довжина (м)</label>
+                <input type="number" id="length" step="0.1" placeholder="3.0">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label id="t-step">Відстань між профілями</label>
+            <select id="step">
+                <option value="600">600 мм (стандарт)</option>
+                <option value="400">400 мм (посилений)</option>
+            </select>
+        </div>
+
+        <button class="btn-main" onclick="calculate()" id="t-btn-calc">Розрахувати</button>
+    </div>
+        <div class="card" id="info-cards">
+        <div class="info-box">
+            <h4 id="t-info1-title"><i data-lucide="info" size="16"></i> Стандартні розміри</h4>
+            <p id="t-info1-desc">Стандартні розміри листа гіпсокартону становлять 1.2 х 2.5 метра (площа 3 м²). Розрахунок ведеться з урахуванням запасу на підрізку.</p>
+        </div>
+        <div class="info-box">
+            <h4 id="t-info2-title"><i data-lucide="settings" size="16"></i> Профілі (CD та UD)</h4>
+            <p id="t-info2-desc">Профіль UD служить направляючою по периметру. Профіль CD використовується як основа. Рекомендуємо крок 400 мм для важких полиць або плитки.</p>
         </div>
     </div>
 
-    <script>
-        // Ініціалізація іконок Lucide
+    <div class="card" id="pdf-form" style="display: none;">
+        <div class="card-header"><i data-lucide="file-text"></i> <span id="t-pdf-title">Інформація для PDF-кошторису</span></div>
+        <div class="input-group">
+            <label id="t-pdf-company">Назва фірми / Майстра</label>
+            <input type="text" id="pdf-name" placeholder="BuildPro Master Ltd">
+        </div>
+        <div class="grid-2">
+            <div class="input-group">
+                <label id="t-pdf-phone">Телефон</label>
+                <input type="text" id="pdf-phone" placeholder="+380...">
+            </div>
+            <div class="input-group">
+                <label id="t-pdf-email">Електронна пошта</label>
+                <input type="text" id="pdf-email" placeholder="office@...">
+            </div>
+        </div>
+        <button class="btn-main" onclick="exportPDF()" style="background: rgba(255,255,255,0.1); color: #fff; margin-top: 0;">
+            <i data-lucide="printer" size="18" style="display: inline-block; vertical-align: middle;"></i> 
+            <span id="t-btn-pdf">Експорт в PDF / Друк</span>
+        </button>
+    </div>
+
+    <div class="card" id="results-card" style="display: none;">
+        <div class="card-header" style="border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 16px;">
+            <span id="t-res-title">СМЕТА МАТЕРІАЛІВ</span>
+        </div>
+        <div id="results-list"></div>
+    </div>
+
+</div>
+<script>
+    lucide.createIcons();
+
+    const dict = {
+        uk: {
+            nav1: "Стяжка", nav2: "Штукатурка", nav3: "Гіпсокартон",
+            appSub: "Пакет програм Buildcalc", params: "Розміри та характеристики",
+            type: "Тип структури", width: "Ширина (м)", length: "Висота/Довжина (м)",
+            step: "Відстань між профілями", btnCalc: "Розрахувати",
+            optPartition: "Перегородка (1 шар з 2х сторін)", optWall: "Стіна (Облицювання 1 шар)", optCeil: "Стеля підвісна (1 шар)",
+            i1Title: "Стандартні розміри", i1Desc: "Стандартні розміри листа гіпсокартону становлять 1.2 х 2.5 метра (площа 3 м²). Розрахунок ведеться з урахуванням запасу на підрізку.",
+            i2Title: "Профілі (CD та UD)", i2Desc: "Профіль UD служить направляючою по периметру. Профіль CD використовується як основа. Рекомендуємо крок 400 мм для важких полиць або плитки.",
+            pdfTitle: "Інформація для PDF-кошторису", pdfComp: "Назва фірми / Майстра", pdfPh: "Телефон", pdfEm: "Електронна пошта", btnPdf: "Експорт в PDF / Друк",
+            resTitle: "СМЕТА МАТЕРІАЛІВ",
+            mat: {
+                gkl: ["Листи гіпсокартону (1.2 х 2.5 м)", "З урахуванням 10% відходів", "шт"],
+                ud: ["Направляючий профіль UD-27 (3м)", "Периметр конструкції", "шт"],
+                cd: ["Стійковий профіль CD-60 (3м)", "Основний несучий каркас", "шт"],
+                es: ["Прямі підвіси (60/125)", "Для фіксації профілів до стіни/стелі", "шт"],
+                dow: ["Дюбелі для кріплення (6х40)", "Для профілів UD та підвісів", "шт"],
+                tape: ["Армуюча стрічка (Серпянка)", "Приблизно 1.5 м на м²", "м"],
+                mix: ["Шпаклівка для швів", "Витрата ~0.4 кг/м²", "кг"]
+            }
+        },
+        en: {
+            nav1: "Floor Screed", nav2: "Plaster", nav3: "Drywall",
+            appSub: "Buildcalc Software Suite", params: "Dimensions & Characteristics",
+            type: "Structure Type", width: "Width (m)", length: "Height/Length (m)",
+            step: "Distance between profiles", btnCalc: "Calculate Materials",
+            optPartition: "Partition (1 layer both sides)", optWall: "Wall (1 layer cladding)", optCeil: "Suspended Ceiling",
+            i1Title: "Standard Sizes", i1Desc: "Standard drywall board sizes are 1.2 x 2.5 meters (3 m² area). Calculation includes waste margin.",
+            i2Title: "Profiles (CD & UD)", i2Desc: "UD profile acts as a perimeter guide. CD profile is the main support. We recommend 400mm step for heavy loads.",
+            pdfTitle: "PDF Estimate Info", pdfComp: "Company / Contractor Name", pdfPh: "Phone", pdfEm: "Email", btnPdf: "Export to PDF / Print",
+            resTitle: "MATERIALS ESTIMATE",
+            mat: {
+                gkl: ["Gypsum Boards (1.2 x 2.5 m)", "Including 10% waste margin", "pcs"],
+                ud: ["Guide Profile UD-27 (3m)", "Structure perimeter", "pcs"],
+                cd: ["Stud Profile CD-60 (3m)", "Main supporting frame", "pcs"],
+                es: ["Wall Hangers (60/125)", "For fixing profiles", "pcs"],
+                dow: ["Wall Plugs (6x40)", "For UD profiles and hangers", "pcs"],
+                tape: ["Joint Tape (Fiberglass)", "Approx. 1.5 m per m²", "m"],
+                mix: ["Joint Filler", "Consumption ~0.4 kg/m²", "kg"]
+            }
+        }
+    };
+
+    let currentResults = [];
+
+    function changeLang() {
+        const lang = document.getElementById('lang-select').value;
+        const t = dict[lang];
+
+        document.getElementById('nav-floor').innerText = t.nav1;
+        document.getElementById('nav-plaster').innerText = t.nav2;
+        document.getElementById('nav-drywall').innerText = t.nav3;
+        document.getElementById('app-subtitle').innerText = t.appSub;
+        document.getElementById('t-params').innerText = t.params;
+        document.getElementById('t-type').innerText = t.type;
+        document.getElementById('t-width').innerText = t.width;
+        document.getElementById('t-length').innerText = t.length;
+        document.getElementById('t-step').innerText = t.step;
+        document.getElementById('t-btn-calc').innerText = t.btnCalc;
+        
+        const typeSel = document.getElementById('type');
+        typeSel.options[0].text = t.optPartition;
+        typeSel.options[1].text = t.optWall;
+        typeSel.options[2].text = t.optCeil;
+
+        document.getElementById('t-info1-title').innerHTML = `<i data-lucide="info" size="16"></i> ${t.i1Title}`;
+        document.getElementById('t-info1-desc').innerText = t.i1Desc;
+        document.getElementById('t-info2-title').innerHTML = `<i data-lucide="settings" size="16"></i> ${t.i2Title}`;
+        document.getElementById('t-info2-desc').innerText = t.i2Desc;
+        
+        document.getElementById('t-pdf-title').innerText = t.pdfTitle;
+        document.getElementById('t-pdf-company').innerText = t.pdfComp;
+        document.getElementById('t-pdf-phone').innerText = t.pdfPh;
+        document.getElementById('t-pdf-email').innerText = t.pdfEm;
+        document.getElementById('t-btn-pdf').innerHTML = `<i data-lucide="printer" size="18" style="display: inline-block; vertical-align: middle;"></i> ${t.btnPdf}`;
+        document.getElementById('t-res-title').innerText = t.resTitle;
+
         lucide.createIcons();
+        if(currentResults.length > 0) renderResults(lang);
+    }
 
-        // Мовні словники для локалізації
-        const locales = {
-            uk: {
-                paramsTitle: "Розміри та характеристики",
-                lblLength: "Довжина (м)",
-                lblWidth: "Ширина/Висота (м)",
-                lblType: "Тип структури",
-                lblStep: "Відстань між профілями",
-                btnCalculate: "Розрахувати матеріали",
-                resultsTitle: "Необхідні матеріали",
-                types: {
-                    "wall-1": "Стіна (Облицювання 1 шар)",
-                    "wall-2": "Стіна (Облицювання 2 шари)",
-                    "ceiling": "Стеля підвісна (1 шар)",
-                    "partition-1": "Перегородка (1 шар з обох боків)",
-                    "partition-2": "Перегородка (2 шари з обох боків)"
-                }
-            },
-            en: {
-                paramsTitle: "Dimensions & Characteristics",
-                lblLength: "Length (m)",
-                lblWidth: "Width/Height (m)",
-                lblType: "Structure Type",
-                lblStep: "Distance between profiles",
-                btnCalculate: "Calculate materials",
-                resultsTitle: "Required Materials",
-                types: {
-                    "wall-1": "Wall (1-layer cladding)",
-                    "wall-2": "Wall (2-layer cladding)",
-                    "ceiling": "Suspended ceiling (1 layer)",
-                    "partition-1": "Partition (1 layer both sides)",
-                    "partition-2": "Partition (2 layers both sides)"
-                }
-            }
-        };
+    function calculate() {
+        const w = parseFloat(document.getElementById('width').value);
+        const l = parseFloat(document.getElementById('length').value);
+        const type = document.getElementById('type').value;
+        const step = parseInt(document.getElementById('step').value);
+        
+        if(!w || !l) { alert("Введіть розміри!"); return; }
 
-        function changeLanguage() {
-            const lang = document.getElementById('lang-select').value;
-            const t = locales[lang];
+        const area = w * l;
+        const perim = 2 * (w + l);
+        
+        let gkl = 0, ud = 0, cd = 0, es = 0, dow = 0;
 
-            document.getElementById('txt-params-title').textContent = t.paramsTitle;
-            document.getElementById('lbl-length').textContent = t.lblLength;
-            document.getElementById('lbl-width').textContent = t.lblWidth;
-            document.getElementById('lbl-type').textContent = t.lblType;
-            document.getElementById('lbl-step').textContent = t.lblStep;
-            document.getElementById('btn-calculate').textContent = t.btnCalculate;
-            document.getElementById('txt-results-title').textContent = t.resultsTitle;
-
-            const typeSelect = document.getElementById('type');
-            for (let option of typeSelect.options) {
-                option.text = t.types[option.value];
-            }
+        ud = Math.ceil((perim * 1.05) / 3);
+        
+        if(type === 'partition') {
+            gkl = Math.ceil((area / 3) * 2 * 1.1);
+            cd = Math.ceil(((Math.ceil((w*1000)/step)+1) * l * 1.05) / 3);
+            dow = Math.ceil(perim / 0.5);
+        } else if(type === 'wall') {
+            gkl = Math.ceil((area / 3) * 1.1);
+            cd = Math.ceil(((Math.ceil((w*1000)/step)+1) * l * 1.05) / 3);
+            es = Math.ceil(cd * (l/0.6));
+            dow = Math.ceil(perim / 0.5) + (es * 2);
+        } else {
+            gkl = Math.ceil((area / 3) * 1.1);
+            cd = Math.ceil(((w/0.4)*l + (l/1.2)*w) / 3);
+            es = Math.ceil(area / 0.5);
+            dow = Math.ceil(perim / 0.5) + (es * 2);
         }
-                function calculate() {
-            const length = parseFloat(document.getElementById('length').value);
-            const width = parseFloat(document.getElementById('width').value);
-            const type = document.getElementById('type').value;
-            const step = parseInt(document.getElementById('step').value);
-            const lang = document.getElementById('lang-select').value;
 
-            if (!length || !width || length <= 0 || width <= 0) {
-                alert(lang === 'uk' ? "Будь ласка, введіть коректні розміри." : "Please enter correct dimensions.");
-                return;
-            }
+        const tape = Math.ceil(area * 1.5);
+        const mix = (area * 0.4).toFixed(1);
 
-            const area = length * width;
-            const perimeter = 2 * (length + width);
+        currentResults = [
+            { id: 'gkl', icon: 'layout-grid', val: gkl },
+            { id: 'ud', icon: 'square', val: ud },
+            { id: 'cd', icon: 'columns', val: cd },
+            { id: 'es', icon: 'anchor', val: es },
+            { id: 'dow', icon: 'hammer', val: dow },
+            { id: 'tape', icon: 'scroll', val: tape },
+            { id: 'mix', icon: 'paint-bucket', val: mix }
+        ];
 
-            let gkl = 0;
-            let ud27 = 0;
-            let cd60 = 0;
-            let es = 0;
-            let LN = 0;
-            let TN25 = 0;
-            let TN35 = 0;
-            let dowel = 0;
-            let tape = 0;
-            let fuge = 0;
-            let crab = 0;
+        document.getElementById('pdf-form').style.display = 'block';
+        document.getElementById('results-card').style.display = 'block';
+        document.getElementById('info-cards').style.display = 'none';
+        
+        renderResults(document.getElementById('lang-select').value);
+        document.getElementById('results-card').scrollIntoView({behavior: "smooth"});
+    }
 
-            const gklArea = 3.0;
-
-            if (type.startsWith('wall-')) {
-                const layers = parseInt(type.split('-')[1]);
-                gkl = (area / gklArea) * layers * 1.05;
-                ud27 = perimeter * 1.05 / 3.0;
-                const profilesCount = Math.ceil((length * 1000) / step) + 1;
-                cd60 = (profilesCount * width) * 1.05 / 3.0;
-                const esPerProfile = Math.ceil(width / 0.8) - 1;
-                es = profilesCount * esPerProfile;
-                dowel = (perimeter / 0.3) + (es * 2);
-                LN = es * 4;
-                if (layers === 1) {
-                    TN25 = area * 15;
-                } else {
-                    TN25 = area * 8;
-                    TN35 = area * 15;
-                }
-                tape = area * 1.5;
-                fuge = area * 0.4;
-            } else if (type === 'ceiling') {
-                gkl = (area / gklArea) * 1.05;
-                ud27 = perimeter * 1.05 / 3.0;
-                const mainCD = (length / 0.8) * width;
-                const crossCD = (width / 0.4) * length;
-                cd60 = (mainCD + crossCD) * 1.05 / 3.0;
-                es = (mainCD / 0.7) * 1.05;
-                crab = (length / 0.8) * (width / 0.4);
-                dowel = (perimeter / 0.3) + (es * 2);
-                LN = (es * 4) + (crab * 8);
-                TN25 = area * 17;
-                tape = area * 1.5;
-                fuge = area * 0.4;
-            } else if (type.startsWith('partition-')) {
-                const layers = parseInt(type.split('-')[1]);
-                gkl = (area / gklArea) * layers * 2 * 1.05;
-                ud27 = perimeter * 1.05 / 3.0;
-                const profilesCount = Math.ceil((length * 1000) / step) + 1;
-                cd60 = (profilesCount * width) * 1.05 / 3.0;
-                dowel = perimeter / 0.3;
-                if (layers === 1) {
-                    TN25 = area * 30;
-                } else {
-                    TN25 = area * 15;
-                    TN35 = area * 30;
-                }
-                tape = area * 3.0;
-                fuge = area * 0.8;
-            }
-
-            const labels = {
-                uk: {
-                    area: "Площа конструкції", gkl: "Гіпсокартонні листи (1.2 х 2.5 м)",
-                    ud: "Профіль направляючий UD-27 (3 м)", cd: "Профіль стійковий CD-60 (3 м)",
-                    es: "Підвіс П-подібний (ES 60/125)", dowel: "Дюбель швидкого монтажу (6х40)",
-                    ln: "Саморізи «блошки» (LN 3.5х9.5)", tn25: "Саморізи по металу TN-25 (25 мм)",
-                    tn35: "Саморізи по металу TN-35 (35 мм)", crab: "З'єднувач «Краб»",
-                    tape: "Стрічка армуюча (серпянка)", fuge: "Шпаклівка для швів"
-                },
-                en: {
-                    area: "Structure Area", gkl: "Gypsum Plasterboards (1.2 x 2.5 m)",
-                    ud: "Guide Profile UD-27 (3 m)", cd: "Stud Profile CD-60 (3 m)",
-                    es: "Wall Hanger (ES 60/125)", dowel: "Nail Plug (6x40)",
-                    ln: "Tiny Screws (LN 3.5x9.5)", tn25: "Metal Screws TN-25 (25 mm)",
-                    tn35: "Metal Screws TN-35 (35 mm)", crab: "Crab Connector",
-                    tape: "Armoring Joint Tape", fuge: "Joint Filler"
-                }
-            };
-
-            const l = labels[lang];
-
-            const results = [
-                { name: l.area, val: area.toFixed(2), unit: "м²" },
-                { name: l.gkl, val: Math.ceil(gkl), unit: lang === 'uk' ? "шт" : "pcs" },
-                { name: l.ud, val: Math.ceil(ud27), unit: lang === 'uk' ? "шт" : "pcs" },
-                { name: l.cd, val: Math.ceil(cd60), unit: lang === 'uk' ? "шт" : "pcs" },
-                { name: l.es, val: Math.ceil(es), unit: lang === 'uk' ? "шт" : "pcs" },
-                { name: l.dowel, val: Math.ceil(dowel / 10) * 10, unit: lang === 'uk' ? "шт" : "pcs" },
-                { name: l.ln, val: Math.ceil(LN / 50) * 50, unit: lang === 'uk' ? "шт" : "pcs" }
-            ];
-
-            if (TN25 > 0) results.push({ name: l.tn25, val: Math.ceil(TN25 / 50) * 50, unit: lang === 'uk' ? "шт" : "pcs" });
-            if (TN35 > 0) results.push({ name: l.tn35, val: Math.ceil(TN35 / 50) * 50, unit: lang === 'uk' ? "шт" : "pcs" });
-            if (crab > 0) results.push({ name: l.crab, val: Math.ceil(crab), unit: lang === 'uk' ? "шт" : "pcs" });
-
-            results.push(
-                { name: l.tape, val: Math.ceil(tape), unit: lang === 'uk' ? "м.п." : "m" },
-                { name: l.fuge, val: Math.ceil(fuge), unit: lang === 'uk' ? "кг" : "kg" }
-            );
-
-            const listDiv = document.getElementById('results-list');
-            listDiv.innerHTML = '';
-            results.forEach(item => {
-                listDiv.innerHTML += `
-                    <div class="result-row">
-                        <span class="result-label">${item.name}</span>
-                        <span class="result-value">${item.val} ${item.unit}</span>
+    function renderResults(lang) {
+        const t = dict[lang].mat;
+        let html = '';
+        currentResults.forEach(r => {
+            if(r.val > 0) {
+                html += `
+                <div class="result-item">
+                    <div class="res-icon"><i data-lucide="${r.icon}"></i></div>
+                    <div class="res-info">
+                        <div class="res-name">${t[r.id][0]}</div>
+                        <div class="res-sub">${t[r.id][1]}</div>
                     </div>
-                `;
-            });
+                    <div class="res-val">${r.val} <span>${t[r.id][2]}</span></div>
+                </div>`;
+            }
+        });
+        document.getElementById('results-list').innerHTML = html;
+        lucide.createIcons();
+    }
 
-            document.getElementById('results-card').style.display = 'block';
-            document.getElementById('results-card').scrollIntoView({ behavior: 'smooth' });
-        }
-    </script>
+    function exportPDF() {
+        window.print(); // Викликає стандартне меню друку/збереження в PDF на телефоні
+    }
+</script>
 </body>
 </html>
