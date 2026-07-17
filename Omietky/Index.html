@@ -339,10 +339,23 @@
             .results { border: none; margin-top: 0; padding: 0; }
             .company-contacts { border-bottom: 2px solid var(--dark); padding-bottom: 10px; }
         }
+            /* Стилі навігації */
+        .nav-link { padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 13px; transition: all 0.3s; }
+        .nav-link.active { background: #eab308; color: #000; }
+        .nav-link.inactive { background: #171717; color: #a3a3a3; }
+        .nav-link:hover { background: #333; color: #fff; }
     </style>
 </head>
 <body>
-<div style="text-align: center; margin: 15px auto; max-width: 500px; padding: 10px; background: #f8f9fa; border: 1px solid #ced4da; border-radius: 8px;">
+    <!-- НАВІГАЦІЯ МІЖ КАЛЬКУЛЯТОРАМИ -->
+    <nav class="no-print bg-neutral-950 border-b border-neutral-800 p-3">
+        <div class="max-w-7xl mx-auto flex justify-center gap-2">
+            <a href="https://stas8146-lgtm.github.io/buildcalk/Styazhka/" class="nav-link inactive">Стяжка</a>
+            <a href="#" class="nav-link active">Штукатурка</a>
+            <a href="https://stas8146-lgtm.github.io/buildcalk/Gipsokarton/" class="nav-link inactive">Гіпсокартон</a>
+        </div>
+    </nav>
+    <div style="text-align: center; margin: 15px auto; max-width: 500px; padding: 10px; background: #f8f9fa; border: 1px solid #ced4da; border-radius: 8px;">
     <a href="../Styazhka/" style="text-decoration: none; color: #007bff; font-weight: bold; font-size: 15px; display: block;">
         📐 ← Перейти до Калькулятора Стяжки
     </a>
