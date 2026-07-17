@@ -347,20 +347,7 @@
     </style>
 </head>
 <body>
-    <!-- НАВІГАЦІЯ МІЖ КАЛЬКУЛЯТОРАМИ -->
-    <nav class="no-print bg-neutral-950 border-b border-neutral-800 p-3">
-        <div class="max-w-7xl mx-auto flex justify-center gap-2">
-            <a href="https://stas8146-lgtm.github.io/buildcalk/Styazhka/" class="nav-link inactive">Стяжка</a>
-            <a href="#" class="nav-link active">Штукатурка</a>
-            <a href="https://stas8146-lgtm.github.io/buildcalk/Gipsokarton/" class="nav-link inactive">Гіпсокартон</a>
-        </div>
-    </nav>
-    <div style="text-align: center; margin: 15px auto; max-width: 500px; padding: 10px; background: #f8f9fa; border: 1px solid #ced4da; border-radius: 8px;">
-    <a href="../Styazhka/" style="text-decoration: none; color: #007bff; font-weight: bold; font-size: 15px; display: block;">
-        📐 ← Перейти до Калькулятора Стяжки
-    </a>
-</div>
-<div class="modal-overlay" id="historyModal">
+    <div class="modal-overlay" id="historyModal">
     <div class="modal-content">
         <h3 id="txtHistoryTitle" style="margin-top:0;">History</h3>
         <div id="historyList"></div>
@@ -417,7 +404,12 @@
             <option value="ratioglad" id="optRatio">Gypsum Smooth (Ratioglad) - 0.9 kg/mm/m²</option>
         </select>
     </div>
-
+<div class="topMenu">
+    <button onclick="location.href='../Styazhka/'" id="menuScreed">🏗 Стяжка</button>
+    <button class="active" id="menuPlaster">🧱 Штукатурка</button>
+    <button onclick="location.href='../Gipsokarton/'" id="menuDrywall">📐 Гіпсокартон</button>
+    <button onclick="location.href='../Roof/'" id="menuRoof">🏠 Покрівля</button>
+</div>
     <div class="form-group">
         <label for="area" id="lblArea">Wall Area (m²)</label>
         <input type="number" id="area" value="100" min="1">
