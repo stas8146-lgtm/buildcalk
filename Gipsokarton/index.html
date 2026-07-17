@@ -19,44 +19,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons for premium visual style -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
+        <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0b0b0b;
-        }
-        .gold-glow {
-            box-shadow: 0 0 20px rgba(234, 179, 8, 0.15);
-        }
-        .gold-border-glow:focus {
-            border-color: #eab308;
-            box-shadow: 0 0 10px rgba(234, 179, 8, 0.3);
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0b0b; }
+        .gold-glow { box-shadow: 0 0 20px rgba(234, 179, 8, 0.15); }
+        .gold-border-glow:focus { border-color: #eab308; box-shadow: 0 0 10px rgba(234, 179, 8, 0.3); }
+        
         @media print {
-            body {
-                background-color: #ffffff !important;
-                color: #000000 !important;
-            }
-            .no-print {
-                display: none !important;
-            }
-            .print-only {
-                display: block !important;
-            }
-            .print-card {
-                border: 1px solid #e5e7eb !important;
-                box-shadow: none !important;
-                background: white !important;
-                color: black !important;
-            }
+            body { background-color: #ffffff !important; color: #000000 !important; }
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            .print-card { border: 1px solid #e5e7eb !important; box-shadow: none !important; background: white !important; color: black !important; }
         }
-  /* Стилі навігації */
+
+        /* Стилі навігації */
         .nav-link { padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 13px; transition: all 0.3s; }
         .nav-link.active { background: #eab308; color: #000; }
         .nav-link.inactive { background: #171717; color: #a3a3a3; }
         .nav-link:hover { background: #333; color: #fff; }
-</head>
     </style>
+     
         
 <body class="text-neutral-100 min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
     <!-- НАВІГАЦІЯ МІЖ КАЛЬКУЛЯТОРАМИ -->
