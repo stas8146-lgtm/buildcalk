@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+      <!-- Google Search Console -->
+    <meta name="google-site-verification" content="google81a9add93ea0f90e" />
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPRB8JPVM2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-RPRB8JPVM2');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PRO Drywall Calculator</title>
@@ -40,9 +51,21 @@
             }
         }
     </style>
+        /* Стилі навігації */
+        .nav-link { padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 13px; transition: all 0.3s; }
+        .nav-link.active { background: #eab308; color: #000; }
+        .nav-link.inactive { background: #171717; color: #a3a3a3; }
+        .nav-link:hover { background: #333; color: #fff; }
 </head>
 <body class="text-neutral-100 min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
-
+    <!-- НАВІГАЦІЯ МІЖ КАЛЬКУЛЯТОРАМИ -->
+    <nav class="no-print bg-neutral-950 border-b border-neutral-800 p-3">
+        <div class="max-w-7xl mx-auto flex justify-center gap-2">
+            <a href="https://stas8146-lgtm.github.io/buildcalk/Styazhka/" class="nav-link inactive">Стяжка</a>
+            <a href="https://stas8146-lgtm.github.io/buildcalk/Omietky/" class="nav-link inactive">Штукатурка</a>
+            <a href="#" class="nav-link active">Гіпсокартон</a>
+        </div>
+    </nav>
     <!-- TOP NAVIGATION BAR -->
     <header class="no-print border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md sticky top-0 z-50 px-4 lg:px-8 py-4">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
