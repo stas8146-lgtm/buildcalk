@@ -182,14 +182,23 @@ button#calcBtn { background: var(--accent); color: #000; flex-grow: 2; }
 }
 .buy-btn:hover { background: #1e293b; }
 @media(max-width: 600px) { .grid-inputs { grid-template-columns: 1fr; } }
+        /* Стилі навігації */
+        .nav-link { padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 13px; transition: all 0.3s; text-decoration: none; display: inline-block; }
+        .nav-link.active { background: #eab308; color: #000; }
+        .nav-link.inactive { background: #171717; color: #a3a3a3; }
+        .nav-link:hover { background: #333; color: #fff; }
 </style>
 </head>
 <body>
 
-  <div style="text-align: center; margin: 15px auto; max-width: 500px; padding: 10px; background: #f8f9fa; border: 1px solid #ced4da; border-radius: 8px;">
-    <a href="../Omietky/" style="text-decoration: none; color: #28a745; font-weight: bold; font-size: 15px; display: block;">
-        🧱 Перейти до Калькулятора Штукатурки →
-    </a>
+      <!-- НАВІГАЦІЯ МІЖ КАЛЬКУЛЯТОРАМИ -->
+    <nav class="no-print bg-neutral-950 border-b border-neutral-800 p-3">
+        <div class="max-w-7xl mx-auto flex justify-center gap-2">
+            <a href="#" class="nav-link active">Стяжка</a>
+            <a href="https://stas8146-lgtm.github.io/buildcalk/Omietky/" class="nav-link inactive">Штукатурка</a>
+            <a href="https://stas8146-lgtm.github.io/buildcalk/Gipsokarton/" class="nav-link inactive">Гіпсокартон</a>
+        </div>
+    </nav>
 </div>  <div class="app-container">
     <div class="header">
         <div class="logo">🏗 <span>BUILD</span>calc PRO</div>
