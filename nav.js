@@ -1,4 +1,3 @@
-alert('Скрипт працює!');
 // === 1. GOOGLE ANALYTICS ===
 const gaScript = document.createElement('script');
 gaScript.async = true;
