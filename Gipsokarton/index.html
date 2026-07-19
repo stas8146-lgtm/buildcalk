@@ -138,7 +138,7 @@
                     <!-- Layers of Drywall -->
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-layers">Drywall Layers</label>
-                        <select id="inp-layers" onchange="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-semibold focus:outline-none gold-border-glow transition-all">
+                      <select id="inp-layers">  
                             <option value="1">1 Layer (Standard)</option>
                             <option value="2">2 Layers (Reinforced / Soundproof)</option>
                         </select>
@@ -147,14 +147,16 @@
                     <!-- Profile Pitch Spacing -->
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-spacing">Profile Spacing</label>
-                        <select id="inp-spacing" onchange="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-semibold focus:outline-none gold-border-glow transition-all">
+                        <select id="inp-spacing">
                             <option value="0.6">600 mm (Standard)</option>
                             <option value="0.4">400 mm (Stronger / Heavy load)</option>
                         </select>
                     </div>
                 </div>
             </div>
-
+<button id="btn-calculate-main" onclick="calculate()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-neutral-900 font-extrabold py-3 rounded-xl mt-6 transition-colors uppercase tracking-wider">
+    Calculate
+</button>
             <!-- PRO BRANDING CARD -->
             <div id="branding-card" class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden transition-all duration-300">
                 <div class="absolute -right-16 -top-16 w-32 h-32 bg-yellow-500/5 rounded-full blur-3xl"></div>
