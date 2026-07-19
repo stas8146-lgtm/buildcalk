@@ -1,1 +1,448 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP Paint Mixer Ultimate (Free Edition)</title>
+
+    <!-- Бібліотека для генерації PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        :root {
+            --bg-main: #121212;
+            --bg-card: #1E1E1E;
+            --bg-input: #222222;
+            --accent-yellow: #FFCC00;
+            --text-light: #F5F5F5;
+            --text-muted: #AAAAAA;
+            --border-color: #333333;
+            --danger-red: #FF3333;
+        }
+
+        .light-theme {
+            --bg-main: #EFEFEF;
+            --bg-card: #FFFFFF;
+            --bg-input: #F9F9F9;
+            --text-light: #121212;
+            --text-muted: #666666;
+            --border-color: #CCCCCC;
+            --accent-yellow: #E6B800;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-light); padding: 15px; display: flex; justify-content: center; padding-bottom: 40px; transition: background 0.3s; }
+        .container { width: 100%; max-width: 500px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: background 0.3s; }
+
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px; }
+        .logo { font-weight: 900; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;}
+        .logo span { color: var(--accent-yellow); }
+        .theme-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-light); }
+        
+        .lang-selector button { background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-muted); padding: 4px 8px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .lang-selector button.active { border-color: var(--accent-yellow); color: var(--accent-yellow); }
+
+        .action-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .btn { background: var(--bg-input); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 5px; font-weight: 600; font-size: 0.85rem; color: var(--text-light); transition: 0.2s;}
+        .btn:active { transform: scale(0.95); background: rgba(255, 204, 0, 0.2); }
+        .btn-pdf { grid-column: span 2; background: rgba(255, 204, 0, 0.1); border-color: var(--accent-yellow); color: var(--accent-yellow);}
+        
+        .section-title { font-size: 0.9rem; color: var(--accent-yellow); font-weight: bold; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;}
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        
+        .input-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+        .input-group input, .input-group select { width: 100%; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-light); padding: 8px; border-radius: 6px; font-weight: bold; outline: none; }
+        
+        .result-box { background: rgba(255, 204, 0, 0.1); border: 1px dashed var(--accent-yellow); padding: 12px; border-radius: 8px; margin-bottom: 20px; }
+        .result-row { display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 5px; font-weight: 600;}
+        .result-row.total { font-size: 1.2rem; color: var(--accent-yellow); border-top: 1px solid var(--border-color); padding-top: 5px; margin-top: 5px; }
+
+        .preview-box { width: 100%; height: 120px; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 15px; position: relative; background: #FFF; display: flex; align-items: flex-end; overflow: hidden;}
+        .paint-fill { width: 100%; height: 100%; background-color: #FFFFFF; transition: background-color 0.1s; }
+        .preview-label { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7); color: #FFF; padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; border: 1px solid var(--accent-yellow); font-weight: bold; z-index: 10;}
+
+        .status-bar { background: var(--bg-input); padding: 10px; border-radius: 6px; border-left: 4px solid var(--accent-yellow); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 0.9rem;}
+        .warning-msg { color: var(--danger-red); font-size: 0.8rem; font-weight: bold; display: none; text-align: center; padding: 8px; margin-bottom: 15px; background: rgba(255,51,51,0.1); border-radius: 6px; border: 1px solid var(--danger-red);}
+
+        .pigment-row { background: var(--bg-input); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 10px; }
+        .pigment-row select { margin-bottom: 10px; }
+        .slider-wrapper { display: flex; align-items: center; }
+        input[type="range"] { flex: 1; margin-right: 15px; accent-color: var(--accent-yellow); }
+        .value-badge { min-width: 65px; text-align: right; font-weight: bold; background: var(--bg-main); padding: 4px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.85rem;}
+
+        .history-box { margin-top: 25px; display: none; }
+        .history-item { background: var(--bg-input); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center;}
+        .history-info strong { color: var(--accent-yellow); display: block; margin-bottom: 3px; font-size: 0.95rem;}
+        .del-btn { background: rgba(255,51,51,0.2); border: 1px solid var(--danger-red); color: var(--danger-red); padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold;}
+
+        .footer { margin-top: 30px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 15px; font-size: 0.8rem; color: var(--text-muted); }
+    </style>
+    
+    <!-- Підключення меню кнопок ПРАВИЛЬНО -->
+    <script src="../nav.js"></script>
+
+</head>
+<body>
+<div id="global-nav-container"></div>
+<div class="container" id="app-container">
+    <div class="header" data-html2canvas-ignore="true">
+        <div class="logo">
+            <button class="theme-btn" onclick="toggleTheme()">🌓</button>
+            <span>VIP</span> MIXER
+        </div>
+        <div class="lang-selector">
+            <button id="btn-en" onclick="changeLang('en')">EN</button>
+            <button id="btn-uk" onclick="changeLang('uk')">UK</button>
+            <button id="btn-sk" onclick="changeLang('sk')">SK</button>
+        </div>
+    </div>
+
+    <div class="action-panel" data-html2canvas-ignore="true">
+        <div class="btn" onclick="shareMix()">
+            <span id="txt-share">📤 Share Mix</span>
+        </div>
+        <div class="btn" onclick="saveToHistory()">
+            <span id="txt-save">💾 Save Object</span>
+        </div>
+        <div class="btn btn-pdf" onclick="generatePDF()">
+            <span id="txt-pdf">📄 Generate PDF Estimate</span>
+        </div>
+    </div>
+
+    <div class="section-title" id="sec-object">📐 Object Area & Base</div>
+    <div class="grid-2">
+        <div class="input-group">
+            <label id="lbl-area">Wall Area (m²)</label>
+            <input type="number" id="in-area" value="30" oninput="recalc()">
+        </div>
+        <div class="input-group">
+            <label id="lbl-surface">Surface Type</label>
+            <select id="in-surface" onchange="recalc()">
+                <option value="0.12" id="opt-smooth">Smooth (0.12 L/m²)</option>
+                <option value="0.15" id="opt-wall">Wallpaper (0.15 L/m²)</option>
+                <option value="0.25" id="opt-rough">Rough (0.25 L/m²)</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label id="lbl-doors">Doors / Windows</label>
+            <div style="display: flex; gap:5px;">
+                <input type="number" id="in-doors" value="1" min="0" placeholder="🚪" oninput="recalc()">
+                <input type="number" id="in-windows" value="1" min="0" placeholder="🪟" oninput="recalc()">
+            </div>
+        </div>
+        <div class="input-group">
+            <label id="lbl-layers">Layers</label>
+            <select id="in-layers" onchange="recalc()">
+                <option value="1">1</option>
+                <option value="2" selected>2</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="input-group" style="margin-bottom: 15px;">
+        <label id="lbl-base-type">Paint Base Type</label>
+        <select id="in-base-type" onchange="recalc()">
+            <option value="A" id="opt-base-a">Base A (White - for light colors)</option>
+            <option value="C" id="opt-base-c">Base C (Clear - for dark colors)</option>
+        </select>
+    </div>
+
+    <div class="section-title" id="sec-economy">💶 Economics</div>
+    <div class="grid-2">
+        <div class="input-group">
+            <label id="lbl-price-base">Base Price (€/L)</label>
+            <input type="number" id="in-price-base" value="5.50" step="0.5" oninput="recalc()">
+        </div>
+        <div class="input-group">
+            <label id="lbl-price-pig">Pigment (€/100ml)</label>
+            <input type="number" id="in-price-pig" value="3.00" step="0.5" oninput="recalc()">
+        </div>
+    </div>
+
+    <!-- Об'єднаний блок результату та квадрата для фарби -->
+    <div class="result-box">
+        <div class="result-row">
+            <span id="res-base-need">Base Needed:</span>
+            <span id="out-liters">0.00 L</span>
+        </div>
+        <div class="result-row total">
+            <span id="res-cost">Total Cost:</span>
+            <span id="out-cost">0.00 €</span>
+        </div>
+        <div class="preview-box">
+            <div id="lbl-preview" class="preview-label">Mixed Color</div>
+            <div id="paint-visual" class="paint-fill"></div>
+        </div>
+    </div>
+
+    <div id="warning-banner" class="warning-msg">WARNING: 10% Pigment Limit Reached!</div>
+
+    <div class="status-bar" id="status-panel">
+        <span id="lbl-total-pigment">Total pigment:</span>
+        <span class="value-badge" id="txt-total-percent">0.0%</span>
+    </div>   
+
+    <div class="pigment-row">
+        <select id="color-1" class="dyn-select" onchange="recalc()"></select>
+        <div class="slider-wrapper">
+            <input type="range" id="slider-1" min="0" max="100" value="0" oninput="recalc()">
+            <span class="value-badge" id="val-1">0 ml</span>
+        </div>
+    </div>
+    
+    <div class="pigment-row">
+        <select id="color-2" class="dyn-select" onchange="recalc()"></select>
+        <div class="slider-wrapper">
+            <input type="range" id="slider-2" min="0" max="100" value="0" oninput="recalc()">
+            <span class="value-badge" id="val-2">0 ml</span>
+        </div>
+    </div>
+
+    <div class="pigment-row">
+        <select id="color-3" class="dyn-select" onchange="recalc()"></select>
+        <div class="slider-wrapper">
+            <input type="range" id="slider-3" min="0" max="100" value="0" oninput="recalc()">
+            <span class="value-badge" id="val-3">0 ml</span>
+        </div>
+    </div>
+
+    <div class="history-box" id="history-section" data-html2canvas-ignore="true">
+        <div class="section-title" id="sec-history">📂 Saved Objects</div>
+        <div id="history-list"></div>
+    </div>
+
+    <div class="footer">
+        <div>✉️ info@vip-mixer.sk | 📞 +421 XX XXX XXX</div>
+        <div style="margin-top: 5px;">Created for Professionals</div>
+    </div>
+</div>
+
+<script>
+    function toggleTheme() { document.body.classList.toggle('light-theme'); }
+
+    const pigments = [
+        { id: 'black',  r: 30, g: 30, b: 30,     en: 'Black (Graphite)', uk: 'Чорний (Графіт)', sk: 'Čierna (Grafit)' },
+        { id: 'white',  r: 250, g: 250, b: 250,  en: 'White (Titanium)', uk: 'Білий (Титан)',   sk: 'Biela (Titan)' },
+        { id: 'yellow', r: 255, g: 190, b: 0,    en: 'Yellow (Ochre)',   uk: 'Жовтий (Охра)',   sk: 'Žltá (Oker)' },
+        { id: 'red',    r: 200, g: 30, b: 30,    en: 'Red (Oxide)',      uk: 'Червоний (Оксид)', sk: 'Červená (Oxid)' },
+        { id: 'brown',  r: 100, g: 50, b: 20,    en: 'Brown (Choco)',    uk: 'Коричневий (Шоко)', sk: 'Hnedá (Čoko)' },
+        { id: 'green',  r: 30, g: 130, b: 50,    en: 'Green (Emerald)',  uk: 'Зелений (Смарагд)', sk: 'Zelená (Smaragd)' },
+        { id: 'blue',   r: 20, g: 60, b: 180,    en: 'Blue (Cobalt)',    uk: 'Синій (Кобальт)', sk: 'Modrá (Kobalt)' },
+        { id: 'purple', r: 120, g: 30, b: 150,   en: 'Purple (Violet)',  uk: 'Фіолетовий',       sk: 'Fialová' },
+        { id: 'orange', r: 255, g: 100, b: 0,    en: 'Orange (Amber)',   uk: 'Помаранчевий',     sk: 'Oranžová' }
+    ];
+        
+
+    const dict = {
+        en: { share: "📤 Share Mix", save: "💾 Save Object", pdf: "📄 Generate PDF Estimate", secObj: "📐 Object Area & Base", area: "Wall Area (m²)", surf: "Surface Type", optSm: "Smooth (0.12 L/m²)", optWl: "Wallpaper (0.15 L/m²)", optRg: "Rough (0.25 L/m²)", doors: "Doors / Windows", layers: "Layers", baseType: "Paint Base Type", optBa: "Base A (White)", optBc: "Base C (Clear)", secEco: "💶 Economics", pBase: "Base Price (€/L)", pPig: "Pigment (€/100ml)", rNeed: "Base Needed:", rCost: "Total Cost:", prev: "Mixed Color", warn: "WARNING: 10% Pigment Limit Reached!", tot: "Total pigment:", secHist: "📂 Saved Objects", promptMsg: "Enter object name (e.g. Living Room):", del: "Delete" },
+        uk: { share: "📤 Поділитися", save: "💾 Зберегти", pdf: "📄 PDF-кошторис", secObj: "📐 Площа та База", area: "Площа стін (м²)", surf: "Тип поверхні", optSm: "Гладка (0.12 л/м²)", optWl: "Шпалери (0.15 л/м²)", optRg: "Короїд (0.25 л/м²)", doors: "Двері / Вікна", layers: "Шари", baseType: "Тип бази", optBa: "База А (Біла)", optBc: "База С (Прозора)", secEco: "💶 Економіка", pBase: "Ціна бази (€/Л)", pPig: "Пігмент (€/100мл)", rNeed: "Потрібно бази:", rCost: "Вартість:", prev: "Колір суміші", warn: "УВАГА: Ліміт 10% пігменту!", tot: "Всього пігменту:", secHist: "📂 Збережені об'єкти", promptMsg: "Введіть назву об'єкта (напр. Кухня):", del: "Видалити" },
+        sk: { share: "📤 Zdielať", save: "💾 Uložiť objekt", pdf: "📄 PDF Kalkulácia", secObj: "📐 Plocha a Základ", area: "Plocha stien (m²)", surf: "Typ povrchu", optSm: "Hladký (0.12 l/m²)", optWl: "Tapeta (0.15 l/m²)", optRg: "Drsný (0.25 l/m²)", doors: "Dvere / Okná", layers: "Vrstvy", baseType: "Typ základu", optBa: "Báza A (Biela)", optBc: "Báza C (Priesvitná)", secEco: "💶 Ekonomika", pBase: "Cena bázy (€/L)", pPig: "Pigment (€/100ml)", rNeed: "Potrebný základ:", rCost: "Celková cena:", prev: "Výsledná farba", warn: "POZOR: Limit 10% pigmentu!", tot: "Pigment celkom:", secHist: "📂 Uložené objekty", promptMsg: "Zadajte názov objektu (napr. Obývačka):", del: "Vymazať" }
+  };
+
+    let currentLang = 'en';
+    let baseLiters = 0, baseMl = 0, maxLimitMl = 0;
+
+    function initDropdowns() {
+        const selects = [document.getElementById('color-1'), document.getElementById('color-2'), document.getElementById('color-3')];
+        selects.forEach((sel, i) => {
+            sel.innerHTML = '';
+            pigments.forEach(p => { sel.appendChild(new Option(p[currentLang], p.id)); });
+            sel.selectedIndex = i;
+        });
+    }
+
+    function changeLang(lang) {
+        currentLang = lang;
+        document.querySelectorAll('.lang-selector button').forEach(b => b.classList.remove('active'));
+        document.getElementById(`btn-${lang}`).classList.add('active');
+
+        document.getElementById('txt-share').innerText = dict[lang].share;
+        document.getElementById('txt-save').innerText = dict[lang].save;
+        document.getElementById('txt-pdf').innerText = dict[lang].pdf;
+        document.getElementById('sec-object').innerText = dict[lang].secObj;
+        document.getElementById('lbl-area').innerText = dict[lang].area;
+        document.getElementById('lbl-surface').innerText = dict[lang].surf;
+        document.getElementById('opt-smooth').innerText = dict[lang].optSm;
+        document.getElementById('opt-wall').innerText = dict[lang].optWl;
+        document.getElementById('opt-rough').innerText = dict[lang].optRg;
+        document.getElementById('lbl-doors').innerText = dict[lang].doors;
+        document.getElementById('lbl-layers').innerText = dict[lang].layers;
+        document.getElementById('lbl-base-type').innerText = dict[lang].baseType;
+        document.getElementById('opt-base-a').innerText = dict[lang].optBa;
+        document.getElementById('opt-base-c').innerText = dict[lang].optBc;
+        document.getElementById('sec-economy').innerText = dict[lang].secEco;
+        document.getElementById('lbl-price-base').innerText = dict[lang].pBase;
+        document.getElementById('lbl-price-pig').innerText = dict[lang].pPig;
+        document.getElementById('res-base-need').innerText = dict[lang].rNeed;
+        document.getElementById('res-cost').innerText = dict[lang].rCost;
+        document.getElementById('lbl-preview').innerText = dict[lang].prev;
+        document.getElementById('warning-banner').innerText = dict[lang].warn;
+        document.getElementById('lbl-total-pigment').innerText = dict[lang].tot;
+        document.getElementById('sec-history').innerText = dict[lang].secHist;
+
+        let selected = [
+            document.getElementById('color-1').value || 'black', 
+            document.getElementById('color-2').value || 'white', 
+            document.getElementById('color-3').value || 'yellow'
+        ];
+        
+        initDropdowns();
+        
+        document.getElementById('color-1').value = selected[0];
+        document.getElementById('color-2').value = selected[1];
+        document.getElementById('color-3').value = selected[2];
+        
+        recalc();
+        renderHistory();
+    }
+
+    function recalc() {
+        let area = parseFloat(document.getElementById('in-area').value) || 0;
+        let doors = parseInt(document.getElementById('in-doors').value) || 0;
+        let windows = parseInt(document.getElementById('in-windows').value) || 0;
+        let cleanArea = Math.max(0, area - (doors * 1.5) - (windows * 1.2)); 
+
+        let surf = parseFloat(document.getElementById('in-surface').value) || 0.12;
+        let layers = parseInt(document.getElementById('in-layers').value) || 1;
+
+        baseLiters = Math.max(1, cleanArea * surf * layers);
+        document.getElementById('out-liters').innerText = baseLiters.toFixed(2) + " L";
+
+        baseMl = baseLiters * 1000;
+        maxLimitMl = baseMl * 0.1;
+
+        const sliders = [document.getElementById('slider-1'), document.getElementById('slider-2'), document.getElementById('slider-3')];
+        sliders.forEach(s => s.max = maxLimitMl);
+
+        let v1 = parseInt(sliders[0].value) || 0;
+        let v2 = parseInt(sliders[1].value) || 0;
+        let v3 = parseInt(sliders[2].value) || 0;
+        let currentTotal = v1 + v2 + v3;
+
+        if (currentTotal > maxLimitMl) {
+            let active = document.activeElement;
+            if (active === sliders[0]) v1 = maxLimitMl - v2 - v3;
+            else if (active === sliders[1]) v2 = maxLimitMl - v1 - v3;
+            else if (active === sliders[2]) v3 = maxLimitMl - v1 - v2;
+            
+            v1 = Math.max(0, v1); v2 = Math.max(0, v2); v3 = Math.max(0, v3);
+            sliders[0].value = v1; sliders[1].value = v2; sliders[2].value = v3;
+            currentTotal = v1 + v2 + v3;
+        }
+
+        document.getElementById('val-1').innerText = v1 + " ml";
+        document.getElementById('val-2').innerText = v2 + " ml";
+        document.getElementById('val-3').innerText = v3 + " ml";
+        document.getElementById('txt-total-percent').innerText = `${((currentTotal / baseMl) * 100).toFixed(1)}% / 10%`;
+
+        if (currentTotal >= maxLimitMl) {
+            document.getElementById('warning-banner').style.display = 'block';
+            document.getElementById('status-panel').style.borderLeftColor = "var(--danger-red)";
+        } else {
+            document.getElementById('warning-banner').style.display = 'none';
+            document.getElementById('status-panel').style.borderLeftColor = "var(--accent-yellow)";
+        }
+
+        let cost = (baseLiters * (parseFloat(document.getElementById('in-price-base').value) || 0)) + ((currentTotal / 100) * (parseFloat(document.getElementById('in-price-pig').value) || 0));
+        document.getElementById('out-cost').innerText = cost.toFixed(2) + " €";
+
+        const p1 = pigments.find(p => p.id === document.getElementById('color-1').value);
+        const p2 = pigments.find(p => p.id === document.getElementById('color-2').value);
+        const p3 = pigments.find(p => p.id === document.getElementById('color-3').value);
+        
+        if (p1 && p2 && p3) {
+            let w1 = v1 / maxLimitMl, w2 = v2 / maxLimitMl, w3 = v3 / maxLimitMl;
+            let intensity = (document.getElementById('in-base-type').value === 'C') ? 2.5 : 1; 
+
+            let rOut = 255 - ((255 - p1.r)*w1*intensity) - ((255 - p2.r)*w2*intensity) - ((255 - p3.r)*w3*intensity);
+            let gOut = 255 - ((255 - p1.g)*w1*intensity) - ((255 - p2.g)*w2*intensity) - ((255 - p3.g)*w3*intensity);
+            let bOut = 255 - ((255 - p1.b)*w1*intensity) - ((255 - p2.b)*w2*intensity) - ((255 - p3.b)*w3*intensity);
+
+            document.getElementById('paint-visual').style.backgroundColor = `rgb(${Math.max(0, Math.min(255, Math.round(rOut)))}, ${Math.max(0, Math.min(255, Math.round(gOut)))}, ${Math.max(0, Math.min(255, Math.round(bOut)))})`;
+        }
+    }
+
+    function saveToHistory() {
+        const name = prompt(dict[currentLang].promptMsg, "Object 1");
+        if (!name) return;
+
+        const record = {
+            id: Date.now(), name: name, date: new Date().toLocaleDateString(),
+            base: document.getElementById('out-liters').innerText,
+            cost: document.getElementById('out-cost').innerText,
+            mix: `${document.getElementById('color-1').options[document.getElementById('color-1').selectedIndex].text}: ${document.getElementById('val-1').innerText}`
+        };
+
+        let history = JSON.parse(localStorage.getItem('vipMixerHistory')) || [];
+        history.push(record);
+        localStorage.setItem('vipMixerHistory', JSON.stringify(history));
+        
+        renderHistory();
+    }
+
+    function renderHistory() {
+        const history = JSON.parse(localStorage.getItem('vipMixerHistory')) || [];
+        const box = document.getElementById('history-section');
+        const list = document.getElementById('history-list');
+        list.innerHTML = '';
+
+        if (history.length > 0) {
+            box.style.display = 'block';
+            history.forEach(item => {
+                list.innerHTML += `
+                    <div class="history-item">
+                        <div class="history-info">
+                            <strong>${item.name}</strong>
+                            ${item.date} | ${item.base} | ${item.cost} <br>
+                            <small>${item.mix}</small>
+                        </div>
+                        <button class="del-btn" onclick="deleteHistory(${item.id})">${dict[currentLang].del}</button>
+                    </div>`;
+            });
+        } else {
+            box.style.display = 'none';
+        }
+    }
+
+    function deleteHistory(id) {
+        let history = JSON.parse(localStorage.getItem('vipMixerHistory')) || [];
+        history = history.filter(item => item.id !== id);
+        localStorage.setItem('vipMixerHistory', JSON.stringify(history));
+        renderHistory();
+    }
+
+    function generatePDF() {
+        const element = document.getElementById('app-container');
+        const opt = {
+            margin:       0.2,
+            filename:     'VIP_Paint_Mixer_Estimate.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true, logging: false },
+            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+
+    function shareMix() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'VIP Paint Mixer Estimate',
+                text: `I need ${document.getElementById('out-liters').innerText} of paint. Cost: ${document.getElementById('out-cost').innerText}.`,
+                url: window.location.href
+            }).catch(console.error);
+        } else {
+            alert("Share is supported on mobile devices!");
+        }
+    }
+
+    // Запускаємо всі функції після повного завантаження сторінки
+    window.onload = function() {
+        initDropdowns();
+        changeLang('en');
+        renderHistory();
+    };
+</script>
+
+</body>
+</html>
