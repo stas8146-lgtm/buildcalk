@@ -657,7 +657,8 @@
 
         // Core Drywall Engine calculation
         function calculate() {
-            const width = parseFloat(document.getElementById('inp-width').value) || 0;
+           document.getElementById('btn-calculate-main').innerText = translations[currentLang]["btn-calc"];
+              const width = parseFloat(document.getElementById('inp-width').value) || 0;
             const height = parseFloat(document.getElementById('inp-height').value) || 0;
             const layers = parseInt(document.getElementById('inp-layers').value) || 1;
             const spacing = parseFloat(document.getElementById('inp-spacing').value) || 0.6;
