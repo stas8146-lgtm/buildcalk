@@ -78,15 +78,18 @@
 
         .footer { margin-top: 30px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 15px; font-size: 0.8rem; color: var(--text-muted); }
     </style>
-<script src="../nav.js"></script>
+    <script src="../nav.js"></script>
 </head>
- <body>
+<body>
+
 <div id="global-nav-container"></div>
+
 <div class="container" id="app-container">
     <div class="header" data-html2canvas-ignore="true">
         <div class="logo">
-            <button class="theme-btn" onclick="toggleTheme()">🌓</button>
-            <span>VIP</span> MIXER
+            <button class="theme-btn" onclick="toggleTheme()">
+                <span>VIP</span> MIXER
+            </button>
         </div>
         <div class="lang-selector">
             <button id="btn-en" onclick="changeLang('en')">EN</button>
@@ -97,7 +100,7 @@
 
     <div class="action-panel" data-html2canvas-ignore="true">
         <div class="btn" onclick="shareMix()">
-            <span id="txt-share">📤 Share Mix</span>
+            <span id="txt-share">☗ Share Mix</span>
         </div>
         <div class="btn" onclick="saveToHistory()">
             <span id="txt-save">💾 Save Object</span>
@@ -107,9 +110,8 @@
         </div>
     </div>
 
-    <div class="section-title" id="sec-object">📐 Object Area & Base</div>
+    <div class="section-title" id="sec-object">📐 Object</div>
     <div class="grid-2">
-        <div class="input-group">
             <label id="lbl-area">Wall Area (m²)</label>
             <input type="number" id="in-area" value="30" oninput="recalc()">
         </div>
