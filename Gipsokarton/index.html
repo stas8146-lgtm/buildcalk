@@ -139,18 +139,19 @@
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-layers">Drywall Layers</label>
                       <select id="inp-layers">  
-                            <option value="1">1 Layer (Standard)</option>
+                            <option value="1" selected>1 Layer (Standard)</option>
                             <option value="2">2 Layers (Reinforced / Soundproof)</option>
                         </select>
                     </div>
 
-                    <!-- Profile Pitch Spacing -->
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-spacing">Profile Spacing</label>
-                        <select id="inp-spacing">
-                            <option value="0.6">600 mm (Standard)</option>
-                            <option value="0.4">400 mm (Stronger / Heavy load)</option>
-                        </select>
+                  <!-- Profile Pitch Spacing -->
+<div>
+    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1">Profile Spacing</label>
+    <select id="inp-spacing" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white">
+        <option value="0.6" selected>600 mm (Standard)</option>
+        <option value="0.4">400 mm (Standard)</option>
+    </select>
+</div>  
                     </div>
                 </div>
             </div>
