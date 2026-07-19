@@ -84,7 +84,8 @@
 
 <div id="global-nav-container"></div>
 
-<div class="container" id="app-container">
+<!-- Калькулятор починається тут. Переконайся, що стилі меню не впливають на нього -->
+<div class="container" id="app-container" style="display: block; max-width: 500px; margin: 0 auto; clear: both;">
     <div class="header" data-html2canvas-ignore="true">
         <div class="logo">
             <button class="theme-btn" onclick="toggleTheme()">
@@ -111,8 +112,6 @@
     </div>
 
     <div class="section-title" id="sec-object">📐 Object</div>
-    <div class="grid-2">
-            <label id="lbl-area">Wall Area (m²)</label>
             <input type="number" id="in-area" value="30" oninput="recalc()">
         </div>
         <div class="input-group">
