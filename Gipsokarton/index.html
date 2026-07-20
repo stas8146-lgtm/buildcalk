@@ -692,18 +692,33 @@
             const udTotalLength = perimeterLength * 1.1; 
             const udTotalPieces = Math.ceil(udTotalLength / 3.0); 
 
-                // CD Profiles (Stojky)
-    const cdProfilesCount = Math.ceil(width / spacing);
-    const cdTotalLength = (cdProfilesCount * height);
+                    // Перевіряємо тип каркаса (тільки для стелі)
+    const frameElement = document.getElementById('inp-frame-type');
+    const frameType = frameElement ? frameElement.value : 'single';
+
+    // CD Profiles (Stojky / Каркас)
+    let cdProfilesCount = Math.ceil(width / spacing);
+    let cdTotalLength = cdProfilesCount * height;
+    let hangersTotal = 0;
+
+    // Математика для дворівневої стелі
+    if (structureType === 'ceiling' && frameType === 'double') {
+      // Додаємо поперечні (основні) профілі з кроком 0.9м
+      const crossProfilesCount = Math.ceil(height / 0.9);
+      cdTotalLength += (crossProfilesCount * width); 
+      
+      // Підвіси для дворівневої стелі (ставляться рідше, зазвичай 0.9 х 0.9м)
+      hangersTotal = Math.ceil((width / 0.9) * (height / 0.9));
+    } else {
+      // Математика для однорівневої стелі або стіни
+      const hangersPerCD = Math.ceil(height / 0.6);
+      hangersTotal = (hangersPerCD > 0) ? (cdProfilesCount * hangersPerCD) : 0;
+    }
+
     const cdTotalPieces = Math.ceil(cdTotalLength / 3);
 
-    // Screws (~15 screws per square meter per layer)
+    // Screws (~15 screws per square meter) — з урахуванням шарів
     const screwsCount = Math.ceil(area * 15 * layers);
-
-    // Hangers (Direct mounting hangers every 60cm)
-    const hangersPerCD = Math.ceil(height / 0.6);
-    const hangersTotal = (hangersPerCD > 0) ? (cdProfilesCount * hangersPerCD) : 0;
-
             // Dowels/Wall plugs (UD Profiles spacing every 50cm, plus 2 per hanger)
             const udDowels = Math.ceil(udTotalLength / 0.5);
             const plugsTotal = Math.ceil((udDowels + (hangersTotal * 2)) * 1.1);
