@@ -152,7 +152,15 @@
         <option value="0.4">400 mm (Standard)</option>
     </select>
 </div>  
-                    </div>
+         <!-- Ceiling Frame Type -->
+<div id="ceiling-frame-container" style="display: none;" class="mt-3">
+    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1">Тип каркаса стелі</label>
+    <select id="inp-frame-type" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white">
+        <option value="single" selected>Однорівневий (Стандарт)</option>
+        <option value="double">Дворівневий перехресний (Посилений)</option>
+    </select>
+</div>    
+                </div>
                 </div>
             </div>
 <button id="btn-calculate-main" onclick="calculate()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-neutral-900 font-extrabold py-3 rounded-xl mt-6 transition-colors uppercase tracking-wider">
