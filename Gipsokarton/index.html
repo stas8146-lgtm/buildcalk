@@ -692,17 +692,17 @@
             const udTotalLength = perimeterLength * 1.1; 
             const udTotalPieces = Math.ceil(udTotalLength / 3.0); 
 
-            // CD Profiles (Stojky)
-            const cdProfilesCount = Math.ceil(width / spacing) + 1;
-            const cdTotalLength = (cdProfilesCount * height) * 1.1; 
-            const cdTotalPieces = Math.ceil(cdTotalLength / 3.0); 
+                // CD Profiles (Stojky)
+    const cdProfilesCount = Math.ceil(width / spacing);
+    const cdTotalLength = (cdProfilesCount * height);
+    const cdTotalPieces = Math.ceil(cdTotalLength / 3);
 
-            // Screws (~15 screws per square meter per layer)
-            const screwsCount = Math.ceil(area * 15 * layers * 1.1);
+    // Screws (~15 screws per square meter per layer)
+    const screwsCount = Math.ceil(area * 15 * layers);
 
-            // Hangers (Direct mounting hangers every 60cm on vertical CD profile)
-            const hangersPerCD = Math.ceil(height / 0.6) - 1;
-            const hangersTotal = (hangersPerCD > 0) ? (cdProfilesCount * hangersPerCD) : 0;
+    // Hangers (Direct mounting hangers every 60cm)
+    const hangersPerCD = Math.ceil(height / 0.6);
+    const hangersTotal = (hangersPerCD > 0) ? (cdProfilesCount * hangersPerCD) : 0;
 
             // Dowels/Wall plugs (UD Profiles spacing every 50cm, plus 2 per hanger)
             const udDowels = Math.ceil(udTotalLength / 0.5);
