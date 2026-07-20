@@ -676,7 +676,7 @@
 
             // Sheets (1.2 x 2.5 = 3m2) + 10% waste
            const sheetArea = parseFloat(document.getElementById('inp-sheet-size').value); 
-          const sheetsTotal = Math.ceil((area * (1 + parseFloat(document.getElementById('inp-waste').value) / 100)) / sheetArea);  
+          const sheetsTotal = Math.ceil((area * layers * (1 + (parseFloat(document.getElementById('inp-waste').value) || 10) / 100)) / sheetArea);
           document.getElementById('lbl-mat-sheets').innerText = `Drywall Sheets (1.2 x ${sheetArea/1.2}m)`;
           document.getElementById('lbl-mat-sheets-sub').innerText = `Based on ${sheetArea}m² sheet + ${document.getElementById('inp-waste').value}% waste`;
             // UD Profiles (Obvod)
