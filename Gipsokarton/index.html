@@ -97,19 +97,19 @@
                 </h2>
                 
                 <div class="space-y-4">
-                    <!-- Construction Type Toggle -->
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2" id="t-type">Structure Type</label>
-                        <div class="grid grid-cols-2 gap-2 bg-neutral-900 p-1 rounded-xl border border-neutral-800">
-                            <button id="type-wall" onclick="setStructureType('wall')" class="py-2 text-sm font-bold rounded-lg transition-all bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
-                                <span id="lbl-wall">Wall Partition</span>
-                            </button>
-                            <button id="type-ceiling" onclick="setStructureType('ceiling')" class="py-2 text-sm font-bold rounded-lg transition-all text-neutral-400 hover:text-white">
-                                <span id="lbl-ceiling">Ceiling</span>
-                            </button>
-                        </div>
-                    </div>
-
+                    
+<!-- Construction Type Toggle -->
+<div>
+    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2" id="t-type">Structure Type</label>
+    <div class="grid grid-cols-2 gap-2 bg-neutral-900 p-1 rounded-lg border border-neutral-800">
+        <button id="type-wall" onclick="setStructureType('wall')" class="py-2 text-sm font-bold rounded-lg transition-all bg-neutral-800 text-white shadow-sm">
+            <span id="lbl-wall">Wall Partition</span>
+        </button>
+        <button id="type-ceiling" onclick="setStructureType('ceiling')" class="py-2 text-sm font-bold rounded-lg transition-all text-neutral-400 hover:text-white">
+            <span id="lbl-ceiling">Ceiling</span>
+        </button>
+    </div>
+</div>
                     <!-- Input Width & Height -->
                     <div class="grid grid-cols-2 gap-4">
                         <div>
