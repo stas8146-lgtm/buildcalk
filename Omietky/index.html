@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -31,14 +30,24 @@
 
         <!-- HEADER -->
         <header class="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur px-4 py-4">
-            <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
                 <h1 class="text-xl font-extrabold text-white flex items-center gap-2">
                     <span class="bg-yellow-500 text-black p-1.5 rounded-lg">🧱</span> PLASTER PRO <span class="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded">v2.0</span>
                 </h1>
-                <div class="flex gap-1.5">
-                    <button onclick="setLang('uk')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">UKR</button>
-                    <button onclick="setLang('en')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">ENG</button>
-                    <button onclick="setLang('sk')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">SK</button>
+                
+                <div class="flex items-center gap-3">
+                    <!-- MODE SWITCHER -->
+                    <div class="bg-neutral-900 p-1 rounded-xl border border-neutral-800 flex gap-1">
+                        <button id="btnStd" onclick="setMode('standard')" class="px-3 py-1 text-xs font-bold rounded-lg transition bg-yellow-500 text-black">Standard</button>
+                        <button id="btnPro" onclick="setMode('pro')" class="px-3 py-1 text-xs font-bold rounded-lg transition text-neutral-400 hover:text-white flex items-center gap-1">PRO 🔒</button>
+                    </div>
+
+                    <!-- LANG SWITCHER -->
+                    <div class="flex gap-1">
+                        <button onclick="setLang('uk')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">UKR</button>
+                        <button onclick="setLang('en')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">ENG</button>
+                        <button onclick="setLang('sk')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">SK</button>
+                    </div>
                 </div>
             </div>
         </header>
@@ -46,7 +55,7 @@
         <!-- MAIN CONTAINER -->
         <main class="max-w-4xl mx-auto px-4 py-8 w-full grid grid-cols-1 md:grid-cols-2 gap-6">
             
-            <!-- INPUTС COLUMN -->
+            <!-- INPUTS COLUMN -->
             <div class="space-y-6 bg-neutral-900/50 border border-neutral-800 p-6 rounded-2xl">
                 <h2 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
                     <i data-lucide="sliders" class="w-5 h-5"></i> <span id="txt-params">Параметри поверхні</span>
@@ -74,43 +83,46 @@
                     <input type="number" id="wallThick" value="15" step="1" min="1" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow">
                 </div>
 
-                <hr class="border-neutral-800 my-4">
+                <!-- ECONOMICS & PRICING (PRO ONLY) -->
+                <div id="proEconomics" class="space-y-6 hidden pt-4 border-t border-neutral-800">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
+                            <i data-lucide="wallet" class="w-5 h-5"></i> <span id="txt-econ">Економіка, ціни та логістика</span>
+                        </h2>
+                        <span class="text-[10px] bg-yellow-500/20 text-yellow-400 font-bold px-2 py-0.5 rounded uppercase">PRO Feature</span>
+                    </div>
 
-                <!-- ECONOMICS & PRICING -->
-                <h2 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
-                    <i data-lucide="wallet" class="w-5 h-5"></i> <span id="txt-econ">Економіка, ціни та логістика</span>
-                </h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-bag-price">Ціна мішка (€)</label>
+                            <input type="number" id="bagPrice" value="6.50" step="0.1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-primer-price">Ціна ґрунтовки 5л (€)</label>
+                            <input type="number" id="primerPrice" value="12.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                        </div>
+                    </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-bag-price">Ціна мішка (€)</label>
-                        <input type="number" id="bagPrice" value="6.50" step="0.1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-labor-rate">Робота (€/м²)</label>
+                            <input type="number" id="laborRate" value="8.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-profit-rate">Прибуток (€/м²)</label>
+                            <input type="number" id="profitRate" value="5.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-primer-price">Ціна ґрунтовки 5л (€)</label>
-                        <input type="number" id="primerPrice" value="12.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
-                    </div>
-                </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-labor-rate">Робота (€/м²)</label>
-                        <input type="number" id="laborRate" value="8.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-profit-rate">Прибуток (€/м²)</label>
-                        <input type="number" id="profitRate" value="5.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-logistics">Логістика (€)</label>
-                        <input type="number" id="logisticsCost" value="50" step="5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-other">Інші витрати (€)</label>
-                        <input type="number" id="otherCost" value="30" step="5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-logistics">Логістика (€)</label>
+                            <input type="number" id="logisticsCost" value="50" step="5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-other">Інші витрати (€)</label>
+                            <input type="number" id="otherCost" value="30" step="5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -131,11 +143,14 @@
                     </div>
                 </div>
 
-                <!-- Financial Summary -->
-                <div class="bg-neutral-950 border border-yellow-500/30 p-6 rounded-2xl space-y-4 shadow-xl">
-                    <h3 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
-                        <i data-lucide="receipt" class="w-5 h-5"></i> <span id="txt-financial-summary">Фінансовий підсумок</span>
-                    </h3>
+                <!-- Financial Summary (PRO ONLY) -->
+                <div id="proFinancialSummary" class="bg-neutral-950 border border-yellow-500/30 p-6 rounded-2xl space-y-4 shadow-xl hidden">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
+                            <i data-lucide="receipt" class="w-5 h-5"></i> <span id="txt-financial-summary">Фінансовий підсумок</span>
+                        </h3>
+                        <span class="text-[10px] bg-yellow-500/20 text-yellow-400 font-bold px-2 py-0.5 rounded uppercase">PRO Feature</span>
+                    </div>
 
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between text-neutral-300">
@@ -163,6 +178,12 @@
                         <span class="text-3xl font-black text-yellow-400" id="grandTotal">0.00 €</span>
                     </div>
                 </div>
+
+                <!-- Standard Mode Prompt for Pro -->
+                <div id="standardPrompt" class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl text-center space-y-3">
+                    <p class="text-sm text-neutral-400" id="txt-pro-promo">Бажаєте розрахувати повну вартість робіт, прибуток, логістику та кошторис?</p>
+                    <button onclick="setMode('pro')" class="px-4 py-2 bg-yellow-500 text-black text-xs font-extrabold rounded-xl hover:bg-yellow-400 transition">Увімкнути PRO Режим 🚀</button>
+                </div>
             </div>
         </main>
     </div>
@@ -175,6 +196,7 @@
     <!-- LOGIC SCRIPT -->
     <script>
         let currentLang = 'uk';
+        let currentMode = 'standard';
 
         const translations = {
             uk: {
@@ -198,6 +220,7 @@
                 resProfit: "Прибуток підрядника:",
                 resLogistics: "Логістика та інші витрати:",
                 grandTotal: "Загальна вартість:",
+                proPromo: "Бажаєте розрахувати повну вартість робіт, прибуток, логістику та кошторис?",
                 unit: " шт"
             },
             en: {
@@ -221,6 +244,7 @@
                 resProfit: "Contractor Profit:",
                 resLogistics: "Logistics & Other Expenses:",
                 grandTotal: "Grand Total:",
+                proPromo: "Want to calculate total labor, contractor profit, logistics and full estimation?",
                 unit: " pcs"
             },
             sk: {
@@ -244,6 +268,7 @@
                 resProfit: "Zisk dodávateľa:",
                 resLogistics: "Logistika a iné náklady:",
                 grandTotal: "Celková cena:",
+                proPromo: "Chcete vypočítať celkovú cenu práce, zisk, logistiku a kompletný rozpočet?",
                 unit: " ks"
             }
         };
@@ -271,6 +296,31 @@
             document.getElementById('txt-res-profit').innerText = t.resProfit;
             document.getElementById('txt-res-logistics').innerText = t.resLogistics;
             document.getElementById('txt-grand-total').innerText = t.grandTotal;
+            document.getElementById('txt-pro-promo').innerText = t.proPromo;
+            calculate();
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            const btnStd = document.getElementById('btnStd');
+            const btnPro = document.getElementById('btnPro');
+            const proEconomics = document.getElementById('proEconomics');
+            const proFinancialSummary = document.getElementById('proFinancialSummary');
+            const standardPrompt = document.getElementById('standardPrompt');
+
+            if (mode === 'pro') {
+                btnPro.className = "px-3 py-1 text-xs font-bold rounded-lg transition bg-yellow-500 text-black flex items-center gap-1";
+                btnStd.className = "px-3 py-1 text-xs font-bold rounded-lg transition text-neutral-400 hover:text-white";
+                proEconomics.classList.remove('hidden');
+                proFinancialSummary.classList.remove('hidden');
+                standardPrompt.classList.add('hidden');
+            } else {
+                btnStd.className = "px-3 py-1 text-xs font-bold rounded-lg transition bg-yellow-500 text-black";
+                btnPro.className = "px-3 py-1 text-xs font-bold rounded-lg transition text-neutral-400 hover:text-white flex items-center gap-1";
+                proEconomics.classList.add('hidden');
+                proFinancialSummary.classList.add('hidden');
+                standardPrompt.classList.remove('hidden');
+            }
             calculate();
         }
 
@@ -280,34 +330,36 @@
             const area = parseFloat(document.getElementById('wallArea').value) || 0;
             const thick = parseFloat(document.getElementById('wallThick').value) || 0;
 
-            const bagPrice = parseFloat(document.getElementById('bagPrice').value) || 0;
-            const primerPrice = parseFloat(document.getElementById('primerPrice').value) || 0;
-            const laborRate = parseFloat(document.getElementById('laborRate').value) || 0;
-            const profitRate = parseFloat(document.getElementById('profitRate').value) || 0;
-            const logisticsCost = parseFloat(document.getElementById('logisticsCost').value) || 0;
-            const otherCost = parseFloat(document.getElementById('otherCost').value) || 0;
-
             const totalKg = area * thick * consumptionRate;
             const bagsNeeded = Math.ceil(totalKg / 25);
 
             const totalPrimerLiters = area * 0.15;
             const primerCanisters = Math.ceil(totalPrimerLiters / 5);
 
-            const materialsCost = (bagsNeeded * bagPrice) + (primerCanisters * primerPrice);
-            const laborCostTotal = area * laborRate;
-            const profitTotal = area * profitRate;
-            const logisticsAndOther = logisticsCost + otherCost;
-
-            const grandTotal = materialsCost + laborCostTotal + profitTotal + logisticsAndOther;
-
             document.getElementById('resBags').innerText = bagsNeeded + t.unit;
             document.getElementById('resPrimer').innerText = primerCanisters + t.unit;
 
-            document.getElementById('costMaterials').innerText = materialsCost.toFixed(2) + ' €';
-            document.getElementById('costLabor').innerText = laborCostTotal.toFixed(2) + ' €';
-            document.getElementById('costProfit').innerText = profitTotal.toFixed(2) + ' €';
-            document.getElementById('costLogistics').innerText = logisticsAndOther.toFixed(2) + ' €';
-            document.getElementById('grandTotal').innerText = grandTotal.toFixed(2) + ' €';
+            if (currentMode === 'pro') {
+                const bagPrice = parseFloat(document.getElementById('bagPrice').value) || 0;
+                const primerPrice = parseFloat(document.getElementById('primerPrice').value) || 0;
+                const laborRate = parseFloat(document.getElementById('laborRate').value) || 0;
+                const profitRate = parseFloat(document.getElementById('profitRate').value) || 0;
+                const logisticsCost = parseFloat(document.getElementById('logisticsCost').value) || 0;
+                const otherCost = parseFloat(document.getElementById('otherCost').value) || 0;
+
+                const materialsCost = (bagsNeeded * bagPrice) + (primerCanisters * primerPrice);
+                const laborCostTotal = area * laborRate;
+                const profitTotal = area * profitRate;
+                const logisticsAndOther = logisticsCost + otherCost;
+
+                const grandTotal = materialsCost + laborCostTotal + profitTotal + logisticsAndOther;
+
+                document.getElementById('costMaterials').innerText = materialsCost.toFixed(2) + ' €';
+                document.getElementById('costLabor').innerText = laborCostTotal.toFixed(2) + ' €';
+                document.getElementById('costProfit').innerText = profitTotal.toFixed(2) + ' €';
+                document.getElementById('costLogistics').innerText = logisticsAndOther.toFixed(2) + ' €';
+                document.getElementById('grandTotal').innerText = grandTotal.toFixed(2) + ' €';
+            }
         }
 
         window.onload = () => {
