@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -10,146 +11,161 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0a0a0a; color: #f5f5f5; }
         .gold-border-glow:focus { border-color: #eab308; box-shadow: 0 0 15px rgba(234, 179, 8, 0.2); }
+        .calculator-nav::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
-    <!-- HEADER -->
-    <header class="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur sticky top-0 z-50 px-4 py-4">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-extrabold text-white flex items-center gap-2">
-                <span class="bg-yellow-500 text-black p-1.5 rounded-lg">🧱</span> PLASTER PRO <span class="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded">v2.0</span>
-            </h1>
-            <div class="flex gap-1.5">
-                <button onclick="setLang('uk')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">UKR</button>
-                <button onclick="setLang('en')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">ENG</button>
-                <button onclick="setLang('sk')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">SK</button>
-            </div>
-        </div>
-    </header>
-
-    <!-- MAIN CONTAINER -->
-    <main class="max-w-4xl mx-auto px-4 py-8 w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        <!-- INPUTS COLUMN -->
-        <div class="space-y-6 bg-neutral-900/50 border border-neutral-800 p-6 rounded-2xl">
-            <h2 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
-                <i data-lucide="sliders" class="w-5 h-5"></i> <span id="txt-params">Параметри поверхні</span>
-            </h2>
-
-            <!-- Plaster Type -->
-            <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-type">Тип штукатурки</label>
-                <select id="plasterType" onchange="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-medium focus:outline-none gold-border-glow">
-                    <option value="1.5">Цементно-вапняна (1.5 кг/мм/м²)</option>
-                    <option value="1.2">Гіпсова (1.2 кг/мм/м²)</option>
-                    <option value="1.6">Фасадна / Декоративна (1.6 кг/мм/м²)</option>
-                </select>
-            </div>
-
-            <!-- Wall Area -->
-            <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-area">Площа стін (м²)</label>
-                <input type="number" id="wallArea" value="100" step="1" min="1" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow">
-            </div>
-
-            <!-- Average Thickness -->
-            <div>
-                <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-thick">Середня товщина (мм)</label>
-                <input type="number" id="wallThick" value="15" step="1" min="1" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow">
-            </div>
-
-            <hr class="border-neutral-800 my-4">
-
-            <!-- ECONOMICS & PRICING -->
-            <h2 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
-                <i data-lucide="wallet" class="w-5 h-5"></i> <span id="txt-econ">Економіка, ціни та логістика</span>
-            </h2>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-bag-price">Ціна мішка (€)</label>
-                    <input type="number" id="bagPrice" value="6.50" step="0.1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-primer-price">Ціна ґрунтовки 5л (€)</label>
-                    <input type="number" id="primerPrice" value="12.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-labor-rate">Робота (€/м²)</label>
-                    <input type="number" id="laborRate" value="8.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-profit-rate">Прибуток (€/м²)</label>
-                    <input type="number" id="profitRate" value="5.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-logistics">Логістика (€)</label>
-                    <input type="number" id="logisticsCost" value="50" step="5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-other">Інші витрати (€)</label>
-                    <input type="number" id="otherCost" value="30" step="5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
-                </div>
+    <div>
+        <!-- CALCULATORS SWITCHER BAR -->
+        <div class="bg-neutral-950 border-b border-neutral-800 px-4 py-3">
+            <div class="max-w-4xl mx-auto flex gap-2 overflow-x-auto calculator-nav whitespace-nowrap">
+                <a href="../mixer/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🎨 Mixer</a>
+                <a href="../gipsokarton/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🧱 Gipsokarton</a>
+                <a href="../omietky/" class="px-3 py-1.5 bg-yellow-500/10 border border-yellow-500 text-xs font-bold rounded-xl text-yellow-400 flex items-center gap-1.5">🏗️ Omietky</a>
+                <a href="../roof/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🏠 Roof</a>
+                <a href="../styazhka/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🧹 Styazhka</a>
+                <a href="../prowall/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🟩 ProWall & Floor</a>
             </div>
         </div>
 
-        <!-- RESULTS & FINANCIAL SUMMARY COLUMN -->
-        <div class="space-y-6">
-            <!-- Materials Required -->
-            <div class="bg-neutral-900/50 border border-neutral-800 p-6 rounded-2xl space-y-4">
-                <h3 class="text-md font-bold text-white uppercase tracking-wider" id="txt-materials-needed">Кількість матеріалів</h3>
-                
-                <div class="flex justify-between items-center border-b border-neutral-800 pb-3">
-                    <span class="text-neutral-400" id="txt-bags-count">Мішки штукатурки (25 кг):</span>
-                    <span class="text-xl font-bold text-white" id="resBags">0 шт</span>
+        <!-- HEADER -->
+        <header class="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur px-4 py-4">
+            <div class="max-w-4xl mx-auto flex justify-between items-center">
+                <h1 class="text-xl font-extrabold text-white flex items-center gap-2">
+                    <span class="bg-yellow-500 text-black p-1.5 rounded-lg">🧱</span> PLASTER PRO <span class="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded">v2.0</span>
+                </h1>
+                <div class="flex gap-1.5">
+                    <button onclick="setLang('uk')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">UKR</button>
+                    <button onclick="setLang('en')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">ENG</button>
+                    <button onclick="setLang('sk')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">SK</button>
                 </div>
-                <div class="flex justify-between items-center border-b border-neutral-800 pb-3">
-                    <span class="text-neutral-400" id="txt-primer-count">Ґрунтовка (каністри 5л):</span>
-                    <span class="text-xl font-bold text-white" id="resPrimer">0 шт</span>
+            </div>
+        </header>
+
+        <!-- MAIN CONTAINER -->
+        <main class="max-w-4xl mx-auto px-4 py-8 w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- INPUTС COLUMN -->
+            <div class="space-y-6 bg-neutral-900/50 border border-neutral-800 p-6 rounded-2xl">
+                <h2 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
+                    <i data-lucide="sliders" class="w-5 h-5"></i> <span id="txt-params">Параметри поверхні</span>
+                </h2>
+
+                <!-- Plaster Type -->
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-type">Тип штукатурки</label>
+                    <select id="plasterType" onchange="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-medium focus:outline-none gold-border-glow">
+                        <option value="1.5">Цементно-вапняна (1.5 кг/мм/м²)</option>
+                        <option value="1.2">Гіпсова (1.2 кг/мм/м²)</option>
+                        <option value="1.6">Фасадна / Декоративна (1.6 кг/мм/м²)</option>
+                    </select>
+                </div>
+
+                <!-- Wall Area -->
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-area">Площа стін (м²)</label>
+                    <input type="number" id="wallArea" value="100" step="1" min="1" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow">
+                </div>
+
+                <!-- Average Thickness -->
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-thick">Середня товщина (мм)</label>
+                    <input type="number" id="wallThick" value="15" step="1" min="1" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow">
+                </div>
+
+                <hr class="border-neutral-800 my-4">
+
+                <!-- ECONOMICS & PRICING -->
+                <h2 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
+                    <i data-lucide="wallet" class="w-5 h-5"></i> <span id="txt-econ">Економіка, ціни та логістика</span>
+                </h2>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-bag-price">Ціна мішка (€)</label>
+                        <input type="number" id="bagPrice" value="6.50" step="0.1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-primer-price">Ціна ґрунтовки 5л (€)</label>
+                        <input type="number" id="primerPrice" value="12.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-labor-rate">Робота (€/м²)</label>
+                        <input type="number" id="laborRate" value="8.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-profit-rate">Прибуток (€/м²)</label>
+                        <input type="number" id="profitRate" value="5.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-logistics">Логістика (€)</label>
+                        <input type="number" id="logisticsCost" value="50" step="5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-other">Інші витрати (€)</label>
+                        <input type="number" id="otherCost" value="30" step="5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                    </div>
                 </div>
             </div>
 
-            <!-- Financial Summary -->
-            <div class="bg-neutral-950 border border-yellow-500/30 p-6 rounded-2xl space-y-4 shadow-xl">
-                <h3 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
-                    <i data-lucide="receipt" class="w-5 h-5"></i> <span id="txt-financial-summary">Фінансовий підсумок</span>
-                </h3>
-
-                <div class="space-y-2 text-sm">
-                    <div class="flex justify-between text-neutral-300">
-                        <span id="txt-res-materials">Матеріали:</span>
-                        <span class="font-bold text-white" id="costMaterials">0.00 €</span>
+            <!-- RESULTS & FINANCIAL SUMMARY COLUMN -->
+            <div class="space-y-6">
+                <!-- Materials Required -->
+                <div class="bg-neutral-900/50 border border-neutral-800 p-6 rounded-2xl space-y-4">
+                    <h3 class="text-md font-bold text-white uppercase tracking-wider" id="txt-materials-needed">Кількість матеріалів</h3>
+                    
+                    <div class="flex justify-between items-center border-b border-neutral-800 pb-3">
+                        <span class="text-neutral-400" id="txt-bags-count">Мішки штукатурки (25 кг):</span>
+                        <span class="text-xl font-bold text-white" id="resBags">0 шт</span>
                     </div>
-                    <div class="flex justify-between text-neutral-300">
-                        <span id="txt-res-labor">Вартість робіт:</span>
-                        <span class="font-bold text-white" id="costLabor">0.00 €</span>
-                    </div>
-                    <div class="flex justify-between text-neutral-300">
-                        <span id="txt-res-profit">Прибуток підрядника:</span>
-                        <span class="font-bold text-white" id="costProfit">0.00 €</span>
-                    </div>
-                    <div class="flex justify-between text-neutral-300">
-                        <span id="txt-res-logistics">Логістика та інші витрати:</span>
-                        <span class="font-bold text-white" id="costLogistics">0.00 €</span>
+                    <div class="flex justify-between items-center border-b border-neutral-800 pb-3">
+                        <span class="text-neutral-400" id="txt-primer-count">Ґрунтовка (каністри 5л):</span>
+                        <span class="text-xl font-bold text-white" id="resPrimer">0 шт</span>
                     </div>
                 </div>
 
-                <hr class="border-neutral-800">
+                <!-- Financial Summary -->
+                <div class="bg-neutral-950 border border-yellow-500/30 p-6 rounded-2xl space-y-4 shadow-xl">
+                    <h3 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
+                        <i data-lucide="receipt" class="w-5 h-5"></i> <span id="txt-financial-summary">Фінансовий підсумок</span>
+                    </h3>
 
-                <div class="flex justify-between items-center pt-2">
-                    <span class="text-lg font-bold text-white" id="txt-grand-total">Загальна вартість:</span>
-                    <span class="text-3xl font-black text-yellow-400" id="grandTotal">0.00 €</span>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between text-neutral-300">
+                            <span id="txt-res-materials">Матеріали:</span>
+                            <span class="font-bold text-white" id="costMaterials">0.00 €</span>
+                        </div>
+                        <div class="flex justify-between text-neutral-300">
+                            <span id="txt-res-labor">Вартість робіт:</span>
+                            <span class="font-bold text-white" id="costLabor">0.00 €</span>
+                        </div>
+                        <div class="flex justify-between text-neutral-300">
+                            <span id="txt-res-profit">Прибуток підрядника:</span>
+                            <span class="font-bold text-white" id="costProfit">0.00 €</span>
+                        </div>
+                        <div class="flex justify-between text-neutral-300">
+                            <span id="txt-res-logistics">Логістика та інші витрати:</span>
+                            <span class="font-bold text-white" id="costLogistics">0.00 €</span>
+                        </div>
+                    </div>
+
+                    <hr class="border-neutral-800">
+
+                    <div class="flex justify-between items-center pt-2">
+                        <span class="text-lg font-bold text-white" id="txt-grand-total">Загальна вартість:</span>
+                        <span class="text-3xl font-black text-yellow-400" id="grandTotal">0.00 €</span>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <!-- FOOTER -->
     <footer class="border-t border-neutral-800 bg-neutral-950 py-4 text-center text-xs text-neutral-500">
