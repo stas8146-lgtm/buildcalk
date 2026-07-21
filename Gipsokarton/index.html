@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +37,7 @@
             .print-card { border: 1px solid #e5e7eb !important; box-shadow: none !important; background: white !important; color: black !important; }
         }
 
-        /* Стилі навігації */
+        /* Navigation Styles */
         .nav-link { padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 13px; transition: all 0.3s; }
         .nav-link.active { background: #eab308; color: #000; }
         .nav-link.inactive { background: #171717; color: #a3a3a3; }
@@ -159,7 +160,7 @@
                         </select>
                     </div>  
                     
-                    <!-- Ceiling Frame Type (Hidden by default for Walls) -->
+                    <!-- Ceiling Frame Type -->
                     <div id="ceiling-frame-container" class="mt-4 mb-4" style="display: none;">
                         <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1">Ceiling Frame Type</label>
                         <select id="inp-frame-type" onchange="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white">
@@ -167,35 +168,72 @@
                             <option value="double">Double-level Cross Grid (Reinforced)</option>
                         </select>
                     </div>
-                    
-                </div> <!-- End of space-y-4 -->
-                
-                <!-- THE MISSING CALCULATE BUTTON FIXED -->
+                </div>
+
                 <button id="btn-calculate-main" onclick="calculate()" class="w-full mt-6 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold uppercase rounded-xl transition-all shadow-lg">
                     Calculate
                 </button>
             </div>
 
-            <!-- FINANCIALS / COSTS CARD -->
+            <!-- ECONOMICS & MATERIAL PRICES CARD -->
             <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden transition-all duration-300">
-                <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
-                    <i data-lucide="wallet" class="w-5 h-5 text-yellow-500"></i>
-                    <span id="t-costs">Project Costs</span>
-                </h2>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="flex items-center justify-between mb-4 border-b border-neutral-900 pb-3">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="wallet" class="w-5 h-5 text-yellow-500"></i>
+                        <span id="t-economics">Economics & Pricing</span>
+                    </h2>
+                    <span class="text-[10px] bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded font-extrabold uppercase">PRO FEATURE</span>
+                </div>
+
+                <!-- Material Unit Prices Input Grid -->
+                <div class="grid grid-cols-2 gap-3 mb-4">
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-labor-rate">Labor Rate (per m²)</label>
-                        <div class="relative">
-                            <input type="number" id="inp-labor-rate" value="15" step="0.5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-4 pr-8 py-2.5 text-white font-bold focus:outline-none focus:ring-1 focus:ring-yellow-500">
-                            <span class="absolute right-3 top-2.5 text-neutral-500 font-bold currency-symbol">$</span>
-                        </div>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-sheet">Drywall Sheet (€/pc)</label>
+                        <input type="number" id="inp-price-sheet" value="10.00" step="0.10" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-other-expenses">Other Expenses (Fixed)</label>
-                        <div class="relative">
-                            <input type="number" id="inp-other-expenses" value="50" step="5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-4 pr-8 py-2.5 text-white font-bold focus:outline-none focus:ring-1 focus:ring-yellow-500">
-                            <span class="absolute right-3 top-2.5 text-neutral-500 font-bold currency-symbol">$</span>
-                        </div>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-cd">CD Profile (€/pc)</label>
+                        <input type="number" id="inp-price-cd" value="3.50" step="0.10" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-ud">UD Profile (€/pc)</label>
+                        <input type="number" id="inp-price-ud" value="2.50" step="0.10" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-screws">Screws (€/pc)</label>
+                        <input type="number" id="inp-price-screws" value="0.03" step="0.01" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-plugs">Wall Plugs (€/pc)</label>
+                        <input type="number" id="inp-price-plugs" value="0.05" step="0.01" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-hangers">Hangers (€/pc)</label>
+                        <input type="number" id="inp-price-hangers" value="0.30" step="0.05" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-tape">Joint Tape (€/m)</label>
+                        <input type="number" id="inp-price-tape" value="0.15" step="0.01" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-putty">Joint Putty (€/kg)</label>
+                        <input type="number" id="inp-price-putty" value="1.20" step="0.10" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                </div>
+
+                <!-- Labor, Profit, Logistics -->
+                <div class="grid grid-cols-3 gap-2 border-t border-neutral-900 pt-3">
+                    <div>
+                        <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-labor-rate">Labor (€/m²)</label>
+                        <input type="number" id="inp-labor-rate" value="12" step="0.5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-2 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-profit-rate">Profit (€/m²)</label>
+                        <input type="number" id="inp-profit-rate" value="5" step="0.5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-2 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-other-expenses">Logistics (€)</label>
+                        <input type="number" id="inp-other-expenses" value="50" step="5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-2 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                 </div>
             </div>
@@ -405,22 +443,36 @@
                     </div>
                 </div>
 
-                <!-- Financial Summary -->
+                <!-- Financial Summary Card (Matched to Screenshot Style) -->
                 <div class="mt-6 pt-4 border-t border-neutral-800">
-                    <h3 class="text-sm font-bold text-yellow-500 mb-3 uppercase tracking-widest" id="t-financial-summary">Financial Summary</h3>
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-sm font-bold text-yellow-500 uppercase tracking-widest flex items-center gap-2" id="t-financial-summary">
+                            <i data-lucide="receipt" class="w-4 h-4"></i> Financial Summary
+                        </h3>
+                        <span class="text-[10px] bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded font-extrabold uppercase">PRO FEATURE</span>
+                    </div>
                     
                     <div class="space-y-2">
-                        <div class="flex justify-between items-center bg-neutral-900/30 px-4 py-2 rounded-lg">
-                            <span class="text-sm text-neutral-400" id="lbl-total-labor">Total Labor Cost</span>
-                            <span class="font-bold text-white"><span id="val-total-labor">0.00</span> <span class="currency-symbol">$</span></span>
+                        <div class="flex justify-between items-center bg-neutral-900/40 px-4 py-2 rounded-lg">
+                            <span class="text-sm text-neutral-400" id="lbl-total-materials">Materials (All)</span>
+                            <span class="font-bold text-white"><span id="val-total-materials">0.00</span> <span class="currency-symbol">€</span></span>
                         </div>
-                        <div class="flex justify-between items-center bg-neutral-900/30 px-4 py-2 rounded-lg">
-                            <span class="text-sm text-neutral-400" id="lbl-total-other">Other Expenses</span>
-                            <span class="font-bold text-white"><span id="val-total-other">0.00</span> <span class="currency-symbol">$</span></span>
+                        <div class="flex justify-between items-center bg-neutral-900/40 px-4 py-2 rounded-lg">
+                            <span class="text-sm text-neutral-400" id="lbl-total-labor">Labor Cost</span>
+                            <span class="font-bold text-white"><span id="val-total-labor">0.00</span> <span class="currency-symbol">€</span></span>
                         </div>
-                        <div class="flex justify-between items-center bg-yellow-500/10 border border-yellow-500/20 px-4 py-3 rounded-lg mt-2">
-                            <span class="font-bold text-yellow-500" id="lbl-grand-total">Estimated Total</span>
-                            <span class="text-xl font-black text-yellow-400"><span id="val-grand-total">0.00</span> <span class="currency-symbol">$</span></span>
+                        <div class="flex justify-between items-center bg-neutral-900/40 px-4 py-2 rounded-lg">
+                            <span class="text-sm text-neutral-400" id="lbl-total-profit">Contractor Profit</span>
+                            <span class="font-bold text-white"><span id="val-total-profit">0.00</span> <span class="currency-symbol">€</span></span>
+                        </div>
+                        <div class="flex justify-between items-center bg-neutral-900/40 px-4 py-2 rounded-lg">
+                            <span class="text-sm text-neutral-400" id="lbl-total-other">Logistics & Other Expenses</span>
+                            <span class="font-bold text-white"><span id="val-total-other">0.00</span> <span class="currency-symbol">€</span></span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center bg-yellow-500/10 border border-yellow-500/30 px-4 py-3 rounded-xl mt-3">
+                            <span class="font-extrabold text-white text-base" id="lbl-grand-total">Grand Total:</span>
+                            <span class="text-2xl font-black text-yellow-400"><span id="val-grand-total">0.00</span> <span class="currency-symbol">€</span></span>
                         </div>
                     </div>
                 </div>
@@ -490,14 +542,25 @@
                 "lbl-height": "Height/Length (m)",
                 "lbl-layers": "Drywall Layers",
                 "lbl-spacing": "Profile Spacing",
-                "t-costs": "Project Costs",
-                "lbl-labor-rate": "Labor Rate (per m²)",
-                "lbl-other-expenses": "Other Expenses (Fixed)",
+                "t-economics": "Economics & Pricing",
+                "lbl-price-sheet": "Drywall Sheet (€/pc)",
+                "lbl-price-cd": "CD Profile (€/pc)",
+                "lbl-price-ud": "UD Profile (€/pc)",
+                "lbl-price-screws": "Screws (€/pc)",
+                "lbl-price-plugs": "Wall Plugs (€/pc)",
+                "lbl-price-hangers": "Hangers (€/pc)",
+                "lbl-price-tape": "Joint Tape (€/m)",
+                "lbl-price-putty": "Joint Putty (€/kg)",
+                "lbl-labor-rate": "Labor (€/m²)",
+                "lbl-profit-rate": "Profit (€/m²)",
+                "lbl-other-expenses": "Logistics (€)",
                 "t-financial-summary": "Financial Summary",
-                "lbl-total-labor": "Total Labor Cost",
-                "lbl-total-other": "Other Expenses",
-                "lbl-grand-total": "Estimated Total",
-                "unit-currency": "$",
+                "lbl-total-materials": "Materials (All)",
+                "lbl-total-labor": "Labor Cost",
+                "lbl-total-profit": "Contractor Profit",
+                "lbl-total-other": "Logistics & Other",
+                "lbl-grand-total": "Grand Total:",
+                "unit-currency": "€",
                 "t-branding": "PDF Brand Header Info",
                 "lbl-firm": "Firm Name",
                 "lbl-phone": "Phone",
@@ -531,11 +594,11 @@
                 "t-history-empty": "No calculations saved yet.",
                 "t-guide-title": "How It Calculates & Practical Tips",
                 "t-tip-1-title": "📄 Sheets & Structural Integrity",
-                "t-tip-1-desc": "Our calculator automatically appends a standard 10% material buffer to accommodate cuttings, cuts, and irregular angles. A standard drywall sheet dimensions are 1.2 x 2.5 meters (3 m² area). If you utilize double-layering for fireproofing or advanced acoustic insulation, the sheet estimate will automatically double.",
+                "t-tip-1-desc": "Our calculator automatically appends a standard 10% material buffer to accommodate cuttings, cuts, and irregular angles. Standard drywall sheet dimensions are 1.2 x 2.5 meters (3 m² area).",
                 "t-tip-2-title": "⚙️ Profiles (CD & UD Skeleton Frame)",
-                "t-tip-2-desc": "UD profile functions as the perimeter guiding track, computed directly from wall borders. CD profile works as the primary load-bearing vertically spaced guide. Our standard vertical pitch is 60cm, but we strongly recommend upgrading to 40cm spacing if your wall partition is designated to host tiling, heavy shelves, or multiple storage components.",
+                "t-tip-2-desc": "UD profile functions as the perimeter guiding track. CD profile works as the primary load-bearing vertically spaced guide.",
                 "t-tip-3-title": "🔒 Why use PRO Mode?",
-                "t-tip-3-desc": "PRO mode utilizes comprehensive estimation mathematics to provide total count for hardware. It details the exact metal screws needed (plasterboard-to-metal screws spaced every 25cm), direct mounting hangers to minimize core wobbling, wall dowels for masonry connections, joint glassfiber tape, and joint filling compound to seal panels.",
+                "t-tip-3-desc": "PRO mode details the exact metal screws needed, hangers, wall dowels, joint tape, compound filler, and itemized financial estimates.",
                 "unit-pcs": "pcs",
                 "unit-m": "m",
                 "unit-kg": "kg"
@@ -549,14 +612,25 @@
                 "lbl-height": "Висота/Довжина (м)",
                 "lbl-layers": "Кількість шарів",
                 "lbl-spacing": "Крок профілю",
-                "t-costs": "Витрати на проект",
-                "lbl-labor-rate": "Вартість робіт (за м²)",
-                "lbl-other-expenses": "Інші витрати (фіксовано)",
+                "t-economics": "Економіка та ціни",
+                "lbl-price-sheet": "Гіпсокартон (€/шт)",
+                "lbl-price-cd": "Профіль CD (€/шт)",
+                "lbl-price-ud": "Профіль UD (€/шт)",
+                "lbl-price-screws": "Саморізи (€/шт)",
+                "lbl-price-plugs": "Дюбелі (€/шт)",
+                "lbl-price-hangers": "Підвіси (€/шт)",
+                "lbl-price-tape": "Стрічка (€/м)",
+                "lbl-price-putty": "Шпаклівка (€/кг)",
+                "lbl-labor-rate": "Робота (€/м²)",
+                "lbl-profit-rate": "Прибуток (€/м²)",
+                "lbl-other-expenses": "Логістика (€)",
                 "t-financial-summary": "Фінансовий підсумок",
-                "lbl-total-labor": "Загальна вартість робіт",
-                "lbl-total-other": "Додаткові витрати",
-                "lbl-grand-total": "Загальна вартість",
-                "unit-currency": "₴",
+                "lbl-total-materials": "Матеріали (усі)",
+                "lbl-total-labor": "Вартість робіт",
+                "lbl-total-profit": "Прибуток підрядника",
+                "lbl-total-other": "Логістика та інші витрати",
+                "lbl-grand-total": "Загальна вартість:",
+                "unit-currency": "€",
                 "t-branding": "Брендування PDF Звіту",
                 "lbl-firm": "Назва компанії",
                 "lbl-phone": "Телефон",
@@ -590,11 +664,11 @@
                 "t-history-empty": "Немає збережених розрахунків.",
                 "t-guide-title": "Методика розрахунку та корисні поради",
                 "t-tip-1-title": "📄 Листи та міцність конструкції",
-                "t-tip-1-desc": "Наш калькулятор автоматично додає 10% буфер на різання та відходи. Стандартний лист гіпсокартону має розмір 1.2 х 2.5 м (площа 3 м²). Якщо ви робите подвійну обшивку для пожежної безпеки або шумоізоляції, кількість листів буде подвоєна автоматично.",
+                "t-tip-1-desc": "Наш калькулятор автоматично додає 10% буфер на різання та відходи.",
                 "t-tip-2-title": "⚙️ Профілі (Каркас CD та UD)",
-                "t-tip-2-desc": "UD-профіль монтується по периметру стіни чи стелі. CD-профіль є основним несучим елементом каркасу. Стандартний вертикальний крок складає 60 см, але ми рекомендуємо крок 40 см, якщо на стіну буде кластися плитка або планується навішування важких полиць.",
+                "t-tip-2-desc": "UD-профіль монтується по периметру стіни чи стелі. CD-профіль є основним несучим елементом каркасу.",
                 "t-tip-3-title": "🔒 Переваги PRO-режиму",
-                "t-tip-3-desc": "PRO-режим включає деталізований розрахунок усього кріплення та оздоблення. Він визначає точну кількість шурупів (крок 25 см), прямих підвісів для усунення вібрацій стіни, дюбелів під перфоратор, серпянки та фінішної шпаклівки.",
+                "t-tip-3-desc": "PRO-режим включає деталізований розрахунок кріплення, витратних матеріалів та фінансів.",
                 "unit-pcs": "шт",
                 "unit-m": "м",
                 "unit-kg": "кг"
@@ -605,16 +679,27 @@
                 "lbl-wall": "Stena / Priečka",
                 "lbl-ceiling": "Strop",
                 "lbl-width": "Šírka (m)",
-                "lbl-height": "Výška/Dĺžka (m)",
+                "lbl-height": "Výшка/Dĺžka (m)",
                 "lbl-layers": "Vrstvy sadrokartónu",
                 "lbl-spacing": "Rozostup profilov",
-                "t-costs": "Náklady na projekt",
-                "lbl-labor-rate": "Cena práce (za m²)",
-                "lbl-other-expenses": "Ostatné výdavky (fixné)",
+                "t-economics": "Ekonómika a ceny",
+                "lbl-price-sheet": "Sadrokartón (€/ks)",
+                "lbl-price-cd": "Profil CD (€/ks)",
+                "lbl-price-ud": "Profil UD (€/ks)",
+                "lbl-price-screws": "Skrutky (€/ks)",
+                "lbl-price-plugs": "Hmoždinky (€/ks)",
+                "lbl-price-hangers": "Závesy (€/ks)",
+                "lbl-price-tape": "Páska (€/m)",
+                "lbl-price-putty": "Tmel (€/kg)",
+                "lbl-labor-rate": "Práca (€/m²)",
+                "lbl-profit-rate": "Zisk (€/m²)",
+                "lbl-other-expenses": "Logistika (€)",
                 "t-financial-summary": "Finančné zhrnutie",
-                "lbl-total-labor": "Celková cena práce",
-                "lbl-total-other": "Dodatočné výdavky",
-                "lbl-grand-total": "Celková suma",
+                "lbl-total-materials": "Materiály (spolu)",
+                "lbl-total-labor": "Cena práce",
+                "lbl-total-profit": "Zisk dodávateľa",
+                "lbl-total-other": "Logistika a ostatné",
+                "lbl-grand-total": "Celková suma:",
                 "unit-currency": "€",
                 "t-branding": "Informácie pre PDF Hlavičku",
                 "lbl-firm": "Názov firmy",
@@ -649,11 +734,11 @@
                 "t-history-empty": "Zatiaľ žiadne uložené výpočty.",
                 "t-guide-title": "Návod na výpočet a praktické tipy",
                 "t-tip-1-title": "📄 Sadrokartónové dosky a ich rezanie",
-                "t-tip-1-desc": "Náš kalkulátor automaticky započítava 10% rezervu na dorezy a odpad. Rozmery jednej štandardnej dosky sú 1.2 x 2.5 m (plocha 3 m²). V prípade dvojitého opláštenia kvôli protipožiarnej ochrane alebo lepšej akustike sa množstvo dosiek automaticky zdvojnásobí.",
+                "t-tip-1-desc": "Náš kalkulátor automaticky započítava 10% rezervu na dorezy a odpad.",
                 "t-tip-2-title": "⚙️ Profilová konštrukcia (CD & UD profily)",
-                "t-tip-2-desc": "UD profil tvorí obvodový rám. CD profily slúžia ako zvislé nosné stojky. Bežný rozostup profilov je 60 cm, avšak pre náročnejšie inštalácie (napr. lepenie obkladu na priečku) sa odporúča hustejší rozostup 40 cm.",
+                "t-tip-2-desc": "UD profil tvorí obvodový rám. CD profily slúžia ako zvislé nosné stojky.",
                 "t-tip-3-title": "🔒 Výhody PRO režimu",
-                "t-tip-3-desc": "PRO režim zahŕňa presný výpočet spojovacieho materiálu. Vypočíta presný počet skrutiek (kotvenie každých 25 cm), priamych závesov pre stability priečok, kotviacich hmoždiniek, sklotextilnej pásky a tmelu na spoje.",
+                "t-tip-3-desc": "PRO režim zahŕňa presný výpočet spojovacieho materiálu a rozpis financií.",
                 "unit-pcs": "ks",
                 "unit-m": "m",
                 "unit-kg": "kg"
@@ -664,7 +749,7 @@
         window.onload = function() {
             lucide.createIcons();
             loadHistory();
-            setStructureType('wall'); // Initializes UI and hides ceiling option correctly
+            setStructureType('wall'); 
             calculate();
         };
 
@@ -673,7 +758,6 @@
             currentLang = lang;
             document.documentElement.lang = lang;
             
-            // Translate static texts via IDs matching keys
             for (const key in translations[lang]) {
                 const element = document.getElementById(key);
                 if (element) {
@@ -681,14 +765,11 @@
                 }
             }
 
-            // Update placeholder or multi-text fields
-            document.getElementById('lbl-free-btn').innerText = (lang === 'uk') ? 'БЕЗКОШТОВНО' : ((lang === 'sk') ? 'FREE' : 'FREE');
+            document.getElementById('lbl-free-btn').innerText = 'FREE';
             document.getElementById('lbl-pro-btn').innerText = 'PRO';
 
-            // Specific unit updates
             updateUnitLabels();
 
-            // Update Currency Symbols
             const currencySymbols = document.querySelectorAll('.currency-symbol');
             currencySymbols.forEach(el => {
                 el.innerText = translations[currentLang]['unit-currency'];
@@ -737,7 +818,7 @@
             calculate();
         }
 
-        // Structure type wall/ceiling & Show/Hide Dropdown
+        // Structure type wall/ceiling
         function setStructureType(type) {
             structureType = type;
             const wallBtn = document.getElementById('type-wall');
@@ -747,18 +828,17 @@
             if (type === 'wall') {
                 wallBtn.className = "py-2 text-sm font-bold rounded-lg transition-all bg-yellow-500/10 text-yellow-400 border border-yellow-500/20";
                 ceilingBtn.className = "py-2 text-sm font-bold rounded-lg transition-all text-neutral-400 hover:text-white";
-                if(ceilingFrameCont) ceilingFrameCont.style.display = 'none'; // Сховати для стіни
+                if(ceilingFrameCont) ceilingFrameCont.style.display = 'none';
             } else {
                 ceilingBtn.className = "py-2 text-sm font-bold rounded-lg transition-all bg-yellow-500/10 text-yellow-400 border border-yellow-500/20";
                 wallBtn.className = "py-2 text-sm font-bold rounded-lg transition-all text-neutral-400 hover:text-white";
-                if(ceilingFrameCont) ceilingFrameCont.style.display = 'block'; // Показати для стелі
+                if(ceilingFrameCont) ceilingFrameCont.style.display = 'block';
             }
             calculate();
         }
 
         // Core Drywall Engine calculation
         function calculate() {
-            // Update button text via translation safely
             const btnMain = document.getElementById('btn-calculate-main');
             if(btnMain) btnMain.innerText = translations[currentLang]["btn-calc"];
 
@@ -777,7 +857,7 @@
                 titleArea.innerText = `Area: ${area.toFixed(2)} m²`;
             }
 
-            // Sheets (1.2 x 2.5 = 3m2) + 10% waste
+            // Sheets
             const sheetArea = parseFloat(document.getElementById('inp-sheet-size').value); 
             const wastePercent = parseFloat(document.getElementById('inp-waste').value) || 10;
             const sheetsTotal = Math.ceil((area * layers * (1 + wastePercent / 100)) / sheetArea);
@@ -785,21 +865,20 @@
             document.getElementById('lbl-mat-sheets').innerText = `Drywall Sheets (1.2 x ${(sheetArea/1.2).toFixed(1)}m)`;
             document.getElementById('lbl-mat-sheets-sub').innerText = `Based on ${sheetArea}m² sheet + ${wastePercent}% waste`;
             
-            // UD Profiles (Obvod)
+            // UD Profiles
             const perimeterLength = 2 * (width + height);
             const udTotalLength = perimeterLength * 1.1; 
             const udTotalPieces = Math.ceil(udTotalLength / 3.0); 
 
-            // Frame Type Check (only for ceiling)
+            // Frame Type Check
             const frameElement = document.getElementById('inp-frame-type');
             const frameType = frameElement ? frameElement.value : 'single';
 
-            // CD Profiles (Stojky / Каркас)
+            // CD Profiles & Hangers
             let cdProfilesCount = Math.ceil(width / spacing);
             let cdTotalLength = cdProfilesCount * height;
             let hangersTotal = 0;
 
-            // Математика для дворівневої стелі
             if (structureType === 'ceiling' && frameType === 'double') {
                 const crossProfilesCount = Math.ceil(height / 0.9);
                 cdTotalLength += (crossProfilesCount * width); 
@@ -811,20 +890,20 @@
 
             const cdTotalPieces = Math.ceil(cdTotalLength / 3);
 
-            // Screws (~15 screws per square meter)
+            // Screws
             const screwsCount = Math.ceil(area * 15 * layers);
             
-            // Dowels/Wall plugs
+            // Plugs
             const udDowels = Math.ceil(udTotalLength / 0.5);
             const plugsTotal = Math.ceil((udDowels + (hangersTotal * 2)) * 1.1);
 
-            // Fiber tape/serpyanka (1.5m of tape per m²)
+            // Fiber tape
             const tapeTotalMeters = Math.ceil(area * 1.5 * 1.1);
 
-            // Putty / Joint filler (approx 0.4kg / m²)
-            const puttyTotalKg = (area * 0.4 * 1.1).toFixed(1);
+            // Putty
+            const puttyTotalKg = parseFloat((area * 0.4 * 1.1).toFixed(1));
 
-            // Print to screen
+            // Print quantities to UI
             document.getElementById('val-sheets').innerText = sheetsTotal;
             document.getElementById('val-cd').innerText = cdTotalPieces;
             document.getElementById('val-ud').innerText = udTotalPieces;
@@ -834,14 +913,42 @@
             document.getElementById('val-tape').innerText = tapeTotalMeters;
             document.getElementById('val-putty').innerText = puttyTotalKg;
 
-            // --- FINANCIAL COSTS CALCULATION ---
-            const laborRate = parseFloat(document.getElementById('inp-labor-rate').value) || 0;
-            const otherExpenses = parseFloat(document.getElementById('inp-other-expenses').value) || 0;
-            
-            const totalLabor = area * laborRate;
-            const grandTotal = totalLabor + otherExpenses;
+            // --- FINANCIALS & MATERIAL COST CALCULATIONS ---
+            const priceSheet = parseFloat(document.getElementById('inp-price-sheet')?.value) || 0;
+            const priceCd = parseFloat(document.getElementById('inp-price-cd')?.value) || 0;
+            const priceUd = parseFloat(document.getElementById('inp-price-ud')?.value) || 0;
+            const priceScrews = parseFloat(document.getElementById('inp-price-screws')?.value) || 0;
+            const pricePlugs = parseFloat(document.getElementById('inp-price-plugs')?.value) || 0;
+            const priceHangers = parseFloat(document.getElementById('inp-price-hangers')?.value) || 0;
+            const priceTape = parseFloat(document.getElementById('inp-price-tape')?.value) || 0;
+            const pricePutty = parseFloat(document.getElementById('inp-price-putty')?.value) || 0;
 
+            const costSheets = sheetsTotal * priceSheet;
+            const costCd = cdTotalPieces * priceCd;
+            const costUd = udTotalPieces * priceUd;
+            const costScrews = screwsCount * priceScrews;
+            const costPlugs = plugsTotal * pricePlugs;
+            const costHangers = hangersTotal * priceHangers;
+            const costTape = tapeTotalMeters * priceTape;
+            const costPutty = puttyTotalKg * pricePutty;
+
+            // Materials sum (Includes consumables in PRO mode)
+            let totalMaterials = costSheets + costCd + costUd;
+            if (currentMode === 'pro') {
+                totalMaterials += costScrews + costPlugs + costHangers + costTape + costPutty;
+            }
+
+            const laborRate = parseFloat(document.getElementById('inp-labor-rate')?.value) || 0;
+            const profitRate = parseFloat(document.getElementById('inp-profit-rate')?.value) || 0;
+            const otherExpenses = parseFloat(document.getElementById('inp-other-expenses')?.value) || 0;
+
+            const totalLabor = area * laborRate;
+            const totalProfit = area * profitRate;
+            const grandTotal = totalMaterials + totalLabor + totalProfit + otherExpenses;
+
+            document.getElementById('val-total-materials').innerText = totalMaterials.toFixed(2);
             document.getElementById('val-total-labor').innerText = totalLabor.toFixed(2);
+            document.getElementById('val-total-profit').innerText = totalProfit.toFixed(2);
             document.getElementById('val-total-other').innerText = otherExpenses.toFixed(2);
             document.getElementById('val-grand-total').innerText = grandTotal.toFixed(2);
 
@@ -880,7 +987,7 @@
             }
 
             container.innerHTML = "";
-            history.forEach((item, index) => {
+            history.forEach((item) => {
                 const box = document.createElement('div');
                 box.className = "flex justify-between items-center bg-neutral-900 border border-neutral-800 p-3 rounded-xl hover:border-yellow-500/50 cursor-pointer transition-all";
                 box.setAttribute('onclick', `loadHistoryItem(${item.w}, ${item.h}, '${item.structureType}')`);
@@ -912,7 +1019,16 @@
             document.getElementById('inp-height').value = "3.0";
             document.getElementById('inp-layers').value = "1";
             document.getElementById('inp-spacing').value = "0.6";
-            document.getElementById('inp-labor-rate').value = "15";
+            document.getElementById('inp-price-sheet').value = "10.00";
+            document.getElementById('inp-price-cd').value = "3.50";
+            document.getElementById('inp-price-ud').value = "2.50";
+            document.getElementById('inp-price-screws').value = "0.03";
+            document.getElementById('inp-price-plugs').value = "0.05";
+            document.getElementById('inp-price-hangers').value = "0.30";
+            document.getElementById('inp-price-tape').value = "0.15";
+            document.getElementById('inp-price-putty').value = "1.20";
+            document.getElementById('inp-labor-rate').value = "12";
+            document.getElementById('inp-profit-rate').value = "5";
             document.getElementById('inp-other-expenses').value = "50";
             setStructureType('wall');
             calculate();
@@ -920,9 +1036,7 @@
 
         function exportToPDF() {
             if (currentMode === 'free') {
-                alert(currentLang === 'uk' 
-                    ? "Брендований PDF доступний тільки в PRO версії! Увімкніть PRO режим зверху." 
-                    : (currentLang === 'sk' ? "Branded PDF je dostupný iba v PRO verzii! Zapnite režim PRO v hornom paneli." : "Branded PDF is available only in PRO mode! Enable PRO mode from the top bar."));
+                alert("Branded PDF is available only in PRO mode! Enable PRO mode from the top bar.");
                 return;
             }
 
