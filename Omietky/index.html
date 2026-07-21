@@ -71,57 +71,88 @@
                     </select>
                 </div>
 
-                <!-- Wall Area -->
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-area">Площа стін (м²)</label>
-                    <input type="number" id="wallArea" value="100" step="1" min="1" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow">
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Wall Area -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-area">Площа стін (м²)</label>
+                        <input type="number" id="wallArea" value="100" step="1" min="1" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow">
+                    </div>
+                    <!-- Average Thickness -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-thick">Сер. товщина (мм)</label>
+                        <input type="number" id="wallThick" value="15" step="1" min="1" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow">
+                    </div>
                 </div>
 
-                <!-- Average Thickness -->
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- APU Beads -->
+                    <div>
+                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-apu-len">Периметр вікон/дверей (м)</label>
+                        <input type="number" id="apuLength" value="25" step="1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                    </div>
+                    <!-- Corner Beads -->
+                    <div>
+                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-corner-len">Довжина зовн. кутів (м)</label>
+                        <input type="number" id="cornerLength" value="15" step="1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                    </div>
+                </div>
+
+                <!-- Joints Mesh -->
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-thick">Середня товщина (мм)</label>
-                    <input type="number" id="wallThick" value="15" step="1" min="1" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow">
+                    <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-joint-len">Довжина стиків (бетон/ітонг/цегла) (м)</label>
+                    <input type="number" id="jointLength" value="20" step="1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold focus:outline-none gold-border-glow">
                 </div>
 
                 <!-- ECONOMICS & PRICING (PRO ONLY) -->
-                <div id="proEconomics" class="space-y-6 hidden pt-4 border-t border-neutral-800">
-                    <div class="flex items-center justify-between">
+                <div id="proEconomics" class="space-y-4 hidden pt-4 border-t border-neutral-800">
+                    <div class="flex items-center justify-between mb-4">
                         <h2 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
-                            <i data-lucide="wallet" class="w-5 h-5"></i> <span id="txt-econ">Економіка, ціни та логістика</span>
+                            <i data-lucide="wallet" class="w-5 h-5"></i> <span id="txt-econ">Економіка та ціни</span>
                         </h2>
                         <span class="text-[10px] bg-yellow-500/20 text-yellow-400 font-bold px-2 py-0.5 rounded uppercase">PRO Feature</span>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-bag-price">Ціна мішка (€)</label>
-                            <input type="number" id="bagPrice" value="6.50" step="0.1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-bag-price">Штукатурка мішок (€)</label>
+                            <input type="number" id="bagPrice" value="6.50" step="0.1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold text-sm focus:outline-none gold-border-glow">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-primer-price">Ціна ґрунтовки 5л (€)</label>
-                            <input type="number" id="primerPrice" value="12.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-labor-rate">Робота (€/м²)</label>
-                            <input type="number" id="laborRate" value="8.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-profit-rate">Прибуток (€/м²)</label>
-                            <input type="number" id="profitRate" value="5.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-primer-price">Ґрунтовка 5л (€)</label>
+                            <input type="number" id="primerPrice" value="12.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold text-sm focus:outline-none gold-border-glow">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-logistics">Логістика (€)</label>
-                            <input type="number" id="logisticsCost" value="50" step="5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-apu-price">APU профіль 2.5м (€)</label>
+                            <input type="number" id="apuPrice" value="1.80" step="0.1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold text-sm focus:outline-none gold-border-glow">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-other">Інші витрати (€)</label>
-                            <input type="number" id="otherCost" value="30" step="5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-corner-price">Кутник 2.5м (€)</label>
+                            <input type="number" id="cornerPrice" value="1.50" step="0.1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold text-sm focus:outline-none gold-border-glow">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-mesh-price">Сітка фасадна 1м² (€)</label>
+                            <input type="number" id="meshPrice" value="0.90" step="0.1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold text-sm focus:outline-none gold-border-glow">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-labor-rate">Робота (€/м²)</label>
+                            <input type="number" id="laborRate" value="8.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold text-sm focus:outline-none gold-border-glow">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 pt-2">
+                        <div>
+                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-profit-rate">Прибуток (€/м²)</label>
+                            <input type="number" id="profitRate" value="5.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold text-sm focus:outline-none gold-border-glow">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-logistics">Логістика/Інше (€)</label>
+                            <input type="number" id="logisticsCost" value="80" step="5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold text-sm focus:outline-none gold-border-glow">
                         </div>
                     </div>
                 </div>
@@ -134,12 +165,24 @@
                     <h3 class="text-md font-bold text-white uppercase tracking-wider" id="txt-materials-needed">Кількість матеріалів</h3>
                     
                     <div class="flex justify-between items-center border-b border-neutral-800 pb-3">
-                        <span class="text-neutral-400" id="txt-bags-count">Мішки штукатурки (25 кг):</span>
-                        <span class="text-xl font-bold text-white" id="resBags">0 шт</span>
+                        <span class="text-neutral-400 text-sm" id="txt-bags-count">Мішки штукатурки (25 кг):</span>
+                        <span class="text-lg font-bold text-white" id="resBags">0 шт</span>
                     </div>
                     <div class="flex justify-between items-center border-b border-neutral-800 pb-3">
-                        <span class="text-neutral-400" id="txt-primer-count">Ґрунтовка (каністри 5л):</span>
-                        <span class="text-xl font-bold text-white" id="resPrimer">0 шт</span>
+                        <span class="text-neutral-400 text-sm" id="txt-primer-count">Ґрунтовка (каністри 5л):</span>
+                        <span class="text-lg font-bold text-white" id="resPrimer">0 шт</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-neutral-800 pb-3">
+                        <span class="text-neutral-400 text-sm" id="txt-res-apu">Віконні профілі (APU 2.5м):</span>
+                        <span class="text-lg font-bold text-white" id="resApu">0 шт</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-neutral-800 pb-3">
+                        <span class="text-neutral-400 text-sm" id="txt-res-corner">Зовнішні кутники (2.5м):</span>
+                        <span class="text-lg font-bold text-white" id="resCorner">0 шт</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-neutral-800 pb-3">
+                        <span class="text-neutral-400 text-sm" id="txt-res-mesh">Сітка фасадна:</span>
+                        <span class="text-lg font-bold text-white" id="resMesh">0 m²</span>
                     </div>
                 </div>
 
@@ -154,7 +197,7 @@
 
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between text-neutral-300">
-                            <span id="txt-res-materials">Матеріали:</span>
+                            <span id="txt-res-materials">Матеріали (усі):</span>
                             <span class="font-bold text-white" id="costMaterials">0.00 €</span>
                         </div>
                         <div class="flex justify-between text-neutral-300">
@@ -203,19 +246,27 @@
                 params: "Параметри поверхні",
                 type: "Тип штукатурки",
                 area: "Площа стін (м²)",
-                thick: "Середня товщина (мм)",
-                econ: "Економіка, ціни та логістика",
-                bagPrice: "Ціна мішка (€)",
-                primerPrice: "Ціна ґрунтовки 5л (€)",
+                thick: "Сер. товщина (мм)",
+                apuLen: "Периметр вікон/дверей (м)",
+                cornerLen: "Довжина зовн. кутів (м)",
+                jointLen: "Довжина стиків (бетон/ітонг/цегла) (м)",
+                econ: "Економіка та ціни",
+                bagPrice: "Штукатурка мішок (€)",
+                primerPrice: "Ґрунтовка 5л (€)",
+                apuPrice: "APU профіль 2.5м (€)",
+                cornerPrice: "Кутник 2.5м (€)",
+                meshPrice: "Сітка фасадна 1м² (€)",
                 laborRate: "Робота (€/м²)",
                 profitRate: "Прибуток (€/м²)",
-                logistics: "Логістика (€)",
-                other: "Інші витрати (€)",
+                logistics: "Логістика/Інше (€)",
                 materialsNeeded: "Кількість матеріалів",
                 bagsCount: "Мішки штукатурки (25 кг):",
                 primerCount: "Ґрунтовка (каністри 5л):",
+                resApu: "Віконні профілі (APU 2.5м):",
+                resCorner: "Зовнішні кутники (2.5м):",
+                resMesh: "Сітка фасадна:",
                 financialSummary: "Фінансовий підсумок",
-                resMaterials: "Матеріали:",
+                resMaterials: "Матеріали (усі):",
                 resLabor: "Вартість робіт:",
                 resProfit: "Прибуток підрядника:",
                 resLogistics: "Логістика та інші витрати:",
@@ -227,19 +278,27 @@
                 params: "Surface Parameters",
                 type: "Plaster Type",
                 area: "Wall Area (m²)",
-                thick: "Average Thickness (mm)",
-                econ: "Economics, Pricing & Logistics",
-                bagPrice: "Bag Price (€)",
-                primerPrice: "Primer Price 5L (€)",
+                thick: "Avg Thickness (mm)",
+                apuLen: "Windows/Doors Perimeter (m)",
+                cornerLen: "Outer Corners Length (m)",
+                jointLen: "Material Joints (Concrete/Brick) (m)",
+                econ: "Economics & Pricing",
+                bagPrice: "Plaster Bag (€)",
+                primerPrice: "Primer 5L (€)",
+                apuPrice: "APU Bead 2.5m (€)",
+                cornerPrice: "Corner Bead 2.5m (€)",
+                meshPrice: "Mesh 1m² (€)",
                 laborRate: "Labor (€/m²)",
                 profitRate: "Profit (€/m²)",
-                logistics: "Logistics (€)",
-                other: "Other Expenses (€)",
+                logistics: "Logistics/Other (€)",
                 materialsNeeded: "Materials Required",
                 bagsCount: "Plaster Bags (25 kg):",
                 primerCount: "Primer (5L canisters):",
+                resApu: "APU Window Beads (2.5m):",
+                resCorner: "Corner Beads (2.5m):",
+                resMesh: "Fiberglass Mesh:",
                 financialSummary: "Financial Summary",
-                resMaterials: "Materials:",
+                resMaterials: "Materials (All):",
                 resLabor: "Labor Cost:",
                 resProfit: "Contractor Profit:",
                 resLogistics: "Logistics & Other Expenses:",
@@ -251,19 +310,27 @@
                 params: "Parametre povrchu",
                 type: "Typ omietky",
                 area: "Plocha stien (m²)",
-                thick: "Priemerná hrúbka (mm)",
-                econ: "Ekonomika, ceny a logistika",
-                bagPrice: "Cena vrecka (€)",
-                primerPrice: "Cena penetrácie 5l (€)",
+                thick: "Priem. hrúbka (mm)",
+                apuLen: "Obvod okien a dverí (m)",
+                cornerLen: "Dĺžka vonk. rohov (m)",
+                jointLen: "Spoje materiálov (betón/ytong) (m)",
+                econ: "Ekonomika a ceny",
+                bagPrice: "Omietka vrecko (€)",
+                primerPrice: "Penetrácia 5l (€)",
+                apuPrice: "APU lišta 2.5m (€)",
+                cornerPrice: "Rohovník 2.5m (€)",
+                meshPrice: "Mriežka 1m² (€)",
                 laborRate: "Práca (€/m²)",
                 profitRate: "Zisk (€/m²)",
-                logistics: "Logistika (€)",
-                other: "Iné náklady (€)",
+                logistics: "Logistika/Iné (€)",
                 materialsNeeded: "Potrebný materiál",
                 bagsCount: "Vrecia omietky (25 kg):",
                 primerCount: "Penetrácia (kanistre 5l):",
+                resApu: "APU lišty (2.5m):",
+                resCorner: "Rohovníky (2.5m):",
+                resMesh: "Sklotextilná mriežka:",
                 financialSummary: "Finančný súhrn",
-                resMaterials: "Materiál:",
+                resMaterials: "Materiál (Spolu):",
                 resLabor: "Cena práce:",
                 resProfit: "Zisk dodávateľa:",
                 resLogistics: "Logistika a iné náklady:",
@@ -276,20 +343,32 @@
         function setLang(lang) {
             currentLang = lang;
             const t = translations[lang];
+            
             document.getElementById('txt-params').innerText = t.params;
             document.getElementById('txt-type').innerText = t.type;
             document.getElementById('txt-area').innerText = t.area;
             document.getElementById('txt-thick').innerText = t.thick;
+            document.getElementById('txt-apu-len').innerText = t.apuLen;
+            document.getElementById('txt-corner-len').innerText = t.cornerLen;
+            document.getElementById('txt-joint-len').innerText = t.jointLen;
+
             document.getElementById('txt-econ').innerText = t.econ;
             document.getElementById('txt-bag-price').innerText = t.bagPrice;
             document.getElementById('txt-primer-price').innerText = t.primerPrice;
+            document.getElementById('txt-apu-price').innerText = t.apuPrice;
+            document.getElementById('txt-corner-price').innerText = t.cornerPrice;
+            document.getElementById('txt-mesh-price').innerText = t.meshPrice;
             document.getElementById('txt-labor-rate').innerText = t.laborRate;
             document.getElementById('txt-profit-rate').innerText = t.profitRate;
             document.getElementById('txt-logistics').innerText = t.logistics;
-            document.getElementById('txt-other').innerText = t.other;
+
             document.getElementById('txt-materials-needed').innerText = t.materialsNeeded;
             document.getElementById('txt-bags-count').innerText = t.bagsCount;
             document.getElementById('txt-primer-count').innerText = t.primerCount;
+            document.getElementById('txt-res-apu').innerText = t.resApu;
+            document.getElementById('txt-res-corner').innerText = t.resCorner;
+            document.getElementById('txt-res-mesh').innerText = t.resMesh;
+
             document.getElementById('txt-financial-summary').innerText = t.financialSummary;
             document.getElementById('txt-res-materials').innerText = t.resMaterials;
             document.getElementById('txt-res-labor').innerText = t.resLabor;
@@ -297,6 +376,7 @@
             document.getElementById('txt-res-logistics').innerText = t.resLogistics;
             document.getElementById('txt-grand-total').innerText = t.grandTotal;
             document.getElementById('txt-pro-promo').innerText = t.proPromo;
+            
             calculate();
         }
 
@@ -326,34 +406,60 @@
 
         function calculate() {
             const t = translations[currentLang];
+            
+            // Standard Inputs
             const consumptionRate = parseFloat(document.getElementById('plasterType').value) || 1.5;
             const area = parseFloat(document.getElementById('wallArea').value) || 0;
             const thick = parseFloat(document.getElementById('wallThick').value) || 0;
+            const apuLen = parseFloat(document.getElementById('apuLength').value) || 0;
+            const cornerLen = parseFloat(document.getElementById('cornerLength').value) || 0;
+            const jointLen = parseFloat(document.getElementById('jointLength').value) || 0;
 
+            // Plaster & Primer
             const totalKg = area * thick * consumptionRate;
             const bagsNeeded = Math.ceil(totalKg / 25);
-
             const totalPrimerLiters = area * 0.15;
             const primerCanisters = Math.ceil(totalPrimerLiters / 5);
 
+            // Accessories
+            const apuPcs = Math.ceil(apuLen / 2.5);
+            const cornerPcs = Math.ceil(cornerLen / 2.5);
+            // Сітка ріжеться смугами ~33см, тому 1 м.кв покриває ~3 пог.м стику
+            const meshM2 = Math.ceil(jointLen / 3); 
+
+            // Render Standard Results
             document.getElementById('resBags').innerText = bagsNeeded + t.unit;
             document.getElementById('resPrimer').innerText = primerCanisters + t.unit;
+            document.getElementById('resApu').innerText = apuPcs + t.unit;
+            document.getElementById('resCorner').innerText = cornerPcs + t.unit;
+            document.getElementById('resMesh').innerText = meshM2 + ' m²';
 
+            // PRO Economics
             if (currentMode === 'pro') {
                 const bagPrice = parseFloat(document.getElementById('bagPrice').value) || 0;
                 const primerPrice = parseFloat(document.getElementById('primerPrice').value) || 0;
+                const apuPrice = parseFloat(document.getElementById('apuPrice').value) || 0;
+                const cornerPrice = parseFloat(document.getElementById('cornerPrice').value) || 0;
+                const meshPrice = parseFloat(document.getElementById('meshPrice').value) || 0;
+                
                 const laborRate = parseFloat(document.getElementById('laborRate').value) || 0;
                 const profitRate = parseFloat(document.getElementById('profitRate').value) || 0;
                 const logisticsCost = parseFloat(document.getElementById('logisticsCost').value) || 0;
-                const otherCost = parseFloat(document.getElementById('otherCost').value) || 0;
 
-                const materialsCost = (bagsNeeded * bagPrice) + (primerCanisters * primerPrice);
+                // Costs Calculation
+                const materialsCost = (bagsNeeded * bagPrice) + 
+                                      (primerCanisters * primerPrice) + 
+                                      (apuPcs * apuPrice) + 
+                                      (cornerPcs * cornerPrice) + 
+                                      (meshM2 * meshPrice);
+                                      
                 const laborCostTotal = area * laborRate;
                 const profitTotal = area * profitRate;
-                const logisticsAndOther = logisticsCost + otherCost;
+                const logisticsAndOther = logisticsCost;
 
                 const grandTotal = materialsCost + laborCostTotal + profitTotal + logisticsAndOther;
 
+                // Render PRO Results
                 document.getElementById('costMaterials').innerText = materialsCost.toFixed(2) + ' €';
                 document.getElementById('costLabor').innerText = laborCostTotal.toFixed(2) + ' €';
                 document.getElementById('costProfit').innerText = profitTotal.toFixed(2) + ' €';
