@@ -3,917 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plaster Calculator | Omietky</title>
-  <meta name="description" content="Professional wall plaster calculator online. Calculate plaster consumption, sand and cement ratios, or ready-mix bags needed for your project.">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPRB8JPVM2"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-RPRB8JPVM2');
-    </script>  
+    <title>Pro Plaster Calculator | BuildCalc Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        :root {
-            --primary: #FFC107;
-            --primary-hover: #e0a800;
-            --dark: #212529;
-            --dark-light: #343a40;
-            --bg-color: #f4f6f9;
-            --border: #ced4da;
-            --text: #495057;
-        }
-
-        body {
-     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 15px;
-            color: var(--dark);
-        }
-
-        .calculator-card {
-            background: #fff;
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-top: 5px solid var(--primary);
-        }
-
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .btn-history-top {
-            background: var(--dark);
-            color: var(--primary);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .lang-switcher select {
-            padding: 6px 12px;
-            font-size: 14px;
-            font-weight: bold;
-            border: 2px solid var(--dark);
-            border-radius: 4px;
-            background-color: var(--primary);
-            color: var(--dark);
-            cursor: pointer;
-        }
-
-        h2 {
-            text-align: center;
-            color: var(--dark);
-            margin-top: 0;
-            margin-bottom: 5px;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-
-        .company-contacts {
-            text-align: center;
-            font-size: 13px;
-            color: var(--dark-light);
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px dashed var(--border);
-        }
-
-        .company-contacts strong {
-            font-size: 16px;
-            color: var(--dark);
-        }
-
-        .company-contacts span {
-            display: block;
-            margin-top: 3px;
-        }
-
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-radius: 6px;
-            overflow: hidden;
-            border: 1px solid var(--dark);
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            background: #fff;
-            color: var(--dark);
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 14px;
-        }
-
-        .tab-btn.active {
-            background: var(--dark);
-            color: var(--primary);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .settings-box {
-            background: #f8f9fa;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: 700;
-            margin-bottom: 5px;
-            font-size: 13px;
-            color: var(--dark-light);
-            text-transform: uppercase;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 16px;
-            background-color: #fdfdfd;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 4px;
-            border: 1px solid var(--border);
-            margin-bottom: 15px;
-        }
-
-        .btn-calc {
-            width: 100%;
-            padding: 16px;
-            background-color: var(--primary);
-            color: var(--dark);
-            border: none;
-            border-radius: 4px;
-            font-size: 18px;
-            cursor: pointer;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-top: 10px;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-action {
-            flex: 1;
-            padding: 12px 5px;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 13px;
-            cursor: pointer;
-            text-transform: uppercase;
-            color: white;
-        }
-
-        .btn-pdf { background-color: #dc3545; }
-        .btn-save { background-color: #007bff; }
-        .btn-new { background-color: #28a745; }
-
-        .results {
-            margin-top: 20px;
-            padding: 15px;
-            background: #fff;
-            border: 2px solid var(--dark);
-            border-radius: 6px;
-        }
-
-        .results h3 {
-            margin-top: 0;
-            color: var(--dark);
-            text-transform: uppercase;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 10px;
-        }
-
-        .result-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px dashed var(--border);
-            font-size: 14px;
-        }
-
-        .total-materials {
-            background: #f8f9fa;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 4px;
-            font-weight: bold;
-            border-left: 4px solid var(--dark);
-        }
-
-        .grand-total-box {
-            background: var(--dark);
-            color: white;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        .grand-total-box span {
-            display: block;
-            font-size: 13px;
-            color: var(--primary);
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .grand-total-box .big-number {
-            font-size: 24px;
-            font-weight: bold;
-            color: #fff;
-        }
-
-        .profit-box {
-            background: var(--primary);
-            color: var(--dark);
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 10px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .pro-only { display: none; }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: white;
-            width: 90%;
-            max-width: 400px;
-            border-radius: 8px;
-            padding: 20px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        .history-item {
-            background: #f8f9fa;
-            border: 1px solid var(--border);
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        .history-item strong { color: var(--dark); }
-
-        /* Стилі для SEO інструкції */
-        .seo-instructions {
-            max-width: 500px;
-            margin: 20px auto 0 auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            color: var(--text);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        .seo-instructions h3 {
-            margin-top: 0;
-            color: var(--dark);
-            font-size: 16px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
-            text-transform: uppercase;
-        }
-        .seo-instructions ol {
-            margin: 0;
-            padding-left: 20px;
-        }
-        .seo-instructions li {
-            margin-bottom: 10px;
-        }
-
-        @media print {
-            .no-print { display: none !important; }
-            body { background: white; padding: 0; }
-            .calculator-card { box-shadow: none; border: none; padding: 0; max-width: 100%; }
-            .results { border: none; margin-top: 0; padding: 0; }
-            .company-contacts { border-bottom: 2px solid var(--dark); padding-bottom: 10px; }
-        }
-            /* Стилі навігації */
-        .nav-link { padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 13px; transition: all 0.3s; }
-        .nav-link.active { background: #eab308; color: #000; }
-        .nav-link.inactive { background: #171717; color: #a3a3a3; }
-        .nav-link:hover { background: #333; color: #fff; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0a0a0a; color: #f5f5f5; }
+        .gold-border-glow:focus { border-color: #eab308; box-shadow: 0 0 15px rgba(234, 179, 8, 0.2); }
     </style>
-​<script src="../nav.js"></script>
 </head>
-<body>
-    <div id="global-nav-container"></div>
-    <div class="modal-overlay" id="historyModal">
-    <div class="modal-content">
-        <h3 id="txtHistoryTitle" style="margin-top:0;">History</h3>
-        <div id="historyList"></div>
-        <button class="btn-action btn-new no-print" id="btnCloseHistory" onclick="closeHistory()" style="width: 100%; margin-top: 10px;">Close</button>
-        <button class="btn-action btn-pdf no-print" id="btnClearHistory" onclick="clearHistory()" style="width: 100%; margin-top: 10px;">Clear History</button>
-    </div>
-</div>
+<body class="min-h-screen flex flex-col justify-between">
 
-<div class="calculator-card">
-    <div class="top-bar no-print">
-        <button class="btn-history-top" id="btnTopHistory" onclick="openHistory()">🕒 History</button>
-        <div class="lang-switcher">
-            <select id="langSelect" onchange="changeLang()">
-                <option value="en" selected>🇺🇸 EN</option>
-                <option value="uk">🇺🇦 UK</option>
-                <option value="sk">🇸🇰 SK</option>
-            </select>
+    <!-- HEADER -->
+    <header class="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur sticky top-0 z-50 px-4 py-4">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-extrabold text-white flex items-center gap-2">
+                <span class="bg-yellow-500 text-black p-1.5 rounded-lg">🧱</span> PLASTER PRO <span class="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded">v2.0</span>
+            </h1>
+            <div class="flex gap-2">
+                <button onclick="setLang('uk')" class="px-3 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">UKR</button>
+                <button onclick="setLang('en')" class="px-3 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">ENG</button>
+            </div>
         </div>
-    </div>
+    </header>
 
-    <h2 id="title">Plaster Calculator</h2>
-     <div class="company-contacts">
-        <strong id="previewCompName">Plastering Master</strong>
-        <span id="previewCompPhone"></span>
-        <span id="previewCompEmail"></span>
-    </div>
-    
-    <div class="settings-box no-print">
-        <h4 id="lblCompSettings" style="margin: 0 0 10px 0; font-size: 14px; text-transform: uppercase; color: var(--dark); border-bottom: 1px solid var(--border); padding-bottom: 5px;">⚙️ Print Settings (PDF)</h4>
-        <div class="form-group" style="margin-bottom: 8px;">
-            <label for="userCompName" id="lblYourComp" style="font-size: 11px;">Company Name / Your Name</label>
-            <input type="text" id="userCompName" oninput="updateCompanyPreview()" placeholder="e.g. Jozef s.r.o. / Master" style="padding: 8px; font-size: 14px;">
-        </div>
-        <div class="form-group" style="margin-bottom: 8px;">
-            <label for="userCompPhone" id="lblYourPhone" style="font-size: 11px;">Your Phone</label>
-            <input type="text" id="userCompPhone" oninput="updateCompanyPreview()" placeholder="+421..." style="padding: 8px; font-size: 14px;">
-        </div>
-        <div class="form-group" style="margin-bottom: 0;">
-            <label for="userCompEmail" id="lblYourEmail" style="font-size: 11px;">Your Email</label>
-            <input type="email" id="userCompEmail" oninput="updateCompanyPreview()" placeholder="name@email.com" style="padding: 8px; font-size: 14px;">
-        </div>
-    </div>
-
-    <div class="tabs no-print">
-        <button class="tab-btn active" id="tabSimple" onclick="setMode('simple')">Simple Mode</button>
-        <button class="tab-btn" id="tabPro" onclick="setMode('pro')">Pro Mode</button>
-    </div>
-
-    <div class="form-group no-print">
-        <label for="plasterType" id="lblPlasterType">Plaster Type</label>
-        <select id="plasterType" onchange="togglePlasterType()">
-            <option value="mpi25" id="optMpi">Cement-Lime (MPI 25) - 1.5 kg/mm/m²</option>
-            <option value="ratioglad" id="optRatio">Gypsum Smooth (Ratioglad) - 0.9 kg/mm/m²</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="area" id="lblArea">Wall Area (m²)</label>
-        <input type="number" id="area" value="100" min="1">
-    </div>
-    <div class="form-group">
-        <label for="thickness" id="lblThickness">Average Thickness (mm)</label>
-        <input type="number" id="thickness" value="15" min="1">
-    </div>
-
-    <div class="form-group no-print">
-        <label for="bagPrice" id="lblBagPrice">Plaster Bag Price (€)</label>
-        <input type="number" id="bagPrice" value="6.5" step="0.1">
-    </div>
-    <div class="form-group pro-only no-print">
-        <label for="bagWeight" id="lblBagWeight">Bag Weight (kg)</label>
-        <input type="number" id="bagWeight" value="25">
-    </div>
-    <div class="form-group no-print">
-        <label for="primerPrice" id="lblPrimerPrice">Primer Canister Price (5L) (€)</label>
-        <input type="number" id="primerPrice" value="12.0" step="0.1">
-    </div>
-
-    <div id="proInputs" class="pro-only no-print">
-        <hr style="border: 0; border-top: 2px dashed #ced4da; margin: 20px 0;">
-        <div class="form-group">
-            <label for="corners" id="lblCorners">External Corners (meters)</label>
-            <input type="number" id="corners" value="20" min="0">
-        </div>
-        <div class="form-group">
-            <label for="cornerPrice" id="lblCornerPrice">Corner Profile Price (2.5m / pc) (€)</label>
-            <input type="number" id="cornerPrice" value="1.50" step="0.1">
-        </div>
-        <div class="form-group">
-            <label for="apu" id="lblApu">Window Slopes (meters for APU)</label>
-            <input type="number" id="apu" value="15" min="0">
-        </div>
-        <div class="form-group">
-            <label for="apuPrice" id="lblApuPrice">APU Window Profile Price (2.4m / pc) (€)</label>
-            <input type="number" id="apuPrice" value="2.20" step="0.1">
-        </div>
-        <div class="checkbox-group">
-            <input type="checkbox" id="needMesh" onchange="toggleMeshInput()">
-            <label for="needMesh" id="lblNeedMesh">Add Reinforcing Mesh?</label>
-        </div>
-        <div class="form-group" id="meshAreaGroup" style="display: none;">
-            <label for="meshArea" id="lblMeshArea">Area to be Meshed (m²)</label>
-            <input type="number" id="meshArea" value="30" min="0">
-            <label for="meshPrice" id="lblMeshPrice" style="margin-top: 5px;">Mesh Roll Price (50m²) (€)</label>
-            <input type="number" id="meshPrice" value="35.0" step="0.5">
-        </div>
-        <hr style="border: 0; border-top: 2px dashed #ced4da; margin: 20px 0;">
-        <div class="form-group">
-            <label for="laborRate" id="lblLaborRate">Labor Rate (€ per m²)</label>
-            <input type="number" id="laborRate" value="12.0" step="0.5">
-        </div>
-        <div class="form-group">
-            <label for="otherExpenses" id="lblOtherExpenses">Other Expenses / Helper pay (€)</label>
-            <input type="number" id="otherExpenses" value="150" min="0">
-        </div>
-    </div>
-
-    <button class="btn-calc no-print" id="btnCalc" onclick="calculatePlaster()">Calculate</button>
-
-    <div class="results" id="resultsBox" style="display: none;">
-        <h3 id="lblResults">Results</h3>
-        <div class="result-item"><span id="txtResBags">Plaster bags:</span> <strong id="resBagsVal">0</strong></div>
-        <div class="result-item"><span id="txtResPrimer">Primer Canisters (5L):</span> <strong id="resPrimerVal">0</strong></div>
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-4xl mx-auto px-4 py-8 w-full grid grid-cols-1 md:grid-cols-2 gap-6">
         
-        <div id="proResults" class="pro-only">
-            <div class="result-item"><span id="txtResCorners">Corner Profiles (2.5m):</span> <strong id="resCornersVal">0</strong></div>
-            <div class="result-item"><span id="txtResApu">APU Profiles (2.4m):</span> <strong id="resApuVal">0</strong></div>
-            <div class="result-item" id="meshResultRow" style="display: none;"><span id="txtResMesh">Mesh Rolls (50m²):</span> <strong id="resMeshVal">0</strong></div>
-        </div>
+        <!-- INPUTS COLUMN -->
+        <div class="space-y-6 bg-neutral-900/50 border border-neutral-800 p-6 rounded-2xl">
+            <h2 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
+                <i data-lucide="sliders" class="w-5 h-5"></i> <span id="txt-params">Параметри поверхні</span>
+            </h2>
 
-        <div class="total-materials">
-            <div class="result-item" style="border: none; padding: 0;">
-                <span id="txtTotalMatCost">Total Materials Cost:</span> 
-                <strong id="totalMatCostVal">0.00 €</strong>
+            <!-- Plaster Type -->
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-type">Тип штукатурки</label>
+                <select id="plasterType" onchange="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-medium focus:outline-none gold-border-glow">
+                    <option value="1.5">Цементно-вапняна (1.5 кг/мм/м²)</option>
+                    <option value="1.2">Гіпсова (1.2 кг/мм/м²)</option>
+                    <option value="1.6">Фасадна / Декоративна (1.6 кг/мм/м²)</option>
+                </select>
+            </div>
+
+            <!-- Wall Area -->
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-area">Площа стін (м²)</label>
+                <input type="number" id="wallArea" value="100" step="1" min="1" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow">
+            </div>
+
+            <!-- Average Thickness -->
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-thick">Середня товщина (мм)</label>
+                <input type="number" id="wallThick" value="15" step="1" min="1" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow">
+            </div>
+
+            <hr class="border-neutral-800 my-4">
+
+            <!-- ECONOMICS & PRICING -->
+            <h2 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
+                <i data-lucide="wallet" class="w-5 h-5"></i> <span id="txt-econ">Економіка, ціни та логістика</span>
+            </h2>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-bag-price">Ціна мішка (€)</label>
+                    <input type="number" id="bagPrice" value="6.50" step="0.1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-primer-price">Ціна ґрунтовки 5л (€)</label>
+                    <input type="number" id="primerPrice" value="12.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-labor-rate">Робота (€/м²)</label>
+                    <input type="number" id="laborRate" value="8.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-profit-rate">Прибуток (€/м²)</label>
+                    <input type="number" id="profitRate" value="5.00" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-logistics">Логістика (€)</label>
+                    <input type="number" id="logisticsCost" value="50" step="5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-other">Інші витрати (€)</label>
+                    <input type="number" id="otherCost" value="30" step="5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold focus:outline-none gold-border-glow">
+                </div>
             </div>
         </div>
 
-        <div id="financialTotals" class="pro-only">
-            <div class="grand-total-box">
-                <span id="txtGrandTotal">Grand Total for Client</span>
-                <div class="big-number" id="grandTotalVal">0.00 €</div>
+        <!-- RESULTS & FINANCIAL SUMMARY COLUMN -->
+        <div class="space-y-6">
+            <!-- Materials Required -->
+            <div class="bg-neutral-900/50 border border-neutral-800 p-6 rounded-2xl space-y-4">
+                <h3 class="text-md font-bold text-white uppercase tracking-wider" id="txt-materials-needed">Кількість матеріалів</h3>
+                
+                <div class="flex justify-between items-center border-b border-neutral-800 pb-3">
+                    <span class="text-neutral-400" id="txt-bags-count">Мішки штукатурки (25 кг):</span>
+                    <span class="text-xl font-bold text-white" id="resBags">0 шт</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-neutral-800 pb-3">
+                    <span class="text-neutral-400" id="txt-primer-count">Ґрунтовка (каністри 5л):</span>
+                    <span class="text-xl font-bold text-white" id="resPrimer">0 шт</span>
+                </div>
             </div>
-            <div class="profit-box no-print">
-                <span id="txtNetProfit">Your Net Profit:</span> <span id="netProfitVal">0.00 €</span>
+
+            <!-- Financial Summary -->
+            <div class="bg-neutral-950 border border-yellow-500/30 p-6 rounded-2xl space-y-4 shadow-xl">
+                <h3 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
+                    <i data-lucide="receipt" class="w-5 h-5"></i> <span id="txt-financial-summary">Фінансовий підсумок</span>
+                </h3>
+
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between text-neutral-300">
+                        <span id="txt-res-materials">Матеріали:</span>
+                        <span class="font-bold text-white" id="costMaterials">0.00 €</span>
+                    </div>
+                    <div class="flex justify-between text-neutral-300">
+                        <span id="txt-res-labor">Вартість робіт:</span>
+                        <span class="font-bold text-white" id="costLabor">0.00 €</span>
+                    </div>
+                    <div class="flex justify-between text-neutral-300">
+                        <span id="txt-res-profit">Прибуток підрядника:</span>
+                        <span class="font-bold text-white" id="costProfit">0.00 €</span>
+                    </div>
+                    <div class="flex justify-between text-neutral-300">
+                        <span id="txt-res-logistics">Логістика та інші витрати:</span>
+                        <span class="font-bold text-white" id="costLogistics">0.00 €</span>
+                    </div>
+                </div>
+
+                <hr class="border-neutral-800">
+
+                <div class="flex justify-between items-center pt-2">
+                    <span class="text-lg font-bold text-white" id="txt-grand-total">Загальна вартість:</span>
+                    <span class="text-3xl font-black text-yellow-400" id="grandTotal">0.00 €</span>
+                </div>
             </div>
         </div>
+    </main>
 
-        <div class="action-buttons no-print">
-            <button class="btn-action btn-save" id="btnSave" onclick="saveToHistory()">💾 Save</button>
-            <button class="btn-action btn-pdf" id="btnPdf" onclick="window.print()">📄 PDF</button>
-            <button class="btn-action btn-new" id="btnNew" onclick="newObject()">🔄 New</button>
-        </div>
-    </div>
-</div>
+    <!-- FOOTER -->
+    <footer class="border-t border-neutral-800 bg-neutral-950 py-4 text-center text-xs text-neutral-500">
+        © 2026 BuildCalc Suite. All rights reserved.
+    </footer>
 
-<!-- БЛОК ІНСТРУКЦІЇ (ДЛЯ SEO ТА КОРИСТУВАЧІВ) -->
-<div class="seo-instructions no-print">
-    <h3 id="seoTitle">How to use the Plaster Calculator</h3>
-    <ol>
-        <li id="seoStep1">Choose the calculation mode (Simple/Pro) and select the plaster type (Cement-Lime or Gypsum).</li>
-        <li id="seoStep2">Enter the total wall area in square meters (m²) and the estimated average thickness in millimeters (mm).</li>
-        <li id="seoStep3">In Pro Mode, adjust material prices, add external corners, window slopes (APU), and reinforcing mesh if needed.</li>
-        <li id="seoStep4">Personalize your PDF reports by entering your Company Name, Phone, and Email in the Print Settings.</li>
-        <li id="seoStep5">Click "Calculate" to see the results. Use "Save" to keep history, "PDF" to print a branded estimate, or "New" to reset.</li>
-    </ol>
-</div>
+    <!-- LOGIC SCRIPT -->
+    <script>
+        let currentLang = 'uk';
 
-</body>
-          </html>
-        <script>
-    // --- TRANSLATIONS (Now includes SEO Instructions) ---
-    const translations = {
-        en: {
-            title: "Plaster Calculator",
-            tabSimple: "Simple Mode",
-            tabPro: "Pro Mode",
-            lblCompSettings: "⚙️ Print Settings (PDF)",
-            lblYourComp: "Company Name / Your Name",
-            lblYourPhone: "Your Phone",
-            lblYourEmail: "Your Email",
-            lblPlasterType: "Plaster Type",
-            optMpi: "Cement-Lime (MPI 25) - 1.5 kg/mm/m²",
-            optRatio: "Gypsum Smooth (Ratioglad) - 0.9 kg/mm/m²",
-            lblArea: "Wall Area (m²)",
-            lblThickness: "Average Thickness (mm)",
-            lblBagPrice: "Plaster Bag Price (€)",
-            lblBagWeight: "Bag Weight (kg)",
-            lblPrimerPrice: "Primer Canister Price (5L) (€)",
-            lblCorners: "External Corners (meters)",
-            lblCornerPrice: "Corner Profile Price (2.5m / pc) (€)",
-            lblApu: "Window Slopes (meters for APU)",
-            lblApuPrice: "APU Window Profile Price (2.4m / pc) (€)",
-            lblNeedMesh: "Add Reinforcing Mesh?",
-            lblMeshArea: "Area to be Meshed (m²)",
-            lblMeshPrice: "Mesh Roll Price (50m²) (€)",
-            lblLaborRate: "Labor Rate (€ per m²)",
-            lblOtherExpenses: "Other Expenses / Helper pay (€)",
-            btnCalc: "Calculate",
-            lblResults: "Results",
-            txtResBags: "Plaster bags:",
-            txtResPrimer: "Primer Canisters (5L):",
-            txtResCorners: "Corner Profiles (2.5m):",
-            txtResApu: "APU Profiles (2.4m):",
-            txtResMesh: "Mesh Rolls (50m²):",
-            txtTotalMatCost: "Total Materials Cost:",
-            txtGrandTotal: "Grand Total for Client",
-            txtNetProfit: "Your Net Profit:",
-            btnTopHistory: "🕒 History",
-            txtHistoryTitle: "History",
-            btnCloseHistory: "Close",
-            btnClearHistory: "Clear History",
-            btnSave: "💾 Save",
-            btnPdf: "📄 PDF",
-            btnNew: "🔄 New",
-            alertFill: "Please fill area and thickness correctly.",
-            alertSaved: "Saved to history!",
-            alertCleared: "History cleared!",
-            seoTitle: "How to use the Plaster Calculator",
-            seoStep1: "Choose the calculation mode (Simple/Pro) and select the plaster type (Cement-Lime or Gypsum).",
-            seoStep2: "Enter the total wall area in square meters (m²) and the estimated average thickness in millimeters (mm).",
-            seoStep3: "In Pro Mode, adjust material prices, add external corners, window slopes (APU), and reinforcing mesh if needed.",
-            seoStep4: "Personalize your PDF reports by entering your Company Name, Phone, and Email in the Print Settings.",
-            seoStep5: "Click 'Calculate' to see the results. Use 'Save' to keep history, 'PDF' to print a branded estimate, or 'New' to reset."
-        },
-        uk: {
-            title: "Калькулятор Штукатурки",
-            tabSimple: "Простий Режим",
-            tabPro: "Про Режим",
-            lblCompSettings: "⚙️ Налаштування Друк (PDF)",
-            lblYourComp: "Назва компанії / Ваше ім'я",
-            lblYourPhone: "Ваш телефон",
-            lblYourEmail: "Ваш Email",
-            lblPlasterType: "Тип Штукатурки",
-            optMpi: "Цементно-вапняна (MPI 25) - 1.5 кг/мм/м²",
-            optRatio: "Гіпсова гладка (Ratioglad) - 0.9 кг/мм/м²",
-            lblArea: "Площа стін (м²)",
-            lblThickness: "Середня товщина (мм)",
-            lblBagPrice: "Ціна мішка штукатурки (€)",
-            lblBagWeight: "Вага мішка (кг)",
-            lblPrimerPrice: "Ціна каністри ґрунтовки (5л) (€)",
-            lblCorners: "Зовнішні кути (метри)",
-            lblCornerPrice: "Ціна кутового профілю (2.5м / шт) (€)",
-            lblApu: "Відкоси вікон (метри для APU)",
-            lblApuPrice: "Ціна APU профілю (2.4м / шт) (€)",
-            lblNeedMesh: "Додати армувальну сітку?",
-            lblMeshArea: "Площа для сітки (м²)",
-            lblMeshPrice: "Ціна рулону сітки (50м²) (€)",
-            lblLaborRate: "Ціна за роботу (€ за м²)",
-            lblOtherExpenses: "Інші витрати / Оплата підсобнику (€)",
-            btnCalc: "Розрахувати",
-            lblResults: "Результати",
-            txtResBags: "Мішки штукатурки:",
-            txtResPrimer: "Каністри ґрунтовки (5л):",
-            txtResCorners: "Кутові профілі (2.5м):",
-            txtResApu: "APU профілі (2.4м):",
-            txtResMesh: "Рулони сітки (50м²):",
-            txtTotalMatCost: "Загальна вартість матеріалів:",
-            txtGrandTotal: "Загальна сума для клієнта",
-            txtNetProfit: "Ваш чистий прибуток:",
-            btnTopHistory: "🕒 Історія",
-            txtHistoryTitle: "Історія розрахунків",
-            btnCloseHistory: "Закрити",
-            btnClearHistory: "Очистити історію",
-            btnSave: "💾 Зберегти",
-            btnPdf: "📄 PDF",
-            btnNew: "🔄 Новий",
-            alertFill: "Будь ласка, введіть коректно площу та товщину.",
-            alertSaved: "Збережено в історію!",
-            alertCleared: "Історію очищено!",
-            seoTitle: "Як користуватися калькулятором штукатурки",
-            seoStep1: "Виберіть режим розрахунку (Простий/Про) та тип штукатурки (Цементно-вапняна або Гіпсова).",
-            seoStep2: "Введіть загальну площу стін у квадратних метрах (м²) та середню товщину шару в міліметрах (мм).",
-            seoStep3: "У Про-режимі налаштуйте ціни, додайте зовнішні кути, віконні відкоси (APU) та армувальну сітку за потреби.",
-            seoStep4: "Персоналізуйте свої PDF-звіти: введіть назву компанії, телефон та Email у налаштуваннях друку.",
-            seoStep5: "Натисніть 'Розрахувати' для отримання результатів. Зберігайте історію, друкуйте брендований PDF або створюйте новий об'єкт."
-        },
-        sk: {
-            title: "Kalkulačka Omietok",
-            tabSimple: "Jednoduchý Režim",
-            tabPro: "Pro Režim",
-            lblCompSettings: "⚙️ Nastavenia tlače (PDF)",
-            lblYourComp: "Názov firmy / Vaše meno",
-            lblYourPhone: "Váš telefón",
-            lblYourEmail: "Váš Email",
-            lblPlasterType: "Typ Omietky",
-            optMpi: "Vápenno-cementová (MPI 25) - 1.5 kg/mm/m²",
-            optRatio: "Sadrová hladká (Ratioglad) - 0.9 kg/mm/m²",
-            lblArea: "Plocha stien (m²)",
-            lblThickness: "Priemerná hrúbka (mm)",
-            lblBagPrice: "Cena vreca omietky (€)",
-            lblBagWeight: "Hmotnosť vreca (kg)",
-            lblPrimerPrice: "Cena penetráku (5L) (€)",
-            lblCorners: "Vonkajšie rohy (metre)",
-            lblCornerPrice: "Cena rohovníka (2.5m / ks) (€)",
-            lblApu: "Okenné ostenia (metre pre APU)",
-            lblApuPrice: "Cena APU lišty (2.4m / ks) (€)",
-            lblNeedMesh: "Pridať armovaciu sieťku?",
-            lblMeshArea: "Plocha pre sieťku (m²)",
-            lblMeshPrice: "Cena rolky sieťky (50m²) (€)",
-            lblLaborRate: "Cena práce (€ za m²)",
-            lblOtherExpenses: "Iné výdavky / Plat pomocníka (€)",
-            btnCalc: "Vypočítať",
-            lblResults: "Výsledky",
-            txtResBags: "Vrecia omietky:",
-            txtResPrimer: "Bandasky penetráku (5L):",
-            txtResCorners: "Rohovníky (2.5m):",
-            txtResApu: "APU lišty (2.4m):",
-            txtResMesh: "Rolky sieťky (50m²):",
-            txtTotalMatCost: "Celková cena materiálu:",
-            txtGrandTotal: "Celková suma pre klienta",
-            txtNetProfit: "Váš čistý zisk:",
-            btnTopHistory: "🕒 História",
-            txtHistoryTitle: "História",
-            btnCloseHistory: "Zavrieť",
-            btnClearHistory: "Vymazať históriu",
-            btnSave: "💾 Uložiť",
-            btnPdf: "📄 PDF",
-            btnNew: "🔄 Nový",
-            alertFill: "Prosím vyplňte správne plochu a hrúbku.",
-            alertSaved: "Uložené do histórie!",
-            alertCleared: "História bola vymazaná!",
-            seoTitle: "Ako používať kalkulačku omietok",
-            seoStep1: "Vyberte režim výpočtu (Jednoduchý/Pro) a typ omietky (Vápenno-cementová alebo Sadrová).",
-            seoStep2: "Zadajte celkovú plochu stien v metroch štvorcových (m²) a priemernú hrúbku v milimetroch (mm).",
-            seoStep3: "V Pro režime upravte ceny, pridajte vonkajšie rohy, okenné ostenia (APU) a armovaciu sieťku podľa potreby.",
-            seoStep4: "Personalizujte svoje PDF reporty zadaním názvu firmy, telefónu a emailu v nastaveniach tlače.",
-            seoStep5: "Kliknite na 'Vypočítať' pre zobrazenie výsledkov. Uložte si históriu, vytlačte PDF s vaším menom, alebo začnite odznova."
-        }
-    };
-
-    let currentMode = 'simple';
-    let lang = 'en';
-    let history = JSON.parse(localStorage.getItem('plasterHistory')) || [];
-
-    // --- TRANSLATION FUNCTION ---
-    function changeLang() {
-        lang = document.getElementById('langSelect').value;
-        const t = translations[lang];
-
-        const elementsToUpdate = [
-            'title', 'tabSimple', 'tabPro', 'lblPlasterType', 'optMpi', 'optRatio',
-            'lblArea', 'lblThickness', 'lblBagPrice', 'lblBagWeight', 'lblPrimerPrice',
-            'lblCorners', 'lblCornerPrice', 'lblApu', 'lblApuPrice', 'lblNeedMesh',
-            'lblMeshArea', 'lblMeshPrice', 'lblLaborRate', 'lblOtherExpenses',
-            'btnCalc', 'lblResults', 'txtResBags', 'txtResPrimer', 'txtResCorners',
-            'txtResApu', 'txtResMesh', 'txtTotalMatCost', 'txtGrandTotal', 'txtNetProfit',
-            'lblCompSettings', 'lblYourComp', 'lblYourPhone', 'lblYourEmail',
-            'btnTopHistory', 'txtHistoryTitle', 'btnCloseHistory', 'btnClearHistory',
-            'seoTitle', 'seoStep1', 'seoStep2', 'seoStep3', 'seoStep4', 'seoStep5'
-        ];
-
-        elementsToUpdate.forEach(id => {
-            if(document.getElementById(id)) {
-                if (document.getElementById(id).tagName === 'BUTTON') {
-                    document.getElementById(id).textContent = t[id] || t[id]; 
-                } else {
-                    document.getElementById(id).textContent = t[id];
-                }
+        const translations = {
+            uk: {
+                params: "Параметри поверхні",
+                type: "Тип штукатурки",
+                area: "Площа стін (м²)",
+                thick: "Середня товщина (мм)",
+                econ: "Економіка, ціни та логістика",
+                bagPrice: "Ціна мішка (€)",
+                primerPrice: "Ціна ґрунтовки 5л (€)",
+                laborRate: "Робота (€/м²)",
+                profitRate: "Прибуток (€/м²)",
+                logistics: "Логістика (€)",
+                other: "Інші витрати (€)",
+                materialsNeeded: "Кількість матеріалів",
+                bagsCount: "Мішки штукатурки (25 кг):",
+                primerCount: "Ґрунтовка (каністри 5л):",
+                financialSummary: "Фінансовий підсумок",
+                resMaterials: "Матеріали:",
+                resLabor: "Вартість робіт:",
+                resProfit: "Прибуток підрядника:",
+                resLogistics: "Логістика та інші витрати:",
+                grandTotal: "Загальна вартість:"
+            },
+            en: {
+                params: "Surface Parameters",
+                type: "Plaster Type",
+                area: "Wall Area (m²)",
+                thick: "Average Thickness (mm)",
+                econ: "Economics, Pricing & Logistics",
+                bagPrice: "Bag Price (€)",
+                primerPrice: "Primer Price 5L (€)",
+                laborRate: "Labor (€/m²)",
+                profitRate: "Profit (€/m²)",
+                logistics: "Logistics (€)",
+                other: "Other Expenses (€)",
+                materialsNeeded: "Materials Required",
+                bagsCount: "Plaster Bags (25 kg):",
+                primerCount: "Primer (5L canisters):",
+                financialSummary: "Financial Summary",
+                resMaterials: "Materials:",
+                resLabor: "Labor Cost:",
+                resProfit: "Contractor Profit:",
+                resLogistics: "Logistics & Other Expenses:",
+                grandTotal: "Grand Total:"
             }
-        });
+        };
 
-        document.getElementById('btnSave').textContent = t.btnSave;
-        document.getElementById('btnPdf').textContent = t.btnPdf;
-        document.getElementById('btnNew').textContent = t.btnNew;
-        document.getElementById('btnTopHistory').textContent = t.btnTopHistory;
-    }
-
-    // --- COMPANY PREVIEW ---
-    function updateCompanyPreview() {
-        const name = document.getElementById('userCompName').value;
-        const phone = document.getElementById('userCompPhone').value;
-        const email = document.getElementById('userCompEmail').value;
-
-        const pName = document.getElementById('previewCompName');
-        const pPhone = document.getElementById('previewCompPhone');
-        const pEmail = document.getElementById('previewCompEmail');
-
-        pName.textContent = name ? name : "Plastering Master";
-        pPhone.textContent = phone ? phone : "";
-        pEmail.textContent = email ? email : "";
-
-        pPhone.style.display = phone ? "block" : "none";
-        pEmail.style.display = email ? "block" : "none";
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-        updateCompanyPreview();
-        togglePlasterType();
-    });
-
-    // --- MODES & TOGGLES ---
-    function setMode(mode) {
-        currentMode = mode;
-        const proElements = document.querySelectorAll('.pro-only');
-        const tabSimple = document.getElementById('tabSimple');
-        const tabPro = document.getElementById('tabPro');
-
-        if (mode === 'pro') {
-            proElements.forEach(el => el.style.display = 'block');
-            tabPro.classList.add('active');
-            tabSimple.classList.remove('active');
-        } else {
-            proElements.forEach(el => el.style.display = 'none');
-            tabSimple.classList.add('active');
-            tabPro.classList.remove('active');
-        }
-        
-        document.getElementById('resultsBox').style.display = 'none';
-        toggleMeshInput(); 
-    }
-
-    function toggleMeshInput() {
-        const needMesh = document.getElementById('needMesh').checked;
-        const meshGroup = document.getElementById('meshAreaGroup');
-        const meshResRow = document.getElementById('meshResultRow');
-        
-        if(currentMode === 'pro') {
-            meshGroup.style.display = needMesh ? 'block' : 'none';
-            meshResRow.style.display = needMesh ? 'flex' : 'none';
-        } else {
-            meshGroup.style.display = 'none';
-            meshResRow.style.display = 'none';
-        }
-    }
-
-    function togglePlasterType() {
-        const pType = document.getElementById('plasterType').value;
-        const bagPriceInput = document.getElementById('bagPrice');
-        const primerPriceInput = document.getElementById('primerPrice');
-
-        if (pType === 'mpi25') {
-            bagPriceInput.value = "6.5";
-            primerPriceInput.value = "12.0"; 
-        } else {
-            bagPriceInput.value = "7.5";
-            primerPriceInput.value = "35.0"; 
-        }
-    }
-
-    // --- CALCULATION LOGIC ---
-    function calculatePlaster() {
-        const area = parseFloat(document.getElementById('area').value);
-        const thickness = parseFloat(document.getElementById('thickness').value);
-        
-        if (!area || !thickness) {
-            alert(translations[lang].alertFill);
-            return;
+        function setLang(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            document.getElementById('txt-params').innerText = t.params;
+            document.getElementById('txt-type').innerText = t.type;
+            document.getElementById('txt-area').innerText = t.area;
+            document.getElementById('txt-thick').innerText = t.thick;
+            document.getElementById('txt-econ').innerText = t.econ;
+            document.getElementById('txt-bag-price').innerText = t.bagPrice;
+            document.getElementById('txt-primer-price').innerText = t.primerPrice;
+            document.getElementById('txt-labor-rate').innerText = t.laborRate;
+            document.getElementById('txt-profit-rate').innerText = t.profitRate;
+            document.getElementById('txt-logistics').innerText = t.logistics;
+            document.getElementById('txt-other').innerText = t.other;
+            document.getElementById('txt-materials-needed').innerText = t.materialsNeeded;
+            document.getElementById('txt-bags-count').innerText = t.bagsCount;
+            document.getElementById('txt-primer-count').innerText = t.primerCount;
+            document.getElementById('txt-financial-summary').innerText = t.financialSummary;
+            document.getElementById('txt-res-materials').innerText = t.resMaterials;
+            document.getElementById('txt-res-labor').innerText = t.resLabor;
+            document.getElementById('txt-res-profit').innerText = t.resProfit;
+            document.getElementById('txt-res-logistics').innerText = t.resLogistics;
+            document.getElementById('txt-grand-total').innerText = t.grandTotal;
         }
 
-        const pType = document.getElementById('plasterType').value;
-        const bagPrice = parseFloat(document.getElementById('bagPrice').value) || 0;
-        const bagWeight = parseFloat(document.getElementById('bagWeight').value) || 25;
-        const primerPrice = parseFloat(document.getElementById('primerPrice').value) || 0;
+        function calculate() {
+            // Inputs
+            const consumptionRate = parseFloat(document.getElementById('plasterType').value) || 1.5;
+            const area = parseFloat(document.getElementById('wallArea').value) || 0;
+            const thick = parseFloat(document.getElementById('wallThick').value) || 0;
 
-        const consumptionFactor = pType === 'mpi25' ? 1.5 : 0.9;
-        const totalKg = area * thickness * consumptionFactor;
-        const bagsNeeded = Math.ceil(totalKg / bagWeight);
-        const primerNeeded = Math.ceil(area / 30); 
-
-        let matCost = (bagsNeeded * bagPrice) + (primerNeeded * primerPrice);
-
-        document.getElementById('resBagsVal').textContent = bagsNeeded;
-        document.getElementById('resPrimerVal').textContent = primerNeeded;
-
-        let clientTotal = 0;
-        let profit = 0;
-
-        if (currentMode === 'pro') {
-            const corners = parseFloat(document.getElementById('corners').value) || 0;
-            const cornerPrice = parseFloat(document.getElementById('cornerPrice').value) || 0;
-            const apu = parseFloat(document.getElementById('apu').value) || 0;
-            const apuPrice = parseFloat(document.getElementById('apuPrice').value) || 0;
-            
-            const cornerPcs = Math.ceil(corners / 2.5);
-            const apuPcs = Math.ceil(apu / 2.4);
-            
-            matCost += (cornerPcs * cornerPrice) + (apuPcs * apuPrice);
-            
-            document.getElementById('resCornersVal').textContent = cornerPcs;
-            document.getElementById('resApuVal').textContent = apuPcs;
-
-            if (document.getElementById('needMesh').checked) {
-                const meshArea = parseFloat(document.getElementById('meshArea').value) || 0;
-                const meshPrice = parseFloat(document.getElementById('meshPrice').value) || 0;
-                const meshRolls = Math.ceil(meshArea / 50);
-                matCost += meshRolls * meshPrice;
-                document.getElementById('resMeshVal').textContent = meshRolls;
-            }
-
+            const bagPrice = parseFloat(document.getElementById('bagPrice').value) || 0;
+            const primerPrice = parseFloat(document.getElementById('primerPrice').value) || 0;
             const laborRate = parseFloat(document.getElementById('laborRate').value) || 0;
-            const otherExp = parseFloat(document.getElementById('otherExpenses').value) || 0;
+            const profitRate = parseFloat(document.getElementById('profitRate').value) || 0;
+            const logisticsCost = parseFloat(document.getElementById('logisticsCost').value) || 0;
+            const otherCost = parseFloat(document.getElementById('otherCost').value) || 0;
 
-            const laborCost = area * laborRate;
-            clientTotal = matCost + laborCost;
-            profit = laborCost - otherExp;
+            // Calculations
+            // Total kg of plaster = Area * Thickness * Consumption rate (kg per mm per m2)
+            const totalKg = area * thick * consumptionRate;
+            const bagsNeeded = Math.ceil(totalKg / 25); // 25kg per bag
 
-            document.getElementById('grandTotalVal').textContent = clientTotal.toFixed(2) + " €";
-            document.getElementById('netProfitVal').textContent = profit.toFixed(2) + " €";
+            // Primer: ~0.15L per m2, 5L per canister
+            const totalPrimerLiters = area * 0.15;
+            const primerCanisters = Math.ceil(totalPrimerLiters / 5);
+
+            // Costs
+            const materialsCost = (bagsNeeded * bagPrice) + (primerCanisters * primerPrice);
+            const laborCostTotal = area * laborRate;
+            const profitTotal = area * profitRate;
+            const logisticsAndOther = logisticsCost + otherCost;
+
+            const grandTotal = materialsCost + laborCostTotal + profitTotal + logisticsAndOther;
+
+            // Render Results
+            document.getElementById('resBags').innerText = bagsNeeded + (currentLang === 'uk' ? ' шт' : ' pcs');
+            document.getElementById('resPrimer').innerText = primerCanisters + (currentLang === 'uk' ? ' шт' : ' pcs');
+
+            document.getElementById('costMaterials').innerText = materialsCost.toFixed(2) + ' €';
+            document.getElementById('costLabor').innerText = laborCostTotal.toFixed(2) + ' €';
+            document.getElementById('costProfit').innerText = profitTotal.toFixed(2) + ' €';
+            document.getElementById('costLogistics').innerText = logisticsAndOther.toFixed(2) + ' €';
+            document.getElementById('grandTotal').innerText = grandTotal.toFixed(2) + ' €';
         }
 
-        document.getElementById('totalMatCostVal').textContent = matCost.toFixed(2) + " €";
-        document.getElementById('resultsBox').style.display = 'block';
-    }
-
-    // --- NEW OBJECT ---
-    function newObject() {
-        document.getElementById('area').value = "100";
-        document.getElementById('thickness').value = "15";
-        document.getElementById('resultsBox').style.display = 'none';
-        
-        document.getElementById('corners').value = "20";
-        document.getElementById('apu').value = "15";
-        document.getElementById('needMesh').checked = false;
-        document.getElementById('meshArea').value = "30";
-        
-        toggleMeshInput();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // --- HISTORY SYSTEM ---
-    function saveToHistory() {
-        const area = document.getElementById('area').value;
-        const grandTotal = document.getElementById('grandTotalVal').textContent;
-        const date = new Date().toLocaleString();
-
-        const record = { date, area, mode: currentMode, total: currentMode === 'pro' ? grandTotal : "N/A" };
-        history.push(record);
-        localStorage.setItem('plasterHistory', JSON.stringify(history));
-        
-        alert(translations[lang].alertSaved);
-    }
-
-    // --- OPEN HISTORY ---
-    function openHistory() {
-        const modal = document.getElementById('historyModal');
-        const list = document.getElementById('historyList');
-        list.innerHTML = "";
-
-        if (history.length === 0) {
-            list.innerHTML = "<p>No history yet.</p>";
-        } else {
-            history.forEach(item => {
-                const div = document.createElement('div');
-                div.className = "history-item";
-                div.innerHTML = `📅 <strong>${item.date}</strong><br>
-                                 Area: ${item.area} m² | Mode: ${item.mode.toUpperCase()}<br>
-                                 Total: <strong>${item.total}</strong>`;
-                list.appendChild(div);
-            });
-        }
-        modal.style.display = "flex";
-    }
-
-    function closeHistory() {
-        document.getElementById('historyModal').style.display = "none";
-    }
-
-    function clearHistory() {
-        history = [];
-        localStorage.removeItem('plasterHistory');
-        openHistory();
-        alert(translations[lang].alertCleared);
-    }
-</script>
+        // Initialize icons and calculation on load
+        window.onload = () => {
+            lucide.createIcons();
+            calculate();
+        };
+    </script>
 </body>
-</html>  
+</html>
