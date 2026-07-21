@@ -647,9 +647,13 @@
             document.getElementById('val-primer').innerText = primerL;
             document.getElementById('val-clips').innerText = clipsTotal;
             document.getElementById('val-wedges').innerText = wedgesTotal;
-
+    document.getElementById('lbl-labor').innerText = t['lbl-labor'];
+    document.getElementById('lbl-res-labor').innerText = t['lbl-res-labor'];
             if (area > 0) {
                 saveToHistoryDebounced(w, l, area, tileSelect.join('x'));
+           const laborRate = parseFloat(document.getElementById('inp-labor').value) || 0;
+    const laborCost = area * laborRate;
+    document.getElementById('res-labor').innerText = laborCost.toFixed(2);
             }
         }
 
