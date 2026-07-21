@@ -176,6 +176,30 @@
                 </button>
             </div>
 
+            <!-- FINANCIALS / COSTS CARD -->
+            <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden transition-all duration-300">
+                <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
+                    <i data-lucide="wallet" class="w-5 h-5 text-yellow-500"></i>
+                    <span id="t-costs">Project Costs</span>
+                </h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-labor-rate">Labor Rate (per m²)</label>
+                        <div class="relative">
+                            <input type="number" id="inp-labor-rate" value="15" step="0.5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-4 pr-8 py-2.5 text-white font-bold focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                            <span class="absolute right-3 top-2.5 text-neutral-500 font-bold currency-symbol">$</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-other-expenses">Other Expenses (Fixed)</label>
+                        <div class="relative">
+                            <input type="number" id="inp-other-expenses" value="50" step="5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-4 pr-8 py-2.5 text-white font-bold focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                            <span class="absolute right-3 top-2.5 text-neutral-500 font-bold currency-symbol">$</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- PRO BRANDING CARD -->
             <div id="branding-card" class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden transition-all duration-300">
                 <div class="absolute -right-16 -top-16 w-32 h-32 bg-yellow-500/5 rounded-full blur-3xl"></div>
@@ -380,6 +404,27 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Financial Summary -->
+                <div class="mt-6 pt-4 border-t border-neutral-800">
+                    <h3 class="text-sm font-bold text-yellow-500 mb-3 uppercase tracking-widest" id="t-financial-summary">Financial Summary</h3>
+                    
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center bg-neutral-900/30 px-4 py-2 rounded-lg">
+                            <span class="text-sm text-neutral-400" id="lbl-total-labor">Total Labor Cost</span>
+                            <span class="font-bold text-white"><span id="val-total-labor">0.00</span> <span class="currency-symbol">$</span></span>
+                        </div>
+                        <div class="flex justify-between items-center bg-neutral-900/30 px-4 py-2 rounded-lg">
+                            <span class="text-sm text-neutral-400" id="lbl-total-other">Other Expenses</span>
+                            <span class="font-bold text-white"><span id="val-total-other">0.00</span> <span class="currency-symbol">$</span></span>
+                        </div>
+                        <div class="flex justify-between items-center bg-yellow-500/10 border border-yellow-500/20 px-4 py-3 rounded-lg mt-2">
+                            <span class="font-bold text-yellow-500" id="lbl-grand-total">Estimated Total</span>
+                            <span class="text-xl font-black text-yellow-400"><span id="val-grand-total">0.00</span> <span class="currency-symbol">$</span></span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <!-- CALCULATION HISTORY -->
@@ -445,6 +490,14 @@
                 "lbl-height": "Height/Length (m)",
                 "lbl-layers": "Drywall Layers",
                 "lbl-spacing": "Profile Spacing",
+                "t-costs": "Project Costs",
+                "lbl-labor-rate": "Labor Rate (per m²)",
+                "lbl-other-expenses": "Other Expenses (Fixed)",
+                "t-financial-summary": "Financial Summary",
+                "lbl-total-labor": "Total Labor Cost",
+                "lbl-total-other": "Other Expenses",
+                "lbl-grand-total": "Estimated Total",
+                "unit-currency": "$",
                 "t-branding": "PDF Brand Header Info",
                 "lbl-firm": "Firm Name",
                 "lbl-phone": "Phone",
@@ -496,6 +549,14 @@
                 "lbl-height": "Висота/Довжина (м)",
                 "lbl-layers": "Кількість шарів",
                 "lbl-spacing": "Крок профілю",
+                "t-costs": "Витрати на проект",
+                "lbl-labor-rate": "Вартість робіт (за м²)",
+                "lbl-other-expenses": "Інші витрати (фіксовано)",
+                "t-financial-summary": "Фінансовий підсумок",
+                "lbl-total-labor": "Загальна вартість робіт",
+                "lbl-total-other": "Додаткові витрати",
+                "lbl-grand-total": "Загальна вартість",
+                "unit-currency": "₴",
                 "t-branding": "Брендування PDF Звіту",
                 "lbl-firm": "Назва компанії",
                 "lbl-phone": "Телефон",
@@ -547,6 +608,14 @@
                 "lbl-height": "Výška/Dĺžka (m)",
                 "lbl-layers": "Vrstvy sadrokartónu",
                 "lbl-spacing": "Rozostup profilov",
+                "t-costs": "Náklady na projekt",
+                "lbl-labor-rate": "Cena práce (za m²)",
+                "lbl-other-expenses": "Ostatné výdavky (fixné)",
+                "t-financial-summary": "Finančné zhrnutie",
+                "lbl-total-labor": "Celková cena práce",
+                "lbl-total-other": "Dodatočné výdavky",
+                "lbl-grand-total": "Celková suma",
+                "unit-currency": "€",
                 "t-branding": "Informácie pre PDF Hlavičku",
                 "lbl-firm": "Názov firmy",
                 "lbl-phone": "Telefón",
@@ -584,7 +653,7 @@
                 "t-tip-2-title": "⚙️ Profilová konštrukcia (CD & UD profily)",
                 "t-tip-2-desc": "UD profil tvorí obvodový rám. CD profily slúžia ako zvislé nosné stojky. Bežný rozostup profilov je 60 cm, avšak pre náročnejšie inštalácie (napr. lepenie obkladu na priečku) sa odporúča hustejší rozostup 40 cm.",
                 "t-tip-3-title": "🔒 Výhody PRO režimu",
-                "t-tip-3-desc": "PRO režim zahŕňa presný výpočet spojovacieho materiálu. Vypočíta presný počet skrutiek (kotvenie každých 25 cm), priamych závesov pre stabilitu priečok, kotviacich hmoždiniek, sklotextilnej pásky a tmelu na spoje.",
+                "t-tip-3-desc": "PRO režim zahŕňa presný výpočet spojovacieho materiálu. Vypočíta presný počet skrutiek (kotvenie každých 25 cm), priamych závesov pre stability priečok, kotviacich hmoždiniek, sklotextilnej pásky a tmelu na spoje.",
                 "unit-pcs": "ks",
                 "unit-m": "m",
                 "unit-kg": "kg"
@@ -618,6 +687,13 @@
 
             // Specific unit updates
             updateUnitLabels();
+
+            // Update Currency Symbols
+            const currencySymbols = document.querySelectorAll('.currency-symbol');
+            currencySymbols.forEach(el => {
+                el.innerText = translations[currentLang]['unit-currency'];
+            });
+
             calculate();
         }
 
@@ -758,6 +834,17 @@
             document.getElementById('val-tape').innerText = tapeTotalMeters;
             document.getElementById('val-putty').innerText = puttyTotalKg;
 
+            // --- FINANCIAL COSTS CALCULATION ---
+            const laborRate = parseFloat(document.getElementById('inp-labor-rate').value) || 0;
+            const otherExpenses = parseFloat(document.getElementById('inp-other-expenses').value) || 0;
+            
+            const totalLabor = area * laborRate;
+            const grandTotal = totalLabor + otherExpenses;
+
+            document.getElementById('val-total-labor').innerText = totalLabor.toFixed(2);
+            document.getElementById('val-total-other').innerText = otherExpenses.toFixed(2);
+            document.getElementById('val-grand-total').innerText = grandTotal.toFixed(2);
+
             if (area > 0) {
                 saveToHistoryDebounced(width, height, area);
             }
@@ -825,6 +912,8 @@
             document.getElementById('inp-height').value = "3.0";
             document.getElementById('inp-layers').value = "1";
             document.getElementById('inp-spacing').value = "0.6";
+            document.getElementById('inp-labor-rate').value = "15";
+            document.getElementById('inp-other-expenses').value = "50";
             setStructureType('wall');
             calculate();
         }
