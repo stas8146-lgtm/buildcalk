@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,9 +20,10 @@
             <h1 class="text-xl font-extrabold text-white flex items-center gap-2">
                 <span class="bg-yellow-500 text-black p-1.5 rounded-lg">🧱</span> PLASTER PRO <span class="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded">v2.0</span>
             </h1>
-            <div class="flex gap-2">
-                <button onclick="setLang('uk')" class="px-3 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">UKR</button>
-                <button onclick="setLang('en')" class="px-3 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">ENG</button>
+            <div class="flex gap-1.5">
+                <button onclick="setLang('uk')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">UKR</button>
+                <button onclick="setLang('en')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">ENG</button>
+                <button onclick="setLang('sk')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">SK</button>
             </div>
         </div>
     </header>
@@ -180,7 +181,8 @@
                 resLabor: "Вартість робіт:",
                 resProfit: "Прибуток підрядника:",
                 resLogistics: "Логістика та інші витрати:",
-                grandTotal: "Загальна вартість:"
+                grandTotal: "Загальна вартість:",
+                unit: " шт"
             },
             en: {
                 params: "Surface Parameters",
@@ -202,7 +204,31 @@
                 resLabor: "Labor Cost:",
                 resProfit: "Contractor Profit:",
                 resLogistics: "Logistics & Other Expenses:",
-                grandTotal: "Grand Total:"
+                grandTotal: "Grand Total:",
+                unit: " pcs"
+            },
+            sk: {
+                params: "Parametre povrchu",
+                type: "Typ omietky",
+                area: "Plocha stien (m²)",
+                thick: "Priemerná hrúbka (mm)",
+                econ: "Ekonomika, ceny a logistika",
+                bagPrice: "Cena vrecka (€)",
+                primerPrice: "Cena penetrácie 5l (€)",
+                laborRate: "Práca (€/m²)",
+                profitRate: "Zisk (€/m²)",
+                logistics: "Logistika (€)",
+                other: "Iné náklady (€)",
+                materialsNeeded: "Potrebný materiál",
+                bagsCount: "Vrecia omietky (25 kg):",
+                primerCount: "Penetrácia (kanistre 5l):",
+                financialSummary: "Finančný súhrn",
+                resMaterials: "Materiál:",
+                resLabor: "Cena práce:",
+                resProfit: "Zisk dodávateľa:",
+                resLogistics: "Logistika a iné náklady:",
+                grandTotal: "Celková cena:",
+                unit: " ks"
             }
         };
 
@@ -229,10 +255,11 @@
             document.getElementById('txt-res-profit').innerText = t.resProfit;
             document.getElementById('txt-res-logistics').innerText = t.resLogistics;
             document.getElementById('txt-grand-total').innerText = t.grandTotal;
+            calculate();
         }
 
         function calculate() {
-            // Inputs
+            const t = translations[currentLang];
             const consumptionRate = parseFloat(document.getElementById('plasterType').value) || 1.5;
             const area = parseFloat(document.getElementById('wallArea').value) || 0;
             const thick = parseFloat(document.getElementById('wallThick').value) || 0;
@@ -244,16 +271,12 @@
             const logisticsCost = parseFloat(document.getElementById('logisticsCost').value) || 0;
             const otherCost = parseFloat(document.getElementById('otherCost').value) || 0;
 
-            // Calculations
-            // Total kg of plaster = Area * Thickness * Consumption rate (kg per mm per m2)
             const totalKg = area * thick * consumptionRate;
-            const bagsNeeded = Math.ceil(totalKg / 25); // 25kg per bag
+            const bagsNeeded = Math.ceil(totalKg / 25);
 
-            // Primer: ~0.15L per m2, 5L per canister
             const totalPrimerLiters = area * 0.15;
             const primerCanisters = Math.ceil(totalPrimerLiters / 5);
 
-            // Costs
             const materialsCost = (bagsNeeded * bagPrice) + (primerCanisters * primerPrice);
             const laborCostTotal = area * laborRate;
             const profitTotal = area * profitRate;
@@ -261,9 +284,8 @@
 
             const grandTotal = materialsCost + laborCostTotal + profitTotal + logisticsAndOther;
 
-            // Render Results
-            document.getElementById('resBags').innerText = bagsNeeded + (currentLang === 'uk' ? ' шт' : ' pcs');
-            document.getElementById('resPrimer').innerText = primerCanisters + (currentLang === 'uk' ? ' шт' : ' pcs');
+            document.getElementById('resBags').innerText = bagsNeeded + t.unit;
+            document.getElementById('resPrimer').innerText = primerCanisters + t.unit;
 
             document.getElementById('costMaterials').innerText = materialsCost.toFixed(2) + ' €';
             document.getElementById('costLabor').innerText = laborCostTotal.toFixed(2) + ' €';
@@ -272,7 +294,6 @@
             document.getElementById('grandTotal').innerText = grandTotal.toFixed(2) + ' €';
         }
 
-        // Initialize icons and calculation on load
         window.onload = () => {
             lucide.createIcons();
             calculate();
