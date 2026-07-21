@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,8 +54,9 @@
         .input-group input, .input-group select { width: 100%; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-light); padding: 8px; border-radius: 6px; font-weight: bold; outline: none; }
         
         .result-box { background: rgba(255, 204, 0, 0.1); border: 1px dashed var(--accent-yellow); padding: 12px; border-radius: 8px; margin-bottom: 20px; }
-        .result-row { display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 5px; font-weight: 600;}
-        .result-row.total { font-size: 1.2rem; color: var(--accent-yellow); border-top: 1px solid var(--border-color); padding-top: 5px; margin-top: 5px; }
+        .result-row { display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 8px; font-weight: 600;}
+        .result-row.subtext { font-size: 0.85rem; color: var(--text-muted); font-weight: normal; }
+        .result-row.total { font-size: 1.2rem; color: var(--accent-yellow); border-top: 1px solid var(--border-color); padding-top: 8px; margin-top: 8px; font-weight: bold; }
 
         .preview-box { width: 100%; height: 120px; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 15px; position: relative; background: #FFF; display: flex; align-items: flex-end; overflow: hidden;}
         .paint-fill { width: 100%; height: 100%; background-color: #FFFFFF; transition: background-color 0.1s; }
@@ -158,16 +158,38 @@
             <label id="lbl-price-pig">Pigment (€/100ml)</label>
             <input type="number" id="in-price-pig" value="3.00" step="0.5" oninput="recalc()">
         </div>
+        <div class="input-group">
+            <label id="lbl-labor-rate">Labor (€/m²)</label>
+            <input type="number" id="in-labor-rate" value="5.00" step="0.5" oninput="recalc()">
+        </div>
+        <div class="input-group">
+            <label id="lbl-other-exp">Other Expenses (€)</label>
+            <input type="number" id="in-other-exp" value="20.00" step="1" oninput="recalc()">
+        </div>
     </div>
 
     <!-- Об'єднаний блок результату та квадрата для фарби -->
     <div class="result-box">
         <div class="result-row">
             <span id="res-base-need">Base Needed:</span>
-            <span id="out-liters">0.00 L</span>
+            <span id="out-liters" style="color: var(--text-light);">0.00 L</span>
         </div>
+        
+        <div class="result-row subtext">
+            <span id="res-mat-cost">Material Cost:</span>
+            <span id="out-mat-cost">0.00 €</span>
+        </div>
+        <div class="result-row subtext">
+            <span id="res-lab-cost">Labor Cost:</span>
+            <span id="out-lab-cost">0.00 €</span>
+        </div>
+        <div class="result-row subtext" style="padding-bottom: 5px;">
+            <span id="res-oth-cost">Other Expenses:</span>
+            <span id="out-oth-cost">0.00 €</span>
+        </div>
+        
         <div class="result-row total">
-            <span id="res-cost">Total Cost:</span>
+            <span id="res-cost">Grand Total:</span>
             <span id="out-cost">0.00 €</span>
         </div>
         <div class="preview-box">
@@ -233,12 +255,11 @@
         { id: 'orange', r: 255, g: 100, b: 0,    en: 'Orange (Amber)',   uk: 'Помаранчевий',     sk: 'Oranžová' }
     ];
         
-
     const dict = {
-        en: { share: "📤 Share Mix", save: "💾 Save Object", pdf: "📄 Generate PDF Estimate", secObj: "📐 Object Area & Base", area: "Wall Area (m²)", surf: "Surface Type", optSm: "Smooth (0.12 L/m²)", optWl: "Wallpaper (0.15 L/m²)", optRg: "Rough (0.25 L/m²)", doors: "Doors / Windows", layers: "Layers", baseType: "Paint Base Type", optBa: "Base A (White)", optBc: "Base C (Clear)", secEco: "💶 Economics", pBase: "Base Price (€/L)", pPig: "Pigment (€/100ml)", rNeed: "Base Needed:", rCost: "Total Cost:", prev: "Mixed Color", warn: "WARNING: 10% Pigment Limit Reached!", tot: "Total pigment:", secHist: "📂 Saved Objects", promptMsg: "Enter object name (e.g. Living Room):", del: "Delete" },
-        uk: { share: "📤 Поділитися", save: "💾 Зберегти", pdf: "📄 PDF-кошторис", secObj: "📐 Площа та База", area: "Площа стін (м²)", surf: "Тип поверхні", optSm: "Гладка (0.12 л/м²)", optWl: "Шпалери (0.15 л/м²)", optRg: "Короїд (0.25 л/м²)", doors: "Двері / Вікна", layers: "Шари", baseType: "Тип бази", optBa: "База А (Біла)", optBc: "База С (Прозора)", secEco: "💶 Економіка", pBase: "Ціна бази (€/Л)", pPig: "Пігмент (€/100мл)", rNeed: "Потрібно бази:", rCost: "Вартість:", prev: "Колір суміші", warn: "УВАГА: Ліміт 10% пігменту!", tot: "Всього пігменту:", secHist: "📂 Збережені об'єкти", promptMsg: "Введіть назву об'єкта (напр. Кухня):", del: "Видалити" },
-        sk: { share: "📤 Zdielať", save: "💾 Uložiť objekt", pdf: "📄 PDF Kalkulácia", secObj: "📐 Plocha a Základ", area: "Plocha stien (m²)", surf: "Typ povrchu", optSm: "Hladký (0.12 l/m²)", optWl: "Tapeta (0.15 l/m²)", optRg: "Drsný (0.25 l/m²)", doors: "Dvere / Okná", layers: "Vrstvy", baseType: "Typ základu", optBa: "Báza A (Biela)", optBc: "Báza C (Priesvitná)", secEco: "💶 Ekonomika", pBase: "Cena bázy (€/L)", pPig: "Pigment (€/100ml)", rNeed: "Potrebný základ:", rCost: "Celková cena:", prev: "Výsledná farba", warn: "POZOR: Limit 10% pigmentu!", tot: "Pigment celkom:", secHist: "📂 Uložené objekty", promptMsg: "Zadajte názov objektu (napr. Obývačka):", del: "Vymazať" }
-  };
+        en: { share: "📤 Share Mix", save: "💾 Save Object", pdf: "📄 Generate PDF Estimate", secObj: "📐 Object Area & Base", area: "Wall Area (m²)", surf: "Surface Type", optSm: "Smooth (0.12 L/m²)", optWl: "Wallpaper (0.15 L/m²)", optRg: "Rough (0.25 L/m²)", doors: "Doors / Windows", layers: "Layers", baseType: "Paint Base Type", optBa: "Base A (White)", optBc: "Base C (Clear)", secEco: "💶 Economics", pBase: "Base Price (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Labor (€/m²)", otherExp: "Other Expenses (€)", rNeed: "Base Needed:", matCost: "Material Cost:", labCost: "Labor Cost:", othCost: "Other Expenses:", grandTotal: "Grand Total:", prev: "Mixed Color", warn: "WARNING: 10% Pigment Limit Reached!", tot: "Total pigment:", secHist: "📂 Saved Objects", promptMsg: "Enter object name (e.g. Living Room):", del: "Delete" },
+        uk: { share: "📤 Поділитися", save: "💾 Зберегти", pdf: "📄 PDF-кошторис", secObj: "📐 Площа та База", area: "Площа стін (м²)", surf: "Тип поверхні", optSm: "Гладка (0.12 л/м²)", optWl: "Шпалери (0.15 л/м²)", optRg: "Короїд (0.25 л/м²)", doors: "Двері / Вікна", layers: "Шари", baseType: "Тип бази", optBa: "База А (Біла)", optBc: "База С (Прозора)", secEco: "💶 Економіка", pBase: "Ціна бази (€/Л)", pPig: "Пігмент (€/100мл)", laborRate: "Робота (€/м²)", otherExp: "Інші витрати (€)", rNeed: "Потрібно бази:", matCost: "Вартість матеріалів:", labCost: "Вартість робіт:", othCost: "Інші витрати:", grandTotal: "Загальна вартість:", prev: "Колір суміші", warn: "УВАГА: Ліміт 10% пігменту!", tot: "Всього пігменту:", secHist: "📂 Збережені об'єкти", promptMsg: "Введіть назву об'єкта (напр. Кухня):", del: "Видалити" },
+        sk: { share: "📤 Zdielať", save: "💾 Uložiť objekt", pdf: "📄 PDF Kalkulácia", secObj: "📐 Plocha a Základ", area: "Plocha stien (m²)", surf: "Typ povrchu", optSm: "Hladký (0.12 l/m²)", optWl: "Tapeta (0.15 l/m²)", optRg: "Drsný (0.25 l/m²)", doors: "Dvere / Okná", layers: "Vrstvy", baseType: "Typ základu", optBa: "Báza A (Biela)", optBc: "Báza C (Priesvitná)", secEco: "💶 Ekonomika", pBase: "Cena bázy (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Práca (€/m²)", otherExp: "Iné náklady (€)", rNeed: "Potrebný základ:", matCost: "Cena materiálu:", labCost: "Cena práce:", othCost: "Iné náklady:", grandTotal: "Celková cena:", prev: "Výsledná farba", warn: "POZOR: Limit 10% pigmentu!", tot: "Pigment celkom:", secHist: "📂 Uložené objekty", promptMsg: "Zadajte názov objektu (napr. Obývačka):", del: "Vymazať" }
+    };
 
     let currentLang = 'en';
     let baseLiters = 0, baseMl = 0, maxLimitMl = 0;
@@ -272,10 +293,18 @@
         document.getElementById('opt-base-a').innerText = dict[lang].optBa;
         document.getElementById('opt-base-c').innerText = dict[lang].optBc;
         document.getElementById('sec-economy').innerText = dict[lang].secEco;
+        
         document.getElementById('lbl-price-base').innerText = dict[lang].pBase;
         document.getElementById('lbl-price-pig').innerText = dict[lang].pPig;
+        document.getElementById('lbl-labor-rate').innerText = dict[lang].laborRate;
+        document.getElementById('lbl-other-exp').innerText = dict[lang].otherExp;
+
         document.getElementById('res-base-need').innerText = dict[lang].rNeed;
-        document.getElementById('res-cost').innerText = dict[lang].rCost;
+        document.getElementById('res-mat-cost').innerText = dict[lang].matCost;
+        document.getElementById('res-lab-cost').innerText = dict[lang].labCost;
+        document.getElementById('res-oth-cost').innerText = dict[lang].othCost;
+        document.getElementById('res-cost').innerText = dict[lang].grandTotal;
+        
         document.getElementById('lbl-preview').innerText = dict[lang].prev;
         document.getElementById('warning-banner').innerText = dict[lang].warn;
         document.getElementById('lbl-total-pigment').innerText = dict[lang].tot;
@@ -344,9 +373,21 @@
             document.getElementById('status-panel').style.borderLeftColor = "var(--accent-yellow)";
         }
 
-        let cost = (baseLiters * (parseFloat(document.getElementById('in-price-base').value) || 0)) + ((currentTotal / 100) * (parseFloat(document.getElementById('in-price-pig').value) || 0));
-        document.getElementById('out-cost').innerText = cost.toFixed(2) + " €";
+        // Calculation variables
+        let matCost = (baseLiters * (parseFloat(document.getElementById('in-price-base').value) || 0)) + ((currentTotal / 100) * (parseFloat(document.getElementById('in-price-pig').value) || 0));
+        let laborRate = parseFloat(document.getElementById('in-labor-rate').value) || 0;
+        let otherExp = parseFloat(document.getElementById('in-other-exp').value) || 0;
+        
+        let laborCost = cleanArea * laborRate;
+        let grandTotal = matCost + laborCost + otherExp;
 
+        // Display results breakdown
+        document.getElementById('out-mat-cost').innerText = matCost.toFixed(2) + " €";
+        document.getElementById('out-lab-cost').innerText = laborCost.toFixed(2) + " €";
+        document.getElementById('out-oth-cost').innerText = otherExp.toFixed(2) + " €";
+        document.getElementById('out-cost').innerText = grandTotal.toFixed(2) + " €";
+
+        // Paint visual mixing math
         const p1 = pigments.find(p => p.id === document.getElementById('color-1').value);
         const p2 = pigments.find(p => p.id === document.getElementById('color-2').value);
         const p3 = pigments.find(p => p.id === document.getElementById('color-3').value);
@@ -428,7 +469,7 @@
         if (navigator.share) {
             navigator.share({
                 title: 'VIP Paint Mixer Estimate',
-                text: `I need ${document.getElementById('out-liters').innerText} of paint. Cost: ${document.getElementById('out-cost').innerText}.`,
+                text: `I need ${document.getElementById('out-liters').innerText} of paint. Total Estimated Cost: ${document.getElementById('out-cost').innerText}.`,
                 url: window.location.href
             }).catch(console.error);
         } else {
