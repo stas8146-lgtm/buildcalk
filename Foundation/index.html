@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundation PRO | BuildCalc Suite</title>
+    
+    <!-- Google Analytics (заміни G-XXXXXXXXXX на свій ID) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0a0a0a; color: #f5f5f5; }
+        .gold-border-glow:focus { border-color: #eab308; box-shadow: 0 0 15px rgba(234, 179, 8, 0.2); }
+        .calculator-nav::-webkit-scrollbar { display: none; }
+        
+        /* Спеціальні стилі для генерації чистого PDF */
+        @media print {
+            body { background-color: white; color: black; }
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            .border-neutral-800 { border-color: #ccc !important; }
+            .bg-neutral-900, .bg-neutral-950 { background-color: transparent !important; }
+            .text-white, .text-neutral-400 { color: black !important; }
+            .shadow-xl { box-shadow: none !important; }
+            #proFinancialSummary { border: 2px solid #000 !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <div class="no-print">
+        <!-- CALCULATORS SWITCHER BAR -->
+        <div class="bg-neutral-950 border-b border-neutral-800 px-4 py-3">
+            <div class="max-w-4xl mx-auto flex gap-2 overflow-x-auto calculator-nav whitespace-nowrap">
+                <a href="../Mixer/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🎨 Mixer</a>
+                <a href="../Gipsokarton/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🧱 Gipsokarton</a>
+                <a href="../Omietky/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🏗️ Omietky</a>
+                <a href="../Roof/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🏠 Roof</a>
+                <a href="../Styazhka/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🧹 Styazhka</a>
+                <a href="../ProWall/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🟩 ProWall</a>
+                <a href="../Foundation/" class="px-3 py-1.5 bg-yellow-500/10 border border-yellow-500 text-xs font-bold rounded-xl text-yellow-400 flex items-center gap-1.5">🪨 Foundation</a>
+            </div>
+        </div>
+
+        <!-- HEADER -->
+        <header class="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur px-4 py-4">
+            <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+                <h1 class="text-xl font-extrabold text-white flex items-center gap-2">
+                    <span class="bg-yellow-500 text-black p-1.5 rounded-lg">🪨</span> FOUNDATION PRO <span class="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded">v1.0</span>
+                </h1>
+                
+                <div class="flex items-center gap-3">
+                    <!-- MODE SWITCHER -->
+                    <div class="bg-neutral-900 p-1 rounded-xl border border-neutral-800 flex gap-1">
+                        <button id="btnStd" onclick="setMode('standard')" class="px-3 py-1 text-xs font-bold rounded-lg transition bg-yellow-500 text-black">Standard</button>
+                        <button id="btnPro" onclick="setMode('pro')" class="px-3 py-1 text-xs font-bold rounded-lg transition text-neutral-400 hover:text-white flex items-center gap-1">PRO 🔒</button>
+                    </div>
+
+                    <!-- LANG SWITCHER -->
+                    <div class="flex gap-1">
+                        <button onclick="setLang('en')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">EN</button>
+                        <button onclick="setLang('uk')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">UK</button>
+                        <button onclick="setLang('sk')" class="px-2.5 py-1 bg-neutral-800 text-xs font-bold rounded-lg hover:bg-yellow-500 hover:text-black transition">SK</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-4xl mx-auto px-4 py-8 w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- INPUTS COLUMN -->
+        <div class="space-y-6 bg-neutral-900/50 border border-neutral-800 p-6 rounded-2xl no-print">
+            <h2 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
+                <i data-lucide="ruler" class="w-5 h-5"></i> <span id="txt-params">Foundation Parameters</span>
+            </h2>
+
+            <div class="grid grid-cols-2 gap-4">
+                <!-- Length -->
+                <div class="col-span-2">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-length">Total Length / Perimeter (m)</label>
+                    <input type="number" id="fLength" value="40" step="1" min="1" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow">
+                </div>
+                <!-- Width -->
+                <div>
+                    <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-width">Strip Width (m)</label>
+                    <input type="number" id="fWidth" value="0.4" step="0.1" min="0.1" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow">
+                </div>
+                <!-- Height/Depth -->
+                <div>
+                    <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-height">Height / Depth (m)</label>
+                    <input type="number" id="fHeight" value="1.2" step="0.1" min="0.1" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow">
+                </div>
+            </div>
+
+            <!-- Rebar lines -->
+            <div>
+                <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-rebar">Number of Longitudinal Rebars (Rows)</label>
+                <select id="fRebar" onchange="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white font-medium focus:outline-none gold-border-glow">
+                    <option value="4">4 Lines (Standard)</option>
+                    <option value="6">6 Lines (Reinforced)</option>
+                    <option value="8">8 Lines (Heavy Duty)</option>
+                </select>
+            </div>
+
+            <!-- ECONOMICS & PRICING (PRO ONLY) -->
+            <div id="proEconomics" class="space-y-4 hidden pt-4 border-t border-neutral-800">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
+                        <i data-lucide="wallet" class="w-5 h-5"></i> <span id="txt-econ">Economics & Pricing</span>
+                    </h2>
+                    <span class="text-[10px] bg-yellow-500/20 text-yellow-400 font-bold px-2 py-0.5 rounded uppercase">PRO Feature</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-concrete-price">Concrete Mix (€/m³)</label>
+                        <input type="number" id="concretePrice" value="95.00" step="1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold text-sm focus:outline-none gold-border-glow">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-rebar-price">Rebar (€/m)</label>
+                        <input type="number" id="rebarPrice" value="1.20" step="0.1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold text-sm focus:outline-none gold-border-glow">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-formwork-price">Formwork Wood (€/m²)</label>
+                        <input type="number" id="formworkPrice" value="8.50" step="0.5" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold text-sm focus:outline-none gold-border-glow">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-labor-rate">Labor Rate (€/m³)</label>
+                        <input type="number" id="laborRate" value="45.00" step="1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold text-sm focus:outline-none gold-border-glow">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 pt-2">
+                    <div>
+                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-profit-rate">Profit (€/m³)</label>
+                        <input type="number" id="profitRate" value="15.00" step="1" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold text-sm focus:outline-none gold-border-glow">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="txt-logistics">Logistics/Pump (€)</label>
+                        <input type="number" id="logisticsCost" value="150" step="10" min="0" oninput="calculate()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2.5 text-white font-bold text-sm focus:outline-none gold-border-glow">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTS & FINANCIAL SUMMARY COLUMN -->
+        <div class="space-y-6">
+            
+            <!-- Logo for Print -->
+            <div class="hidden print-only mb-6 border-b pb-4">
+                <h1 class="text-2xl font-black">FOUNDATION PRO <span class="text-sm font-normal text-gray-500">| Project Estimate</span></h1>
+            </div>
+
+            <!-- Materials Required -->
+            <div class="bg-neutral-900/50 border border-neutral-800 p-6 rounded-2xl space-y-4">
+                <h3 class="text-md font-bold text-white uppercase tracking-wider" id="txt-materials-needed">Materials Required</h3>
+                
+                <div class="flex justify-between items-center border-b border-neutral-800 pb-3">
+                    <span class="text-neutral-400 text-sm" id="txt-res-concrete">Concrete Volume (Ready-mix):</span>
+                    <span class="text-xl font-bold text-yellow-500" id="resConcrete">0 m³</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-neutral-800 pb-3">
+                    <span class="text-neutral-400 text-sm" id="txt-res-formwork">Formwork Area (Both sides):</span>
+                    <span class="text-lg font-bold text-white" id="resFormwork">0 m²</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-neutral-800 pb-3">
+                    <span class="text-neutral-400 text-sm" id="txt-res-rebar">Rebar Total Length (+10% overlap):</span>
+                    <span class="text-lg font-bold text-white" id="resRebar">0 m</span>
+                </div>
+                <div class="flex justify-between items-center pb-1">
+                    <span class="text-neutral-400 text-sm" id="txt-res-wire">Binding Wire:</span>
+                    <span class="text-lg font-bold text-white" id="resWire">0 kg</span>
+                </div>
+            </div>
+
+            <!-- Financial Summary (PRO ONLY) -->
+            <div id="proFinancialSummary" class="bg-neutral-950 border border-yellow-500/30 p-6 rounded-2xl space-y-4 shadow-xl hidden">
+                <div class="flex items-center justify-between no-print">
+                    <h3 class="text-lg font-bold text-yellow-400 flex items-center gap-2">
+                        <i data-lucide="receipt" class="w-5 h-5"></i> <span id="txt-financial-summary">Financial Summary</span>
+                    </h3>
+                    <button onclick="window.print()" class="bg-neutral-800 hover:bg-neutral-700 text-white p-2 rounded-lg transition flex items-center gap-2 text-xs font-bold">
+                        <i data-lucide="printer" class="w-4 h-4"></i> <span id="txt-btn-pdf">Save PDF</span>
+                    </button>
+                </div>
+
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between text-neutral-300">
+                        <span id="txt-cost-materials">Materials (All):</span>
+                        <span class="font-bold text-white" id="costMaterials">0.00 €</span>
+                    </div>
+                    <div class="flex justify-between text-neutral-300">
+                        <span id="txt-cost-labor">Labor Cost:</span>
+                        <span class="font-bold text-white" id="costLabor">0.00 €</span>
+                    </div>
+                    <div class="flex justify-between text-neutral-300">
+                        <span id="txt-cost-profit">Contractor Profit:</span>
+                        <span class="font-bold text-white" id="costProfit">0.00 €</span>
+                    </div>
+                    <div class="flex justify-between text-neutral-300">
+                        <span id="txt-cost-logistics">Logistics, Pump & Other:</span>
+                        <span class="font-bold text-white" id="costLogistics">0.00 €</span>
+                    </div>
+                </div>
+
+                <hr class="border-neutral-800">
+
+                <div class="flex justify-between items-center pt-2">
+                    <span class="text-lg font-bold text-white" id="txt-grand-total">Grand Total:</span>
+                    <span class="text-3xl font-black text-yellow-400" id="grandTotal">0.00 €</span>
+                </div>
+            </div>
+
+            <!-- Standard Mode Prompt for Pro -->
+            <div id="standardPrompt" class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl text-center space-y-3 no-print">
+                <p class="text-sm text-neutral-400" id="txt-pro-promo">Want to calculate total labor, materials cost, concrete pump and full estimation?</p>
+                <button onclick="setMode('pro')" class="px-4 py-2 bg-yellow-500 text-black text-xs font-extrabold rounded-xl hover:bg-yellow-400 transition">Enable PRO Mode 🚀</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-neutral-800 bg-neutral-950 py-4 text-center text-xs text-neutral-500 no-print">
+        © 2026 BuildCalc Suite. All rights reserved.
+    </footer>
+
+    <!-- LOGIC SCRIPT -->
+    <script>
+        let currentLang = 'en';
+        let currentMode = 'standard';
+
+        const translations = {
+            en: {
+                params: "Foundation Parameters",
+                length: "Total Length / Perimeter (m)",
+                width: "Strip Width (m)",
+                height: "Height / Depth (m)",
+                rebar: "Number of Longitudinal Rebars (Rows)",
+                econ: "Economics & Pricing",
+                concretePrice: "Concrete Mix (€/m³)",
+                rebarPrice: "Rebar (€/m)",
+                formworkPrice: "Formwork Wood (€/m²)",
+                laborRate: "Labor Rate (€/m³)",
+                profitRate: "Profit (€/m³)",
+                logistics: "Logistics/Pump (€)",
+                materialsNeeded: "Materials Required",
+                resConcrete: "Concrete Volume (Ready-mix):",
+                resFormwork: "Formwork Area (Both sides):",
+                resRebar: "Rebar Total Length (+10% overlap):",
+                resWire: "Binding Wire:",
+                financialSummary: "Financial Summary",
+                costMaterials: "Materials (All):",
+                costLabor: "Labor Cost:",
+                costProfit: "Contractor Profit:",
+                costLogistics: "Logistics, Pump & Other:",
+                grandTotal: "Grand Total:",
+                proPromo: "Want to calculate total labor, materials cost, concrete pump and full estimation?",
+                btnPdf: "Save PDF"
+            },
+            uk: {
+                params: "Параметри фундаменту",
+                length: "Загальна довжина / Периметр (м)",
+                width: "Ширина стрічки (м)",
+                height: "Висота / Глибина (м)",
+                rebar: "Кількість ліній арматури (Ряди)",
+                econ: "Економіка та ціни",
+                concretePrice: "Бетонна суміш (€/m³)",
+                rebarPrice: "Арматура (€/м)",
+                formworkPrice: "Дошки для опалубки (€/m²)",
+                laborRate: "Вартість робіт (€/m³)",
+                profitRate: "Прибуток підрядника (€/m³)",
+                logistics: "Логістика/Бетононасос (€)",
+                materialsNeeded: "Кількість матеріалів",
+                resConcrete: "Об'єм бетону (міксер):",
+                resFormwork: "Площа опалубки (дві сторони):",
+                resRebar: "Довжина арматури (+10% нахльост):",
+                resWire: "В'язальний дріт:",
+                financialSummary: "Фінансовий підсумок",
+                costMaterials: "Матеріали (всі):",
+                costLabor: "Вартість робіт:",
+                costProfit: "Прибуток підрядника:",
+                costLogistics: "Логістика, насос та інше:",
+                grandTotal: "Загальна вартість:",
+                proPromo: "Бажаєте розрахувати повну вартість робіт, матеріалів, бетононасос та кошторис?",
+                btnPdf: "Зберегти PDF"
+            },
+            sk: {
+                params: "Parametre základov",
+                length: "Celková dĺžka / Obvod (m)",
+                width: "Šírka pásu (m)",
+                height: "Výška / Hĺbka (m)",
+                rebar: "Počet línií roxoru (Rady)",
+                econ: "Ekonomika a ceny",
+                concretePrice: "Betónová zmes (€/m³)",
+                rebarPrice: "Roxor (€/m)",
+                formworkPrice: "Dosky na debnenie (€/m²)",
+                laborRate: "Cena práce (€/m³)",
+                profitRate: "Zisk dodávateľa (€/m³)",
+                logistics: "Logistika/Pumpa (€)",
+                materialsNeeded: "Potrebný materiál",
+                resConcrete: "Objem betónu (zmes):",
+                resFormwork: "Plocha debnenia (obidve strany):",
+                resRebar: "Celková dĺžka roxoru (+10% presah):",
+                resWire: "Viazací drôt:",
+                financialSummary: "Finančný súhrn",
+                costMaterials: "Materiál (Spolu):",
+                costLabor: "Cena práce:",
+                costProfit: "Zisk dodávateľa:",
+                costLogistics: "Logistika, pumpa a iné:",
+                grandTotal: "Celková cena:",
+                proPromo: "Chcete vypočítať celkovú cenu práce, materiálu, pumpu a kompletný rozpočet?",
+                btnPdf: "Uložiť PDF"
+            }
+        };
+
+        function setLang(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            document.getElementById('txt-params').innerText = t.params;
+            document.getElementById('txt-length').innerText = t.length;
+            document.getElementById('txt-width').innerText = t.width;
+            document.getElementById('txt-height').innerText = t.height;
+            document.getElementById('txt-rebar').innerText = t.rebar;
+
+            document.getElementById('txt-econ').innerText = t.econ;
+            document.getElementById('txt-concrete-price').innerText = t.concretePrice;
+            document.getElementById('txt-rebar-price').innerText = t.rebarPrice;
+            document.getElementById('txt-formwork-price').innerText = t.formworkPrice;
+            document.getElementById('txt-labor-rate').innerText = t.laborRate;
+            document.getElementById('txt-profit-rate').innerText = t.profitRate;
+            document.getElementById('txt-logistics').innerText = t.logistics;
+
+            document.getElementById('txt-materials-needed').innerText = t.materialsNeeded;
+            document.getElementById('txt-res-concrete').innerText = t.resConcrete;
+            document.getElementById('txt-res-formwork').innerText = t.resFormwork;
+            document.getElementById('txt-res-rebar').innerText = t.resRebar;
+            document.getElementById('txt-res-wire').innerText = t.resWire;
+
+            document.getElementById('txt-financial-summary').innerText = t.financialSummary;
+            document.getElementById('txt-cost-materials').innerText = t.costMaterials;
+            document.getElementById('txt-cost-labor').innerText = t.costLabor;
+            document.getElementById('txt-cost-profit').innerText = t.costProfit;
+            document.getElementById('txt-cost-logistics').innerText = t.costLogistics;
+            document.getElementById('txt-grand-total').innerText = t.grandTotal;
+            document.getElementById('txt-pro-promo').innerText = t.proPromo;
+            document.getElementById('txt-btn-pdf').innerText = t.btnPdf;
+            
+            calculate();
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            const btnStd = document.getElementById('btnStd');
+            const btnPro = document.getElementById('btnPro');
+            const proEconomics = document.getElementById('proEconomics');
+            const proFinancialSummary = document.getElementById('proFinancialSummary');
+            const standardPrompt = document.getElementById('standardPrompt');
+
+            if (mode === 'pro') {
+                btnPro.className = "px-3 py-1 text-xs font-bold rounded-lg transition bg-yellow-500 text-black flex items-center gap-1";
+                btnStd.className = "px-3 py-1 text-xs font-bold rounded-lg transition text-neutral-400 hover:text-white";
+                proEconomics.classList.remove('hidden');
+                proFinancialSummary.classList.remove('hidden');
+                standardPrompt.classList.add('hidden');
+            } else {
+                btnStd.className = "px-3 py-1 text-xs font-bold rounded-lg transition bg-yellow-500 text-black";
+                btnPro.className = "px-3 py-1 text-xs font-bold rounded-lg transition text-neutral-400 hover:text-white flex items-center gap-1";
+                proEconomics.classList.add('hidden');
+                proFinancialSummary.classList.add('hidden');
+                standardPrompt.classList.remove('hidden');
+            }
+            calculate();
+        }
+
+        function calculate() {
+            // Inputs
+            const l = parseFloat(document.getElementById('fLength').value) || 0;
+            const w = parseFloat(document.getElementById('fWidth').value) || 0;
+            const h = parseFloat(document.getElementById('fHeight').value) || 0;
+            const rebarLines = parseInt(document.getElementById('fRebar').value) || 4;
+
+            // Volume (m3)
+            const volume = l * w * h;
+            
+            // Formwork Area (m2) - Both sides of the strip
+            const formworkArea = l * h * 2;
+            
+            // Rebar (m) + 10% overlap
+            const rebarTotal = l * rebarLines * 1.1;
+
+            // Binding Wire (approx 0.015 kg per meter of rebar)
+            const wireKg = rebarTotal * 0.015;
+
+            // Update UI Material Results
+            document.getElementById('resConcrete').innerText = volume.toFixed(1) + ' m³';
+            document.getElementById('resFormwork').innerText = formworkArea.toFixed(1) + ' m²';
+            document.getElementById('resRebar').innerText = Math.ceil(rebarTotal) + ' m';
+            document.getElementById('resWire').innerText = wireKg.toFixed(1) + ' kg';
+
+            // Economics (PRO)
+            if (currentMode === 'pro') {
+                const concretePrice = parseFloat(document.getElementById('concretePrice').value) || 0;
+                const rebarPrice = parseFloat(document.getElementById('rebarPrice').value) || 0;
+                const formworkPrice = parseFloat(document.getElementById('formworkPrice').value) || 0;
+                
+                const laborRate = parseFloat(document.getElementById('laborRate').value) || 0;
+                const profitRate = parseFloat(document.getElementById('profitRate').value) || 0;
+                const logisticsCost = parseFloat(document.getElementById('logisticsCost').value) || 0;
+
+                // Costs
+                const costMat = (volume * concretePrice) + (rebarTotal * rebarPrice) + (formworkArea * formworkPrice);
+                const costLab = volume * laborRate;
+                const costProf = volume * profitRate;
+
+                const grandTotal = costMat + costLab + costProf + logisticsCost;
+
+                document.getElementById('costMaterials').innerText = costMat.toFixed(2) + ' €';
+                document.getElementById('costLabor').innerText = costLab.toFixed(2) + ' €';
+                document.getElementById('costProfit').innerText = costProf.toFixed(2) + ' €';
+                document.getElementById('costLogistics').innerText = logisticsCost.toFixed(2) + ' €';
+                document.getElementById('grandTotal').innerText = grandTotal.toFixed(2) + ' €';
+            }
+        }
+
+        window.onload = () => {
+            lucide.createIcons();
+            setLang('en'); // Default Init Language
+        };
+    </script>
+</body>
+</html>
