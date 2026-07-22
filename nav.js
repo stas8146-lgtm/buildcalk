@@ -47,6 +47,7 @@ const menuHTML = `
         <a href="../Roof/index.html">🏠 Roof</a>
         <a href="../Styazhka/index.html">📏 Styazhka</a>
         <a href="../ProWall & Floor/index.html">🟩 ProWall & Floor</a>
+        <a href="../Foundation/index.html">🪨 Foundation</a>
     </div>
 `;
 
