@@ -95,11 +95,15 @@
         }
         .buy-btn:hover { background: var(--primary-hover); }
     </style>
-<script src="../nav.js"></script>
 
+    <!-- Підключення навігації (якщо nav.js в корені, використовуйте ../nav.js, якщо в тій самій папці — nav.js) -->
+    <script src="../nav.js"></script>
 </head>
 <body>
+
+<!-- Контейнер для глобального меню -->
 <div id="global-nav-container"></div>
+
     <div class="header">
         <div class="logo">🏠 <span>BUILD</span>calc ROOF PRO</div>
         <div class="subtitle" id="subtitle">Professional Roof Calculator</div>
@@ -362,9 +366,6 @@
         <p id="proDesc">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
         <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
     </div>
-
-<!-- Підключення глобального меню з кореневої папки через ../nav.js -->
-<script src="../nav.js"></script>
 
 <!-- ================= SCRIPTS ================= -->
 <script>
