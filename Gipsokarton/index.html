@@ -1,12 +1,11 @@
 
-
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PRO Drywall Calculator</title>
-    <meta name="description" content="Професійний калькулятор гіпсокартону онлайн. Розрахунок листів, профілів, саморізів та кошторису.">
+    <meta name="description" content="Professional online drywall calculator. Estimate sheets, profiles, screws, and total costs.">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -59,8 +58,8 @@
                 <!-- Language Dropdown -->
                 <div class="relative">
                     <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-neutral-900 border border-neutral-800 text-sm font-semibold rounded-xl px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-yellow-500 cursor-pointer">
-                        <option value="uk" selected>🇺🇦 UKR</option>
-                        <option value="en">🇬🇧 EN</option>
+                        <option value="en" selected>🇬🇧 EN</option>
+                        <option value="uk">🇺🇦 UKR</option>
                         <option value="sk">🇸🇰 SK</option>
                     </select>
                 </div>
@@ -77,22 +76,22 @@
             <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
                 <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
                     <i data-lucide="sliders" class="w-5 h-5 text-yellow-500"></i>
-                    <span id="t-dimensions">Параметри конструкції</span>
+                    <span id="t-dimensions">Dimensions & Specifications</span>
                 </h2>
                 
                 <div class="space-y-4">
                     <!-- Construction Type Toggle -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2" id="t-type">Тип конструкції</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2" id="t-type">Structure Type</label>
                         <div class="grid grid-cols-3 gap-1.5 bg-neutral-900 p-1 rounded-lg border border-neutral-800 text-center">
                             <button id="type-wall" onclick="setStructureType('wall')" class="py-2 text-xs font-bold rounded-lg transition-all bg-neutral-800 text-white shadow-sm">
-                                <span id="lbl-wall">Стіна (1 бік)</span>
+                                <span id="lbl-wall">Wall Cladding (1 side)</span>
                             </button>
                             <button id="type-partition" onclick="setStructureType('partition')" class="py-2 text-xs font-bold rounded-lg transition-all text-neutral-400 hover:text-white">
-                                <span id="lbl-partition">Перегородка (2 боки)</span>
+                                <span id="lbl-partition">Partition (2 sides)</span>
                             </button>
                             <button id="type-ceiling" onclick="setStructureType('ceiling')" class="py-2 text-xs font-bold rounded-lg transition-all text-neutral-400 hover:text-white">
-                                <span id="lbl-ceiling">Стеля</span>
+                                <span id="lbl-ceiling">Ceiling</span>
                             </button>
                         </div>
                     </div>
@@ -100,11 +99,11 @@
                     <!-- Input Width & Height -->
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-width">Ширина (м)</label>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-width">Width (m)</label>
                             <input type="number" id="inp-width" value="4.5" step="0.1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-height">Висота / Довжина (м)</label>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-height">Height / Length (m)</label>
                             <input type="number" id="inp-height" value="3.0" step="0.1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
                         </div>
                     </div>
@@ -112,49 +111,49 @@
                     <!-- Sheet Size and Waste -->
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-neutral-400 mb-1" id="lbl-sheet-size">Розмір листа</label>
+                            <label class="block text-xs font-semibold text-neutral-400 mb-1" id="lbl-sheet-size">Sheet Size</label>
                             <select id="inp-sheet-size" onchange="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2.5 text-white text-sm focus:border-yellow-500 focus:outline-none">
-                                <option value="2.4">1.2 x 2.0 м (2.4 м²)</option>
-                                <option value="3.0" selected>1.2 x 2.5 м (3.0 м²)</option>
-                                <option value="3.6">1.2 x 3.0 м (3.6 м²)</option>
+                                <option value="2.4">1.2 x 2.0 m (2.4 m²)</option>
+                                <option value="3.0" selected>1.2 x 2.5 m (3.0 m²)</option>
+                                <option value="3.6">1.2 x 3.0 m (3.6 m²)</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-neutral-400 mb-1" id="lbl-waste">Запас на обрізку (%)</label>
+                            <label class="block text-xs font-semibold text-neutral-400 mb-1" id="lbl-waste">Waste (%)</label>
                             <input type="number" id="inp-waste" value="10" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white text-sm focus:border-yellow-500 focus:outline-none">
                         </div>
                     </div>
                     
                     <!-- Layers of Drywall per side -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1" id="lbl-layers">Шари гіпсокартону (на одну сторону)</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1" id="lbl-layers">Drywall Layers (per side)</label>
                         <select id="inp-layers" onchange="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2.5 text-white text-sm">
-                            <option id="opt-layer-1" value="1" selected>1 шар (Стандартний)</option>
-                            <option id="opt-layer-2" value="2">2 шари (Посилений / Звукоізоляція)</option>
+                            <option id="opt-layer-1" value="1" selected>1 Layer (Standard)</option>
+                            <option id="opt-layer-2" value="2">2 Layers (Reinforced)</option>
                         </select>
                     </div>  
 
                     <!-- Profile Pitch Spacing -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1" id="lbl-spacing">Крок стоєчного профілю</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1" id="lbl-spacing">Profile Spacing</label>
                         <select id="inp-spacing" onchange="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2.5 text-white text-sm">
-                            <option id="opt-spacing-60" value="0.6" selected>600 мм (Стандарт)</option>
-                            <option id="opt-spacing-40" value="0.4">400 мм (Посилений)</option>
+                            <option id="opt-spacing-60" value="0.6" selected>600 mm (Standard)</option>
+                            <option id="opt-spacing-40" value="0.4">400 mm (Heavy duty)</option>
                         </select>
                     </div>  
                     
                     <!-- Ceiling Frame Type (Visible only for ceilings) -->
                     <div id="ceiling-frame-container" style="display: none;">
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1" id="lbl-frame-type">Тип стельового каркаса</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1" id="lbl-frame-type">Ceiling Frame Type</label>
                         <select id="inp-frame-type" onchange="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2.5 text-white text-sm">
-                            <option id="opt-frame-single" value="single" selected>Однорівневий каркас (П-401)</option>
-                            <option id="opt-frame-double" value="double">Дворівневий перехресний (П-402)</option>
+                            <option id="opt-frame-single" value="single" selected>Single-level Grid (Standard)</option>
+                            <option id="opt-frame-double" value="double">Double-level Cross Grid (Reinforced)</option>
                         </select>
                     </div>
                 </div>
 
                 <button id="btn-calculate-main" onclick="calculate()" class="w-full mt-6 py-3.5 bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold uppercase rounded-xl transition-all shadow-lg">
-                    Розрахувати
+                    Calculate
                 </button>
             </div>
 
@@ -163,7 +162,7 @@
                 <div class="flex items-center justify-between mb-4 border-b border-neutral-900 pb-3">
                     <h2 class="text-lg font-bold text-white flex items-center gap-2">
                         <i data-lucide="wallet" class="w-5 h-5 text-yellow-500"></i>
-                        <span id="t-economics">Ціни та Економіка</span>
+                        <span id="t-economics">Economics & Pricing</span>
                     </h2>
                     <span class="text-[10px] bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded font-extrabold uppercase">PRO FEATURE</span>
                 </div>
@@ -171,35 +170,35 @@
                 <!-- Material Unit Prices Input Grid -->
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <div>
-                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-sheet">Гіпсокартон (€/шт)</label>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-sheet">Drywall Sheet (€/pc)</label>
                         <input type="number" id="inp-price-sheet" value="10.00" step="0.10" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-cd">Основний профіль (€/шт)</label>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-cd">Main Profile (€/pc)</label>
                         <input type="number" id="inp-price-cd" value="3.50" step="0.10" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-ud">Направляючий (€/шт)</label>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-ud">Track Profile (€/pc)</label>
                         <input type="number" id="inp-price-ud" value="2.50" step="0.10" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-screws">Саморізи (€/шт)</label>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-screws">Screws (€/pc)</label>
                         <input type="number" id="inp-price-screws" value="0.03" step="0.01" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-plugs">Дюбелі (€/шт)</label>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-plugs">Wall Plugs (€/pc)</label>
                         <input type="number" id="inp-price-plugs" value="0.05" step="0.01" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-hangers">Підвіси (€/шт)</label>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-hangers">Hangers (€/pc)</label>
                         <input type="number" id="inp-price-hangers" value="0.30" step="0.05" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-tape">Стрічка (€/м)</label>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-tape">Joint Tape (€/m)</label>
                         <input type="number" id="inp-price-tape" value="0.15" step="0.01" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-putty">Шпаклівка (€/кг)</label>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-putty">Joint Putty (€/kg)</label>
                         <input type="number" id="inp-price-putty" value="1.20" step="0.10" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                 </div>
@@ -207,15 +206,15 @@
                 <!-- Labor, Profit, Logistics -->
                 <div class="grid grid-cols-3 gap-2 border-t border-neutral-900 pt-3">
                     <div>
-                        <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-labor-rate">Робота (€/м²)</label>
+                        <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-labor-rate">Labor (€/m²)</label>
                         <input type="number" id="inp-labor-rate" value="12" step="0.5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-2 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-profit-rate">Прибуток (€/м²)</label>
+                        <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-profit-rate">Profit (€/m²)</label>
                         <input type="number" id="inp-profit-rate" value="5" step="0.5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-2 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-other-expenses">Логістика (€)</label>
+                        <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-other-expenses">Logistics (€)</label>
                         <input type="number" id="inp-other-expenses" value="50" step="5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-2 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                 </div>
@@ -227,27 +226,27 @@
                     <div class="p-3 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 rounded-full mb-3">
                         <i data-lucide="lock" class="w-6 h-6"></i>
                     </div>
-                    <h3 class="text-white font-bold text-base" id="t-brand-locked-title">PRO Брендування</h3>
-                    <p class="text-xs text-neutral-400 max-w-[280px] mt-1 mb-4" id="t-brand-locked-desc">Додавайте власний шапку з контактами компанії у підсумковий PDF-звіт.</p>
+                    <h3 class="text-white font-bold text-base" id="t-brand-locked-title">PRO Custom Branding</h3>
+                    <p class="text-xs text-neutral-400 max-w-[280px] mt-1 mb-4" id="t-brand-locked-desc">Unlock custom brand headers on your exports and reports.</p>
                     <button onclick="setMode('pro')" class="px-5 py-2 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-black text-xs font-extrabold uppercase tracking-wider rounded-xl transition-all shadow-lg flex items-center gap-1.5">
-                        <i data-lucide="crown" class="w-4 h-4"></i> <span id="lbl-unlock-btn">Перейти на PRO</span>
+                        <i data-lucide="crown" class="w-4 h-4"></i> <span id="lbl-unlock-btn">Go PRO</span>
                     </button>
                 </div>
 
                 <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
                     <i data-lucide="building-2" class="w-5 h-5 text-yellow-500"></i>
-                    <span id="t-branding">Брендування PDF-звіту</span>
+                    <span id="t-branding">PDF Brand Header Info</span>
                 </h2>
                 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-firm">Назва компанії</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-firm">Firm Name</label>
                         <input type="text" id="brand-firm" value="BuildPro Master Ltd" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-white font-semibold focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-phone">Телефон</label>
-                            <input type="text" id="brand-phone" value="+380 67 000 0000" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-white font-semibold focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-phone">Phone</label>
+                            <input type="text" id="brand-phone" value="+1 555 019 2834" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-white font-semibold focus:outline-none focus:ring-1 focus:ring-yellow-500">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-email">Email</label>
@@ -260,7 +259,7 @@
             <!-- RESET BUTTON -->
             <div class="flex gap-4">
                 <button onclick="resetInputs()" class="flex-1 py-3 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 font-bold rounded-xl transition-all flex items-center justify-center gap-2">
-                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i> <span id="btn-reset">Новий розрахунок</span>
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i> <span id="btn-reset">New Calculation</span>
                 </button>
             </div>
         </div>
@@ -269,7 +268,6 @@
         <div class="lg:col-span-7 space-y-6">
             <!-- Dynamic Result Card -->
             <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden print-card" id="calculations-result-box">
-                <!-- Top accent line -->
                 <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-500 to-amber-500"></div>
                 
                 <!-- HEADER FOR EXPORTS / BRANDING -->
@@ -277,23 +275,23 @@
                     <div class="flex justify-between items-center">
                         <div>
                             <h2 class="text-xl font-bold text-gray-800" id="print-firm-name">BuildPro Master Ltd</h2>
-                            <p class="text-xs text-gray-500" id="print-firm-contacts">Tel: +380 67 000 0000 | Mail: office@buildpro.com</p>
+                            <p class="text-xs text-gray-500" id="print-firm-contacts">Tel: +1 555 019 2834 | Mail: office@buildpro.com</p>
                         </div>
                         <div class="text-right">
-                            <span class="text-xs uppercase tracking-wider text-yellow-600 font-extrabold">Кошторис матеріалів</span>
-                            <p class="text-sm font-bold text-gray-800" id="print-date">Дата: 23.07.2026</p>
+                            <span class="text-xs uppercase tracking-wider text-yellow-600 font-extrabold">Materials Estimate</span>
+                            <p class="text-sm font-bold text-gray-800" id="print-date">Date: 23.07.2026</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
-                        <span class="text-xs uppercase tracking-widest text-yellow-500 font-extrabold" id="t-estimate">Кошторис матеріалів</span>
-                        <h2 class="text-2xl font-black text-white" id="lbl-result-area">Площа: 13.50 м²</h2>
+                        <span class="text-xs uppercase tracking-widest text-yellow-500 font-extrabold" id="t-estimate">Materials Estimate</span>
+                        <h2 class="text-2xl font-black text-white" id="lbl-result-area">Area: 13.50 m²</h2>
                     </div>
                     <!-- Export PDF -->
                     <button id="btn-pdf" onclick="exportToPDF()" class="no-print px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-yellow-400 font-extrabold rounded-xl transition-all shadow-lg flex items-center gap-2 text-xs">
-                        <i data-lucide="file-down" class="w-4 h-4"></i> <span id="lbl-pdf-btn">Експорт в PDF / Друк</span>
+                        <i data-lucide="file-down" class="w-4 h-4"></i> <span id="lbl-pdf-btn">Export PDF / Print</span>
                     </button>
                 </div>
 
@@ -304,12 +302,12 @@
                         <div class="col-span-8 flex items-center gap-3">
                             <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="grid-3x3" class="w-4 h-4"></i></div>
                             <div>
-                                <h4 class="font-bold text-white" id="lbl-mat-sheets">Листи гіпсокартону</h4>
-                                <p class="text-xs text-neutral-400" id="lbl-mat-sheets-sub">Розрахунок з урахуванням шарів та запасу</p>
+                                <h4 class="font-bold text-white" id="lbl-mat-sheets">Drywall Sheets</h4>
+                                <p class="text-xs text-neutral-400" id="lbl-mat-sheets-sub">Calculation includes layer multipliers and waste</p>
                             </div>
                         </div>
                         <div class="col-span-4 text-right">
-                            <span class="text-xl font-extrabold text-yellow-400" id="val-sheets">5</span> <span class="text-xs text-neutral-400" id="unit-sheets">шт</span>
+                            <span class="text-xl font-extrabold text-yellow-400" id="val-sheets">5</span> <span class="text-xs text-neutral-400" id="unit-sheets">pcs</span>
                         </div>
                     </div>
 
@@ -318,12 +316,12 @@
                         <div class="col-span-8 flex items-center gap-3">
                             <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="unfold-vertical" class="w-4 h-4"></i></div>
                             <div>
-                                <h4 class="font-bold text-white" id="lbl-mat-cd">Профіль CW (3.0м)</h4>
-                                <p class="text-xs text-neutral-400" id="lbl-mat-cd-sub">Вертикальний стійковий профіль</p>
+                                <h4 class="font-bold text-white" id="lbl-mat-cd">CW Stud Profile (3.0m)</h4>
+                                <p class="text-xs text-neutral-400" id="lbl-mat-cd-sub">Vertical wall stud frame</p>
                             </div>
                         </div>
                         <div class="col-span-4 text-right">
-                            <span class="text-xl font-extrabold text-yellow-400" id="val-cd">9</span> <span class="text-xs text-neutral-400" id="unit-cd">шт</span>
+                            <span class="text-xl font-extrabold text-yellow-400" id="val-cd">9</span> <span class="text-xs text-neutral-400" id="unit-cd">pcs</span>
                         </div>
                     </div>
 
@@ -332,12 +330,12 @@
                         <div class="col-span-8 flex items-center gap-3">
                             <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="unfold-horizontal" class="w-4 h-4"></i></div>
                             <div>
-                                <h4 class="font-bold text-white" id="lbl-mat-ud">Профіль UW (3.0м)</h4>
-                                <p class="text-xs text-neutral-400" id="lbl-mat-ud-sub">Периметральний направляючий профіль</p>
+                                <h4 class="font-bold text-white" id="lbl-mat-ud">UW Track Profile (3.0m)</h4>
+                                <p class="text-xs text-neutral-400" id="lbl-mat-ud-sub">Perimeter floor & ceiling tracks</p>
                             </div>
                         </div>
                         <div class="col-span-4 text-right">
-                            <span class="text-xl font-extrabold text-yellow-400" id="val-ud">5</span> <span class="text-xs text-neutral-400" id="unit-ud">шт</span>
+                            <span class="text-xl font-extrabold text-yellow-400" id="val-ud">5</span> <span class="text-xs text-neutral-400" id="unit-ud">pcs</span>
                         </div>
                     </div>
 
@@ -347,9 +345,9 @@
                             <div class="p-3 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 rounded-full mb-2">
                                 <i data-lucide="crown" class="w-5 h-5"></i>
                             </div>
-                            <p class="text-xs font-black text-white uppercase tracking-widest text-center" id="t-pro-unlock-items">Розблокуйте витратні матеріали (саморізи, дюбелі, стрічку, підвіси, шпаклівку)</p>
+                            <p class="text-xs font-black text-white uppercase tracking-widest text-center" id="t-pro-unlock-items">Unlock Consumables (Screws, Plugs, Tapes, Hangers, Putty)</p>
                             <button onclick="setMode('pro')" class="mt-3 px-4 py-1.5 bg-yellow-500 text-black text-xs font-extrabold uppercase rounded-lg transition-all hover:bg-yellow-400">
-                                <span id="lbl-unlock-now">Розблокувати зараз</span>
+                                <span id="lbl-unlock-now">Unlock Now</span>
                             </button>
                         </div>
 
@@ -358,12 +356,12 @@
                             <div class="col-span-8 flex items-center gap-3">
                                 <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="pin" class="w-4 h-4"></i></div>
                                 <div>
-                                    <h4 class="font-bold text-white" id="lbl-mat-screws">Саморізи по металу (25мм)</h4>
-                                    <p class="text-xs text-neutral-400" id="lbl-mat-screws-sub">Розрахунок з урахуванням кількості шарів</p>
+                                    <h4 class="font-bold text-white" id="lbl-mat-screws">Metal Screws (25mm)</h4>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-screws-sub">Calculated based on total layers count</p>
                                 </div>
                             </div>
                             <div class="col-span-4 text-right">
-                                <span class="text-xl font-extrabold text-yellow-400" id="val-screws">223</span> <span class="text-xs text-neutral-400" id="unit-screws">шт</span>
+                                <span class="text-xl font-extrabold text-yellow-400" id="val-screws">223</span> <span class="text-xs text-neutral-400" id="unit-screws">pcs</span>
                             </div>
                         </div>
 
@@ -372,12 +370,12 @@
                             <div class="col-span-8 flex items-center gap-3">
                                 <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="hammer" class="w-4 h-4"></i></div>
                                 <div>
-                                    <h4 class="font-bold text-white" id="lbl-mat-plugs">Дюбель-цвяхи (6х40)</h4>
-                                    <p class="text-xs text-neutral-400" id="lbl-mat-plugs-sub">Для направляючих та підвісів</p>
+                                    <h4 class="font-bold text-white" id="lbl-mat-plugs">Nail Wall Plugs (6x40)</h4>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-plugs-sub">For perimeter tracks and hangers</p>
                                 </div>
                             </div>
                             <div class="col-span-4 text-right">
-                                <span class="text-xl font-extrabold text-yellow-400" id="val-plugs">88</span> <span class="text-xs text-neutral-400" id="unit-plugs">шт</span>
+                                <span class="text-xl font-extrabold text-yellow-400" id="val-plugs">88</span> <span class="text-xs text-neutral-400" id="unit-plugs">pcs</span>
                             </div>
                         </div>
 
@@ -386,12 +384,12 @@
                             <div class="col-span-8 flex items-center gap-3">
                                 <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="anchor" class="w-4 h-4"></i></div>
                                 <div>
-                                    <h4 class="font-bold text-white" id="lbl-mat-hangers">Прямі підвіси (ES)</h4>
-                                    <p class="text-xs text-neutral-400" id="lbl-mat-hangers-sub">Для фіксації несучого профілю</p>
+                                    <h4 class="font-bold text-white" id="lbl-mat-hangers">Direct Hangers (ES)</h4>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-hangers-sub">To secure profile to base wall/ceiling</p>
                                 </div>
                             </div>
                             <div class="col-span-4 text-right">
-                                <span class="text-xl font-extrabold text-yellow-400" id="val-hangers">32</span> <span class="text-xs text-neutral-400" id="unit-hangers">шт</span>
+                                <span class="text-xl font-extrabold text-yellow-400" id="val-hangers">32</span> <span class="text-xs text-neutral-400" id="unit-hangers">pcs</span>
                             </div>
                         </div>
 
@@ -400,12 +398,12 @@
                             <div class="col-span-8 flex items-center gap-3">
                                 <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="scroll" class="w-4 h-4"></i></div>
                                 <div>
-                                    <h4 class="font-bold text-white" id="lbl-mat-tape">Стрічка для швів (Серп'янка)</h4>
-                                    <p class="text-xs text-neutral-400" id="lbl-mat-tape-sub">Близько 1.5м на м² зовнішнього шару</p>
+                                    <h4 class="font-bold text-white" id="lbl-mat-tape">Fiberglass Mesh Joint Tape</h4>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-tape-sub">Approx 1.5m per m² of outer board</p>
                                 </div>
                             </div>
                             <div class="col-span-4 text-right">
-                                <span class="text-xl font-extrabold text-yellow-400" id="val-tape">23</span> <span class="text-xs text-neutral-400" id="unit-tape">м</span>
+                                <span class="text-xl font-extrabold text-yellow-400" id="val-tape">23</span> <span class="text-xs text-neutral-400" id="unit-tape">m</span>
                             </div>
                         </div>
 
@@ -414,12 +412,12 @@
                             <div class="col-span-8 flex items-center gap-3">
                                 <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="paint-bucket" class="w-4 h-4"></i></div>
                                 <div>
-                                    <h4 class="font-bold text-white" id="lbl-mat-putty">Шпаклівка для стиків</h4>
-                                    <p class="text-xs text-neutral-400" id="lbl-mat-putty-sub">Заповнення швів ~0.4 кг/м²</p>
+                                    <h4 class="font-bold text-white" id="lbl-mat-putty">Joint Putty / Plaster Filler</h4>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-putty-sub">Joint compound ~0.4 kg/m²</p>
                                 </div>
                             </div>
                             <div class="col-span-4 text-right">
-                                <span class="text-xl font-extrabold text-yellow-400" id="val-putty">5.4</span> <span class="text-xs text-neutral-400" id="unit-putty">кг</span>
+                                <span class="text-xl font-extrabold text-yellow-400" id="val-putty">5.4</span> <span class="text-xs text-neutral-400" id="unit-putty">kg</span>
                             </div>
                         </div>
                     </div>
@@ -429,31 +427,31 @@
                 <div class="mt-6 pt-4 border-t border-neutral-800">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="text-sm font-bold text-yellow-500 uppercase tracking-widest flex items-center gap-2" id="t-financial-summary">
-                            <i data-lucide="receipt" class="w-4 h-4"></i> Фінансовий підсумок
+                            <i data-lucide="receipt" class="w-4 h-4"></i> Financial Summary
                         </h3>
                         <span class="text-[10px] bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded font-extrabold uppercase">PRO FEATURE</span>
                     </div>
                     
                     <div class="space-y-2">
                         <div class="flex justify-between items-center bg-neutral-900/40 px-4 py-2 rounded-lg">
-                            <span class="text-sm text-neutral-400" id="lbl-total-materials">Матеріали (усі)</span>
+                            <span class="text-sm text-neutral-400" id="lbl-total-materials">Materials (All)</span>
                             <span class="font-bold text-white"><span id="val-total-materials">0.00</span> <span class="currency-symbol">€</span></span>
                         </div>
                         <div class="flex justify-between items-center bg-neutral-900/40 px-4 py-2 rounded-lg">
-                            <span class="text-sm text-neutral-400" id="lbl-total-labor">Вартість робіт</span>
+                            <span class="text-sm text-neutral-400" id="lbl-total-labor">Labor Cost</span>
                             <span class="font-bold text-white"><span id="val-total-labor">0.00</span> <span class="currency-symbol">€</span></span>
                         </div>
                         <div class="flex justify-between items-center bg-neutral-900/40 px-4 py-2 rounded-lg">
-                            <span class="text-sm text-neutral-400" id="lbl-total-profit">Прибуток підрядника</span>
+                            <span class="text-sm text-neutral-400" id="lbl-total-profit">Contractor Profit</span>
                             <span class="font-bold text-white"><span id="val-total-profit">0.00</span> <span class="currency-symbol">€</span></span>
                         </div>
                         <div class="flex justify-between items-center bg-neutral-900/40 px-4 py-2 rounded-lg">
-                            <span class="text-sm text-neutral-400" id="lbl-total-other">Логістика та інші витрати</span>
+                            <span class="text-sm text-neutral-400" id="lbl-total-other">Logistics & Other</span>
                             <span class="font-bold text-white"><span id="val-total-other">0.00</span> <span class="currency-symbol">€</span></span>
                         </div>
                         
                         <div class="flex justify-between items-center bg-yellow-500/10 border border-yellow-500/30 px-4 py-3 rounded-xl mt-3">
-                            <span class="font-extrabold text-white text-base" id="lbl-grand-total">Загальна сума:</span>
+                            <span class="font-extrabold text-white text-base" id="lbl-grand-total">Grand Total:</span>
                             <span class="text-2xl font-black text-yellow-400"><span id="val-grand-total">0.00</span> <span class="currency-symbol">€</span></span>
                         </div>
                     </div>
@@ -465,10 +463,10 @@
             <div class="no-print bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
                 <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
                     <i data-lucide="history" class="w-5 h-5 text-yellow-500"></i>
-                    <span id="t-history">Історія розрахунків</span>
+                    <span id="t-history">Calculation History</span>
                 </h2>
                 <div id="history-container" class="space-y-2 max-h-[220px] overflow-y-auto pr-2 text-sm text-neutral-400">
-                    <p class="text-xs text-neutral-500 text-center py-4" id="t-history-empty">Збережених розрахунків поки немає.</p>
+                    <p class="text-xs text-neutral-500 text-center py-4" id="t-history-empty">No calculations saved yet.</p>
                 </div>
             </div>
         </div>
@@ -479,23 +477,23 @@
         <div class="max-w-4xl mx-auto">
             <h2 class="text-xl font-bold text-white flex items-center gap-2 mb-6 text-center justify-center">
                 <i data-lucide="book-open" class="text-yellow-500"></i>
-                <span id="t-guide-title">Як розраховується та практичні поради</span>
+                <span id="t-guide-title">How It Calculates & Practical Tips</span>
             </h2>
             
             <div class="space-y-6 text-sm leading-relaxed text-neutral-300">
                 <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
-                    <h3 class="font-bold text-yellow-500 mb-2" id="t-tip-1-title">📄 Шари гіпсокартону та запас</h3>
-                    <p id="t-tip-1-desc">Перегородочна конструкція завжди обшивається з двох боків. Якщо ви обираєте 2 шари, калькулятор вираховує 4 шари зашивки від загальної площі проекції перегородки. Запас на підрізку стандартно становить 10%.</p>
+                    <h3 class="font-bold text-yellow-500 mb-2" id="t-tip-1-title">📄 Drywall Layers & Waste Factor</h3>
+                    <p id="t-tip-1-desc">A partition wall is always sheeted on both sides. Choosing 2 layers per side automatically calculates 4 total drywall layers over the partition footprint. Waste ratio is defaulted at 10%.</p>
                 </div>
 
                 <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
-                    <h3 class="font-bold text-yellow-500 mb-2" id="t-tip-2-title">⚙️ Профілі (CW/UW та CD/UD)</h3>
-                    <p id="t-tip-2-desc">Для стін та перегородок використовуються вертикальні профілі CW та периметральні UW. Для підвісних стель — несучі CD та обвідні UD. У 2-шарових системах каркас підсилюється кроком 400 мм.</p>
+                    <h3 class="font-bold text-yellow-500 mb-2" id="t-tip-2-title">⚙️ Profile Specifications (CW/UW & CD/UD)</h3>
+                    <p id="t-tip-2-desc">Wall claddings and partitions utilize vertical CW studs and perimeter UW channels. Suspended ceilings use main CD channels and perimeter UD tracks.</p>
                 </div>
 
                 <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
-                    <h3 class="font-bold text-yellow-500 mb-2" id="t-tip-3-title">🔒 Чому варто використовувати PRO режим?</h3>
-                    <p id="t-tip-3-desc">PRO режим дозволяє точніше підрахувати кріплення (з урахуванням довжини саморізів 25мм та 35мм для 2-го шару), витрату дюбелів, підвісів, армувальної стрічки, а також розрахувати кошторис робіт і прибутку.</p>
+                    <h3 class="font-bold text-yellow-500 mb-2" id="t-tip-3-title">🔒 Why use PRO Mode?</h3>
+                    <p id="t-tip-3-desc">PRO mode unlocks accurate fastener counts (25mm screws for inner layer, 35mm for outer layer), wall plugs, hangers, joint tape, joint filler, along with labor cost calculations.</p>
                 </div>
             </div>
         </div>
@@ -503,7 +501,7 @@
 
     <!-- FOOTER -->
     <footer class="no-print bg-neutral-950 py-6 text-center text-xs text-neutral-500 border-t border-neutral-900">
-        <p>© 2026 BUILDcalc Suite. Всі права захищено. Точні розрахунки для будівельників.</p>
+        <p>© 2026 BUILDcalc Suite. All rights reserved. Precision estimates for professionals.</p>
     </footer>
     
     <!-- JS LOGIC ENGINE -->
@@ -511,95 +509,10 @@
         // State variables
         let currentMode = 'free'; // 'free' or 'pro'
         let structureType = 'wall'; // 'wall', 'partition', or 'ceiling'
-        let currentLang = 'uk';
+        let currentLang = 'en'; // Strictly force English as primary default
 
         // Translation Dictionary
         const translations = {
-            uk: {
-                "t-dimensions": "Параметри конструкції",
-                "t-type": "Тип конструкції",
-                "lbl-wall": "Стіна (1 бік)",
-                "lbl-partition": "Перегородка (2 боки)",
-                "lbl-ceiling": "Стеля",
-                "lbl-width": "Ширина (м)",
-                "lbl-height": "Висота / Довжина (м)",
-                "lbl-sheet-size": "Розмір листа",
-                "lbl-waste": "Запас на обрізку (%)",
-                "lbl-layers": "Шари гіпсокартону (на одну сторону)",
-                "opt-layer-1": "1 шар (Стандартний)",
-                "opt-layer-2": "2 шари (Посилений / Звукоізоляція)",
-                "lbl-spacing": "Крок стоєчного профілю",
-                "opt-spacing-60": "600 мм (Стандарт)",
-                "opt-spacing-40": "400 мм (Посилений)",
-                "lbl-frame-type": "Тип стельового каркаса",
-                "opt-frame-single": "Однорівневий каркас (П-401)",
-                "opt-frame-double": "Дворівневий перехресний (П-402)",
-                "t-economics": "Ціни та Економіка",
-                "lbl-price-sheet": "Гіпсокартон (€/шт)",
-                "lbl-price-cd": "Основний профіль (€/шт)",
-                "lbl-price-ud": "Направляючий (€/шт)",
-                "lbl-price-screws": "Саморізи (€/шт)",
-                "lbl-price-plugs": "Дюбелі (€/шт)",
-                "lbl-price-hangers": "Підвіси (€/шт)",
-                "lbl-price-tape": "Стрічка (€/м)",
-                "lbl-price-putty": "Шпаклівка (€/кг)",
-                "lbl-labor-rate": "Робота (€/м²)",
-                "lbl-profit-rate": "Прибуток (€/м²)",
-                "lbl-other-expenses": "Логістика (€)",
-                "t-financial-summary": "Фінансовий підсумок",
-                "lbl-total-materials": "Матеріали (усі)",
-                "lbl-total-labor": "Вартість робіт",
-                "lbl-total-profit": "Прибуток підрядника",
-                "lbl-total-other": "Логістика та інші витрати",
-                "lbl-grand-total": "Загальна сума:",
-                "unit-currency": "€",
-                "t-branding": "Брендування PDF-звіту",
-                "lbl-firm": "Назва компанії",
-                "lbl-phone": "Телефон",
-                "lbl-email": "Email",
-                "t-brand-locked-title": "PRO Брендування",
-                "t-brand-locked-desc": "Додавайте власний шапку з контактами компанії у підсумковий PDF-звіт.",
-                "lbl-unlock-btn": "Перейти на PRO",
-                "btn-reset": "Новий розрахунок",
-                "btn-calc": "Розрахувати",
-                "t-estimate": "Кошторис матеріалів",
-                "lbl-pdf-btn": "Експорт в PDF / Друк",
-                "lbl-mat-sheets": "Листи гіпсокартону",
-                "sub-sheets-format": "Листи {area} м² + {waste}% запасу ({sides}, всього шарів: {totalLayers})",
-                "lbl-mat-cw": "Профіль CW (3.0м)",
-                "lbl-mat-cw-sub": "Вертикальний стійковий профіль",
-                "lbl-mat-uw": "Профіль UW (3.0м)",
-                "lbl-mat-uw-sub": "Периметральний направляючий профіль",
-                "lbl-mat-cd": "Профіль CD (3.0м)",
-                "lbl-mat-cd-sub": "Основний стельовий профіль",
-                "lbl-mat-ud": "Профіль UD (3.0м)",
-                "lbl-mat-ud-sub": "Периметральний стельовий профіль",
-                "t-pro-unlock-items": "Розблокуйте витратні матеріали (саморізи, дюбелі, стрічку, підвіси, шпаклівку)",
-                "lbl-unlock-now": "Розблокувати зараз",
-                "lbl-mat-screws": "Саморізи по металу (25мм)",
-                "lbl-mat-screws-2layer": "Саморізи по металу (25мм + 35мм)",
-                "lbl-mat-screws-sub": "Розрахунок з урахуванням кількості шарів",
-                "lbl-mat-plugs": "Дюбель-цвяхи (6х40)",
-                "lbl-mat-plugs-sub": "Для направляючих та підвісів",
-                "lbl-mat-hangers": "Прямі підвіси (ES)",
-                "lbl-mat-hangers-sub": "Для фіксації несучого профілю",
-                "lbl-mat-tape": "Стрічка для швів (Серп'янка)",
-                "lbl-mat-tape-sub": "Близько 1.5м на м² зовнішнього шару",
-                "lbl-mat-putty": "Шпаклівка для стиків",
-                "lbl-mat-putty-sub": "Заповнення швів ~0.4 кг/м²",
-                "t-history": "Історія розрахунків",
-                "t-history-empty": "Збережених розрахунків поки немає.",
-                "t-guide-title": "Як розраховується та практичні поради",
-                "t-tip-1-title": "📄 Шари гіпсокартону та запас",
-                "t-tip-1-desc": "Перегородочна конструкція завжди обшивається з двох боків. Якщо ви обираєте 2 шари, калькулятор вираховує 4 шари зашивки від загальної площі проекції перегородки. Запас на підрізку стандартно становить 10%.",
-                "t-tip-2-title": "⚙️ Профілі (CW/UW та CD/UD)",
-                "t-tip-2-desc": "Для стін та перегородок використовуються вертикальні профілі CW та периметральні UW. Для підвісних стель — несучі CD та обвідні UD. У 2-шарових системах каркас підсилюється кроком 400 мм.",
-                "t-tip-3-title": "🔒 Чому варто використовувати PRO режим?",
-                "t-tip-3-desc": "PRO режим дозволяє точніше підрахувати кріплення (з урахуванням довжини саморізів 25мм та 35мм для 2-го шару), витрату дюбелів, підвісів, армувальної стрічки, а також розрахувати кошторис робіт і прибутку.",
-                "unit-pcs": "шт",
-                "unit-m": "м",
-                "unit-kg": "кг"
-            },
             en: {
                 "t-dimensions": "Dimensions & Specifications",
                 "t-type": "Structure Type",
@@ -668,22 +581,107 @@
                 "lbl-mat-plugs-sub": "For perimeter tracks and hangers",
                 "lbl-mat-hangers": "Direct Hangers (ES)",
                 "lbl-mat-hangers-sub": "To secure profile to base wall/ceiling",
-                "lbl-mat-tape": "Joint Fiber Tape (Serpyanka)",
+                "lbl-mat-tape": "Fiberglass Mesh Joint Tape",
                 "lbl-mat-tape-sub": "Approx 1.5m per m² of outer board",
                 "lbl-mat-putty": "Joint Putty / Plaster Filler",
                 "lbl-mat-putty-sub": "Joint compound ~0.4 kg/m²",
                 "t-history": "Calculation History",
                 "t-history-empty": "No calculations saved yet.",
-                "t-guide-title": "How It Calculates & Tips",
-                "t-tip-1-title": "📄 Sheets & Structural Integrity",
-                "t-tip-1-desc": "Partitions board both sides. Choosing 2 layers per side results in 4 layers calculated across the partition footprint.",
-                "t-tip-2-title": "⚙️ Profiles (CW/UW Walls & CD/UD Ceilings)",
-                "t-tip-2-desc": "Wall partitions use CW and UW profiles. Ceilings use CD and UD channels with adjustable frame layout.",
+                "t-guide-title": "How It Calculates & Practical Tips",
+                "t-tip-1-title": "📄 Drywall Layers & Waste Factor",
+                "t-tip-1-desc": "A partition wall is always sheeted on both sides. Choosing 2 layers per side automatically calculates 4 total drywall layers over the partition footprint. Waste ratio is defaulted at 10%.",
+                "t-tip-2-title": "⚙️ Profile Specifications (CW/UW & CD/UD)",
+                "t-tip-2-desc": "Wall claddings and partitions utilize vertical CW studs and perimeter UW channels. Suspended ceilings use main CD channels and perimeter UD tracks.",
                 "t-tip-3-title": "🔒 Why use PRO Mode?",
-                "t-tip-3-desc": "PRO mode details exact screw lengths (25mm for inner, 35mm for outer layer), fasteners, tapes, and full financial cost estimation.",
+                "t-tip-3-desc": "PRO mode unlocks accurate fastener counts (25mm screws for inner layer, 35mm for outer layer), wall plugs, hangers, joint tape, joint filler, along with labor cost calculations.",
                 "unit-pcs": "pcs",
                 "unit-m": "m",
                 "unit-kg": "kg"
+            },
+            uk: {
+                "t-dimensions": "Параметри конструкції",
+                "t-type": "Тип конструкції",
+                "lbl-wall": "Стіна (1 бік)",
+                "lbl-partition": "Перегородка (2 боки)",
+                "lbl-ceiling": "Стеля",
+                "lbl-width": "Ширина (м)",
+                "lbl-height": "Висота / Довжина (м)",
+                "lbl-sheet-size": "Розмір листа",
+                "lbl-waste": "Запас на обрізку (%)",
+                "lbl-layers": "Шари гіпсокартону (на одну сторону)",
+                "opt-layer-1": "1 шар (Стандартний)",
+                "opt-layer-2": "2 шари (Посилений / Звукоізоляція)",
+                "lbl-spacing": "Крок стоєчного профілю",
+                "opt-spacing-60": "600 мм (Стандарт)",
+                "opt-spacing-40": "400 мм (Посилений)",
+                "lbl-frame-type": "Тип стельового каркаса",
+                "opt-frame-single": "Однорівневий каркас (П-401)",
+                "opt-frame-double": "Дворівневий перехресний (П-402)",
+                "t-economics": "Ціни та Економіка",
+                "lbl-price-sheet": "Гіпсокартон (€/шт)",
+                "lbl-price-cd": "Основний профіль (€/шт)",
+                "lbl-price-ud": "Направляючий (€/шт)",
+                "lbl-price-screws": "Саморізи (€/шт)",
+                "lbl-price-plugs": "Дюбелі (€/шт)",
+                "lbl-price-hangers": "Підвіси (€/шт)",
+                "lbl-price-tape": "Стрічка (€/м)",
+                "lbl-price-putty": "Шпаклівка (€/кг)",
+                "lbl-labor-rate": "Робота (€/м²)",
+                "lbl-profit-rate": "Прибуток (€/м²)",
+                "lbl-other-expenses": "Логістика (€)",
+                "t-financial-summary": "Фінансовий підсумок",
+                "lbl-total-materials": "Матеріали (усі)",
+                "lbl-total-labor": "Вартість робіт",
+                "lbl-total-profit": "Прибуток підрядника",
+                "lbl-total-other": "Логістика та інші витрати",
+                "lbl-grand-total": "Загальна сума:",
+                "unit-currency": "€",
+                "t-branding": "Брендування PDF-звіту",
+                "lbl-firm": "Назва компанії",
+                "lbl-phone": "Телефон",
+                "lbl-email": "Email",
+                "t-brand-locked-title": "PRO Брендування",
+                "t-brand-locked-desc": "Додавайте власну шапку з контактами компанії у підсумковий PDF-звіт.",
+                "lbl-unlock-btn": "Перейти на PRO",
+                "btn-reset": "Новий розрахунок",
+                "btn-calc": "Розрахувати",
+                "t-estimate": "Кошторис матеріалів",
+                "lbl-pdf-btn": "Експорт в PDF / Друк",
+                "lbl-mat-sheets": "Листи гіпсокартону",
+                "sub-sheets-format": "Листи {area} м² + {waste}% запасу ({sides}, всього шарів: {totalLayers})",
+                "lbl-mat-cw": "Профіль CW (3.0м)",
+                "lbl-mat-cw-sub": "Вертикальний стійковий профіль",
+                "lbl-mat-uw": "Профіль UW (3.0м)",
+                "lbl-mat-uw-sub": "Периметральний направляючий профіль",
+                "lbl-mat-cd": "Профіль CD (3.0м)",
+                "lbl-mat-cd-sub": "Основний стельовий профіль",
+                "lbl-mat-ud": "Профіль UD (3.0м)",
+                "lbl-mat-ud-sub": "Периметральний стельовий профіль",
+                "t-pro-unlock-items": "Розблокуйте витратні матеріали (саморізи, дюбелі, стрічку, підвіси, шпаклівку)",
+                "lbl-unlock-now": "Розблокувати зараз",
+                "lbl-mat-screws": "Саморізи по металу (25мм)",
+                "lbl-mat-screws-2layer": "Саморізи по металу (25мм + 35мм)",
+                "lbl-mat-screws-sub": "Розрахунок з урахуванням кількості шарів",
+                "lbl-mat-plugs": "Дюбель-цвяхи (6х40)",
+                "lbl-mat-plugs-sub": "Для направляючих та підвісів",
+                "lbl-mat-hangers": "Прямі підвіси (ES)",
+                "lbl-mat-hangers-sub": "Для фіксації несучого профілю",
+                "lbl-mat-tape": "Стрічка для швів (Серп'янка)",
+                "lbl-mat-tape-sub": "Близько 1.5м на м² зовнішнього шару",
+                "lbl-mat-putty": "Шпаклівка для стиків",
+                "lbl-mat-putty-sub": "Заповнення швів ~0.4 кг/м²",
+                "t-history": "Історія розрахунків",
+                "t-history-empty": "Збережених розрахунків поки немає.",
+                "t-guide-title": "Як розраховується та практичні поради",
+                "t-tip-1-title": "📄 Шари гіпсокартону та запас",
+                "t-tip-1-desc": "Перегородочна конструкція завжди обшивається з двох боків. Якщо ви обираєте 2 шари, калькулятор вираховує 4 шари зашивки від загальної площі проекції перегородки. Запас на підрізку стандартно становить 10%.",
+                "t-tip-2-title": "⚙️ Профілі (CW/UW та CD/UD)",
+                "t-tip-2-desc": "Для стін та перегородок використовуються вертикальні профілі CW та периметральні UW. Для підвісних стель — несучі CD та обвідні UD. У 2-шарових системах каркас підсилюється кроком 400 мм.",
+                "t-tip-3-title": "🔒 Чому варто використовувати PRO режим?",
+                "t-tip-3-desc": "PRO режим дозволяє точніше підрахувати кріплення (з урахуванням довжини саморізів 25мм та 35мм для 2-го шару), витрату дюбелів, підвісів, армувальної стрічки, а також розрахувати кошторис робіт і прибутку.",
+                "unit-pcs": "шт",
+                "unit-m": "м",
+                "unit-kg": "кг"
             },
             sk: {
                 "t-dimensions": "Rozmery & Špecifikácia",
@@ -775,9 +773,13 @@
         // Initialize App State
         window.onload = function() {
             lucide.createIcons();
-            loadHistory();
+            
+            // Force reset stored language to English to avoid caching issues
+            localStorage.setItem('app_lang', 'en');
+            
             setStructureType('wall'); 
-            calculate();
+            changeLanguage('en');
+            loadHistory();
         };
 
         // Switch Language
@@ -785,6 +787,9 @@
             currentLang = lang;
             document.documentElement.lang = lang;
             
+            const selectEl = document.getElementById('lang-select');
+            if (selectEl) selectEl.value = lang;
+
             for (const key in translations[lang]) {
                 const element = document.getElementById(key);
                 if (element) {
@@ -884,14 +889,8 @@
             
             // Side multiplier: Partition = 2 sides, Wall/Ceiling = 1 side
             const sideMultiplier = (structureType === 'partition') ? 2 : 1;
-            
-            // Total physical surface area of structure (e.g. partition of 10m2 has 20m2 surface)
             const totalSurfaceArea = baseArea * sideMultiplier;
-            
-            // Total layer count (e.g., partition with 2 layers per side = 4 layers total)
             const totalLayersCount = sideMultiplier * layersPerSide;
-            
-            // Total Drywall Square Meters to cover
             const totalBoardingArea = baseArea * totalLayersCount;
 
             const titleArea = document.getElementById('lbl-result-area');
@@ -913,8 +912,8 @@
             document.getElementById('lbl-mat-sheets').innerText = `${translations[currentLang]["lbl-mat-sheets"]} (1.2 x ${sheetLength}m)`;
             
             let sidesLabel = (sideMultiplier === 2) 
-                ? (currentLang === 'uk' ? '2 боки' : (currentLang === 'sk' ? '2-stranný' : '2-sided'))
-                : (currentLang === 'uk' ? '1 бік' : (currentLang === 'sk' ? '1-stranný' : '1-sided'));
+                ? (currentLang === 'uk' ? '2 боки' : (currentLang === 'sk' ? '2-stranný' : '2 sides'))
+                : (currentLang === 'uk' ? '1 бік' : (currentLang === 'sk' ? '1-stranný' : '1 side'));
 
             let sheetSubText = translations[currentLang]["sub-sheets-format"];
             sheetSubText = sheetSubText
@@ -964,13 +963,12 @@
                 const hangersPerCW = Math.ceil(height / 0.8);
                 hangersTotal = cdProfilesCount * hangersPerCW;
             } else {
-                // Partition freestanding studs
                 hangersTotal = 0;
             }
 
             const cdTotalPieces = Math.ceil(cdTotalLength / 3.0);
 
-            // Screws calculation (First layer ~12-15 pcs/m², Second layer +15 pcs/m²)
+            // Screws calculation
             let screwsPerM2 = (layersPerSide === 1) ? 17 : 32; 
             const screwsCount = Math.ceil(totalSurfaceArea * screwsPerM2 * 1.05);
             
@@ -978,7 +976,7 @@
             const udDowels = Math.ceil(udTotalLength / 0.5);
             const plugsTotal = Math.ceil((udDowels + (hangersTotal * 2)) * 1.1);
 
-            // Joint Tape & Putty (Calculated for exposed/outer surface area)
+            // Joint Tape & Putty
             const tapeTotalMeters = Math.ceil(totalSurfaceArea * 1.5 * 1.1);
             const puttyTotalKg = parseFloat((totalSurfaceArea * 0.4 * 1.1).toFixed(1));
 
@@ -1020,7 +1018,6 @@
             const profitRate = parseFloat(document.getElementById('inp-profit-rate')?.value) || 0;
             const otherExpenses = parseFloat(document.getElementById('inp-other-expenses')?.value) || 0;
 
-            // Labor and Profit calculated on actual installed board area
             const totalLabor = totalBoardingArea * laborRate;
             const totalProfit = totalBoardingArea * profitRate;
             const grandTotal = totalMaterials + totalLabor + totalProfit + otherExpenses;
@@ -1030,22 +1027,6 @@
             document.getElementById('val-total-profit').innerText = totalProfit.toFixed(2);
             document.getElementById('val-total-other').innerText = otherExpenses.toFixed(2);
             document.getElementById('val-grand-total').innerText = grandTotal.toFixed(2);
-
-            // Sync with LocalStorage
-            try {
-                let globalEst = JSON.parse(localStorage.getItem('global_building_estimate')) || {};
-                globalEst['drywall'] = {
-                    title: 'Drywall Calculation',
-                    area: totalBoardingArea,
-                    total: grandTotal,
-                    materials: totalMaterials,
-                    labor: totalLabor,
-                    updatedAt: new Date().toISOString()
-                };
-                localStorage.setItem('global_building_estimate', JSON.stringify(globalEst));
-            } catch(e) {
-                console.error("LocalStorage error", e);
-            }
 
             if (baseArea > 0) {
                 saveToHistoryDebounced(width, height, baseArea);
@@ -1138,7 +1119,7 @@
                     uk: "Брендований PDF доступний тільки в PRO режимі! Увімкніть PRO режим у верхній панелі.",
                     sk: "Značkový PDF je k dispozícii iba v režime PRO! Zapnite režim PRO v hornej lište."
                 };
-                alert(alerts[currentLang] || alerts.uk);
+                alert(alerts[currentLang] || alerts.en);
                 return;
             }
 
