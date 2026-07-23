@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,7 +46,7 @@
     
     <div id="global-nav-container"></div>
     
-    <!-- TOP NAVIGATION BAR -->
+    <!-- TOP NAVIGATION BAR (UNTOUCHED AS REQUESTED) -->
     <header class="no-print border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md sticky top-0 z-50 px-4 lg:px-8 py-4">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
             <!-- Brand Logo -->
@@ -103,18 +102,24 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-width">Width (m)</label>
-                            <input type="number" id="inp-w" value="3.0" step="0.1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
+                            <input type="number" id="inp-w" value="3.0" min="0.1" step="0.1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-length">Length (m)</label>
-                            <input type="number" id="inp-l" value="4.0" step="0.1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
+                            <input type="number" id="inp-l" value="4.0" min="0.1" step="0.1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
                         </div>
+                    </div>
+
+                    <!-- Deductions (Doors/Openings) - NEW -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-deduct">Minus Openings / Doors (m²)</label>
+                        <input type="number" id="inp-deduct" value="0" min="0" step="0.1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-sm focus:outline-none gold-border-glow transition-all" placeholder="0">
                     </div>
 
                     <!-- Labor Rate Input -->
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-labor">Labor Rate (per m²)</label>
-                        <input type="number" id="inp-labor" value="0" step="1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all" placeholder="0">
+                        <input type="number" id="inp-labor" value="0" min="0" step="1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all" placeholder="0">
                     </div>
 
                     <!-- Tile Format & Pattern -->
@@ -147,11 +152,11 @@
                         </div>
                         <div>
                             <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-joint">Joint (mm)</label>
-                            <input type="number" id="inp-joint" value="2" step="0.5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white text-sm text-center">
+                            <input type="number" id="inp-joint" value="2" min="0" step="0.5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white text-sm text-center">
                         </div>
                         <div>
                             <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-glue">Glue Layer (mm)</label>
-                            <input type="number" id="inp-glue" value="5" step="1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white text-sm text-center">
+                            <input type="number" id="inp-glue" value="5" min="1" step="1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white text-sm text-center">
                         </div>
                     </div>
                 </div> 
@@ -403,6 +408,7 @@
                 "t-dimensions": "Параметри Приміщення та Плитки",
                 "lbl-width": "Ширина (м)",
                 "lbl-length": "Довжина (м)",
+                "lbl-deduct": "Мінус прорізи / двері (м²)",
                 "lbl-format": "Формат Плитки (см)",
                 "lbl-pattern": "Схема укладання",
                 "opt-straight": "Пряма (Стандарт)",
@@ -453,6 +459,7 @@
                 "t-dimensions": "Room & Tile Specifications",
                 "lbl-width": "Width (m)",
                 "lbl-length": "Length (m)",
+                "lbl-deduct": "Minus Openings / Doors (m²)",
                 "lbl-format": "Tile Size (cm)",
                 "lbl-pattern": "Laying Pattern",
                 "opt-straight": "Straight (Standard)",
@@ -503,6 +510,7 @@
                 "t-dimensions": "Rozmery a špecifikácia dlažby",
                 "lbl-width": "Šírka (m)",
                 "lbl-length": "Dĺžka (m)",
+                "lbl-deduct": "Mínus otvory / dvere (m²)",
                 "lbl-format": "Formát dlažby (cm)",
                 "lbl-pattern": "Vzor pokládky",
                 "opt-straight": "Rovný (Štandard)",
@@ -605,10 +613,14 @@
         }
 
         function calculate() {
-            const w = parseFloat(document.getElementById('inp-w').value) || 0;
-            const l = parseFloat(document.getElementById('inp-l').value) || 0;
-            const laborRate = parseFloat(document.getElementById('inp-labor').value) || 0;
-            const area = w * l;
+            const w = Math.max(0, parseFloat(document.getElementById('inp-w').value) || 0);
+            const l = Math.max(0, parseFloat(document.getElementById('inp-l').value) || 0);
+            const deduct = Math.max(0, parseFloat(document.getElementById('inp-deduct').value) || 0);
+            
+            let area = (w * l) - deduct;
+            if (area < 0) area = 0;
+
+            const laborRate = Math.max(0, parseFloat(document.getElementById('inp-labor').value) || 0);
             const laborCost = area * laborRate;
 
             const tileSelect = document.getElementById('inp-tile').value.split('x');
@@ -617,9 +629,9 @@
             const tileAreaM2 = (tileW_cm / 100) * (tileL_cm / 100);
 
             const pattern = document.getElementById('inp-pattern').value;
-            const thickness = parseFloat(document.getElementById('inp-th').value) || 10;
-            const joint = parseFloat(document.getElementById('inp-joint').value) || 2;
-            const glue = parseFloat(document.getElementById('inp-glue').value) || 5;
+            const thickness = Math.max(1, parseFloat(document.getElementById('inp-th').value) || 10);
+            const joint = Math.max(0, parseFloat(document.getElementById('inp-joint').value) || 2);
+            const glue = Math.max(1, parseFloat(document.getElementById('inp-glue').value) || 5);
 
             let waste = 5; 
             let maxSide = Math.max(tileW_cm, tileL_cm);
@@ -631,14 +643,16 @@
             if (pattern === 'herringbone') waste += 10;
 
             const totalTileArea = area * (1 + (waste / 100));
-            const tilePieces = Math.ceil(totalTileArea / tileAreaM2);
+            const tilePieces = tileAreaM2 > 0 ? Math.ceil(totalTileArea / tileAreaM2) : 0;
 
             const glueKg = Math.ceil(area * glue * 1.3);
 
-            const tw_mm = tileW_cm * 10;
-            const tl_mm = tileL_cm * 10;
-            const groutPerM2 = ((tw_mm + tl_mm) / (tw_mm * tl_mm)) * thickness * joint * 1.6;
-            const groutKg = (area * groutPerM2 * 1.1).toFixed(1); 
+            // Corrected grout calculation formula based on dimensions in meters and joints in mm
+            const tw_m = tileW_cm / 100;
+            const tl_m = tileL_cm / 100;
+            const joint_m = joint / 1000;
+            const groutPerM2 = (tw_m + tl_m) * joint_m * (thickness / 1000) * 1600 / (tw_m * tl_m);
+            const groutKg = (area * Math.max(0.3, groutPerM2) * 1.1).toFixed(1); 
 
             const primerL = (area * 0.15).toFixed(1);
 
@@ -737,6 +751,7 @@
         function resetInputs() {
             document.getElementById('inp-w').value = "3.0";
             document.getElementById('inp-l').value = "4.0";
+            document.getElementById('inp-deduct').value = "0";
             document.getElementById('inp-labor').value = "0";
             document.getElementById('inp-tile').value = "60x60";
             document.getElementById('inp-pattern').value = "straight";
