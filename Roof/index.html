@@ -53,16 +53,6 @@
             padding: 6px 12px; margin-top: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;
         }
 
-        /* Динамічне меню калькуляторів */
-        .topMenu { display: flex; gap: 6px; margin: 15px 0; overflow-x: auto; padding-bottom: 5px; justify-content: center; }
-        .topMenu button {
-            background: var(--dark-light); color: white; border: 1px solid #555;
-            padding: 8px 12px; border-radius: 5px; white-space: nowrap; cursor: pointer;
-            font-size: 13px;
-        }
-        .topMenu button:hover { background: #444; }
-        .topMenu button.active { background: var(--primary); color: var(--dark); font-weight: bold; border-color: var(--primary); }
-
         .version-switcher { display: flex; background: var(--dark-light); padding: 3px; border-radius: 5px; margin-bottom: 20px; }
         .tab-btn { flex: 1; background: none; border: none; color: white; padding: 8px; cursor: pointer; border-radius: 4px; }
         .tab-btn.active { background: var(--primary); color: var(--dark); font-weight: bold; }
@@ -111,8 +101,8 @@
         <div class="logo">🏠 <span>BUILD</span>calc ROOF PRO</div>
         <div class="subtitle" id="subtitle">Professional Roof Calculator</div>
         
-        <!-- Меню підтягується автоматично з файлу nav.js -->
-        <div class="topMenu" id="topMenu"></div>
+        <!-- Контейнер для головного меню з nav.js -->
+        <div id="global-nav-container"></div>
 
         <div class="lang-select-wrapper">
             <select id="language" onchange="changeLanguage()">
@@ -373,8 +363,8 @@
         <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
     </div>
 
-<!-- Підключаємо централізоване меню (nav.js) -->
-<script src="nav.js"></script>
+<!-- Підключення глобального меню з кореневої папки через ../nav.js -->
+<script src="../nav.js"></script>
 
 <!-- ================= SCRIPTS ================= -->
 <script>
@@ -721,10 +711,6 @@ function changeLanguage() {
                 else el.innerHTML = data[id];
             }
         }
-    }
-    // Оновлюємо назви в меню на відповідну мову
-    if (typeof renderNav === 'function') {
-        renderNav();
     }
 }
 
