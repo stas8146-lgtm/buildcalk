@@ -15,13 +15,13 @@
 <style>
 :root {
     --bg-dark: #0f172a;
-    --card-bg: #ffffff;
-    --primary: #22252a;
+    --card-bg: #1e293b; /* Повністю темний фон картки */
+    --primary: #38bdf8;
     --accent: #f5a623;
     --accent-hover: #e0961b;
-    --text-main: #334155;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border: #334155;
 }
 body {
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -36,11 +36,12 @@ body {
     margin: 30px auto;
     background: var(--card-bg);
     border-radius: 24px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
     overflow: hidden;
+    border: 1px solid var(--border);
 }
 .header {
-    background: linear-gradient(135deg, #1e293b, #0f172a);
+    background: linear-gradient(135deg, #0f172a, #1e293b);
     color: white;
     padding: 35px 25px;
     text-align: center;
@@ -56,6 +57,7 @@ body {
     justify-content: center;
     gap: 8px;
     flex-wrap: wrap;
+    color: #fff;
 }
 .logo span { color: var(--accent); }
 .subtitle { font-size: 18px; color: var(--text-muted); margin-top: 8px; }
@@ -71,11 +73,12 @@ select {
 }
 .version-switcher {
     display: flex;
-    background: #f1f5f9;
+    background: #0f172a;
     padding: 6px;
     border-radius: 14px;
     margin: 25px;
     gap: 5px;
+    border: 1px solid var(--border);
 }
 .tab-btn {
     flex: 1;
@@ -90,22 +93,23 @@ select {
     transition: all 0.3s;
 }
 .tab-btn.active {
-    background: white;
-    color: var(--bg-dark);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-.tab-btn .badge {
     background: var(--accent);
     color: #000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.tab-btn .badge {
+    background: #0f172a;
+    color: var(--accent);
     font-size: 11px;
     padding: 2px 6px;
     border-radius: 6px;
     margin-left: 5px;
+    border: 1px solid var(--accent);
 }
 .content-body { padding: 0 25px 30px 25px; }
 h3 {
     font-size: 20px;
-    color: #1e293b;
+    color: #f8fafc;
     border-left: 5px solid var(--accent);
     padding-left: 12px;
     margin-top: 30px;
@@ -126,38 +130,41 @@ input {
     border: 1.5px solid var(--border);
     border-radius: 10px;
     font-size: 15px;
-    color: #1e293b;
-    background: #f8fafc;
+    color: #fff;
+    background: #0f172a;
 }
 input:focus {
     outline: none;
     border-color: var(--accent);
-    background: white;
+    background: #1e293b;
 }
 .buttons-container { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 25px; }
 button.action-btn {
     padding: 14px 24px;
     border: 0;
     border-radius: 12px;
-    background: var(--primary);
+    background: #334155;
     color: white;
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
+    transition: background 0.2s;
 }
 button.action-btn:hover { background: var(--accent); color: #000; }
 button#calcBtn { background: var(--accent); color: #000; flex-grow: 2; }
+button#calcBtn:hover { background: var(--accent-hover); }
 .result-box {
     margin-top: 25px;
-    background: #f8fafc;
+    background: #0f172a;
     border: 2px dashed var(--border);
     padding: 20px;
     border-radius: 16px;
+    color: var(--text-main);
 }
 .pro-only-block.locked { opacity: 0.35; pointer-events: none; user-select: none; }
 .lock-badge { display: none; background: #ef4444; color: white; font-size: 11px; font-weight: bold; padding: 3px 8px; border-radius: 6px; }
 .locked .lock-badge { display: inline-block; }
-.history-box { margin-top: 25px; background: #f1f5f9; padding: 15px; border-radius: 12px; }
+.history-box { margin-top: 25px; background: #0f172a; border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: var(--text-main); }
 .buy-pro-banner {
     background: linear-gradient(135deg, #f5a623, #d97706);
     color: #000;
@@ -387,12 +394,12 @@ function calculate(){
             t.resSalary+": "+salary.toFixed(2)+" €\n"+t.resProfit+": "+profit.toFixed(2)+" €\n"+t.resLogTotal+": "+logisticsTotal.toFixed(2)+" €\n\n"+t.resTotal+": "+clientTotal.toFixed(2)+" € ("+(clientTotal/area).toFixed(2)+" €/м²)";
 
         let resultHTML = 
-            "<h3 style='color:#1e293b; border-left-color:green;'>"+t.resEstimate+" (PRO)</h3>"+
+            "<h3 style='color:#f8fafc; border-left-color:var(--accent);'>"+t.resEstimate+" (PRO)</h3>"+
             "<b>"+t.object+":</b> "+object+"<br><b>"+t.area+":</b> "+area+" м²<br><b>"+t.thickness+":</b> "+thickness+" см<br><br>"+
-            "<b>"+t.resVolume+":</b> "+volume.toFixed(2)+" м³<br><hr style='border-color:#e2e8f0'>"+
-            "🧪 <b>"+t.resCement+":</b> "+cementBags.toFixed(1)+" міш.<br>⏳ <b>"+t.resSand+":</b> "+sandM3.toFixed(2)+" м³<br>🕸 <b>"+t.resFiber+":</b> "+fiberKg.toFixed(1)+" кг<br>💧 <b>"+t.resPlastic+":</b> "+plasticL.toFixed(1)+" л<br><hr style='border-color:#e2e8f0'>"+
+            "<b>"+t.resVolume+":</b> "+volume.toFixed(2)+" м³<br><hr style='border-color:var(--border)'>"+
+            "🧪 <b>"+t.resCement+":</b> "+cementBags.toFixed(1)+" міш.<br>⏳ <b>"+t.resSand+":</b> "+sandM3.toFixed(2)+" м³<br>🕸 <b>"+t.resFiber+":</b> "+fiberKg.toFixed(1)+" кг<br>💧 <b>"+t.resPlastic+":</b> "+plasticL.toFixed(1)+" л<br><hr style='border-color:var(--border)'>"+
             "📦 <b>"+t.resMatCost+":</b> "+materialsCost.toFixed(2)+" €<br>👷‍♂️ <b>"+t.resSalary+":</b> "+salary.toFixed(2)+" €<br>📈 <b>"+t.resProfit+":</b> "+profit.toFixed(2)+" €<br>🚛 <b>"+t.resLogTotal+":</b> "+logisticsTotal.toFixed(2)+" €<br><br>"+
-            "<div style='font-size:20px; background:#dcfce7; padding:10px; border-radius:8px; color:#166534;'><b>"+t.resTotal+": "+clientTotal.toFixed(2)+" € ("+(clientTotal/area).toFixed(2)+" €/м²)</b></div>";
+            "<div style='font-size:20px; background:rgba(22, 101, 52, 0.4); padding:10px; border-radius:8px; color:#4ade80; border:1px solid #166534;'><b>"+t.resTotal+": "+clientTotal.toFixed(2)+" € ("+(clientTotal/area).toFixed(2)+" €/м²)</b></div>";
 
         document.getElementById("result").innerHTML = resultHTML;
         htmlReportForPDF = resultHTML;
@@ -400,10 +407,10 @@ function calculate(){
         report = t.resEstimate+"\n\n"+t.object+": "+object+"\n"+t.area+": "+area+"\n"+t.thickness+": "+thickness+"\n\n"+t.resVolume+": "+volume.toFixed(2)+" м³\n\n"+t.resTotal+": "+clientTotal.toFixed(2)+" € ("+(clientTotal/area).toFixed(2)+" €/м²)";
         
         document.getElementById("result").innerHTML = 
-            "<h3>"+t.resEstimate+"</h3>"+
+            "<h3 style='color:#f8fafc; border-left-color:var(--accent);'>"+t.resEstimate+"</h3>"+
             "<b>"+t.object+":</b> "+object+"<br><b>"+t.area+":</b> "+area+" м²<br><b>"+t.thickness+":</b> "+thickness+" см<br>"+
             "<b>"+t.resVolume+":</b> "+volume.toFixed(2)+" м³<br><br>"+
-            "<div style='font-size:20px; background:#e2e8f0; padding:10px; border-radius:8px; color:#1e293b;'><b>"+t.resTotal+": "+clientTotal.toFixed(2)+" € ("+(clientTotal/area).toFixed(2)+" €/м²)</b></div>"+
+            "<div style='font-size:20px; background:#0f172a; padding:10px; border-radius:8px; color:#f8fafc; border:1px solid var(--border);'><b>"+t.resTotal+": "+clientTotal.toFixed(2)+" € ("+(clientTotal/area).toFixed(2)+" €/м²)</b></div>"+
             "<p style='color:#ef4444; font-size:13px; margin-top:10px;'>"+t.alertFree+"</p>";
         htmlReportForPDF = "";
     }
@@ -498,7 +505,7 @@ function showHistory(){
     if(projects.length==0){ histDiv.innerHTML=words[lang].alertNoHist; histDiv.style.display="block"; return; }
     let text="<h3>"+words[lang].alertHistTitle+"</h3>";
     for(let i=0;i<projects.length;i++){
-        text+="<b>№"+(i+1)+" ("+projects[i].date+")</b><br>"+projects[i].text+"<hr style='border-color:#cbd5e1'>";
+        text+="<b>№"+(i+1)+" ("+projects[i].date+")</b><br>"+projects[i].text+"<hr style='border-color:var(--border)'>";
     }
     histDiv.innerHTML=text;
     histDiv.style.display="block";
@@ -540,8 +547,8 @@ window.onload = function() {
 };
 changeLanguage();  
 </script>
-<section style="margin-top: 50px; padding: 20px; font-size: 14px; color: #777; border-top: 1px solid #eee; text-align: left; max-width: 800px; margin-left: auto; margin-right: auto;">
-    <h3 style="font-size: 16px; color: #333;">About this Semi-Dry Floor Screed Calculator</h3>
+<section style="margin-top: 50px; padding: 20px; font-size: 14px; color: #94a3b8; border-top: 1px solid var(--border); text-align: left; max-width: 800px; margin-left: auto; margin-right: auto;">
+    <h3 style="font-size: 16px; color: #f8fafc; border-left-color: var(--accent);">About this Semi-Dry Floor Screed Calculator</h3>
     <p>This professional online estimator is designed for builders, contractors, and floor screed specialists in Europe. It provides highly accurate material calculations for cement and sand floor screed projects.</p>
     <p><strong>Technical Specifications & Formula Parameters:</strong></p>
     <ul style="padding-left: 20px;">
