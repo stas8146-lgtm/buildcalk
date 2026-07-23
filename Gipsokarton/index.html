@@ -24,11 +24,8 @@
             .print-card { border: 1px solid #e5e7eb !important; box-shadow: none !important; background: white !important; color: black !important; }
         }
     </style>
-<script src="nav.js"></script>
 </head>
-<body>
-    <div id="global-nav-container"></div>
-    <body class="text-neutral-100 min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
+<body class="text-neutral-100 min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
     
     <!-- TOP NAVIGATION BAR -->
     <header class="no-print border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md sticky top-0 z-50 px-4 lg:px-8 py-4">
@@ -155,7 +152,7 @@
                     </div>
                 </div>
 
-                <button id="btn-calculate-main" onclick="calculate()" class="w-full mt-6 py-3.5 bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold uppercase rounded-xl transition-all shadow-lg">
+                <button id="btn-calculate-main" onclick="calculate()" class="w-full mt-6 py-3.5 bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold uppercase rounded-xl transition-all shadow-lg cursor-pointer">
                     Calculate
                 </button>
             </div>
@@ -231,7 +228,7 @@
                     </div>
                     <h3 class="text-white font-bold text-base" id="t-brand-locked-title">PRO Custom Branding</h3>
                     <p class="text-xs text-neutral-400 max-w-[280px] mt-1 mb-4" id="t-brand-locked-desc">Unlock custom brand headers on your exports and reports.</p>
-                    <button onclick="setMode('pro')" class="px-5 py-2 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-black text-xs font-extrabold uppercase tracking-wider rounded-xl transition-all shadow-lg flex items-center gap-1.5">
+                    <button onclick="setMode('pro')" class="px-5 py-2 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-black text-xs font-extrabold uppercase tracking-wider rounded-xl transition-all shadow-lg flex items-center gap-1.5 cursor-pointer">
                         <i data-lucide="crown" class="w-4 h-4"></i> <span id="lbl-unlock-btn">Go PRO</span>
                     </button>
                 </div>
@@ -261,7 +258,7 @@
 
             <!-- RESET BUTTON -->
             <div class="flex gap-4">
-                <button onclick="resetInputs()" class="flex-1 py-3 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 font-bold rounded-xl transition-all flex items-center justify-center gap-2">
+                <button onclick="resetInputs()" class="flex-1 py-3 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer">
                     <i data-lucide="rotate-ccw" class="w-4 h-4"></i> <span id="btn-reset">New Calculation</span>
                 </button>
             </div>
@@ -293,7 +290,7 @@
                         <h2 class="text-2xl font-black text-white" id="lbl-result-area">Area: 13.50 m²</h2>
                     </div>
                     <!-- Export PDF -->
-                    <button id="btn-pdf" onclick="exportToPDF()" class="no-print px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-yellow-400 font-extrabold rounded-xl transition-all shadow-lg flex items-center gap-2 text-xs">
+                    <button id="btn-pdf" onclick="exportToPDF()" class="no-print px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-yellow-400 font-extrabold rounded-xl transition-all shadow-lg flex items-center gap-2 text-xs cursor-pointer">
                         <i data-lucide="file-down" class="w-4 h-4"></i> <span id="lbl-pdf-btn">Export PDF / Print</span>
                     </button>
                 </div>
@@ -349,7 +346,7 @@
                                 <i data-lucide="crown" class="w-5 h-5"></i>
                             </div>
                             <p class="text-xs font-black text-white uppercase tracking-widest text-center" id="t-pro-unlock-items">Unlock Consumables (Screws, Plugs, Tapes, Hangers, Putty)</p>
-                            <button onclick="setMode('pro')" class="mt-3 px-4 py-1.5 bg-yellow-500 text-black text-xs font-extrabold uppercase rounded-lg transition-all hover:bg-yellow-400">
+                            <button onclick="setMode('pro')" class="mt-3 px-4 py-1.5 bg-yellow-500 text-black text-xs font-extrabold uppercase rounded-lg transition-all hover:bg-yellow-400 cursor-pointer">
                                 <span id="lbl-unlock-now">Unlock Now</span>
                             </button>
                         </div>
@@ -512,7 +509,7 @@
         // State variables
         let currentMode = 'free'; // 'free' or 'pro'
         let structureType = 'wall'; // 'wall', 'partition', or 'ceiling'
-        let currentLang = 'en'; // Strictly force English as primary default
+        let currentLang = 'en';
 
         // Translation Dictionary
         const translations = {
@@ -613,13 +610,13 @@
                 "lbl-waste": "Запас на обрізку (%)",
                 "lbl-layers": "Шари гіпсокартону (на одну сторону)",
                 "opt-layer-1": "1 шар (Стандартний)",
-                "opt-layer-2": "2 шари (Посилений / Звукоізоляція)",
+                "opt-layer-2": "2 шари (Посилений)",
                 "lbl-spacing": "Крок стоєчного профілю",
                 "opt-spacing-60": "600 мм (Стандарт)",
                 "opt-spacing-40": "400 мм (Посилений)",
                 "lbl-frame-type": "Тип стельового каркаса",
-                "opt-frame-single": "Однорівневий каркас (П-401)",
-                "opt-frame-double": "Дворівневий перехресний (П-402)",
+                "opt-frame-single": "Однорівневий каркас (Стандарт)",
+                "opt-frame-double": "Дворівневий перехресний (Посилений)",
                 "t-economics": "Ціни та Економіка",
                 "lbl-price-sheet": "Гіпсокартон (€/шт)",
                 "lbl-price-cd": "Основний профіль (€/шт)",
@@ -660,7 +657,7 @@
                 "lbl-mat-cd-sub": "Основний стельовий профіль",
                 "lbl-mat-ud": "Профіль UD (3.0м)",
                 "lbl-mat-ud-sub": "Периметральний стельовий профіль",
-                "t-pro-unlock-items": "Розблокуйте витратні матеріали (саморізи, дюбелі, стрічку, підвіси, шпаклівку)",
+                "t-pro-unlock-items": "Розблокуйте витратні матеріали",
                 "lbl-unlock-now": "Розблокувати зараз",
                 "lbl-mat-screws": "Саморізи по металу (25мм)",
                 "lbl-mat-screws-2layer": "Саморізи по металу (25мм + 35мм)",
@@ -669,7 +666,7 @@
                 "lbl-mat-plugs-sub": "Для направляючих та підвісів",
                 "lbl-mat-hangers": "Прямі підвіси (ES)",
                 "lbl-mat-hangers-sub": "Для фіксації несучого профілю",
-                "lbl-mat-tape": "Стрічка для швів (Серп'янка)",
+                "lbl-mat-tape": "Стрічка для швів",
                 "lbl-mat-tape-sub": "Близько 1.5м на м² зовнішнього шару",
                 "lbl-mat-putty": "Шпаклівка для стиків",
                 "lbl-mat-putty-sub": "Заповнення швів ~0.4 кг/м²",
@@ -677,11 +674,11 @@
                 "t-history-empty": "Збережених розрахунків поки немає.",
                 "t-guide-title": "Як розраховується та практичні поради",
                 "t-tip-1-title": "📄 Шари гіпсокартону та запас",
-                "t-tip-1-desc": "Перегородочна конструкція завжди обшивається з двох боків. Якщо ви обираєте 2 шари, калькулятор вираховує 4 шари зашивки від загальної площі проекції перегородки. Запас на підрізку стандартно становить 10%.",
+                "t-tip-1-desc": "Перегородка завжди обшивається з двох боків. 2 шари означають 4 загальні шари зашивки.",
                 "t-tip-2-title": "⚙️ Профілі (CW/UW та CD/UD)",
-                "t-tip-2-desc": "Для стін та перегородок використовуються вертикальні профілі CW та периметральні UW. Для підвісних стель — несучі CD та обвідні UD. У 2-шарових системах каркас підсилюється кроком 400 мм.",
+                "t-tip-2-desc": "Для стін використовуються CW/UW, для стель — CD/UD.",
                 "t-tip-3-title": "🔒 Чому варто використовувати PRO режим?",
-                "t-tip-3-desc": "PRO режим дозволяє точніше підрахувати кріплення (з урахуванням довжини саморізів 25мм та 35мм для 2-го шару), витрату дюбелів, підвісів, армувальної стрічки, а також розрахувати кошторис робіт і прибутку.",
+                "t-tip-3-desc": "PRO режим розраховує кріплення, витратні матеріали та вартість робіт.",
                 "unit-pcs": "шт",
                 "unit-m": "м",
                 "unit-kg": "кг"
@@ -754,7 +751,7 @@
                 "lbl-mat-plugs-sub": "Pre vodiace profily a závesy",
                 "lbl-mat-hangers": "Priamy záves (ES)",
                 "lbl-mat-hangers-sub": "Uchytenie profilu k podkladu",
-                "lbl-mat-tape": "Páska na spoje (Serpanka)",
+                "lbl-mat-tape": "Páska na spoje",
                 "lbl-mat-tape-sub": "Približne 1.5m pásky na m² vonkajšej dosky",
                 "lbl-mat-putty": "Tmel na špáry a spoje",
                 "lbl-mat-putty-sub": "Spotreba tmelu ~0.4 kg/m²",
@@ -762,7 +759,7 @@
                 "t-history-empty": "Zatiaľ žiadne uložené výpočty.",
                 "t-guide-title": "Návod na výpočet a tipy",
                 "t-tip-1-title": "📄 Sadrokartónové dosky",
-                "t-tip-1-desc": "Priečky sa obkladajú z oboch strán. Volba 2 vrstiev na stranu vygeneruje výpočet pre 4 vrstvy dosiek.",
+                "t-tip-1-desc": "Priečky sa obkladajú z oboch strán.",
                 "t-tip-2-title": "⚙️ Profilová konštrukcia",
                 "t-tip-2-desc": "Pre steny slúžia profily CW/UW, pre stropy rošt CD/UD.",
                 "t-tip-3-title": "🔒 Výhody PRO režimu",
@@ -776,10 +773,6 @@
         // Initialize App State
         window.onload = function() {
             lucide.createIcons();
-            
-            // Force reset stored language to English to avoid caching issues
-            localStorage.setItem('app_lang', 'en');
-            
             setStructureType('wall'); 
             changeLanguage('en');
             loadHistory();
@@ -890,7 +883,6 @@
 
             const baseArea = width * height;
             
-            // Side multiplier: Partition = 2 sides, Wall/Ceiling = 1 side
             const sideMultiplier = (structureType === 'partition') ? 2 : 1;
             const totalSurfaceArea = baseArea * sideMultiplier;
             const totalLayersCount = sideMultiplier * layersPerSide;
@@ -905,7 +897,6 @@
                 titleArea.innerText = `Area: ${baseArea.toFixed(2)} m²${structureType === 'partition' ? ' (x2 sides = ' + totalSurfaceArea.toFixed(2) + ' m²)' : ''}`;
             }
 
-            // Sheets Calculation
             const sheetArea = parseFloat(document.getElementById('inp-sheet-size').value); 
             const wastePercent = parseFloat(document.getElementById('inp-waste').value) || 10;
             
@@ -927,30 +918,25 @@
                 
             document.getElementById('lbl-mat-sheets-sub').innerText = sheetSubText;
 
-            // Profile Labels (CW/UW vs CD/UD)
             const isWallOrPartition = (structureType === 'wall' || structureType === 'partition');
             document.getElementById('lbl-mat-cd').innerText = isWallOrPartition ? translations[currentLang]["lbl-mat-cw"] : translations[currentLang]["lbl-mat-cd"];
             document.getElementById('lbl-mat-cd-sub').innerText = isWallOrPartition ? translations[currentLang]["lbl-mat-cw-sub"] : translations[currentLang]["lbl-mat-cd-sub"];
             document.getElementById('lbl-mat-ud').innerText = isWallOrPartition ? translations[currentLang]["lbl-mat-uw"] : translations[currentLang]["lbl-mat-ud"];
             document.getElementById('lbl-mat-ud-sub').innerText = isWallOrPartition ? translations[currentLang]["lbl-mat-uw-sub"] : translations[currentLang]["lbl-mat-ud-sub"];
 
-            // Screws Dynamic Labels
             if (layersPerSide > 1) {
                 document.getElementById('lbl-mat-screws').innerText = translations[currentLang]["lbl-mat-screws-2layer"];
             } else {
                 document.getElementById('lbl-mat-screws').innerText = translations[currentLang]["lbl-mat-screws"];
             }
 
-            // Perimeter Guide Profiles (UW or UD)
             const perimeterLength = 2 * (width + height);
             const udTotalLength = perimeterLength * 1.1; 
             const udTotalPieces = Math.ceil(udTotalLength / 3.0); 
 
-            // Ceiling frame options
             const frameElement = document.getElementById('inp-frame-type');
             const frameType = frameElement ? frameElement.value : 'single';
 
-            // Main Stud Profiles & Hangers
             let cdProfilesCount = Math.ceil(width / spacing);
             let cdTotalLength = cdProfilesCount * height;
             let hangersTotal = 0;
@@ -971,19 +957,15 @@
 
             const cdTotalPieces = Math.ceil(cdTotalLength / 3.0);
 
-            // Screws calculation
             let screwsPerM2 = (layersPerSide === 1) ? 17 : 32; 
             const screwsCount = Math.ceil(totalSurfaceArea * screwsPerM2 * 1.05);
             
-            // Wall Plugs
             const udDowels = Math.ceil(udTotalLength / 0.5);
             const plugsTotal = Math.ceil((udDowels + (hangersTotal * 2)) * 1.1);
 
-            // Joint Tape & Putty
             const tapeTotalMeters = Math.ceil(totalSurfaceArea * 1.5 * 1.1);
             const puttyTotalKg = parseFloat((totalSurfaceArea * 0.4 * 1.1).toFixed(1));
 
-            // Output Quantities to UI
             document.getElementById('val-sheets').innerText = sheetsTotal;
             document.getElementById('val-cd').innerText = cdTotalPieces;
             document.getElementById('val-ud').innerText = udTotalPieces;
@@ -993,7 +975,6 @@
             document.getElementById('val-tape').innerText = tapeTotalMeters;
             document.getElementById('val-putty').innerText = puttyTotalKg;
 
-            // Financial Calculations
             const priceSheet = parseFloat(document.getElementById('inp-price-sheet')?.value) || 0;
             const priceCd = parseFloat(document.getElementById('inp-price-cd')?.value) || 0;
             const priceUd = parseFloat(document.getElementById('inp-price-ud')?.value) || 0;
