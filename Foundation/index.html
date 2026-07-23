@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -110,7 +111,7 @@
         <div class="logo">🏠 <span>BUILD</span>calc ROOF PRO</div>
         <div class="subtitle" id="subtitle">Professional Roof Calculator</div>
         
-        <!-- Меню переходу між твоїми калькуляторами (змінюй посилання на свої файли, якщо вони інші) -->
+        <!-- Меню переходу між твоїми калькуляторами -->
         <div class="topMenu">
             <button class="active" onclick="location.href='roof.html'">🏠 Покрівля</button>
             <button onclick="location.href='screed.html'">🏗 Стяжка</button>
@@ -120,8 +121,8 @@
 
         <div class="lang-select-wrapper">
             <select id="language" onchange="changeLanguage()">
-                <option value="en">🇬🇧 English</option>
-                <option value="ua" selected>🇺🇦 Українська</option>
+                <option value="en" selected>🇬🇧 English</option>
+                <option value="ua">🇺🇦 Українська</option>
                 <option value="sk">🇸🇰 Slovenčina</option>
             </select>
         </div>
@@ -230,11 +231,11 @@
 
         <h3 id="hWoodResult">📊 Автоматичний розрахунок деревини</h3>
         <div class="result-box">
-            <div><span class="txt-rafters">Крокви</span> <span id="raftersResult">0 шт</span></div>
-            <div><span class="txt-mauerlat">Мауерлат</span> <span id="mauerlatResult">0 м</span></div>
-            <div><span class="txt-counter">Контробрешітка</span> <span id="counterResult">0 м</span></div>
-            <div><span class="txt-batten">Обрешітка</span> <span id="battenResult">0 м</span></div>
-            <div><span class="txt-woodcube">Деревина (загалом)</span> <span id="woodCubeResult">0.00 м³</span></div>
+            <div><span id="txtRafters">Крокви</span> <span id="raftersResult">0 шт</span></div>
+            <div><span id="txtMauerlat">Мауерлат</span> <span id="mauerlatResult">0 м</span></div>
+            <div><span id="txtCounter">Контробрешітка</span> <span id="counterResult">0 м</span></div>
+            <div><span id="txtBatten">Обрешітка</span> <span id="battenResult">0 м</span></div>
+            <div><span id="txtWoodCube">Деревина (загалом)</span> <span id="woodCubeResult">0.00 м³</span></div>
         </div>
 
         <h3 id="hRoofMaterial">🏠 Покрівельне покриття</h3>
@@ -289,13 +290,13 @@
 
         <h3 id="hMatResult">📦 Автоматичний розхід матеріалів</h3>
         <div class="result-box">
-            <div><span class="txt-cover">Покриття (із запасом)</span> <span id="roofCoverResult">0 м²</span></div>
-            <div><span class="txt-paro">Паробар'єр</span> <span id="paroResult">0 м²</span></div>
-            <div><span class="txt-hydro">Гідробар'єр</span> <span id="hydroResult">0 м²</span></div>
-            <div><span class="txt-diff">Дифузійна мембрана</span> <span id="diffResult">0 м²</span></div>
-            <div><span class="txt-screw-res">Саморізи</span> <span id="screwResult">0 шт</span></div>
-            <div><span class="txt-nail-res">Цвяхи</span> <span id="nailResult">0 кг</span></div>
-            <div><span class="txt-anchor-res">Анкери</span> <span id="anchorResult">0 шт</span></div>
+            <div><span id="txtCover">Покриття (із запасом)</span> <span id="roofCoverResult">0 м²</span></div>
+            <div><span id="txtParo">Паробар'єр</span> <span id="paroResult">0 м²</span></div>
+            <div><span id="txtHydro">Гідробар'єр</span> <span id="hydroResult">0 м²</span></div>
+            <div><span id="txtDiff">Дифузійна мембрана</span> <span id="diffResult">0 м²</span></div>
+            <div><span id="txtScrewRes">Саморізи</span> <span id="screwResult">0 шт</span></div>
+            <div><span id="txtNailRes">Цвяхи</span> <span id="nailResult">0 кг</span></div>
+            <div><span id="txtAnchorRes">Анкери</span> <span id="anchorResult">0 шт</span></div>
         </div>
 
         <h3 id="hEstimate">💶 Вартість робіт та логістики</h3>
@@ -341,15 +342,15 @@
 
     <h3 id="hFinal" style="clear: both; width: 100%;">📊 Фінансовий підсумок</h3>
     <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
-        <div><span>🪵 <span class="txt-f-wood">Деревина</span></span> <span id="woodCost">0 €</span></div>
-        <div><span>🏠 <span class="txt-f-cover">Покриття</span></span> <span id="roofCost">0 €</span></div>
-        <div><span>🛡 <span class="txt-f-memb">Мембрани</span></span> <span id="membraneCost">0 €</span></div>
-        <div><span>🔩 <span class="txt-f-fix">Кріплення</span></span> <span id="fixCost">0 €</span></div>
+        <div><span>🪵 <span id="txtFWood">Деревина</span></span> <span id="woodCost">0 €</span></div>
+        <div><span>🏠 <span id="txtFCover">Покриття</span></span> <span id="roofCost">0 €</span></div>
+        <div><span>🛡 <span id="txtFMemb">Мембрани</span></span> <span id="membraneCost">0 €</span></div>
+        <div><span>🔩 <span id="txtFFix">Кріплення</span></span> <span id="fixCost">0 €</span></div>
         <hr>
-        <div><span>📦 <span class="txt-f-mat">Матеріали</span></span> <span id="materialsTotal">0 €</span></div>
-        <div><span>👷 <span class="txt-f-work">Робота</span></span> <span id="salaryTotal">0 €</span></div>
-        <div><span>📈 <span class="txt-f-prof">Прибуток</span></span> <span id="profitTotal">0 €</span></div>
-        <div><span>🚛 <span class="txt-f-log">Логістика</span></span> <span id="deliveryTotal">0 €</span></div>
+        <div><span>📦 <span id="txtFMat">Матеріали</span></span> <span id="materialsTotal">0 €</span></div>
+        <div><span>👷 <span id="txtFWork">Робота</span></span> <span id="salaryTotal">0 €</span></div>
+        <div><span>📈 <span id="txtFProf">Прибуток</span></span> <span id="profitTotal">0 €</span></div>
+        <div><span>🚛 <span id="txtFLog">Логістика</span></span> <span id="deliveryTotal">0 €</span></div>
         <hr>
         <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; width: 100%;">
             <span>💰 <span id="txtClientPrice">Ціна клієнту</span></span> <span id="clientTotal">0 €</span>
@@ -443,11 +444,11 @@ function calculateWood() {
 
     let totalWoodCube = (rafterVol + counterVol + battenVol + mauerlatVol) * coef;
 
-    document.getElementById("raftersResult").innerHTML = raftersCount + " шт";
-    document.getElementById("counterResult").innerHTML = counter.toFixed(1) + " м";
-    document.getElementById("battenResult").innerHTML = batten.toFixed(1) + " м";
-    document.getElementById("mauerlatResult").innerHTML = mauerlatLen.toFixed(1) + " м";
-    document.getElementById("woodCubeResult").innerHTML = totalWoodCube.toFixed(2) + " м³";
+    document.getElementById("raftersResult").innerHTML = raftersCount + " pcs";
+    document.getElementById("counterResult").innerHTML = counter.toFixed(1) + " m";
+    document.getElementById("battenResult").innerHTML = batten.toFixed(1) + " m";
+    document.getElementById("mauerlatResult").innerHTML = mauerlatLen.toFixed(1) + " m";
+    document.getElementById("woodCubeResult").innerHTML = totalWoodCube.toFixed(2) + " m³";
 }
 
 function calculateRoofMaterial() {
@@ -460,13 +461,13 @@ function calculateRoofMaterial() {
     let nails = roof * 0.15;
     let anchors = Math.ceil(Math.sqrt(area) * 4);
 
-    document.getElementById("roofCoverResult").innerHTML = roof.toFixed(1) + " м²";
-    document.getElementById("paroResult").innerHTML = roof.toFixed(1) + " м²";
-    document.getElementById("hydroResult").innerHTML = roof.toFixed(1) + " м²";
-    document.getElementById("diffResult").innerHTML = roof.toFixed(1) + " м²";
-    document.getElementById("screwResult").innerHTML = screws + " шт";
-    document.getElementById("nailResult").innerHTML = nails.toFixed(1) + " кг";
-    document.getElementById("anchorResult").innerHTML = anchors + " шт";
+    document.getElementById("roofCoverResult").innerHTML = roof.toFixed(1) + " m²";
+    document.getElementById("paroResult").innerHTML = roof.toFixed(1) + " m²";
+    document.getElementById("hydroResult").innerHTML = roof.toFixed(1) + " m²";
+    document.getElementById("diffResult").innerHTML = roof.toFixed(1) + " m²";
+    document.getElementById("screwResult").innerHTML = screws + " pcs";
+    document.getElementById("nailResult").innerHTML = nails.toFixed(1) + " kg";
+    document.getElementById("anchorResult").innerHTML = anchors + " pcs";
 }
 
 function calculateEstimate() {
@@ -519,17 +520,17 @@ calculateAll();
 changeLanguage();
 
 function generatePDF() {
-    let clientName = document.getElementById("client").value || "Клієнт";
-    let objName = document.getElementById("object").value || "Об'єкт";
-    let compName = document.getElementById("companyName").value || "Підрядник";
+    let clientName = document.getElementById("client").value || "Client";
+    let objName = document.getElementById("object").value || "Object";
+    let compName = document.getElementById("companyName").value || "Contractor";
     let compPhone = document.getElementById("companyPhone").value || "";
     
     let printHtml = `
     <div style="padding: 30px; font-family: Arial, sans-serif; color: #333; background: #fff;">
         <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #FFC107; padding-bottom: 10px;">
             <div>
-                <h1 style="margin: 0; color: #212529;">Кошторис на покрівельні роботи</h1>
-                <p style="margin: 5px 0 0 0; color: #777;">Дата: ${new Date().toLocaleDateString()}</p>
+                <h1 style="margin: 0; color: #212529;">Roofing Estimate</h1>
+                <p style="margin: 5px 0 0 0; color: #777;">Date: ${new Date().toLocaleDateString()}</p>
             </div>
             <div style="text-align: right;">
                 <h3 style="margin: 0;">${compName}</h3>
@@ -539,62 +540,62 @@ function generatePDF() {
         
         <div style="margin-top: 20px; display: flex; justify-content: space-between;">
             <div>
-                <strong>Клієнт:</strong> ${clientName}<br>
-                <strong>Об'єкт:</strong> ${objName}<br>
-                <strong>Адреса:</strong> ${document.getElementById("address").value || "-"}
+                <strong>Client:</strong> ${clientName}<br>
+                <strong>Object:</strong> ${objName}<br>
+                <strong>Address:</strong> ${document.getElementById("address").value || "-"}
             </div>
             <div>
-                <strong>Параметри даху:</strong><br>
-                Площа: ${document.getElementById("roofArea").value} м²<br>
-                Кут: ${document.getElementById("roofAngle").value}°
+                <strong>Roof Parameters:</strong><br>
+                Area: ${document.getElementById("roofArea").value} m²<br>
+                Pitch: ${document.getElementById("roofAngle").value}°
             </div>
         </div>
 
-        <h3 style="margin-top: 30px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Специфікація матеріалів</h3>
+        <h3 style="margin-top: 30px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Materials Specification</h3>
         <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
             <tr style="background: #f8f9fa;">
-                <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Найменування</th>
-                <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">Сума</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Item</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">Amount</th>
             </tr>
             <tr>
-                <td style="padding: 10px; border: 1px solid #ddd;">Деревина (крокви, мауерлат, обрешітка)</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Timber (rafters, wall plate, battens)</td>
                 <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("woodCost").innerText}</td>
             </tr>
             <tr>
-                <td style="padding: 10px; border: 1px solid #ddd;">Покрівельне покриття</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Roof Covering</td>
                 <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("roofCost").innerText}</td>
             </tr>
             <tr>
-                <td style="padding: 10px; border: 1px solid #ddd;">Мембрани та ізоляція</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Membranes & Insulation</td>
                 <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("membraneCost").innerText}</td>
             </tr>
             <tr>
-                <td style="padding: 10px; border: 1px solid #ddd;">Кріплення</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Fasteners</td>
                 <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("fixCost").innerText}</td>
             </tr>
         </table>
 
-        <h3 style="margin-top: 30px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Вартість робіт та послуг</h3>
+        <h3 style="margin-top: 30px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Labor & Services</h3>
         <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
              <tr>
-                <td style="padding: 10px; border: 1px solid #ddd;">Монтажні роботи</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Installation Works</td>
                 <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("salaryTotal").innerText}</td>
             </tr>
             <tr>
-                <td style="padding: 10px; border: 1px solid #ddd;">Логістика та додаткові витрати</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Logistics & Extra Costs</td>
                 <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("deliveryTotal").innerText}</td>
             </tr>
         </table>
 
         <div style="margin-top: 30px; text-align: right; font-size: 20px;">
-            <strong>Всього до сплати: <span style="color: #d32f2f;">${document.getElementById("clientTotal").innerText}</span></strong>
+            <strong>Total Due: <span style="color: #d32f2f;">${document.getElementById("clientTotal").innerText}</span></strong>
         </div>
     </div>
     `;
 
     let opt = {
         margin:       10,
-        filename:     `Кошторис_${objName}.pdf`,
+        filename:     `Estimate_${objName}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2 },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -608,14 +609,14 @@ function generatePDF() {
 function saveProject() {
     let project = {
         date: new Date().toLocaleString(),
-        object: document.getElementById("object").value || "Без назви",
+        object: document.getElementById("object").value || "Unnamed",
         client: document.getElementById("client").value || "-",
         price: document.getElementById("clientTotal").innerText
     };
     let list = JSON.parse(localStorage.getItem("roofProjects")) || [];
     list.unshift(project);
     localStorage.setItem("roofProjects", JSON.stringify(list));
-    alert("Проєкт збережено в історію!");
+    alert("Project saved to history!");
 }
 
 function showHistory() {
@@ -623,18 +624,18 @@ function showHistory() {
     box.style.display = box.style.display === "none" ? "block" : "none";
     let list = JSON.parse(localStorage.getItem("roofProjects")) || [];
     if (list.length == 0) {
-        box.innerHTML = "<p style='color:var(--text-muted);'>Історія порожня</p>";
+        box.innerHTML = "<p style='color:var(--text-muted);'>History is empty</p>";
         return;
     }
     let html = "";
     list.forEach(p => {
-        html += `<div style="margin-bottom:10px;"><b>${p.object}</b><br>Клієнт: ${p.client}<br>Сума: <span style="color:var(--primary)">${p.price}</span><br><small style="color:#777;">${p.date}</small><hr style="border-top:1px solid #444; margin:5px 0;"></div>`;
+        html += `<div style="margin-bottom:10px;"><b>${p.object}</b><br>Client: ${p.client}<br>Total: <span style="color:var(--primary)">${p.price}</span><br><small style="color:#777;">${p.date}</small><hr style="border-top:1px solid #444; margin:5px 0;"></div>`;
     });
     box.innerHTML = html;
 }
 
 function clearHistory() {
-    if(confirm("Ви впевнені, що хочете очистити історію?")) {
+    if(confirm("Are you sure you want to clear history?")) {
         localStorage.removeItem("roofProjects");
         showHistory();
     }
@@ -642,11 +643,33 @@ function clearHistory() {
 
 function copyEstimate() {
     let res = document.getElementById("clientTotal").innerText;
-    navigator.clipboard.writeText(`Кошторис по об'єкту ${document.getElementById("object").value}:\nЗагальна сума: ${res}`);
-    alert("Короткий підсумок скопійовано!");
+    navigator.clipboard.writeText(`Roof Estimate for ${document.getElementById("object").value}:\nTotal Price: ${res}`);
+    alert("Summary copied to clipboard!");
 }
 
 const langData = {
+    en: {
+        subtitle: "Professional Roof Calculator",
+        objectTitle: "🏠 Object Data", objectLabel: "Object Name", addressLabel: "Address", clientLabel: "Client",
+        hRoof: "🏠 Roof Specs", lblRoofType: "Roof Type", optGable: "Gable", optHip: "Hip", optShed: "Shed", optFlat: "Flat",
+        lblRoofArea: "Roof Area m²", lblRoofAngle: "Roof Pitch °", lblRoofReserve: "Waste Margin %",
+        hConstruction: "🪵 Roof Framework", lblRafterStep: "Rafter Spacing (mm)", lblRafterSize: "Rafter Section", lblRafterLength: "Rafter Length (m)", lblMauerlat: "Wall Plate",
+        hBatten: "🪚 Battens & Lathing", lblCounterSize: "Counter Batten", lblBattenSize: "Batten Size", lblBattenStep: "Batten Gauge (mm)",
+        hWoodResult: "📊 Timber Calculation", hRoofMaterial: "🏠 Roof Covering", lblRoofMatType: "Material Type",
+        optMetal: "Metal Tile", optCeramic: "Ceramic Tile", optBitumen: "Shingles", optProfile: "Profiled Sheet", optFalc: "Standing Seam",
+        lblRoofPrice: "Price €/m²", hMembranes: "🛡 Membranes", lblParo: "Vapour Barrier €/m²", lblHydro: "Underlay Membrane €/m²", lblDiff: "Breather Membrane €/m²",
+        hFixings: "🔩 Fasteners", lblScrews: "Screws €/100 pcs", lblNails: "Nails €/kg", lblAnchors: "Anchors €/pcs",
+        hMatResult: "📦 Material Consumption", hEstimate: "💶 Labor & Logistics Cost",
+        lblWoodPrice: "Timber Price €/m³", lblSalaryPrice: "Labor Cost €/m²", lblProfitPrice: "Markup/Profit €/m²", lblDeliveryPrice: "Logistics €", lblOtherPrice: "Other Costs €",
+        hFinal: "📊 Financial Summary", txtClientPrice: "Total Client Price", btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice",
+        hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
+        hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing",
+        txtRafters: "Rafters", txtMauerlat: "Wall Plate", txtCounter: "Counter Batten", txtBatten: "Battens", txtWoodCube: "Total Timber",
+        txtCover: "Covering (with waste)", txtParo: "Vapour Barrier", txtHydro: "Underlay Membrane", txtDiff: "Breather Membrane",
+        txtScrewRes: "Screws", txtNailRes: "Nails", txtAnchorRes: "Anchors",
+        txtFWood: "Timber", txtFCover: "Covering", txtFMemb: "Membranes", txtFFix: "Fasteners", txtFMat: "Materials", txtFWork: "Labor", txtFProf: "Markup/Profit", txtFLog: "Logistics"
+    },
     ua: {
         subtitle: "Professional Roof Calculator",
         objectTitle: "🏠 Дані об'єкта", objectLabel: "Назва об'єкта", addressLabel: "Адреса", clientLabel: "Клієнт",
@@ -664,7 +687,11 @@ const langData = {
         hFinal: "📊 Фінансовий підсумок", txtClientPrice: "Ціна клієнту", btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF",
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
         hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість"
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість",
+        txtRafters: "Крокви", txtMauerlat: "Мауерлат", txtCounter: "Контробрешітка", txtBatten: "Обрешітка", txtWoodCube: "Деревина (загалом)",
+        txtCover: "Покриття (із запасом)", txtParo: "Паробар'єр", txtHydro: "Гідробар'єр", txtDiff: "Дифузійна мембрана",
+        txtScrewRes: "Саморізи", txtNailRes: "Цвяхи", txtAnchorRes: "Анкери",
+        txtFWood: "Деревина", txtFCover: "Покриття", txtFMemb: "Мембрани", txtFFix: "Кріплення", txtFMat: "Матеріали", txtFWork: "Робота", txtFProf: "Прибуток", txtFLog: "Логістика"
     },
     sk: {
         subtitle: "Profesionálna strešná kalkulačka",
@@ -682,25 +709,11 @@ const langData = {
         hFinal: "📊 Finančný prehľad", txtClientPrice: "Cena pre klienta", btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument",
         hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
         hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu"
-    },
-    en: {
-        subtitle: "Professional Roof Calculator",
-        objectTitle: "🏠 Object Data", objectLabel: "Object Name", addressLabel: "Address", clientLabel: "Client",
-        hRoof: "🏠 Roof Specs", lblRoofType: "Roof Type", optGable: "Gable", optHip: "Hip", optShed: "Shed", optFlat: "Flat",
-        lblRoofArea: "Roof Area m²", lblRoofAngle: "Roof Pitch °", lblRoofReserve: "Waste Margin %",
-        hConstruction: "🪵 Roof Framework", lblRafterStep: "Rafter Spacing (mm)", lblRafterSize: "Rafter Section", lblRafterLength: "Rafter Length (m)", lblMauerlat: "Wall Plate",
-        hBatten: "🪚 Battens & Lathing", lblCounterSize: "Counter Batten", lblBattenSize: "Batten Size", lblBattenStep: "Batten Gauge (mm)",
-        hWoodResult: "📊 Timber Calculation", hRoofMaterial: "🏠 Roof Covering", lblRoofMatType: "Material Type",
-        optMetal: "Metal Tile", optCeramic: "Ceramic Tile", optBitumen: "Shingles", optProfile: "Profiled Sheet", optFalc: "Standing Seam",
-        lblRoofPrice: "Price €/m²", hMembranes: "🛡 Membranes", lblParo: "Vapour Barrier €/m²", lblHydro: "Underlay Membrane €/m²", lblDiff: "Breather Membrane €/m²",
-        hFixings: "🔩 Fasteners", lblScrews: "Screws €/100 pcs", lblNails: "Nails €/kg", lblAnchors: "Anchors €/pcs",
-        hMatResult: "📦 Material Consumption", hEstimate: "💶 Labor & Logistics Cost",
-        lblWoodPrice: "Timber Price €/m³", lblSalaryPrice: "Labor Cost €/m²", lblProfitPrice: "Markup/Profit €/m²", lblDeliveryPrice: "Logistics €", lblOtherPrice: "Other Costs €",
-        hFinal: "📊 Financial Summary", txtClientPrice: "Total Client Price", btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice",
-        hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
-        hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing"
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu",
+        txtRafters: "Krokvy", txtMauerlat: "Murovanica", txtCounter: "Kontralata", txtBatten: "Latovanie", txtWoodCube: "Drevo (spolu)",
+        txtCover: "Krytina (s rezervou)", txtParo: "Parozábrana", txtHydro: "Hydroizolácia", txtDiff: "Difúzna membrána",
+        txtScrewRes: "Skrutky", txtNailRes: "Klince", txtAnchorRes: "Kotvy",
+        txtFWood: "Drevo", txtFCover: "Krytina", txtFMemb: "Membrány", txtFFix: "Spojovací materiál", txtFMat: "Materiály", txtFWork: "Práca", txtFProf: "Zisk", txtFLog: "Logistika"
     }
 };
 
