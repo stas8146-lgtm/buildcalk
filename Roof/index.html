@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,7 +53,7 @@
             padding: 6px 12px; margin-top: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;
         }
 
-        /* Меню переходу між калькуляторами */
+        /* Динамічне меню калькуляторів */
         .topMenu { display: flex; gap: 6px; margin: 15px 0; overflow-x: auto; padding-bottom: 5px; justify-content: center; }
         .topMenu button {
             background: var(--dark-light); color: white; border: 1px solid #555;
@@ -110,13 +111,8 @@
         <div class="logo">🏠 <span>BUILD</span>calc ROOF PRO</div>
         <div class="subtitle" id="subtitle">Professional Roof Calculator</div>
         
-        <!-- Меню переходу між твоїми калькуляторами -->
-        <div class="topMenu">
-            <button class="active" id="menuRoof" onclick="location.href='roof.html'">🏠 Roof</button>
-            <button id="menuScreed" onclick="location.href='screed.html'">🏗 Screed</button>
-            <button id="menuPlaster" onclick="location.href='plaster.html'">🧱 Plaster</button>
-            <button id="menuDrywall" onclick="location.href='drywall.html'">📐 Drywall</button>
-        </div>
+        <!-- Меню підтягується автоматично з файлу nav.js -->
+        <div class="topMenu" id="topMenu"></div>
 
         <div class="lang-select-wrapper">
             <select id="language" onchange="changeLanguage()">
@@ -376,6 +372,9 @@
         <p id="proDesc">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
         <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
     </div>
+
+<!-- Підключаємо централізоване меню (nav.js) -->
+<script src="nav.js"></script>
 
 <!-- ================= SCRIPTS ================= -->
 <script>
@@ -644,7 +643,6 @@ function copyEstimate() {
 const langData = {
     en: {
         subtitle: "Professional Roof Calculator",
-        menuRoof: "🏠 Roof", menuScreed: "🏗 Screed", menuPlaster: "🧱 Plaster", menuDrywall: "📐 Drywall",
         objectTitle: "🏠 Object Data", objectLabel: "Object Name", addressLabel: "Address", clientLabel: "Client",
         hRoof: "🏠 Roof Specs", lblRoofType: "Roof Type", optGable: "Gable", optHip: "Hip", optShed: "Shed", optFlat: "Flat",
         lblRoofArea: "Roof Area m²", lblRoofAngle: "Roof Pitch °", lblRoofReserve: "Waste Margin %",
@@ -667,7 +665,6 @@ const langData = {
     },
     ua: {
         subtitle: "Професійний калькулятор даху",
-        menuRoof: "🏠 Покрівля", menuScreed: "🏗 Стяжка", menuPlaster: "🧱 Штукатурка", menuDrywall: "📐 Гіпсокартон",
         objectTitle: "🏠 Дані об'єкта", objectLabel: "Назва об'єкта", addressLabel: "Адреса", clientLabel: "Клієнт",
         hRoof: "🏠 Покрівля", lblRoofType: "Тип даху", optGable: "Двосхилий", optHip: "Чотирисхилий", optShed: "Односхилий", optFlat: "Плоский",
         lblRoofArea: "Площа даху м²", lblRoofAngle: "Кут нахилу °", lblRoofReserve: "Запас %",
@@ -691,7 +688,6 @@ const langData = {
     },
     sk: {
         subtitle: "Profesionálna strešná kalkulačka",
-        menuRoof: "🏠 Strecha", menuScreed: "🏗 Poter", menuPlaster: "🧱 Omietka", menuDrywall: "📐 Sadrokartón",
         objectTitle: "🏠 Údaje o objekte", objectLabel: "Názov objektu", addressLabel: "Adresa", clientLabel: "Klient",
         hRoof: "🏠 Strecha", lblRoofType: "Typ strechy", optGable: "Sedlová", optHip: "Valbová", optShed: "Pultová", optFlat: "Plochá",
         lblRoofArea: "Plocha strechy m²", lblRoofAngle: "Uhol sklonu °", lblRoofReserve: "Rezerva %",
@@ -717,13 +713,18 @@ const langData = {
 function changeLanguage() {
     let lang = document.getElementById("language").value;
     let data = langData[lang];
-    if (!data) return;
-    for (let id in data) {
-        let el = document.getElementById(id);
-        if (el) {
-            if (el.tagName === "INPUT") el.placeholder = data[id];
-            else el.innerHTML = data[id];
+    if (data) {
+        for (let id in data) {
+            let el = document.getElementById(id);
+            if (el) {
+                if (el.tagName === "INPUT") el.placeholder = data[id];
+                else el.innerHTML = data[id];
+            }
         }
+    }
+    // Оновлюємо назви в меню на відповідну мову
+    if (typeof renderNav === 'function') {
+        renderNav();
     }
 }
 
@@ -737,7 +738,7 @@ function setVersion(version) {
     }
 }
 
-// Ініціалізація при завантаженні (примусово ставимо EN)
+// При старті
 document.getElementById("language").value = "en";
 changeLanguage();
 calculateAll();
