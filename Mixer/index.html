@@ -34,7 +34,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background-color: var(--bg-main); color: var(--text-light); padding: 15px; display: flex; flex-direction: column; align-items: center; padding-bottom: 40px; transition: background 0.3s; }
         
-        /* Збільшено max-width для кращого вигляду на десктопах */
         .container { width: 100%; max-width: 600px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: background 0.3s; }
 
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px; }
@@ -83,12 +82,13 @@
         .footer { margin-top: 30px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 15px; font-size: 0.8rem; color: var(--text-muted); }
     </style>
     
-    <!-- Підключення меню кнопок ПРАВИЛЬНО -->
-    <script src="../nav.js"></script>
-
+    <!-- Підключення навігації (якщо nav.js лежить в тій самій папці, якщо ні - поверніть ../nav.js) -->
+    <script src="nav.js"></script>
 </head>
 <body>
+
 <div id="global-nav-container"></div>
+
 <div class="container" id="app-container">
     <div class="header" data-html2canvas-ignore="true">
         <div class="logo">
@@ -118,7 +118,6 @@
     <div class="grid-2">
         <div class="input-group">
             <label id="lbl-area">Wall Area (m²)</label>
-            <!-- Додано min="0" та step -->
             <input type="number" id="in-area" value="30" min="0" step="1" oninput="recalc()">
         </div>
         <div class="input-group">
@@ -173,7 +172,6 @@
         </div>
     </div>
 
-    <!-- Об'єднаний блок результату та квадрата для фарби -->
     <div class="result-box">
         <div class="result-row">
             <span id="res-base-need">Base Needed:</span>
@@ -248,7 +246,6 @@
 <script>
     function toggleTheme() { document.body.classList.toggle('light-theme'); }
 
-    // Константи для площ (щоб уникнути "магічних чисел" в коді)
     const STANDARDS = {
         doorArea: 1.5,
         windowArea: 1.2
@@ -278,7 +275,7 @@
     function initDropdowns() {
         const selects = [document.getElementById('color-1'), document.getElementById('color-2'), document.getElementById('color-3')];
         selects.forEach((sel, i) => {
-            let currentVal = sel.value; // Зберігаємо вибір користувача під час зміни мови
+            let currentVal = sel.value;
             sel.innerHTML = '';
             pigments.forEach(p => { sel.appendChild(new Option(p[currentLang], p.id)); });
             if (currentVal) sel.value = currentVal; 
@@ -333,7 +330,6 @@
         let doors = Math.max(0, parseInt(document.getElementById('in-doors').value) || 0);
         let windows = Math.max(0, parseInt(document.getElementById('in-windows').value) || 0);
         
-        // Використовуємо константи замість магічних чисел
         let cleanArea = Math.max(0, area - (doors * STANDARDS.doorArea) - (windows * STANDARDS.windowArea)); 
 
         let surf = parseFloat(document.getElementById('in-surface').value) || 0.12;
@@ -353,7 +349,6 @@
         let v3 = Math.max(0, parseInt(sliders[2].value) || 0);
         let currentTotal = v1 + v2 + v3;
 
-        // Захист від перевищення 10% ліміту
         if (currentTotal > maxLimitMl) {
             let active = document.activeElement;
             if (active === sliders[0]) v1 = maxLimitMl - v2 - v3;
@@ -378,7 +373,6 @@
             document.getElementById('status-panel').style.borderLeftColor = "var(--accent-yellow)";
         }
 
-        // Обчислення вартості (запобігання від'ємним цінам)
         let priceBase = Math.max(0, parseFloat(document.getElementById('in-price-base').value) || 0);
         let pricePig = Math.max(0, parseFloat(document.getElementById('in-price-pig').value) || 0);
         let laborRate = Math.max(0, parseFloat(document.getElementById('in-labor-rate').value) || 0);
@@ -393,7 +387,6 @@
         document.getElementById('out-oth-cost').innerText = otherExp.toFixed(2) + " €";
         document.getElementById('out-cost').innerText = grandTotal.toFixed(2) + " €";
 
-        // Візуалізація змішування фарби
         const p1 = pigments.find(p => p.id === document.getElementById('color-1').value);
         const p2 = pigments.find(p => p.id === document.getElementById('color-2').value);
         const p3 = pigments.find(p => p.id === document.getElementById('color-3').value);
@@ -401,7 +394,6 @@
         let isBaseC = document.getElementById('in-base-type').value === 'C';
         let previewContainer = document.getElementById('preview-container');
         
-        // Візуальне відображення прозорої бази (наприклад, ледь сірий фон)
         if(isBaseC && currentTotal === 0) {
             previewContainer.style.background = "#E0E0E0"; 
         } else {
@@ -411,8 +403,6 @@
         if (p1 && p2 && p3) {
             let w1 = v1 / maxLimitMl, w2 = v2 / maxLimitMl, w3 = v3 / maxLimitMl;
             let intensity = isBaseC ? 2.5 : 1; 
-
-            // Якщо база С, стартуємо не з чисто білого (255), а трохи темнішого для імітації лесування
             let baseColorStart = isBaseC ? 240 : 255;
 
             let rOut = baseColorStart - ((255 - p1.r)*w1*intensity) - ((255 - p2.r)*w2*intensity) - ((255 - p3.r)*w3*intensity);
@@ -427,7 +417,6 @@
         const name = prompt(dict[currentLang].promptMsg, "Object 1");
         if (!name) return;
 
-        // Збираємо ВСІ пігменти, значення яких > 0
         let mixDetails = [1, 2, 3].map(i => {
             let sel = document.getElementById(`color-${i}`);
             let val = parseInt(document.getElementById(`slider-${i}`).value) || 0;
@@ -441,7 +430,6 @@
             mix: mixDetails || dict[currentLang].clearBase
         };
 
-        // Безпечний виклик localStorage
         try {
             let history = JSON.parse(localStorage.getItem('vipMixerHistory')) || [];
             history.push(record);
@@ -514,11 +502,11 @@
         }
     }
 
-    // Запускаємо ініціалізацію після завантаження сторінки
-    window.onload = function() {
+    // Заміна window.onload на безпечний слухач подій
+    document.addEventListener('DOMContentLoaded', () => {
         initDropdowns();
         changeLang('en');
-    };
+    });
 </script>
 
 </body>
