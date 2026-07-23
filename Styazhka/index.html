@@ -1,5 +1,3 @@
-
-html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,6 +29,7 @@ body {
     color: var(--text-main);
     margin: 0;
     padding: 15px;
+    min-height: 100vh;
 }
 .app-container {
     max-width: 900px;
@@ -188,11 +187,11 @@ button#calcBtn { background: var(--accent); color: #000; flex-grow: 2; }
         .nav-link.inactive { background: #171717; color: #a3a3a3; }
         .nav-link:hover { background: #333; color: #fff; }
 </style>
-​<script src="../nav.js"></script>
+<script src="../nav.js"></script>
 </head>
 <body>  
 <div id="global-nav-container"></div>
-</div>  <div class="app-container">
+<div class="app-container">
     <div class="header">
         <div class="logo">🏗 <span>BUILD</span>calc PRO</div>
         <div class="subtitle" id="subtitle">Кошторис стяжки</div>
@@ -200,12 +199,11 @@ button#calcBtn { background: var(--accent); color: #000; flex-grow: 2; }
             <select id="language" onchange="changeLanguage()">
               <option value="en">🇬🇧 English</option>
               <option value="ua">🇺🇦 Українська</option>
-                <option value="sk">🇸ким Slovenčina</option>
-                
+              <option value="sk">🇸🇰 Slovenčina</option>
             </select>
         </div>
     </div>
-<div class="version-switcher">
+    <div class="version-switcher">
         <button class="tab-btn active" id="tabFree" onclick="setVersion('free')">Звичайна версія</button>
         <button class="tab-btn" id="tabPro" onclick="setVersion('pro')">PRO версія <span class="badge">Бізнес</span></button>
     </div>
@@ -238,7 +236,8 @@ button#calcBtn { background: var(--accent); color: #000; flex-grow: 2; }
                 <div class="input-group"><label id="logisticsLabel">Доставка, податки, інше €/м²</label><input id="logisticsPrice" type="number" value="3.95"></div>
             </div>
         </div>
-<div id="secWork" class="pro-only-block locked">
+        
+        <div id="secWork" class="pro-only-block locked">
             <h3><span id="workTitle">Робота</span> <span class="lock-badge">PRO</span></h3>
             <div class="grid-inputs">
                 <div class="input-group"><label id="salaryLabel">Зарплата €/м²</label><input id="salary" type="number" value="3.5"></div>
@@ -311,7 +310,7 @@ const words = {
     en: {
         subtitle: "Screed estimate", tabF: "Free Version", tabP: "PRO Version", badge: "Business",
         object: "Object", name: "Object name", area: "Area m²", thickness: "Thickness cm",
-normTitle: "Material norms per 1 m³", cNorm: "Cement (bags)", sNorm: "Sand (m³)", fNorm: "Fiber (kg)", pNorm: "Plasticizer (l)",
+        normTitle: "Material norms per 1 m³", cNorm: "Cement (bags)", sNorm: "Sand (m³)", fNorm: "Fiber (kg)", pNorm: "Plasticizer (l)",
         priceTitle: "Material prices", cPrice: "Cement €/bag", sPrice: "Sand €/m³", fPrice: "Fiber €/kg", pPrice: "Plasticizer €/l", logPrice: "Delivery, taxes, etc. €/m²",
         workTitle: "Work", salary: "Salary €/m²", profit: "Profit €/m²",
         calc: "Calculate", copy: "Copy", newp: "New project", save: "Save", hist: "History", clear: "Clear",
@@ -367,13 +366,13 @@ function calculate(){
     let salaryPrice = Number(document.getElementById("salary").value) || 0;
     let profitPrice = Number(document.getElementById("profit").value) || 0;
 
-    // Математика вартостей
     let materialsCost = (cementBags * cementPrice) + (sandM3 * sandPrice) + (fiberKg * fiberPrice) + (plasticL * plasticPrice);
     let salary = area * salaryPrice;
     let profit = area * profitPrice;
     let logisticsTotal = area * logisticsPrice;
     let clientTotal = materialsCost + salary + profit + logisticsTotal;
-if(typeof gtag === 'function') {
+
+    if(typeof gtag === 'function') {
         gtag('event', 'click_calculate', { 'version_type': currentVersion, 'area_size': area });
     }
 
@@ -424,7 +423,7 @@ function changeLanguage(){
     document.getElementById("cementNormLabel").innerHTML = t.cNorm;
     document.getElementById("sandLabel").innerHTML = t.sNorm;
     document.getElementById("fiberLabel").innerHTML = t.fNorm;
-document.getElementById("plasticLabel").innerHTML = t.pNorm;
+    document.getElementById("plasticLabel").innerHTML = t.pNorm;
     
     document.getElementById("priceTitle").innerHTML = t.priceTitle;
     document.getElementById("cementPriceLabel").innerHTML = t.cPrice;
@@ -510,6 +509,7 @@ function clearHistory(){
         document.getElementById("history").innerHTML=words[lang].alertHistCleared;
     }
 }
+
 function createPDF() {
     let lang = document.getElementById("language").value;
     if(currentVersion === 'free') { alert("Друк PDF доступний тільки в PRO версії"); return; }
