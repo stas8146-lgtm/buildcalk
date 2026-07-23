@@ -82,11 +82,12 @@
         .footer { margin-top: 30px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 15px; font-size: 0.8rem; color: var(--text-muted); }
     </style>
     
-    <!-- Підключення навігації (якщо nav.js лежить в тій самій папці, якщо ні - поверніть ../nav.js) -->
-    <script src="nav.js"></script>
+    <!-- Підключення навігації (якщо nav.js в іншій папці, змініть шлях на ../nav.js) -->
+    <script src="../nav.js"></script>
 </head>
 <body>
 
+<!-- Контейнер для глобального меню -->
 <div id="global-nav-container"></div>
 
 <div class="container" id="app-container">
@@ -265,8 +266,8 @@
         
     const dict = {
         en: { share: "📤 Share Mix", save: "💾 Save Object", pdf: "📄 Generate PDF Estimate", secObj: "📐 Object Area & Base", area: "Wall Area (m²)", surf: "Surface Type", optSm: "Smooth (0.12 L/m²)", optWl: "Wallpaper (0.15 L/m²)", optRg: "Rough (0.25 L/m²)", doors: "Doors / Windows", layers: "Layers", baseType: "Paint Base Type", optBa: "Base A (White)", optBc: "Base C (Clear)", secEco: "💶 Economics", pBase: "Base Price (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Labor (€/m²)", otherExp: "Other Expenses (€)", rNeed: "Base Needed:", matCost: "Material Cost:", labCost: "Labor Cost:", othCost: "Other Expenses:", grandTotal: "Grand Total:", prev: "Mixed Color", warn: "WARNING: 10% Pigment Limit Reached!", tot: "Total pigment:", secHist: "📂 Saved Objects", promptMsg: "Enter object name (e.g. Living Room):", del: "Delete", clearBase: "Clear base (no pigment)" },
-        uk: { share: "📤 Поділитися", save: "💾 Зберегти", pdf: "📄 PDF-кошторис", secObj: "📐 Площа та База", area: "Площа стін (м²)", surf: "Тип поверхні", optSm: "Гладка (0.12 л/м²)", optWl: "Шпалери (0.15 л/м²)", optRg: "Короїд (0.25 л/м²)", doors: "Двері / Вікна", layers: "Шари", baseType: "Тип бази", optBa: "База А (Біла)", optBc: "База С (Прозора)", secEco: "💶 Економіка", pBase: "Ціна бази (€/Л)", pPig: "Пігмент (€/100мл)", laborRate: "Робота (€/м²)", otherExp: "Інші витрати (€)", rNeed: "Потрібно бази:", matCost: "Вартість матеріалів:", labCost: "Вартість робіт:", othCost: "Інші витрати:", grandTotal: "Загальна вартість:", prev: "Колір суміші", warn: "УВАГА: Ліміт 10% пігменту!", tot: "Всього пігменту:", secHist: "📂 Збережені об'єкти", promptMsg: "Введіть назву об'єкта (напр. Кухня):", del: "Видалити", clearBase: "Прозора база (без пігменту)" },
-        sk: { share: "📤 Zdielať", save: "💾 Uložiť objekt", pdf: "📄 PDF Kalkulácia", secObj: "📐 Plocha a Základ", area: "Plocha stien (m²)", surf: "Typ povrchu", optSm: "Hladký (0.12 l/m²)", optWl: "Tapeta (0.15 l/m²)", optRg: "Drsný (0.25 l/m²)", doors: "Dvere / Okná", layers: "Vrstvy", baseType: "Typ základu", optBa: "Báza A (Biela)", optBc: "Báza C (Priesvitná)", secEco: "💶 Ekonomika", pBase: "Cena bázy (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Práca (€/m²)", otherExp: "Iné náklady (€)", rNeed: "Potrebný základ:", matCost: "Cena materiálu:", labCost: "Cena práce:", othCost: "Iné náklady:", grandTotal: "Celková cena:", prev: "Výsledná farba", warn: "POZOR: Limit 10% pigmentu!", tot: "Pigment celkom:", secHist: "📂 Uložené objekty", promptMsg: "Zadajte názov objektu (napr. Obývačka):", del: "Vymazať", clearBase: "Priesvitný základ (bez pigmentu)" }
+        uk: { share: "📤 Поділитися", save: "💾 Зберегти", pdf: "📄 PDF-кошторис", secObj: "📐 Площа та База", area: "Площа стін (м²)", surf: "Тип поверхні", optSm: "Гладка (0.12 л/м²)", optWl: "Шпалери (0.15 л/м²)", optRg: "Короїд (0.25 л/м²)", doors: "Двері / Вікна", layers: "Шари", baseType: "Тип бази", optBa: "База А (Біла)", optBc: "База С (Прозора)", secEco: "💶 Економіка", pBase: "Ціна бази (€/Л)", pPig: "Пігмент (€/100мл)", laborRate: "Робота (€/m²)", otherExp: "Інші витрати (€)", rNeed: "Потрібно бази:", matCost: "Вартість матеріалів:", labCost: "Вартість робіт:", othCost: "Інші витрати:", grandTotal: "Загальна вартість:", prev: "Колір суміші", warn: "УВАГА: Ліміт 10% пігменту!", tot: "Всього пігменту:", secHist: "📂 Збережені об'єкти", promptMsg: "Введіть назву об'єкта (напр. Кухня):", del: "Видалити", clearBase: "Прозора база (без пігменту)" },
+        sk: { share: "📤 Zdielať", save: "💾 Uložiť objekt", pdf: "📄 PDF Kalkulácia", secObj: "📐 Plocha a Základ", area: "Plocha stien (m²)", surf: "Typ povrchu", optSm: "Hladký (0.12 l/m²)", optWl: "Tapeta (0.15 l/m²)", optRg: "Drsný (0.25 l/m²)", doors: "Dvere / Okná", layers: "Vrstvy", baseType: "Typ základu", optBa: "Báza A (Biela)", optBc: "Priesvitná báza (C)", secEco: "💶 Ekonomika", pBase: "Cena bázy (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Práca (€/m²)", otherExp: "Iné náklady (€)", rNeed: "Potrebný základ:", matCost: "Cena materiálu:", labCost: "Cena práce:", othCost: "Iné náklady:", grandTotal: "Celková cena:", prev: "Výsledná farba", warn: "POZOR: Limit 10% pigmentu!", tot: "Pigment celkom:", secHist: "📂 Uložené objekty", promptMsg: "Zadajte názov objektu (napr. Obývačka):", del: "Vymazať", clearBase: "Priesvitný základ (bez pigmentu)" }
     };
 
     let currentLang = 'en';
@@ -502,7 +503,6 @@
         }
     }
 
-    // Заміна window.onload на безпечний слухач подій
     document.addEventListener('DOMContentLoaded', () => {
         initDropdowns();
         changeLang('en');
