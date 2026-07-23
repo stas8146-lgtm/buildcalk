@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,7 +78,7 @@
                 <!-- Language Dropdown -->
                 <div class="relative">
                     <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-neutral-900 border border-neutral-800 text-sm font-semibold rounded-xl px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-yellow-500 cursor-pointer">
-                        <option value="en">🇬🇧 EN</option>
+                        <option value="en" selected>🇬🇧 EN</option>
                         <option value="uk">🇺🇦 UKR</option>
                         <option value="sk">🇸🇰 SK</option>
                     </select>
@@ -144,7 +143,7 @@
                     
                     <!-- Layers of Drywall -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1">Drywall Layers</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1" id="lbl-layers">Drywall Layers</label>
                         <select id="inp-layers" onchange="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white">
                             <option value="1" selected>1 Layer (Standard)</option>
                             <option value="2">2 Layers (Reinforced)</option>
@@ -153,10 +152,10 @@
 
                     <!-- Profile Pitch Spacing -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1">Profile Spacing</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1" id="lbl-spacing">Profile Spacing</label>
                         <select id="inp-spacing" onchange="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white">
                             <option value="0.6" selected>600 mm (Standard)</option>
-                            <option value="0.4">400 mm (Standard)</option>
+                            <option value="0.4">400 mm (Heavy duty)</option>
                         </select>
                     </div>  
                     
@@ -192,11 +191,11 @@
                         <input type="number" id="inp-price-sheet" value="10.00" step="0.10" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-cd">CD Profile (€/pc)</label>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-cd">Main Stud Profile (€/pc)</label>
                         <input type="number" id="inp-price-cd" value="3.50" step="0.10" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-ud">UD Profile (€/pc)</label>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-ud">Track Profile (€/pc)</label>
                         <input type="number" id="inp-price-ud" value="2.50" step="0.10" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
                     </div>
                     <div>
@@ -301,7 +300,7 @@
                         </div>
                         <div class="text-right">
                             <span class="text-xs uppercase tracking-wider text-yellow-600 font-extrabold">Professional Estimate</span>
-                            <p class="text-sm font-bold text-gray-800" id="print-date">Date: 14.07.2026</p>
+                            <p class="text-sm font-bold text-gray-800" id="print-date">Date: 23.07.2026</p>
                         </div>
                     </div>
                 </div>
@@ -333,12 +332,13 @@
                         </div>
                     </div>
 
+                    <!-- Main Stud Profile (CW or CD) -->
                     <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
                         <div class="col-span-8 flex items-center gap-3">
                             <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="unfold-vertical" class="w-4 h-4"></i></div>
                             <div>
-                                <h4 class="font-bold text-white" id="lbl-mat-cd">CD Profile (3.0m)</h4>
-                                <p class="text-xs text-neutral-400" id="lbl-mat-cd-sub">Frame spacing: vertical tracks</p>
+                                <h4 class="font-bold text-white" id="lbl-mat-cd">CW Stud Profile (3.0m)</h4>
+                                <p class="text-xs text-neutral-400" id="lbl-mat-cd-sub">Vertical wall stud frame</p>
                             </div>
                         </div>
                         <div class="col-span-4 text-right">
@@ -346,12 +346,13 @@
                         </div>
                     </div>
 
+                    <!-- Track Profile (UW or UD) -->
                     <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
                         <div class="col-span-8 flex items-center gap-3">
                             <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="unfold-horizontal" class="w-4 h-4"></i></div>
                             <div>
-                                <h4 class="font-bold text-white" id="lbl-mat-ud">UD Profile (3.0m)</h4>
-                                <p class="text-xs text-neutral-400" id="lbl-mat-ud-sub">Perimeter boundary tracks</p>
+                                <h4 class="font-bold text-white" id="lbl-mat-ud">UW Track Profile (3.0m)</h4>
+                                <p class="text-xs text-neutral-400" id="lbl-mat-ud-sub">Perimeter floor & ceiling tracks</p>
                             </div>
                         </div>
                         <div class="col-span-4 text-right">
@@ -391,7 +392,7 @@
                                 <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="hammer" class="w-4 h-4"></i></div>
                                 <div>
                                     <h4 class="font-bold text-white" id="lbl-mat-plugs">Nail Wall Plugs (6x40)</h4>
-                                    <p class="text-xs text-neutral-400" id="lbl-mat-plugs-sub">For UD profiles (every 50cm) and hangers</p>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-plugs-sub">For boundary profiles (every 50cm) and hangers</p>
                                 </div>
                             </div>
                             <div class="col-span-4 text-right">
@@ -405,7 +406,7 @@
                                 <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="anchor" class="w-4 h-4"></i></div>
                                 <div>
                                     <h4 class="font-bold text-white" id="lbl-mat-hangers">Direct Hangers (60/125)</h4>
-                                    <p class="text-xs text-neutral-400" id="lbl-mat-hangers-sub">To secure CD profiles every 60cm</p>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-hangers-sub">To secure profiles every 60cm</p>
                                 </div>
                             </div>
                             <div class="col-span-4 text-right">
@@ -443,7 +444,7 @@
                     </div>
                 </div>
 
-                <!-- Financial Summary Card (Matched to Screenshot Style) -->
+                <!-- Financial Summary Card -->
                 <div class="mt-6 pt-4 border-t border-neutral-800">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="text-sm font-bold text-yellow-500 uppercase tracking-widest flex items-center gap-2" id="t-financial-summary">
@@ -507,13 +508,13 @@
                 </div>
 
                 <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
-                    <h3 class="font-bold text-yellow-500 mb-2" id="t-tip-2-title">⚙️ Profiles (CD & UD Skeleton Frame)</h3>
-                    <p id="t-tip-2-desc">UD profile functions as the perimeter guiding track, computed directly from wall borders. CD profile works as the primary load-bearing vertically spaced guide. Our standard vertical pitch is 60cm, but we strongly recommend upgrading to 40cm spacing if your wall partition is designated to host tiling, heavy shelves, or multiple storage components.</p>
+                    <h3 class="font-bold text-yellow-500 mb-2" id="t-tip-2-title">⚙️ Profiles (CW/UW Walls & CD/UD Ceilings)</h3>
+                    <p id="t-tip-2-desc">For wall partitions, CW profiles act as vertical studs and UW as boundary tracks. For suspended ceilings, CD functions as primary support rails with UD perimeter tracks. Our standard profile spacing is 60cm, but 40cm is recommended for tiling or heavy shelf loads.</p>
                 </div>
 
                 <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
                     <h3 class="font-bold text-yellow-500 mb-2" id="t-tip-3-title">🔒 Why use PRO Mode?</h3>
-                    <p id="t-tip-3-desc">PRO mode utilizes comprehensive estimation mathematics to provide total count for hardware. It details the exact metal screws needed (plasterboard-to-metal screws spaced every 25cm), direct mounting hangers to minimize core wobbling, wall dowels for masonry connections, joint glassfiber tape, and joint filling compound to seal panels.</p>
+                    <p id="t-tip-3-desc">PRO mode utilizes comprehensive estimation mathematics to provide total count for hardware. It details the exact metal screws needed, direct mounting hangers, wall dowels for masonry connections, joint fiber tape, and joint filling compound to seal panels.</p>
                 </div>
             </div>
         </div>
@@ -544,8 +545,8 @@
                 "lbl-spacing": "Profile Spacing",
                 "t-economics": "Economics & Pricing",
                 "lbl-price-sheet": "Drywall Sheet (€/pc)",
-                "lbl-price-cd": "CD Profile (€/pc)",
-                "lbl-price-ud": "UD Profile (€/pc)",
+                "lbl-price-cd": "Main Stud Profile (€/pc)",
+                "lbl-price-ud": "Track Profile (€/pc)",
                 "lbl-price-screws": "Screws (€/pc)",
                 "lbl-price-plugs": "Wall Plugs (€/pc)",
                 "lbl-price-hangers": "Hangers (€/pc)",
@@ -572,20 +573,25 @@
                 "btn-calc": "Calculate",
                 "t-estimate": "Materials Estimate",
                 "lbl-pdf-btn": "Export PDF / Print",
-                "lbl-mat-sheets": "Drywall Sheets (1.2 x 2.5m)",
-                "lbl-mat-sheets-sub": "Based on 3.0m² sheet + 10% waste",
+                "lbl-mat-sheets": "Drywall Sheets",
+                "sub-sheets-format": "Based on {area}m² sheet + {waste}% waste",
+                "lbl-mat-cw": "CW Stud Profile (3.0m)",
+                "lbl-mat-cw-sub": "Vertical wall stud frame",
+                "lbl-mat-uw": "UW Track Profile (3.0m)",
+                "lbl-mat-uw-sub": "Perimeter floor & ceiling tracks",
                 "lbl-mat-cd": "CD Profile (3.0m)",
-                "lbl-mat-cd-sub": "Frame spacing: vertical tracks",
+                "lbl-mat-cd-sub": "Ceiling main support channel",
                 "lbl-mat-ud": "UD Profile (3.0m)",
-                "lbl-mat-ud-sub": "Perimeter boundary tracks",
+                "lbl-mat-ud-sub": "Ceiling perimeter guide profile",
                 "t-pro-unlock-items": "Unlock Advanced Consumables (Screws, Plugs, Tapes, Hangers, Putty)",
                 "lbl-unlock-now": "Unlock Now",
                 "lbl-mat-screws": "Metal Screws (25mm)",
+                "lbl-mat-screws-2layer": "Metal Screws (25mm + 35mm)",
                 "lbl-mat-screws-sub": "Estimated ~15 pcs/m² + safety factor",
                 "lbl-mat-plugs": "Nail Wall Plugs (6x40)",
-                "lbl-mat-plugs-sub": "For UD profiles (every 50cm) and hangers",
+                "lbl-mat-plugs-sub": "For boundary profiles (every 50cm) and hangers",
                 "lbl-mat-hangers": "Direct Hangers (60/125)",
-                "lbl-mat-hangers-sub": "To secure CD profiles every 60cm",
+                "lbl-mat-hangers-sub": "To secure profiles every 60cm",
                 "lbl-mat-tape": "Joint Fiber Tape (Serpyanka)",
                 "lbl-mat-tape-sub": "Approx. 1.5m per m² of plasterboard",
                 "lbl-mat-putty": "Joint Putty / Plaster Filler",
@@ -594,9 +600,9 @@
                 "t-history-empty": "No calculations saved yet.",
                 "t-guide-title": "How It Calculates & Practical Tips",
                 "t-tip-1-title": "📄 Sheets & Structural Integrity",
-                "t-tip-1-desc": "Our calculator automatically appends a standard 10% material buffer to accommodate cuttings, cuts, and irregular angles. Standard drywall sheet dimensions are 1.2 x 2.5 meters (3 m² area).",
-                "t-tip-2-title": "⚙️ Profiles (CD & UD Skeleton Frame)",
-                "t-tip-2-desc": "UD profile functions as the perimeter guiding track. CD profile works as the primary load-bearing vertically spaced guide.",
+                "t-tip-1-desc": "Our calculator automatically appends a standard 10% material buffer to accommodate cuttings, cuts, and irregular angles.",
+                "t-tip-2-title": "⚙️ Profiles (CW/UW Walls & CD/UD Ceilings)",
+                "t-tip-2-desc": "For wall partitions, CW profiles act as vertical studs and UW as boundary tracks. For ceilings, CD/UD profiles build the main frame.",
                 "t-tip-3-title": "🔒 Why use PRO Mode?",
                 "t-tip-3-desc": "PRO mode details the exact metal screws needed, hangers, wall dowels, joint tape, compound filler, and itemized financial estimates.",
                 "unit-pcs": "pcs",
@@ -614,8 +620,8 @@
                 "lbl-spacing": "Крок профілю",
                 "t-economics": "Економіка та ціни",
                 "lbl-price-sheet": "Гіпсокартон (€/шт)",
-                "lbl-price-cd": "Профіль CD (€/шт)",
-                "lbl-price-ud": "Профіль UD (€/шт)",
+                "lbl-price-cd": "Опорний профіль (€/шт)",
+                "lbl-price-ud": "Направляючий профіль (€/шт)",
                 "lbl-price-screws": "Саморізи (€/шт)",
                 "lbl-price-plugs": "Дюбелі (€/шт)",
                 "lbl-price-hangers": "Підвіси (€/шт)",
@@ -642,20 +648,25 @@
                 "btn-calc": "Розрахувати",
                 "t-estimate": "Кошторис матеріалів",
                 "lbl-pdf-btn": "Експорт в PDF / Друк",
-                "lbl-mat-sheets": "Листи гіпсокартону (1.2 х 2.5м)",
-                "lbl-mat-sheets-sub": "На базі листа 3.0 м² + 10% на підрізку",
+                "lbl-mat-sheets": "Листи гіпсокартону",
+                "sub-sheets-format": "На базі листа {area} м² + {waste}% на підрізку",
+                "lbl-mat-cw": "Профіль CW (3.0м)",
+                "lbl-mat-cw-sub": "Вертикальний стійковий профіль стіни",
+                "lbl-mat-uw": "Профіль UW (3.0м)",
+                "lbl-mat-uw-sub": "Направляючий периметр стіни (підлога/стеля)",
                 "lbl-mat-cd": "Профіль CD (3.0м)",
-                "lbl-mat-cd-sub": "Опорний каркас: стійки/рейки",
+                "lbl-mat-cd-sub": "Опорний несучий стельовий профіль",
                 "lbl-mat-ud": "Профіль UD (3.0м)",
-                "lbl-mat-ud-sub": "Направляючий периметр",
+                "lbl-mat-ud-sub": "Направляючий периметр стелі",
                 "t-pro-unlock-items": "Активуйте розширені розхідники (саморізи, дюбелі, стрічки, підвіси, фініш)",
                 "lbl-unlock-now": "Розблокувати PRO",
                 "lbl-mat-screws": "Саморізи по металу (25мм)",
+                "lbl-mat-screws-2layer": "Саморізи по металу (25мм + 35мм)",
                 "lbl-mat-screws-sub": "Розрахунок ~15 шт/м² + коефіцієнт безпеки",
                 "lbl-mat-plugs": "Дюбель-цвях швидкого монтажу (6х40)",
-                "lbl-mat-plugs-sub": "Для UD профілів (кожні 50см) та підвісів",
+                "lbl-mat-plugs-sub": "Для направляючих профілів (кожні 50см) та підвісів",
                 "lbl-mat-hangers": "П-подібний підвіс (60/125)",
-                "lbl-mat-hangers-sub": "Фіксація CD профілю до стіни через 60см",
+                "lbl-mat-hangers-sub": "Фіксація профілю до основи через 60см",
                 "lbl-mat-tape": "Стрічка армуюча (Серпянка)",
                 "lbl-mat-tape-sub": "Орієнтовно 1.5м на кожен м² гіпсокартону",
                 "lbl-mat-putty": "Шпаклівка для швів / Стиків",
@@ -665,8 +676,8 @@
                 "t-guide-title": "Методика розрахунку та корисні поради",
                 "t-tip-1-title": "📄 Листи та міцність конструкції",
                 "t-tip-1-desc": "Наш калькулятор автоматично додає 10% буфер на різання та відходи.",
-                "t-tip-2-title": "⚙️ Профілі (Каркас CD та UD)",
-                "t-tip-2-desc": "UD-профіль монтується по периметру стіни чи стелі. CD-профіль є основним несучим елементом каркасу.",
+                "t-tip-2-title": "⚙️ Профілі (CW/UW для стін та CD/UD для стель)",
+                "t-tip-2-desc": "Для перегородок використовуються стійкові CW та направляючі UW профілі. Для стель — несучі CD та обвідні UD.",
                 "t-tip-3-title": "🔒 Переваги PRO-режиму",
                 "t-tip-3-desc": "PRO-режим включає деталізований розрахунок кріплення, витратних матеріалів та фінансів.",
                 "unit-pcs": "шт",
@@ -679,13 +690,13 @@
                 "lbl-wall": "Stena / Priečka",
                 "lbl-ceiling": "Strop",
                 "lbl-width": "Šírka (m)",
-                "lbl-height": "Výшка/Dĺžka (m)",
+                "lbl-height": "Výška/Dĺžka (m)",
                 "lbl-layers": "Vrstvy sadrokartónu",
                 "lbl-spacing": "Rozostup profilov",
                 "t-economics": "Ekonómika a ceny",
                 "lbl-price-sheet": "Sadrokartón (€/ks)",
-                "lbl-price-cd": "Profil CD (€/ks)",
-                "lbl-price-ud": "Profil UD (€/ks)",
+                "lbl-price-cd": "Nosný profil (€/ks)",
+                "lbl-price-ud": "Vodiaci profil (€/ks)",
                 "lbl-price-screws": "Skrutky (€/ks)",
                 "lbl-price-plugs": "Hmoždinky (€/ks)",
                 "lbl-price-hangers": "Závesy (€/ks)",
@@ -712,20 +723,25 @@
                 "btn-calc": "Vypočítať",
                 "t-estimate": "Odhad materiálu",
                 "lbl-pdf-btn": "Exportovať PDF / Tlačiť",
-                "lbl-mat-sheets": "Sadrokartónová doska (1.2 x 2.5m)",
-                "lbl-mat-sheets-sub": "Základná plocha 3.0m² dosky + 10% odpadu",
+                "lbl-mat-sheets": "Sadrokartónové dosky",
+                "sub-sheets-format": "Základná plocha {area}m² + {waste}% odpadu",
+                "lbl-mat-cw": "CW Profil (3.0m)",
+                "lbl-mat-cw-sub": "Zvislý stenný profil",
+                "lbl-mat-uw": "UW Profil (3.0m)",
+                "lbl-mat-uw-sub": "Obvodový vodiaci profil steny",
                 "lbl-mat-cd": "CD Profil (3.0m)",
-                "lbl-mat-cd-sub": "Nosná konštrukcia: zvislé koľajnice",
+                "lbl-mat-cd-sub": "Nosný stropný profil",
                 "lbl-mat-ud": "UD Profil (3.0m)",
-                "lbl-mat-ud-sub": "Obvodové vodiace profily stien",
+                "lbl-mat-ud-sub": "Obvodový vodiaci profil stropu",
                 "t-pro-unlock-items": "Odomknúť spotrebný materiál (skrutky, hmoždinky, pásky, závesy, tmel)",
                 "lbl-unlock-now": "Odomknúť teraz",
-                "lbl-mat-screws": "Rýchloskrutky do kovu (25mm)",
+                "lbl-mat-screws": "Rýchloskrutky (25mm)",
+                "lbl-mat-screws-2layer": "Rýchloskrutky (25mm + 35mm)",
                 "lbl-mat-screws-sub": "Odhadovaná spotreba ~15 ks/m² + rezerva",
                 "lbl-mat-plugs": "Natĺkacie hmoždinky (6x40)",
-                "lbl-mat-plugs-sub": "Pre UD profily (každých 50cm) a priame závesy",
+                "lbl-mat-plugs-sub": "Pre vodiace profily (každých 50cm) a závesy",
                 "lbl-mat-hangers": "Priamy záves (60/125)",
-                "lbl-mat-hangers-sub": "Uchytenie CD profilov k podkladu každých 60cm",
+                "lbl-mat-hangers-sub": "Uchytenie profilov k podkladu každých 60cm",
                 "lbl-mat-tape": "Páska na spoje (Serpanka)",
                 "lbl-mat-tape-sub": "Približne 1.5m pásky na každý m² sadrokartónu",
                 "lbl-mat-putty": "Tmel na špáry a spoje",
@@ -735,8 +751,8 @@
                 "t-guide-title": "Návod na výpočet a praktické tipy",
                 "t-tip-1-title": "📄 Sadrokartónové dosky a ich rezanie",
                 "t-tip-1-desc": "Náš kalkulátor automaticky započítava 10% rezervu na dorezy a odpad.",
-                "t-tip-2-title": "⚙️ Profilová konštrukcia (CD & UD profily)",
-                "t-tip-2-desc": "UD profil tvorí obvodový rám. CD profily slúžia ako zvislé nosné stojky.",
+                "t-tip-2-title": "⚙️ Profilová konštrukcia (CW/UW a CD/UD)",
+                "t-tip-2-desc": "Pre steny sa používajú profily CW a UW. Pre stropy slúžia profily CD a UD.",
                 "t-tip-3-title": "🔒 Výhody PRO režimu",
                 "t-tip-3-desc": "PRO režim zahŕňa presný výpočet spojovacieho materiálu a rozpis financií.",
                 "unit-pcs": "ks",
@@ -857,15 +873,33 @@
                 titleArea.innerText = `Area: ${area.toFixed(2)} m²`;
             }
 
-            // Sheets
+            // Sheets Calculation
             const sheetArea = parseFloat(document.getElementById('inp-sheet-size').value); 
             const wastePercent = parseFloat(document.getElementById('inp-waste').value) || 10;
             const sheetsTotal = Math.ceil((area * layers * (1 + wastePercent / 100)) / sheetArea);
             
-            document.getElementById('lbl-mat-sheets').innerText = `Drywall Sheets (1.2 x ${(sheetArea/1.2).toFixed(1)}m)`;
-            document.getElementById('lbl-mat-sheets-sub').innerText = `Based on ${sheetArea}m² sheet + ${wastePercent}% waste`;
+            const sheetLength = (sheetArea / 1.2).toFixed(1);
+            document.getElementById('lbl-mat-sheets').innerText = `${translations[currentLang]["lbl-mat-sheets"]} (1.2 x ${sheetLength}m)`;
             
-            // UD Profiles
+            let sheetSubText = translations[currentLang]["sub-sheets-format"];
+            sheetSubText = sheetSubText.replace('{area}', sheetArea).replace('{waste}', wastePercent);
+            document.getElementById('lbl-mat-sheets-sub').innerText = sheetSubText;
+
+            // Profiles dynamic titling logic (CW/UW vs CD/UD)
+            const isWall = (structureType === 'wall');
+            document.getElementById('lbl-mat-cd').innerText = isWall ? translations[currentLang]["lbl-mat-cw"] : translations[currentLang]["lbl-mat-cd"];
+            document.getElementById('lbl-mat-cd-sub').innerText = isWall ? translations[currentLang]["lbl-mat-cw-sub"] : translations[currentLang]["lbl-mat-cd-sub"];
+            document.getElementById('lbl-mat-ud').innerText = isWall ? translations[currentLang]["lbl-mat-uw"] : translations[currentLang]["lbl-mat-ud"];
+            document.getElementById('lbl-mat-ud-sub').innerText = isWall ? translations[currentLang]["lbl-mat-uw-sub"] : translations[currentLang]["lbl-mat-ud-sub"];
+
+            // Screws Dynamic Title
+            if (layers > 1) {
+                document.getElementById('lbl-mat-screws').innerText = translations[currentLang]["lbl-mat-screws-2layer"];
+            } else {
+                document.getElementById('lbl-mat-screws').innerText = translations[currentLang]["lbl-mat-screws"];
+            }
+
+            // Boundary track Profiles Total
             const perimeterLength = 2 * (width + height);
             const udTotalLength = perimeterLength * 1.1; 
             const udTotalPieces = Math.ceil(udTotalLength / 3.0); 
@@ -874,7 +908,7 @@
             const frameElement = document.getElementById('inp-frame-type');
             const frameType = frameElement ? frameElement.value : 'single';
 
-            // CD Profiles & Hangers
+            // Main Stud Profiles & Hangers
             let cdProfilesCount = Math.ceil(width / spacing);
             let cdTotalLength = cdProfilesCount * height;
             let hangersTotal = 0;
@@ -951,6 +985,22 @@
             document.getElementById('val-total-profit').innerText = totalProfit.toFixed(2);
             document.getElementById('val-total-other').innerText = otherExpenses.toFixed(2);
             document.getElementById('val-grand-total').innerText = grandTotal.toFixed(2);
+
+            // Sync with Global Master Estimate in LocalStorage
+            try {
+                let globalEst = JSON.parse(localStorage.getItem('global_building_estimate')) || {};
+                globalEst['drywall'] = {
+                    title: 'Drywall Partition & Ceiling',
+                    area: area,
+                    total: grandTotal,
+                    materials: totalMaterials,
+                    labor: totalLabor,
+                    updatedAt: new Date().toISOString()
+                };
+                localStorage.setItem('global_building_estimate', JSON.stringify(globalEst));
+            } catch(e) {
+                console.error("LocalStorage error", e);
+            }
 
             if (area > 0) {
                 saveToHistoryDebounced(width, height, area);
