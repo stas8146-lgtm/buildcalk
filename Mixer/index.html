@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIP Paint Mixer Ultimate (Free Edition)</title>
-<meta name="description" content="Professional paint mixer and pigment volume calculator. Estimate base paint quantity, pigment ratios, and total project costs easily.">
+    <meta name="description" content="Professional paint mixer and pigment volume calculator. Estimate base paint quantity, pigment ratios, and total project costs easily.">
+    
     <!-- Бібліотека для генерації PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -32,14 +33,16 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background-color: var(--bg-main); color: var(--text-light); padding: 15px; display: flex; flex-direction: column; align-items: center; padding-bottom: 40px; transition: background 0.3s; }
-        .container { width: 100%; max-width: 500px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: background 0.3s; }
+        
+        /* Збільшено max-width для кращого вигляду на десктопах */
+        .container { width: 100%; max-width: 600px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: background 0.3s; }
 
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px; }
         .logo { font-weight: 900; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;}
         .logo span { color: var(--accent-yellow); }
         .theme-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-light); }
         
-        .lang-selector button { background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-muted); padding: 4px 8px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .lang-selector button { background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-muted); padding: 4px 8px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s;}
         .lang-selector button.active { border-color: var(--accent-yellow); color: var(--accent-yellow); }
 
         .action-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
@@ -48,33 +51,34 @@
         .btn-pdf { grid-column: span 2; background: rgba(255, 204, 0, 0.1); border-color: var(--accent-yellow); color: var(--accent-yellow);}
         
         .section-title { font-size: 0.9rem; color: var(--accent-yellow); font-weight: bold; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;}
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
         
         .input-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
         .input-group input, .input-group select { width: 100%; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-light); padding: 8px; border-radius: 6px; font-weight: bold; outline: none; }
         
-        .result-box { background: rgba(255, 204, 0, 0.1); border: 1px dashed var(--accent-yellow); padding: 12px; border-radius: 8px; margin-bottom: 20px; }
+        .result-box { background: rgba(255, 204, 0, 0.1); border: 1px dashed var(--accent-yellow); padding: 15px; border-radius: 8px; margin-bottom: 20px; }
         .result-row { display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 8px; font-weight: 600;}
         .result-row.subtext { font-size: 0.85rem; color: var(--text-muted); font-weight: normal; }
         .result-row.total { font-size: 1.2rem; color: var(--accent-yellow); border-top: 1px solid var(--border-color); padding-top: 8px; margin-top: 8px; font-weight: bold; }
 
-        .preview-box { width: 100%; height: 120px; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 15px; position: relative; background: #FFF; display: flex; align-items: flex-end; overflow: hidden;}
+        .preview-box { width: 100%; height: 120px; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 15px; position: relative; background: #FFF; display: flex; align-items: flex-end; overflow: hidden; transition: 0.3s;}
         .paint-fill { width: 100%; height: 100%; background-color: #FFFFFF; transition: background-color 0.1s; }
         .preview-label { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7); color: #FFF; padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; border: 1px solid var(--accent-yellow); font-weight: bold; z-index: 10;}
 
         .status-bar { background: var(--bg-input); padding: 10px; border-radius: 6px; border-left: 4px solid var(--accent-yellow); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 0.9rem;}
         .warning-msg { color: var(--danger-red); font-size: 0.8rem; font-weight: bold; display: none; text-align: center; padding: 8px; margin-bottom: 15px; background: rgba(255,51,51,0.1); border-radius: 6px; border: 1px solid var(--danger-red);}
 
-        .pigment-row { background: var(--bg-input); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 10px; }
-        .pigment-row select { margin-bottom: 10px; }
+        .pigment-row { background: var(--bg-input); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 10px; }
+        .pigment-row select { margin-bottom: 10px; width: 100%; background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-light); padding: 6px; border-radius: 6px; outline: none;}
         .slider-wrapper { display: flex; align-items: center; }
         input[type="range"] { flex: 1; margin-right: 15px; accent-color: var(--accent-yellow); }
-        .value-badge { min-width: 65px; text-align: right; font-weight: bold; background: var(--bg-main); padding: 4px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.85rem;}
+        .value-badge { min-width: 70px; text-align: right; font-weight: bold; background: var(--bg-main); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.85rem;}
 
         .history-box { margin-top: 25px; display: none; }
         .history-item { background: var(--bg-input); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center;}
         .history-info strong { color: var(--accent-yellow); display: block; margin-bottom: 3px; font-size: 0.95rem;}
-        .del-btn { background: rgba(255,51,51,0.2); border: 1px solid var(--danger-red); color: var(--danger-red); padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold;}
+        .del-btn { background: rgba(255,51,51,0.2); border: 1px solid var(--danger-red); color: var(--danger-red); padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s;}
+        .del-btn:hover { background: var(--danger-red); color: #FFF; }
 
         .footer { margin-top: 30px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 15px; font-size: 0.8rem; color: var(--text-muted); }
     </style>
@@ -114,7 +118,8 @@
     <div class="grid-2">
         <div class="input-group">
             <label id="lbl-area">Wall Area (m²)</label>
-            <input type="number" id="in-area" value="30" oninput="recalc()">
+            <!-- Додано min="0" та step -->
+            <input type="number" id="in-area" value="30" min="0" step="1" oninput="recalc()">
         </div>
         <div class="input-group">
             <label id="lbl-surface">Surface Type</label>
@@ -127,8 +132,8 @@
         <div class="input-group">
             <label id="lbl-doors">Doors / Windows</label>
             <div style="display: flex; gap:5px;">
-                <input type="number" id="in-doors" value="1" min="0" placeholder="🚪" oninput="recalc()">
-                <input type="number" id="in-windows" value="1" min="0" placeholder="🪟" oninput="recalc()">
+                <input type="number" id="in-doors" value="1" min="0" step="1" placeholder="🚪" oninput="recalc()">
+                <input type="number" id="in-windows" value="1" min="0" step="1" placeholder="🪟" oninput="recalc()">
             </div>
         </div>
         <div class="input-group">
@@ -152,19 +157,19 @@
     <div class="grid-2">
         <div class="input-group">
             <label id="lbl-price-base">Base Price (€/L)</label>
-            <input type="number" id="in-price-base" value="5.50" step="0.5" oninput="recalc()">
+            <input type="number" id="in-price-base" value="5.50" min="0" step="0.5" oninput="recalc()">
         </div>
         <div class="input-group">
             <label id="lbl-price-pig">Pigment (€/100ml)</label>
-            <input type="number" id="in-price-pig" value="3.00" step="0.5" oninput="recalc()">
+            <input type="number" id="in-price-pig" value="3.00" min="0" step="0.5" oninput="recalc()">
         </div>
         <div class="input-group">
             <label id="lbl-labor-rate">Labor (€/m²)</label>
-            <input type="number" id="in-labor-rate" value="5.00" step="0.5" oninput="recalc()">
+            <input type="number" id="in-labor-rate" value="5.00" min="0" step="0.5" oninput="recalc()">
         </div>
         <div class="input-group">
             <label id="lbl-other-exp">Other Expenses (€)</label>
-            <input type="number" id="in-other-exp" value="20.00" step="1" oninput="recalc()">
+            <input type="number" id="in-other-exp" value="20.00" min="0" step="1" oninput="recalc()">
         </div>
     </div>
 
@@ -192,7 +197,7 @@
             <span id="res-cost">Grand Total:</span>
             <span id="out-cost">0.00 €</span>
         </div>
-        <div class="preview-box">
+        <div class="preview-box" id="preview-container">
             <div id="lbl-preview" class="preview-label">Mixed Color</div>
             <div id="paint-visual" class="paint-fill"></div>
         </div>
@@ -243,6 +248,12 @@
 <script>
     function toggleTheme() { document.body.classList.toggle('light-theme'); }
 
+    // Константи для площ (щоб уникнути "магічних чисел" в коді)
+    const STANDARDS = {
+        doorArea: 1.5,
+        windowArea: 1.2
+    };
+
     const pigments = [
         { id: 'black',  r: 30, g: 30, b: 30,     en: 'Black (Graphite)', uk: 'Чорний (Графіт)', sk: 'Čierna (Grafit)' },
         { id: 'white',  r: 250, g: 250, b: 250,  en: 'White (Titanium)', uk: 'Білий (Титан)',   sk: 'Biela (Titan)' },
@@ -256,9 +267,9 @@
     ];
         
     const dict = {
-        en: { share: "📤 Share Mix", save: "💾 Save Object", pdf: "📄 Generate PDF Estimate", secObj: "📐 Object Area & Base", area: "Wall Area (m²)", surf: "Surface Type", optSm: "Smooth (0.12 L/m²)", optWl: "Wallpaper (0.15 L/m²)", optRg: "Rough (0.25 L/m²)", doors: "Doors / Windows", layers: "Layers", baseType: "Paint Base Type", optBa: "Base A (White)", optBc: "Base C (Clear)", secEco: "💶 Economics", pBase: "Base Price (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Labor (€/m²)", otherExp: "Other Expenses (€)", rNeed: "Base Needed:", matCost: "Material Cost:", labCost: "Labor Cost:", othCost: "Other Expenses:", grandTotal: "Grand Total:", prev: "Mixed Color", warn: "WARNING: 10% Pigment Limit Reached!", tot: "Total pigment:", secHist: "📂 Saved Objects", promptMsg: "Enter object name (e.g. Living Room):", del: "Delete" },
-        uk: { share: "📤 Поділитися", save: "💾 Зберегти", pdf: "📄 PDF-кошторис", secObj: "📐 Площа та База", area: "Площа стін (м²)", surf: "Тип поверхні", optSm: "Гладка (0.12 л/м²)", optWl: "Шпалери (0.15 л/м²)", optRg: "Короїд (0.25 л/м²)", doors: "Двері / Вікна", layers: "Шари", baseType: "Тип бази", optBa: "База А (Біла)", optBc: "База С (Прозора)", secEco: "💶 Економіка", pBase: "Ціна бази (€/Л)", pPig: "Пігмент (€/100мл)", laborRate: "Робота (€/м²)", otherExp: "Інші витрати (€)", rNeed: "Потрібно бази:", matCost: "Вартість матеріалів:", labCost: "Вартість робіт:", othCost: "Інші витрати:", grandTotal: "Загальна вартість:", prev: "Колір суміші", warn: "УВАГА: Ліміт 10% пігменту!", tot: "Всього пігменту:", secHist: "📂 Збережені об'єкти", promptMsg: "Введіть назву об'єкта (напр. Кухня):", del: "Видалити" },
-        sk: { share: "📤 Zdielať", save: "💾 Uložiť objekt", pdf: "📄 PDF Kalkulácia", secObj: "📐 Plocha a Základ", area: "Plocha stien (m²)", surf: "Typ povrchu", optSm: "Hladký (0.12 l/m²)", optWl: "Tapeta (0.15 l/m²)", optRg: "Drsný (0.25 l/m²)", doors: "Dvere / Okná", layers: "Vrstvy", baseType: "Typ základu", optBa: "Báza A (Biela)", optBc: "Báza C (Priesvitná)", secEco: "💶 Ekonomika", pBase: "Cena bázy (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Práca (€/m²)", otherExp: "Iné náklady (€)", rNeed: "Potrebný základ:", matCost: "Cena materiálu:", labCost: "Cena práce:", othCost: "Iné náklady:", grandTotal: "Celková cena:", prev: "Výsledná farba", warn: "POZOR: Limit 10% pigmentu!", tot: "Pigment celkom:", secHist: "📂 Uložené objekty", promptMsg: "Zadajte názov objektu (napr. Obývačka):", del: "Vymazať" }
+        en: { share: "📤 Share Mix", save: "💾 Save Object", pdf: "📄 Generate PDF Estimate", secObj: "📐 Object Area & Base", area: "Wall Area (m²)", surf: "Surface Type", optSm: "Smooth (0.12 L/m²)", optWl: "Wallpaper (0.15 L/m²)", optRg: "Rough (0.25 L/m²)", doors: "Doors / Windows", layers: "Layers", baseType: "Paint Base Type", optBa: "Base A (White)", optBc: "Base C (Clear)", secEco: "💶 Economics", pBase: "Base Price (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Labor (€/m²)", otherExp: "Other Expenses (€)", rNeed: "Base Needed:", matCost: "Material Cost:", labCost: "Labor Cost:", othCost: "Other Expenses:", grandTotal: "Grand Total:", prev: "Mixed Color", warn: "WARNING: 10% Pigment Limit Reached!", tot: "Total pigment:", secHist: "📂 Saved Objects", promptMsg: "Enter object name (e.g. Living Room):", del: "Delete", clearBase: "Clear base (no pigment)" },
+        uk: { share: "📤 Поділитися", save: "💾 Зберегти", pdf: "📄 PDF-кошторис", secObj: "📐 Площа та База", area: "Площа стін (м²)", surf: "Тип поверхні", optSm: "Гладка (0.12 л/м²)", optWl: "Шпалери (0.15 л/м²)", optRg: "Короїд (0.25 л/м²)", doors: "Двері / Вікна", layers: "Шари", baseType: "Тип бази", optBa: "База А (Біла)", optBc: "База С (Прозора)", secEco: "💶 Економіка", pBase: "Ціна бази (€/Л)", pPig: "Пігмент (€/100мл)", laborRate: "Робота (€/м²)", otherExp: "Інші витрати (€)", rNeed: "Потрібно бази:", matCost: "Вартість матеріалів:", labCost: "Вартість робіт:", othCost: "Інші витрати:", grandTotal: "Загальна вартість:", prev: "Колір суміші", warn: "УВАГА: Ліміт 10% пігменту!", tot: "Всього пігменту:", secHist: "📂 Збережені об'єкти", promptMsg: "Введіть назву об'єкта (напр. Кухня):", del: "Видалити", clearBase: "Прозора база (без пігменту)" },
+        sk: { share: "📤 Zdielať", save: "💾 Uložiť objekt", pdf: "📄 PDF Kalkulácia", secObj: "📐 Plocha a Základ", area: "Plocha stien (m²)", surf: "Typ povrchu", optSm: "Hladký (0.12 l/m²)", optWl: "Tapeta (0.15 l/m²)", optRg: "Drsný (0.25 l/m²)", doors: "Dvere / Okná", layers: "Vrstvy", baseType: "Typ základu", optBa: "Báza A (Biela)", optBc: "Báza C (Priesvitná)", secEco: "💶 Ekonomika", pBase: "Cena bázy (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Práca (€/m²)", otherExp: "Iné náklady (€)", rNeed: "Potrebný základ:", matCost: "Cena materiálu:", labCost: "Cena práce:", othCost: "Iné náklady:", grandTotal: "Celková cena:", prev: "Výsledná farba", warn: "POZOR: Limit 10% pigmentu!", tot: "Pigment celkom:", secHist: "📂 Uložené objekty", promptMsg: "Zadajte názov objektu (napr. Obývačka):", del: "Vymazať", clearBase: "Priesvitný základ (bez pigmentu)" }
     };
 
     let currentLang = 'en';
@@ -267,9 +278,11 @@
     function initDropdowns() {
         const selects = [document.getElementById('color-1'), document.getElementById('color-2'), document.getElementById('color-3')];
         selects.forEach((sel, i) => {
+            let currentVal = sel.value; // Зберігаємо вибір користувача під час зміни мови
             sel.innerHTML = '';
             pigments.forEach(p => { sel.appendChild(new Option(p[currentLang], p.id)); });
-            sel.selectedIndex = i;
+            if (currentVal) sel.value = currentVal; 
+            else sel.selectedIndex = i;
         });
     }
 
@@ -310,27 +323,18 @@
         document.getElementById('lbl-total-pigment').innerText = dict[lang].tot;
         document.getElementById('sec-history').innerText = dict[lang].secHist;
 
-        let selected = [
-            document.getElementById('color-1').value || 'black', 
-            document.getElementById('color-2').value || 'white', 
-            document.getElementById('color-3').value || 'yellow'
-        ];
-        
         initDropdowns();
-        
-        document.getElementById('color-1').value = selected[0];
-        document.getElementById('color-2').value = selected[1];
-        document.getElementById('color-3').value = selected[2];
-        
         recalc();
         renderHistory();
     }
 
     function recalc() {
-        let area = parseFloat(document.getElementById('in-area').value) || 0;
-        let doors = parseInt(document.getElementById('in-doors').value) || 0;
-        let windows = parseInt(document.getElementById('in-windows').value) || 0;
-        let cleanArea = Math.max(0, area - (doors * 1.5) - (windows * 1.2)); 
+        let area = Math.max(0, parseFloat(document.getElementById('in-area').value) || 0);
+        let doors = Math.max(0, parseInt(document.getElementById('in-doors').value) || 0);
+        let windows = Math.max(0, parseInt(document.getElementById('in-windows').value) || 0);
+        
+        // Використовуємо константи замість магічних чисел
+        let cleanArea = Math.max(0, area - (doors * STANDARDS.doorArea) - (windows * STANDARDS.windowArea)); 
 
         let surf = parseFloat(document.getElementById('in-surface').value) || 0.12;
         let layers = parseInt(document.getElementById('in-layers').value) || 1;
@@ -344,11 +348,12 @@
         const sliders = [document.getElementById('slider-1'), document.getElementById('slider-2'), document.getElementById('slider-3')];
         sliders.forEach(s => s.max = maxLimitMl);
 
-        let v1 = parseInt(sliders[0].value) || 0;
-        let v2 = parseInt(sliders[1].value) || 0;
-        let v3 = parseInt(sliders[2].value) || 0;
+        let v1 = Math.max(0, parseInt(sliders[0].value) || 0);
+        let v2 = Math.max(0, parseInt(sliders[1].value) || 0);
+        let v3 = Math.max(0, parseInt(sliders[2].value) || 0);
         let currentTotal = v1 + v2 + v3;
 
+        // Захист від перевищення 10% ліміту
         if (currentTotal > maxLimitMl) {
             let active = document.activeElement;
             if (active === sliders[0]) v1 = maxLimitMl - v2 - v3;
@@ -373,32 +378,46 @@
             document.getElementById('status-panel').style.borderLeftColor = "var(--accent-yellow)";
         }
 
-        // Calculation variables
-        let matCost = (baseLiters * (parseFloat(document.getElementById('in-price-base').value) || 0)) + ((currentTotal / 100) * (parseFloat(document.getElementById('in-price-pig').value) || 0));
-        let laborRate = parseFloat(document.getElementById('in-labor-rate').value) || 0;
-        let otherExp = parseFloat(document.getElementById('in-other-exp').value) || 0;
-        
+        // Обчислення вартості (запобігання від'ємним цінам)
+        let priceBase = Math.max(0, parseFloat(document.getElementById('in-price-base').value) || 0);
+        let pricePig = Math.max(0, parseFloat(document.getElementById('in-price-pig').value) || 0);
+        let laborRate = Math.max(0, parseFloat(document.getElementById('in-labor-rate').value) || 0);
+        let otherExp = Math.max(0, parseFloat(document.getElementById('in-other-exp').value) || 0);
+
+        let matCost = (baseLiters * priceBase) + ((currentTotal / 100) * pricePig);
         let laborCost = cleanArea * laborRate;
         let grandTotal = matCost + laborCost + otherExp;
 
-        // Display results breakdown
         document.getElementById('out-mat-cost').innerText = matCost.toFixed(2) + " €";
         document.getElementById('out-lab-cost').innerText = laborCost.toFixed(2) + " €";
         document.getElementById('out-oth-cost').innerText = otherExp.toFixed(2) + " €";
         document.getElementById('out-cost').innerText = grandTotal.toFixed(2) + " €";
 
-        // Paint visual mixing math
+        // Візуалізація змішування фарби
         const p1 = pigments.find(p => p.id === document.getElementById('color-1').value);
         const p2 = pigments.find(p => p.id === document.getElementById('color-2').value);
         const p3 = pigments.find(p => p.id === document.getElementById('color-3').value);
         
+        let isBaseC = document.getElementById('in-base-type').value === 'C';
+        let previewContainer = document.getElementById('preview-container');
+        
+        // Візуальне відображення прозорої бази (наприклад, ледь сірий фон)
+        if(isBaseC && currentTotal === 0) {
+            previewContainer.style.background = "#E0E0E0"; 
+        } else {
+            previewContainer.style.background = "#FFF";
+        }
+
         if (p1 && p2 && p3) {
             let w1 = v1 / maxLimitMl, w2 = v2 / maxLimitMl, w3 = v3 / maxLimitMl;
-            let intensity = (document.getElementById('in-base-type').value === 'C') ? 2.5 : 1; 
+            let intensity = isBaseC ? 2.5 : 1; 
 
-            let rOut = 255 - ((255 - p1.r)*w1*intensity) - ((255 - p2.r)*w2*intensity) - ((255 - p3.r)*w3*intensity);
-            let gOut = 255 - ((255 - p1.g)*w1*intensity) - ((255 - p2.g)*w2*intensity) - ((255 - p3.g)*w3*intensity);
-            let bOut = 255 - ((255 - p1.b)*w1*intensity) - ((255 - p2.b)*w2*intensity) - ((255 - p3.b)*w3*intensity);
+            // Якщо база С, стартуємо не з чисто білого (255), а трохи темнішого для імітації лесування
+            let baseColorStart = isBaseC ? 240 : 255;
+
+            let rOut = baseColorStart - ((255 - p1.r)*w1*intensity) - ((255 - p2.r)*w2*intensity) - ((255 - p3.r)*w3*intensity);
+            let gOut = baseColorStart - ((255 - p1.g)*w1*intensity) - ((255 - p2.g)*w2*intensity) - ((255 - p3.g)*w3*intensity);
+            let bOut = baseColorStart - ((255 - p1.b)*w1*intensity) - ((255 - p2.b)*w2*intensity) - ((255 - p3.b)*w3*intensity);
 
             document.getElementById('paint-visual').style.backgroundColor = `rgb(${Math.max(0, Math.min(255, Math.round(rOut)))}, ${Math.max(0, Math.min(255, Math.round(gOut)))}, ${Math.max(0, Math.min(255, Math.round(bOut)))})`;
         }
@@ -408,49 +427,67 @@
         const name = prompt(dict[currentLang].promptMsg, "Object 1");
         if (!name) return;
 
+        // Збираємо ВСІ пігменти, значення яких > 0
+        let mixDetails = [1, 2, 3].map(i => {
+            let sel = document.getElementById(`color-${i}`);
+            let val = parseInt(document.getElementById(`slider-${i}`).value) || 0;
+            return val > 0 ? `${sel.options[sel.selectedIndex].text}: ${val}ml` : null;
+        }).filter(Boolean).join(' + ');
+
         const record = {
             id: Date.now(), name: name, date: new Date().toLocaleDateString(),
             base: document.getElementById('out-liters').innerText,
             cost: document.getElementById('out-cost').innerText,
-            mix: `${document.getElementById('color-1').options[document.getElementById('color-1').selectedIndex].text}: ${document.getElementById('val-1').innerText}`
+            mix: mixDetails || dict[currentLang].clearBase
         };
 
-        let history = JSON.parse(localStorage.getItem('vipMixerHistory')) || [];
-        history.push(record);
-        localStorage.setItem('vipMixerHistory', JSON.stringify(history));
-        
-        renderHistory();
+        // Безпечний виклик localStorage
+        try {
+            let history = JSON.parse(localStorage.getItem('vipMixerHistory')) || [];
+            history.push(record);
+            localStorage.setItem('vipMixerHistory', JSON.stringify(history));
+            renderHistory();
+        } catch (e) {
+            console.error("Local storage error:", e);
+            alert("Saving is not available in Private Mode or Local Storage is disabled.");
+        }
     }
 
     function renderHistory() {
-        const history = JSON.parse(localStorage.getItem('vipMixerHistory')) || [];
-        const box = document.getElementById('history-section');
-        const list = document.getElementById('history-list');
-        list.innerHTML = '';
+        try {
+            const history = JSON.parse(localStorage.getItem('vipMixerHistory')) || [];
+            const box = document.getElementById('history-section');
+            const list = document.getElementById('history-list');
+            list.innerHTML = '';
 
-        if (history.length > 0) {
-            box.style.display = 'block';
-            history.forEach(item => {
-                list.innerHTML += `
-                    <div class="history-item">
-                        <div class="history-info">
-                            <strong>${item.name}</strong>
-                            ${item.date} | ${item.base} | ${item.cost} <br>
-                            <small>${item.mix}</small>
-                        </div>
-                        <button class="del-btn" onclick="deleteHistory(${item.id})">${dict[currentLang].del}</button>
-                    </div>`;
-            });
-        } else {
-            box.style.display = 'none';
+            if (history.length > 0) {
+                box.style.display = 'block';
+                history.forEach(item => {
+                    list.innerHTML += `
+                        <div class="history-item">
+                            <div class="history-info">
+                                <strong>${item.name}</strong>
+                                ${item.date} | ${item.base} | ${item.cost} <br>
+                                <small>${item.mix}</small>
+                            </div>
+                            <button class="del-btn" onclick="deleteHistory(${item.id})">${dict[currentLang].del}</button>
+                        </div>`;
+                });
+            } else {
+                box.style.display = 'none';
+            }
+        } catch (e) {
+            console.warn("Could not load history");
         }
     }
 
     function deleteHistory(id) {
-        let history = JSON.parse(localStorage.getItem('vipMixerHistory')) || [];
-        history = history.filter(item => item.id !== id);
-        localStorage.setItem('vipMixerHistory', JSON.stringify(history));
-        renderHistory();
+        try {
+            let history = JSON.parse(localStorage.getItem('vipMixerHistory')) || [];
+            history = history.filter(item => item.id !== id);
+            localStorage.setItem('vipMixerHistory', JSON.stringify(history));
+            renderHistory();
+        } catch (e) {}
     }
 
     function generatePDF() {
@@ -473,15 +510,14 @@
                 url: window.location.href
             }).catch(console.error);
         } else {
-            alert("Share is supported on mobile devices!");
+            alert("Share is supported natively on mobile devices!");
         }
     }
 
-    // Запускаємо всі функції після повного завантаження сторінки
+    // Запускаємо ініціалізацію після завантаження сторінки
     window.onload = function() {
         initDropdowns();
         changeLang('en');
-        renderHistory();
     };
 </script>
 
