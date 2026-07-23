@@ -23,21 +23,13 @@
         .logo span { color: var(--primary); }
         .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
 
-        .settings-row { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+        .settings-row { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
         .settings-row select {
             background: var(--dark-light); color: white; border: 1px solid var(--primary);
             padding: 5px; border-radius: 5px; cursor: pointer;
         }
 
-        .topMenu { display: flex; gap: 5px; margin: 15px 0; overflow-x: auto; padding-bottom: 5px; }
-        .topMenu button {
-            background: var(--dark-light); color: white; border: none; padding: 10px 15px; 
-            border-radius: 5px; white-space: nowrap; cursor: pointer; border: 1px solid #555;
-        }
-        .topMenu button:hover { background: #444; }
-        .topMenu button.active { background: var(--primary); color: var(--dark); font-weight: bold; border-color: var(--primary); }
-
-        .version-switcher { display: flex; background: var(--dark-light); padding: 3px; border-radius: 5px; margin-bottom: 20px; }
+        .version-switcher { display: flex; background: var(--dark-light); padding: 3px; border-radius: 5px; margin-bottom: 20px; margin-top: 15px;}
         .tab-btn { flex: 1; background: none; border: none; color: white; padding: 8px; cursor: pointer; border-radius: 4px; }
         .tab-btn.active { background: var(--primary); color: var(--dark); font-weight: bold; }
         .badge { background: red; color: white; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 5px; }
@@ -81,144 +73,143 @@
         <div class="logo">🧱 <span>BUILD</span>calc FOUNDATION</div>
         <div class="subtitle" id="subtitle">Professional Foundation Calculator</div>
         
-        <div class="topMenu">
-            <button onclick="location.href='foundation.html'" class="active">🧱 Фундамент</button>
-            <button onclick="location.href='roof.html'">🏠 Покрівля</button>
-            <button onclick="location.href='screed.html'">🏗 Стяжка</button>
-            <button onclick="location.href='plaster.html'">🧱 Штукатурка</button>
-            <button onclick="location.href='global.html'" style="border-color:#28a745; color:#28a745;">📊 Загальний кошторис</button>
-        </div>
+        <!-- Меню тепер підтягується з nav.js -->
+        <div id="nav-container"></div>
 
         <div class="settings-row">
             <select id="language" onchange="changeLanguage()">
-                <option value="en">🇬🇧 English</option>
-                <option value="ua" selected>🇺🇦 Українська</option>
+                <option value="en" selected>🇬🇧 English</option>
+                <option value="ua">🇺🇦 Українська</option>
                 <option value="sk">🇸🇰 Slovenčina</option>
             </select>
             <select id="currency" onchange="calculateAll()">
-                <option value="₴">₴ UAH</option>
                 <option value="€">€ EUR</option>
                 <option value="$">$ USD</option>
+                <option value="₴">₴ UAH</option>
             </select>
         </div>
     </div>
     
-    <div class="version-switcher" style="margin-top: 15px;">
+    <div class="version-switcher">
         <button class="tab-btn active" id="tabFree" onclick="setVersion('free')">FREE</button>
         <button class="tab-btn" id="tabPro" onclick="setVersion('pro')">PRO <span class="badge">Business</span></button>
     </div>
 
     <div id="calcForm">
-        <h3 id="objectTitle">🏠 Дані об'єкта</h3>
+        <h3 id="objectTitle">🏠 Object Data</h3>
         <div class="grid-inputs">
-            <div class="input-group"><label id="objectLabel">Назва об'єкта</label><input id="object" type="text" placeholder="Будинок Київ"></div>
-            <div class="input-group"><label id="addressLabel">Адреса</label><input id="address" type="text" placeholder="Київ"></div>
-            <div class="input-group"><label id="clientLabel">Клієнт</label><input id="client" type="text"></div>
+            <div class="input-group"><label id="objectLabel">Object Name</label><input id="object" type="text" placeholder="Nitra House"></div>
+            <div class="input-group"><label id="addressLabel">Address</label><input id="address" type="text" placeholder="Nitra"></div>
+            <div class="input-group"><label id="clientLabel">Client</label><input id="client" type="text"></div>
         </div>
 
-        <h3 id="hParams">📐 Параметри фундаменту</h3>
+        <h3 id="hParams">📐 Foundation Parameters</h3>
         <div class="grid-inputs">
             <div class="input-group">
-                <label id="lblType">Тип фундаменту</label>
+                <label id="lblType">Foundation Type</label>
                 <select id="fundType" onchange="toggleInputs()">
-                    <option value="strip" id="optStrip">Стрічковий (Strip)</option>
-                    <option value="slab" id="optSlab">Плитний (Slab)</option>
+                    <option value="strip" id="optStrip">Strip Foundation</option>
+                    <option value="slab" id="optSlab">Slab Foundation</option>
                 </select>
             </div>
             <div class="input-group" id="wrapLength">
-                <label id="lblLength">Загальна довжина стрічки (м)</label>
+                <label id="lblLength">Total Wall Length (m)</label>
                 <input id="fLength" type="number" min="0" value="40">
             </div>
             <div class="input-group" id="wrapSlabL" style="display:none;">
-                <label id="lblSlabL">Довжина плити (м)</label>
+                <label id="lblSlabL">Slab Length (m)</label>
                 <input id="slabL" type="number" min="0" value="10">
             </div>
             <div class="input-group" id="wrapSlabW" style="display:none;">
-                <label id="lblSlabW">Ширина плити (м)</label>
+                <label id="lblSlabW">Slab Width (m)</label>
                 <input id="slabW" type="number" min="0" value="10">
             </div>
             <div class="input-group">
-                <label id="lblDepth">Глибина/Висота (м)</label>
+                <label id="lblDepth">Depth/Height (m)</label>
                 <input id="fDepth" type="number" min="0" step="0.1" value="1.2">
             </div>
             <div class="input-group">
-                <label id="lblThickness">Товщина (м)</label>
+                <label id="lblThickness">Thickness (m)</label>
                 <input id="fThickness" type="number" min="0" step="0.1" value="0.4">
             </div>
         </div>
 
-        <h3 id="hVolumes">📊 Об'єми (Автоматично)</h3>
+        <h3 id="hVolumes">📊 Volumes</h3>
         <div class="result-box">
-            <div><span id="txtVolConc">Бетон</span> <span id="resConcrete">0 м³</span></div>
-            <div><span id="txtVolForm">Опалубка</span> <span id="resFormwork">0 м²</span></div>
-            <div><span id="txtVolRebar">Арматура (~80кг/м³)</span> <span id="resRebar">0 кг</span></div>
-            <div><span id="txtVolCushion">Подушка (пісок/щебінь)</span> <span id="resCushion">0 м³</span></div>
+            <div><span id="txtVolConc">Concrete</span> <span id="resConcrete">0 m³</span></div>
+            <div><span id="txtVolForm">Formwork</span> <span id="resFormwork">0 m²</span></div>
+            <div><span id="txtVolRebar">Rebar (~80kg/m³)</span> <span id="resRebar">0 kg</span></div>
+            <div><span id="txtVolCushion">Base Cushion (Gravel/Sand)</span> <span id="resCushion">0 m³</span></div>
         </div>
 
-        <h3 id="hPrices">💰 Ціни на матеріали</h3>
+        <h3 id="hPrices">💰 Material Prices</h3>
         <div class="grid-inputs">
-            <div class="input-group"><label id="lblPConc">Бетон за 1 м³</label><input id="pConcrete" type="number" min="0" value="3000"></div>
-            <div class="input-group"><label id="lblPRebar">Арматура за 1 т (1000 кг)</label><input id="pRebar" type="number" min="0" value="35000"></div>
-            <div class="input-group"><label id="lblPForm">Опалубка (оренда/дошка) м²</label><input id="pFormwork" type="number" min="0" value="250"></div>
-            <div class="input-group"><label id="lblPCushion">Подушка за 1 м³</label><input id="pCushion" type="number" min="0" value="800"></div>
+            <div class="input-group"><label id="lblPConc">Concrete per m³</label><input id="pConcrete" type="number" min="0" value="100"></div>
+            <div class="input-group"><label id="lblPRebar">Rebar per Ton (1000kg)</label><input id="pRebar" type="number" min="0" value="900"></div>
+            <div class="input-group"><label id="lblPForm">Formwork per m²</label><input id="pFormwork" type="number" min="0" value="15"></div>
+            <div class="input-group"><label id="lblPCushion">Cushion per m³</label><input id="pCushion" type="number" min="0" value="25"></div>
         </div>
 
-        <h3 id="hEstimate">💶 Вартість робіт та логістики</h3>
+        <h3 id="hEstimate">💶 Labor & Logistics</h3>
         <div class="grid-inputs">
-            <div class="input-group"><label id="lblSalaryPrice">Робота (за м³ бетону)</label><input id="salaryPrice" type="number" min="0" value="1500"></div>
-            <div class="input-group"><label id="lblProfitPrice">Прибуток (націнка)</label><input id="profitPrice" type="number" min="0" value="5000"></div>
-            <div class="input-group"><label id="lblDeliveryPrice">Доставка/Бетононасос</label><input id="deliveryPrice" type="number" min="0" value="4000"></div>
-            <div class="input-group"><label id="lblOtherPrice">Інші витрати (витратники)</label><input id="otherPrice" type="number" min="0" value="2000"></div>
+            <div class="input-group"><label id="lblSalaryPrice">Labor (per m³)</label><input id="salaryPrice" type="number" min="0" value="50"></div>
+            <div class="input-group"><label id="lblProfitPrice">Profit/Markup</label><input id="profitPrice" type="number" min="0" value="500"></div>
+            <div class="input-group"><label id="lblDeliveryPrice">Delivery/Pump</label><input id="deliveryPrice" type="number" min="0" value="200"></div>
+            <div class="input-group"><label id="lblOtherPrice">Other Costs</label><input id="otherPrice" type="number" min="0" value="100"></div>
         </div>
         
         <div id="proFeatures" style="opacity: 0.5; pointer-events: none;">
-            <h3 id="hCompany">🏢 Дані фірми (PRO)</h3>
+            <h3 id="hCompany">🏢 Company Info (PRO)</h3>
             <div class="grid-inputs">
-                <div class="input-group"><label id="lblCompName">Назва фірми</label><input id="companyName" placeholder="BuildMaster"></div>
-                <div class="input-group"><label id="lblCompPhone">Телефон</label><input id="companyPhone" placeholder="+380..."></div>
+                <div class="input-group"><label id="lblCompName">Company Name</label><input id="companyName" placeholder="BuildMaster"></div>
+                <div class="input-group"><label id="lblCompPhone">Phone</label><input id="companyPhone" placeholder="+421..."></div>
             </div>
         </div>
     </div>
 
-    <h3 id="hFinal">📊 Фінансовий підсумок</h3>
+    <h3 id="hFinal">📊 Financial Summary</h3>
     <div class="result-box" id="result">
-        <div><span>🧱 <span id="txtFConc">Бетон</span></span> <span id="costConcrete">0</span></div>
-        <div><span>🔗 <span id="txtFRebar">Арматура</span></span> <span id="costRebar">0</span></div>
-        <div><span>🪵 <span id="txtFForm">Опалубка</span></span> <span id="costFormwork">0</span></div>
-        <div><span>🪨 <span id="txtFCushion">Подушка</span></span> <span id="costCushion">0</span></div>
+        <div><span>🧱 <span id="txtFConc">Concrete</span></span> <span id="costConcrete">0</span></div>
+        <div><span>🔗 <span id="txtFRebar">Rebar</span></span> <span id="costRebar">0</span></div>
+        <div><span>🪵 <span id="txtFForm">Formwork</span></span> <span id="costFormwork">0</span></div>
+        <div><span>🪨 <span id="txtFCushion">Cushion</span></span> <span id="costCushion">0</span></div>
         <hr>
-        <div><span>📦 <span id="txtFMat">Матеріали Разом</span></span> <span id="materialsTotal">0</span></div>
-        <div><span>👷 <span id="txtFWork">Робота</span></span> <span id="salaryTotal">0</span></div>
-        <div><span>🚛 <span id="txtFLog">Логістика + Інше</span></span> <span id="deliveryTotal">0</span></div>
-        <div><span>📈 <span id="txtFProf">Прибуток</span></span> <span id="profitTotal">0</span></div>
+        <div><span>📦 <span id="txtFMat">Total Materials</span></span> <span id="materialsTotal">0</span></div>
+        <div><span>👷 <span id="txtFWork">Labor</span></span> <span id="salaryTotal">0</span></div>
+        <div><span>🚛 <span id="txtFLog">Logistics & Extra</span></span> <span id="deliveryTotal">0</span></div>
+        <div><span>📈 <span id="txtFProf">Profit</span></span> <span id="profitTotal">0</span></div>
         <hr>
         <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between;">
-            <span>💰 <span id="txtClientPrice">Разом до оплати</span></span> <span id="clientTotal">0</span>
+            <span>💰 <span id="txtClientPrice">Total Client Price</span></span> <span id="clientTotal">0</span>
         </div>
     </div>
 
     <div class="buttons-container">
-        <button class="action-btn btn-global" onclick="addToGlobalEstimate()" id="btnGlobal">➕ В Загальний Кошторис</button>
+        <button class="action-btn btn-global" onclick="addToGlobalEstimate()" id="btnGlobal">➕ Add to Global Estimate</button>
     </div>
     <div class="buttons-container">
-        <button class="action-btn" onclick="copyEstimate()" id="btnCopy">📋 Копіювати</button>
-        <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 Бланк PDF</button>
-        <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Зберегти</button>
-        <button class="action-btn" onclick="showHistory()" id="btnHistory">📂 Історія</button>
+        <button class="action-btn" onclick="copyEstimate()" id="btnCopy">📋 Copy</button>
+        <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Invoice</button>
+        <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Save</button>
+        <button class="action-btn" onclick="showHistory()" id="btnHistory">📂 History</button>
     </div>
 
     <div id="historyBox" class="history-box" style="display:none;"></div>
 
     <div class="buy-pro-banner" id="promoBanner">
         <h3 style="border:none; padding:0; margin:0;" id="proTitle">🔓 BUILDcalc PRO</h3>
-        <p id="proDesc">Розблокуй дані фірми, логотип у PDF та загальний кошторис об'єктів.</p>
-        <button class="buy-btn" id="btnBuyPro">Оформити PRO</button>
+        <p id="proDesc">Unlock company info, PDF generation, and global estimate feature.</p>
+        <button class="buy-btn" id="btnBuyPro">Upgrade to PRO</button>
     </div>
 
+<!-- Підключення навігації -->
+<script src="nav.js"></script>
+
 <script>
-// Автоматичний перерахунок при введенні
 document.querySelectorAll('input, select').forEach(el => {
-    el.addEventListener('input', calculateAll);
+    if (el.id !== 'language' && el.id !== 'currency' && el.id !== 'fundType') {
+        el.addEventListener('input', calculateAll);
+    }
 });
 
 function toggleInputs() {
@@ -247,43 +238,40 @@ function calculateAll() {
     if (type === "strip") {
         let length = Number(document.getElementById("fLength").value) || 0;
         volConc = length * depth * thick;
-        areaForm = length * depth * 2; // Обидві сторони стрічки
-        cushionVol = length * thick * 0.2; // Подушка 20 см під стрічкою
+        areaForm = length * depth * 2; 
+        cushionVol = length * thick * 0.2; 
     } else {
         let slabL = Number(document.getElementById("slabL").value) || 0;
         let slabW = Number(document.getElementById("slabW").value) || 0;
-        volConc = slabL * slabW * depth; // Для плити depth = товщина плити
-        areaForm = (slabL + slabW) * 2 * depth; // Периметр плити
-        cushionVol = slabL * slabW * 0.3; // Подушка 30 см під плитою
+        volConc = slabL * slabW * depth; 
+        areaForm = (slabL + slabW) * 2 * depth; 
+        cushionVol = slabL * slabW * 0.3; 
     }
 
-    let rebarKg = volConc * 80; // В середньому 80 кг арматури на 1 куб
+    let rebarKg = volConc * 80; 
 
-    document.getElementById("resConcrete").innerText = volConc.toFixed(2) + " м³";
-    document.getElementById("resFormwork").innerText = areaForm.toFixed(2) + " м²";
-    document.getElementById("resRebar").innerText = rebarKg.toFixed(0) + " кг";
-    document.getElementById("resCushion").innerText = cushionVol.toFixed(2) + " м³";
+    document.getElementById("resConcrete").innerText = volConc.toFixed(2) + " m³";
+    document.getElementById("resFormwork").innerText = areaForm.toFixed(2) + " m²";
+    document.getElementById("resRebar").innerText = rebarKg.toFixed(0) + " kg";
+    document.getElementById("resCushion").innerText = cushionVol.toFixed(2) + " m³";
 
-    // Ціни
     let pConc = Number(document.getElementById("pConcrete").value) || 0;
     let pRebar = Number(document.getElementById("pRebar").value) || 0;
     let pForm = Number(document.getElementById("pFormwork").value) || 0;
     let pCushion = Number(document.getElementById("pCushion").value) || 0;
 
     let costConc = volConc * pConc;
-    let costRebar = (rebarKg / 1000) * pRebar; // Перевід в тони
+    let costRebar = (rebarKg / 1000) * pRebar; 
     let costForm = areaForm * pForm;
     let costCushion = cushionVol * pCushion;
     let materialsTotal = costConc + costRebar + costForm + costCushion;
 
-    // Робота і логістика
     let salary = (Number(document.getElementById("salaryPrice").value) || 0) * volConc;
     let profit = Number(document.getElementById("profitPrice").value) || 0;
     let delivery = (Number(document.getElementById("deliveryPrice").value) || 0) + (Number(document.getElementById("otherPrice").value) || 0);
 
     let clientTotal = materialsTotal + salary + profit + delivery;
 
-    // Вивід з валютою
     document.getElementById("costConcrete").innerText = costConc.toFixed(2) + " " + cur;
     document.getElementById("costRebar").innerText = costRebar.toFixed(2) + " " + cur;
     document.getElementById("costFormwork").innerText = costForm.toFixed(2) + " " + cur;
@@ -295,14 +283,13 @@ function calculateAll() {
     document.getElementById("clientTotal").innerText = clientTotal.toFixed(2) + " " + cur;
 }
 
-// ДОДАВАННЯ ДО ЗАГАЛЬНОГО КОШТОРИСУ (ГЛОБАЛЬНЕ ЗБЕРЕЖЕННЯ)
 function addToGlobalEstimate() {
-    let objName = document.getElementById("object").value || "Без назви";
+    let objName = document.getElementById("object").value || "Unnamed Object";
     let total = document.getElementById("clientTotal").innerText;
     
     let item = {
         id: Date.now(),
-        category: "Фундамент",
+        category: "Foundation",
         object: objName,
         price: total,
         date: new Date().toLocaleDateString()
@@ -312,10 +299,9 @@ function addToGlobalEstimate() {
     globalList.push(item);
     localStorage.setItem("globalEstimates", JSON.stringify(globalList));
 
-    alert("✅ Фундамент додано до Загального Кошторису!");
+    alert("✅ Foundation added to Global Estimate!");
 }
 
-// СЛОВНИК ПЕРЕКЛАДІВ
 const langData = {
     ua: {
         subtitle: "Професійний калькулятор фундаменту", objectTitle: "🏠 Дані об'єкта", objectLabel: "Назва об'єкта", addressLabel: "Адреса", clientLabel: "Клієнт",
@@ -328,7 +314,8 @@ const langData = {
         hFinal: "📊 Фінансовий підсумок", txtFConc: "Бетон", txtFRebar: "Арматура", txtFForm: "Опалубка", txtFCushion: "Подушка",
         txtFMat: "Матеріали Разом", txtFWork: "Робота", txtFLog: "Логістика + Інше", txtFProf: "Прибуток", txtClientPrice: "Разом до оплати",
         btnGlobal: "➕ В Загальний Кошторис", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF", btnSave: "💾 Зберегти", btnHistory: "📂 Історія",
-        pdfTitle: "Кошторис: Фундамент", pdfDate: "Дата", pdfClient: "Клієнт", pdfObject: "Об'єкт", pdfMat: "Матеріали", pdfItem: "Найменування", pdfCost: "Сума", pdfLabor: "Роботи та Логістика", pdfTotalDue: "Разом до оплати:"
+        pdfTitle: "Кошторис: Фундамент", pdfDate: "Дата", pdfClient: "Клієнт", pdfObject: "Об'єкт", pdfMat: "Матеріали", pdfItem: "Найменування", pdfCost: "Сума", pdfLabor: "Роботи та Логістика", pdfTotalDue: "Разом до оплати:",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Розблокуй дані фірми, логотип у PDF та загальний кошторис об'єктів.", btnBuyPro: "Оформити PRO"
     },
     en: {
         subtitle: "Professional Foundation Calculator", objectTitle: "🏠 Object Data", objectLabel: "Object Name", addressLabel: "Address", clientLabel: "Client",
@@ -341,7 +328,8 @@ const langData = {
         hFinal: "📊 Financial Summary", txtFConc: "Concrete", txtFRebar: "Rebar", txtFForm: "Formwork", txtFCushion: "Cushion",
         txtFMat: "Total Materials", txtFWork: "Labor", txtFLog: "Logistics & Extra", txtFProf: "Profit", txtClientPrice: "Total Client Price",
         btnGlobal: "➕ Add to Global Estimate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice", btnSave: "💾 Save", btnHistory: "📂 History",
-        pdfTitle: "Foundation Estimate", pdfDate: "Date", pdfClient: "Client", pdfObject: "Object", pdfMat: "Materials", pdfItem: "Item", pdfCost: "Amount", pdfLabor: "Labor & Services", pdfTotalDue: "Total Due:"
+        pdfTitle: "Foundation Estimate", pdfDate: "Date", pdfClient: "Client", pdfObject: "Object", pdfMat: "Materials", pdfItem: "Item", pdfCost: "Amount", pdfLabor: "Labor & Services", pdfTotalDue: "Total Due:",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Unlock company info, PDF generation, and global estimate feature.", btnBuyPro: "Upgrade to PRO"
     },
     sk: {
         subtitle: "Profesionálna kalkulačka základov", objectTitle: "🏠 Údaje o objekte", objectLabel: "Názov objektu", addressLabel: "Adresa", clientLabel: "Klient",
@@ -354,11 +342,12 @@ const langData = {
         hFinal: "📊 Finančný prehľad", txtFConc: "Betón", txtFRebar: "Oceľ", txtFForm: "Debnenie", txtFCushion: "Podklad",
         txtFMat: "Materiály Spolu", txtFWork: "Práca", txtFLog: "Logistika a iné", txtFProf: "Zisk", txtClientPrice: "Cena pre klienta",
         btnGlobal: "➕ Pridať do celkového rozpočtu", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument", btnSave: "💾 Uložiť", btnHistory: "📂 História",
-        pdfTitle: "Rozpočet: Základy", pdfDate: "Dátum", pdfClient: "Klient", pdfObject: "Objekt", pdfMat: "Materiály", pdfItem: "Položka", pdfCost: "Suma", pdfLabor: "Práca a služby", pdfTotalDue: "Spolu na úhradu:"
+        pdfTitle: "Rozpočet: Základy", pdfDate: "Dátum", pdfClient: "Klient", pdfObject: "Objekt", pdfMat: "Materiály", pdfItem: "Položka", pdfCost: "Suma", pdfLabor: "Práca a služby", pdfTotalDue: "Spolu na úhradu:",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Odomknúť údaje o firme, generovanie PDF a funkciu celkového rozpočtu.", btnBuyPro: "Prejsť na PRO"
     }
 };
 
-let currentTranslations = langData.ua; // За замовчуванням
+let currentTranslations = langData.en; 
 
 function changeLanguage() {
     let lang = document.getElementById("language").value;
@@ -384,15 +373,17 @@ function setVersion(version) {
         document.getElementById("tabFree").classList.add("active");
         proFeatures.style.opacity = "0.5"; proFeatures.style.pointerEvents = "none";
         document.getElementById("btnPdf").style.display = "none";
+        document.getElementById("btnGlobal").style.display = "none"; 
     } else {
         document.getElementById("tabPro").classList.add("active");
         proFeatures.style.opacity = "1"; proFeatures.style.pointerEvents = "auto";
         document.getElementById("btnPdf").style.display = "block";
+        document.getElementById("btnGlobal").style.display = "block";
     }
 }
 
 function generatePDF() {
-    let t = currentTranslations; // Використовуємо локалізовані змінні для PDF
+    let t = currentTranslations; 
     let compName = document.getElementById("companyName").value || "-";
     let compPhone = document.getElementById("companyPhone").value || "";
     
@@ -426,10 +417,9 @@ function generatePDF() {
     html2pdf().set({ margin: 10, filename: `Foundation_${document.getElementById("object").value}.pdf`, html2canvas: { scale: 2 } }).from(printHtml).save();
 }
 
-// Заглушки для копіювання і історії (аналогічно даху)
-function copyEstimate() { navigator.clipboard.writeText(`Кошторис: ${document.getElementById("clientTotal").innerText}`); alert("Копійовано!"); }
-function saveProject() { alert("Збережено в історії!"); }
-function showHistory() { alert("Тут буде список проектів!"); }
+function copyEstimate() { navigator.clipboard.writeText(`Estimate: ${document.getElementById("clientTotal").innerText}`); alert("Copied!"); }
+function saveProject() { alert("Saved to history!"); }
+function showHistory() { alert("History module will be loaded here"); }
 
 window.onload = () => { changeLanguage(); toggleInputs(); setVersion('free'); };
 </script>
