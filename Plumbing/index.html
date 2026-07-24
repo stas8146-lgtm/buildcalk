@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en" translate="no" class="notranslate">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>PRO Plumbing & Heating Calculator</title>
+    <meta name="description" content="Professional online plumbing and heating calculator. Estimate pipes, radiators, floor heating, fittings, and total costs.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/lib/index.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0b0b; }
+        .gold-border-glow:focus { border-color: #eab308; box-shadow: 0 0 10px rgba(234, 179, 8, 0.3); }
+        
+        @media print {
+            body { background-color: #ffffff !important; color: #000000 !important; }
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            .print-card { border: 1px solid #e5e7eb !important; box-shadow: none !important; background: white !important; color: black !important; }
+        }
+    </style>
+<script src="../nav.js"></script>
+</head>
+
+<body class="text-neutral-100 min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
+    <div id="global-nav-container"></div>
+    <!-- TOP NAVIGATION BAR -->
+    <header class="no-print border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md sticky top-0 z-50 px-4 lg:px-8 py-4">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3">
+                <div class="p-2.5 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-xl text-black shadow-lg">
+                    <i data-lucide="wrench" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-yellow-500 font-bold">BUILDcalc Suite</span>
+                    <h1 class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
+                        PLUMBING <span class="text-yellow-400">& HEAT</span> <span class="text-xs bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded-full">PRO v1.0</span>
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Mode Switcher & Languages -->
+            <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+                <!-- Mode Toggle (Free vs PRO) -->
+                <div class="flex bg-neutral-900 border border-neutral-800 p-1 rounded-xl">
+                    <button id="btn-free" onclick="setMode('free')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 bg-yellow-500 text-black">
+                        <i data-lucide="unlock" class="w-3.5 h-3.5"></i> <span id="lbl-free-btn">FREE</span>
+                    </button>
+                    <button id="btn-pro" onclick="setMode('pro')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 text-neutral-400 hover:text-white">
+                        <i data-lucide="crown" class="w-3.5 h-3.5 text-yellow-500"></i> <span id="lbl-pro-btn">PRO</span>
+                    </button>
+                </div>
+
+                <!-- Language Dropdown -->
+                <div class="relative">
+                    <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-neutral-900 border border-neutral-800 text-sm font-semibold rounded-xl px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-yellow-500 cursor-pointer">
+                        <option value="en" selected>🇬🇧 EN</option>
+                        <option value="uk">🇺🇦 UKR</option>
+                        <option value="sk">🇸🇰 SK</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+       
+    <!-- MAIN APP WRAPPER -->
+    <main class="max-w-7xl mx-auto px-4 lg:px-8 py-8 w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- LEFT COLUMN: INPUTS & SETTINGS -->
+        <div class="no-print lg:col-span-5 space-y-6">
+            <!-- Dimensions Card -->
+            <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
+                <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
+                    <i data-lucide="sliders" class="w-5 h-5 text-yellow-500"></i>
+                    <span id="t-dimensions">Object Parameters</span>
+                </h2>
+                
+                <div class="space-y-4">
+                    <!-- System Type Toggle -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2" id="t-type">System Focus</label>
+                        <div class="grid grid-cols-3 gap-1.5 bg-neutral-900 p-1 rounded-lg border border-neutral-800 text-center">
+                            <button id="type-water" onclick="setSystemType('water')" class="py-2 text-xs font-bold rounded-lg transition-all bg-neutral-800 text-white shadow-sm">
+                                <span id="lbl-water">Water Supply</span>
+                            </button>
+                            <button id="type-heating" onclick="setSystemType('heating')" class="py-2 text-xs font-bold rounded-lg transition-all text-neutral-400 hover:text-white">
+                                <span id="lbl-heating">Radiators</span>
+                            </button>
+                            <button id="type-floor" onclick="setSystemType('floor')" class="py-2 text-xs font-bold rounded-lg transition-all text-neutral-400 hover:text-white">
+                                <span id="lbl-floor">Underfloor Heat</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Area / Points Input -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-area">Area / Zone (m²)</label>
+                            <input type="number" id="inp-area" value="50.0" step="1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-points">Water Points / Rads (pcs)</label>
+                            <input type="number" id="inp-points" value="6" step="1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
+                        </div>
+                    </div>
+                    
+                    <!-- Pipe Type and Waste/Reserve -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-neutral-400 mb-1" id="lbl-pipe-type">Main Pipe Material</label>
+                            <select id="inp-pipe-type" onchange="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2.5 text-white text-sm focus:border-yellow-500 focus:outline-none">
+                                <option value="pex" selected>PEX-a / Al-PEX</option>
+                                <option value="ppr">PPR (Polypropylene)</option>
+                                <option value="copper">Copper Pipes</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-neutral-400 mb-1" id="lbl-reserve">Reserve (%)</label>
+                            <input type="number" id="inp-reserve" value="15" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white text-sm focus:border-yellow-500 focus:outline-none">
+                        </div>
+                    </div>
+                    
+                    <!-- Insulation option -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1" id="lbl-insulation">Pipe Thermal Insulation</label>
+                        <select id="inp-insulation" onchange="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2.5 text-white text-sm">
+                            <option value="yes" selected>Included (Foam tube covers)</option>
+                            <option value="no">None</option>
+                        </select>
+                    </div>  
+                </div>
+
+                <button id="btn-calculate-main" onclick="calculate()" class="w-full mt-6 py-3.5 bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold uppercase rounded-xl transition-all shadow-lg cursor-pointer">
+                    Calculate
+                </button>
+            </div>
+
+            <!-- ECONOMICS & MATERIAL PRICES CARD -->
+            <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden transition-all duration-300">
+                <div class="flex items-center justify-between mb-4 border-b border-neutral-900 pb-3">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="wallet" class="w-5 h-5 text-yellow-500"></i>
+                        <span id="t-economics">Unit Prices & Economics</span>
+                    </h2>
+                    <span class="text-[10px] bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded font-extrabold uppercase">PRO FEATURE</span>
+                </div>
+
+                <!-- Material Unit Prices Input Grid -->
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-pipe">Pipe (€/m)</label>
+                        <input type="number" id="inp-price-pipe" value="2.20" step="0.10" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-fitting">Fittings / Tees (€/pc)</label>
+                        <input type="number" id="inp-price-fitting" value="1.80" step="0.10" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-manifold">Manifold Unit (€/pc)</label>
+                        <input type="number" id="inp-price-manifold" value="45.00" step="1.00" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-neutral-400 mb-1" id="lbl-price-radiator">Radiator / Panel (€/pc)</label>
+                        <input type="number" id="inp-price-radiator" value="120.00" step="5.00" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                </div>
+
+                <!-- Labor, Profit, Logistics -->
+                <div class="grid grid-cols-3 gap-2 border-t border-neutral-900 pt-3">
+                    <div>
+                        <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-labor-rate">Labor (€/point or m²)</label>
+                        <input type="number" id="inp-labor-rate" value="25" step="1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-2 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-profit-rate">Profit (%)</label>
+                        <input type="number" id="inp-profit-rate" value="15" step="1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-2 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-other-expenses">Logistics (€)</label>
+                        <input type="number" id="inp-other-expenses" value="40" step="5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-2 py-2 text-white font-bold text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRO BRANDING CARD -->
+            <div id="branding-card" class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden transition-all duration-300">
+                <div id="brand-lock-overlay" class="absolute inset-0 bg-neutral-950/80 backdrop-blur-sm flex flex-col justify-center items-center p-6 text-center z-20">
+                    <div class="p-3 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 rounded-full mb-3">
+                        <i data-lucide="lock" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-white font-bold text-base" id="t-brand-locked-title">PRO Custom Branding</h3>
+                    <p class="text-xs text-neutral-400 max-w-[280px] mt-1 mb-4" id="t-brand-locked-desc">Unlock custom brand headers on your exports and reports.</p>
+                    <button onclick="setMode('pro')" class="px-5 py-2 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-black text-xs font-extrabold uppercase tracking-wider rounded-xl transition-all shadow-lg flex items-center gap-1.5 cursor-pointer">
+                        <i data-lucide="crown" class="w-4 h-4"></i> <span id="lbl-unlock-btn">Go PRO</span>
+                    </button>
+                </div>
+
+                <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
+                    <i data-lucide="building-2" class="w-5 h-5 text-yellow-500"></i>
+                    <span id="t-branding">PDF Brand Header Info</span>
+                </h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-firm">Firm Name</label>
+                        <input type="text" id="brand-firm" value="HydroMaster Pro Ltd" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-white font-semibold focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-phone">Phone</label>
+                            <input type="text" id="brand-phone" value="+421 900 123 456" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-white font-semibold focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-email">Email</label>
+                            <input type="email" id="brand-email" value="info@hydromaster.sk" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-white font-semibold focus:outline-none focus:ring-1 focus:ring-yellow-500">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESET BUTTON -->
+            <div class="flex gap-4">
+                <button onclick="resetInputs()" class="flex-1 py-3 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i> <span id="btn-reset">New Calculation</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- RIGHT COLUMN: RESULTS & OUTPUTS -->
+        <div class="lg:col-span-7 space-y-6">
+            <!-- Dynamic Result Card -->
+            <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden print-card" id="calculations-result-box">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-500 to-amber-500"></div>
+                
+                <!-- HEADER FOR EXPORTS / BRANDING -->
+                <div id="print-brand-header" class="hidden print-only mb-6 border-b border-gray-200 pb-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-800" id="print-firm-name">HydroMaster Pro Ltd</h2>
+                            <p class="text-xs text-gray-500" id="print-firm-contacts">Tel: +421 900 123 456 | Mail: info@hydromaster.sk</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs uppercase tracking-wider text-yellow-600 font-extrabold">Plumbing Estimate</span>
+                            <p class="text-sm font-bold text-gray-800" id="print-date">Date: 24.07.2026</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div>
+                        <span class="text-xs uppercase tracking-widest text-yellow-500 font-extrabold" id="t-estimate">System Estimate</span>
+                        <h2 class="text-2xl font-black text-white" id="lbl-result-summary">Area: 50 m² | Points: 6</h2>
+                    </div>
+                    <!-- Export PDF -->
+                    <button id="btn-pdf" onclick="exportToPDF()" class="no-print px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-yellow-400 font-extrabold rounded-xl transition-all shadow-lg flex items-center gap-2 text-xs cursor-pointer">
+                        <i data-lucide="file-down" class="w-4 h-4"></i> <span id="lbl-pdf-btn">Export PDF / Print</span>
+                    </button>
+                </div>
+
+                <!-- MATERIALS LIST -->
+                <div class="space-y-3.5" id="materials-container">
+                    <!-- Standard (Free) Materials: Pipes -->
+                    <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
+                        <div class="col-span-8 flex items-center gap-3">
+                            <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="activity" class="w-4 h-4"></i></div>
+                            <div>
+                                <h4 class="font-bold text-white" id="lbl-mat-pipe">Pipeline Length (with reserve)</h4>
+                                <p class="text-xs text-neutral-400" id="lbl-mat-pipe-sub">Main lines & distribution network</p>
+                            </div>
+                        </div>
+                        <div class="col-span-4 text-right">
+                            <span class="text-xl font-extrabold text-yellow-400" id="val-pipe">120</span> <span class="text-xs text-neutral-400" id="unit-pipe">m</span>
+                        </div>
+                    </div>
+
+                    <!-- Fittings / Connectors -->
+                    <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
+                        <div class="col-span-8 flex items-center gap-3">
+                            <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="git-commit" class="w-4 h-4"></i></div>
+                            <div>
+                                <h4 class="font-bold text-white" id="lbl-mat-fittings">Fittings, Tees & Elbows</h4>
+                                <p class="text-xs text-neutral-400" id="lbl-mat-fittings-sub">Estimated per connection node</p>
+                            </div>
+                        </div>
+                        <div class="col-span-4 text-right">
+                            <span class="text-xl font-extrabold text-yellow-400" id="val-fittings">24</span> <span class="text-xs text-neutral-400" id="unit-fittings">pcs</span>
+                        </div>
+                    </div>
+
+                    <!-- PRO / LOCKED MATERIALS -->
+                    <div id="pro-materials-box" class="space-y-3.5 relative">
+                        <div id="pro-items-lock" class="absolute -inset-2 bg-neutral-950/60 backdrop-blur-[4px] flex flex-col justify-center items-center z-10 rounded-2xl border border-yellow-500/10 p-4">
+                            <div class="p-3 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 rounded-full mb-2">
+                                <i data-lucide="crown" class="w-5 h-5"></i>
+                            </div>
+                            <p class="text-xs font-black text-white uppercase tracking-widest text-center" id="t-pro-unlock-items">Unlock Advanced Equipment (Manifolds, Radiators, Insulation, Fasteners)</p>
+                            <button onclick="setMode('pro')" class="mt-3 px-4 py-1.5 bg-yellow-500 text-black text-xs font-extrabold uppercase rounded-lg transition-all hover:bg-yellow-400 cursor-pointer">
+                                <span id="lbl-unlock-now">Unlock Now</span>
+                            </button>
+                        </div>
+
+                        <!-- Manifolds -->
+                        <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
+                            <div class="col-span-8 flex items-center gap-3">
+                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="layers" class="w-4 h-4"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white" id="lbl-mat-manifold">Distribution Manifold Blocks</h4>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-manifold-sub">Collector with flow meters</p>
+                                </div>
+                            </div>
+                            <div class="col-span-4 text-right">
+                                <span class="text-xl font-extrabold text-yellow-400" id="val-manifold">2</span> <span class="text-xs text-neutral-400" id="unit-manifold">pcs</span>
+                            </div>
+                        </div>
+
+                        <!-- Radiators / Heat emitters -->
+                        <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
+                            <div class="col-span-8 flex items-center gap-3">
+                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="layout-grid" class="w-4 h-4"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white" id="lbl-mat-radiators">Radiators / Terminal Units</h4>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-radiators-sub">Matched to points count</p>
+                                </div>
+                            </div>
+                            <div class="col-span-4 text-right">
+                                <span class="text-xl font-extrabold text-yellow-400" id="val-radiators">6</span> <span class="text-xs text-neutral-400" id="unit-radiators">pcs</span>
+                            </div>
+                        </div>
+
+                        <!-- Insulation Tube / Tape -->
+                        <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
+                            <div class="col-span-8 flex items-center gap-3">
+                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="shield" class="w-4 h-4"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white" id="lbl-mat-insulation">Thermal Pipe Insulation</h4>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-insulation-sub">Foam sleeves for piping protection</p>
+                                </div>
+                            </div>
+                            <div class="col-span-4 text-right">
+                                <span class="text-xl font-extrabold text-yellow-400" id="val-insulation">120</span> <span class="text-xs text-neutral-400" id="unit-insulation">m</span>
+                            </div>
+                        </div>
+
+                        <!-- Fasteners / Clamps -->
+                        <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
+                            <div class="col-span-8 flex items-center gap-3">
+                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="anchor" class="w-4 h-4"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white" id="lbl-mat-clamps">Mounting Clamps & Dowels</h4>
+                                    <p class="text-xs text-neutral-400" id="lbl-mat-clamps-sub">Wall fastening every 0.5m</p>
+                                </div>
+                            </div>
+                            <div class="col-span-4 text-right">
+                                <span class="text-xl font-extrabold text-yellow-400" id="val-clamps">240</span> <span class="text-xs text-neutral-400" id="unit-clamps">pcs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Summary Card -->
+                <div class="mt-6 pt-4 border-t border-neutral-800">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-sm font-bold text-yellow-500 uppercase tracking-widest flex items-center gap-2" id="t-financial-summary">
+                            <i data-lucide="receipt" class="w-4 h-4"></i> Financial Summary
+                        </h3>
+                        <span class="text-[10px] bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded font-extrabold uppercase">PRO FEATURE</span>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center bg-neutral-900/40 px-4 py-2 rounded-lg">
+                            <span class="text-sm text-neutral-400" id="lbl-total-materials">Materials Total</span>
+                            <span class="font-bold text-white"><span id="val-total-materials">0.00</span> <span class="currency-symbol">€</span></span>
+                        </div>
+                        <div class="flex justify-between items-center bg-neutral-900/40 px-4 py-2 rounded-lg">
+                            <span class="text-sm text-neutral-400" id="lbl-total-labor">Installation Labor</span>
+                            <span class="font-bold text-white"><span id="val-total-labor">0.00</span> <span class="currency-symbol">€</span></span>
+                        </div>
+                        <div class="flex justify-between items-center bg-neutral-900/40 px-4 py-2 rounded-lg">
+                            <span class="text-sm text-neutral-400" id="lbl-total-profit">Contractor Margin</span>
+                            <span class="font-bold text-white"><span id="val-total-profit">0.00</span> <span class="currency-symbol">€</span></span>
+                        </div>
+                        <div class="flex justify-between items-center bg-neutral-900/40 px-4 py-2 rounded-lg">
+                            <span class="text-sm text-neutral-400" id="lbl-total-other">Logistics & Delivery</span>
+                            <span class="font-bold text-white"><span id="val-total-other">0.00</span> <span class="currency-symbol">€</span></span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center bg-yellow-500/10 border border-yellow-500/30 px-4 py-3 rounded-xl mt-3">
+                            <span class="font-extrabold text-white text-base" id="lbl-grand-total">Grand Total:</span>
+                            <span class="text-2xl font-black text-yellow-400"><span id="val-grand-total">0.00</span> <span class="currency-symbol">€</span></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CALCULATION HISTORY -->
+            <div class="no-print bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
+                <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
+                    <i data-lucide="history" class="w-5 h-5 text-yellow-500"></i>
+                    <span id="t-history">Calculation History</span>
+                </h2>
+                <div id="history-container" class="space-y-2 max-h-[220px] overflow-y-auto pr-2 text-sm text-neutral-400">
+                    <p class="text-xs text-neutral-500 text-center py-4" id="t-history-empty">No calculations saved yet.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="no-print bg-neutral-950 py-6 text-center text-xs text-neutral-500 border-t border-neutral-900">
+        <p>© 2026 BUILDcalc Suite. All rights reserved. Precision plumbing estimates.</p>
+    </footer>
+    
+    <!-- JS LOGIC ENGINE -->
+    <script>
+        let currentMode = 'free';
+        let systemType = 'water';
+        let currentLang = 'en';
+
+        const translations = {
+            en: {
+                "t-dimensions": "Object Parameters",
+                "t-type": "System Focus",
+                "lbl-water": "Water Supply",
+                "lbl-heating": "Radiators",
+                "lbl-floor": "Underfloor Heat",
+                "lbl-area": "Area / Zone (m²)",
+                "lbl-points": "Water Points / Rads (pcs)",
+                "lbl-pipe-type": "Main Pipe Material",
+                "lbl-reserve": "Reserve (%)",
+                "lbl-insulation": "Pipe Thermal Insulation",
+                "t-economics": "Unit Prices & Economics",
+                "lbl-price-pipe": "Pipe (€/m)",
+                "lbl-price-fitting": "Fittings / Tees (€/pc)",
+                "lbl-price-manifold": "Manifold Unit (€/pc)",
+                "lbl-price-radiator": "Radiator / Panel (€/pc)",
+                "lbl-labor-rate": "Labor (€/point or m²)",
+                "lbl-profit-rate": "Profit (%)",
+                "lbl-other-expenses": "Logistics (€)",
+                "t-financial-summary": "Financial Summary",
+                "lbl-total-materials": "Materials Total",
+                "lbl-total-labor": "Installation Labor",
+                "lbl-total-profit": "Contractor Margin",
+                "lbl-total-other": "Logistics & Delivery",
+                "lbl-grand-total": "Grand Total:",
+                "unit-currency": "€",
+                "t-branding": "PDF Brand Header Info",
+                "lbl-firm": "Firm Name",
+                "lbl-phone": "Phone",
+                "lbl-email": "Email",
+                "t-brand-locked-title": "PRO Custom Branding",
+                "t-brand-locked-desc": "Unlock custom brand headers on your exports and reports.",
+                "lbl-unlock-btn": "Go PRO",
+                "btn-reset": "New Calculation",
+                "btn-calc": "Calculate",
+                "t-estimate": "System Estimate",
+                "lbl-pdf-btn": "Export PDF / Print",
+                "lbl-mat-pipe": "Pipeline Length (with reserve)",
+                "lbl-mat-pipe-sub": "Main lines & distribution network",
+                "lbl-mat-fittings": "Fittings, Tees & Elbows",
+                "lbl-mat-fittings-sub": "Estimated per connection node",
+                "t-pro-unlock-items": "Unlock Advanced Equipment (Manifolds, Radiators, Insulation, Fasteners)",
+                "lbl-unlock-now": "Unlock Now",
+                "lbl-mat-manifold": "Distribution Manifold Blocks",
+                "lbl-mat-manifold-sub": "Collector with flow meters",
+                "lbl-mat-radiators": "Radiators / Terminal Units",
+                "lbl-mat-radiators-sub": "Matched to points count",
+                "lbl-mat-insulation": "Thermal Pipe Insulation",
+                "lbl-mat-insulation-sub": "Foam sleeves for piping protection",
+                "lbl-mat-clamps": "Mounting Clamps & Dowels",
+                "lbl-mat-clamps-sub": "Wall fastening every 0.5m",
+                "t-history": "Calculation History",
+                "t-history-empty": "No calculations saved yet.",
+                "unit-pcs": "pcs",
+                "unit-m": "m"
+            },
+            uk: {
+                "t-dimensions": "Параметри об'єкта",
+                "t-type": "Тип системи",
+                "lbl-water": "Водопостачання",
+                "lbl-heating": "Радіатори",
+                "lbl-floor": "Тепла підлога",
+                "lbl-area": "Площа / Зона (м²)",
+                "lbl-points": "Точки водопроводу / Радіатори (шт)",
+                "lbl-pipe-type": "Матеріал труб",
+                "lbl-reserve": "Запас (%)",
+                "lbl-insulation": "Теплоізоляція труб",
+                "t-economics": "Ціни та Економіка",
+                "lbl-price-pipe": "Труба (€/м)",
+                "lbl-price-fitting": "Фітинги / Трійники (€/шт)",
+                "lbl-price-manifold": "Колектор (€/шт)",
+                "lbl-price-radiator": "Радіатор / Панель (€/шт)",
+                "lbl-labor-rate": "Робота (€/тч або м²)",
+                "lbl-profit-rate": "Прибуток (%)",
+                "lbl-other-expenses": "Логістика (€)",
+                "t-financial-summary": "Фінансовий підсумок",
+                "lbl-total-materials": "Матеріали загалом",
+                "lbl-total-labor": "Вартість монтажу",
+                "lbl-total-profit": "Націнка підрядника",
+                "lbl-total-other": "Логістика та доставка",
+                "lbl-grand-total": "Загальна сума:",
+                "unit-currency": "€",
+                "t-branding": "Брендування PDF-звіту",
+                "lbl-firm": "Назва компанії",
+                "lbl-phone": "Телефон",
+                "lbl-email": "Email",
+                "t-brand-locked-title": "PRO Брендування",
+                "t-brand-locked-desc": "Додавайте власну шапку з контактами компанії у звіт.",
+                "lbl-unlock-btn": "Перейти на PRO",
+                "btn-reset": "Новий розрахунок",
+                "btn-calc": "Розрахувати",
+                "t-estimate": "Кошторис систем",
+                "lbl-pdf-btn": "Експорт в PDF / Друк",
+                "lbl-mat-pipe": "Довжина труб (з урахуванням запасу)",
+                "lbl-mat-pipe-sub": "Головні магістралі та розводка",
+                "lbl-mat-fittings": "Фітинги, кутники та трійники",
+                "lbl-mat-fittings-sub": "Розрахунок на вузли підключення",
+                "t-pro-unlock-items": "Розблокуйте колектори, радіатори, ізоляцію та кріплення",
+                "lbl-unlock-now": "Розблокувати зараз",
+                "lbl-mat-manifold": "Колекторні блоки",
+                "lbl-mat-manifold-sub": "Розподільчий вузол",
+                "lbl-mat-radiators": "Радіатори / Опалювальні прилади",
+                "lbl-mat-radiators-sub": "Відповідно до кількості точок",
+                "lbl-mat-insulation": "Ізоляція для труб",
+                "lbl-mat-insulation-sub": "Спінений поліетилен",
+                "lbl-mat-clamps": "Кліпси та дюбелі кріплення",
+                "lbl-mat-clamps-sub": "Фіксація кожні 0.5 м",
+                "t-history": "Історія розрахунків",
+                "t-history-empty": "Збережених розрахунків поки немає.",
+                "unit-pcs": "шт",
+                "unit-m": "м"
+            },
+            sk: {
+                "t-dimensions": "Parametre objektu",
+                "t-type": "Typ systému",
+                "lbl-water": "Vodovod",
+                "lbl-heating": "Radiátory",
+                "lbl-floor": "Podlahové kúrenie",
+                "lbl-area": "Plocha / Zóna (m²)",
+                "lbl-points": "Vývody / Radiátory (ks)",
+                "lbl-pipe-type": "Materiál potrubia",
+                "lbl-reserve": "Rezerva (%)",
+                "lbl-insulation": "Tepelná izolácia potrubia",
+                "t-economics": "Ceny a Ekonómia",
+                "lbl-price-pipe": "Potrubie (€/m)",
+                "lbl-price-fitting": "Tvarovky / Kolená (€/ks)",
+                "lbl-price-manifold": "Rozdeľovač (€/ks)",
+                "lbl-price-radiator": "Radiátor (€/ks)",
+                "lbl-labor-rate": "Práca (€/bod alebo m²)",
+                "lbl-profit-rate": "Zisk (%)",
+                "lbl-other-expenses": "Logistika (€)",
+                "t-financial-summary": "Finančné zhrnutie",
+                "lbl-total-materials": "Materiály spolu",
+                "lbl-total-labor": "Cena montáže",
+                "lbl-total-profit": "Zisk dodávateľa",
+                "lbl-total-other": "Doprava a logistika",
+                "lbl-grand-total": "Celková suma:",
+                "unit-currency": "€",
+                "t-branding": "Informácie pre PDF Hlavičku",
+                "lbl-firm": "Názov firmy",
+                "lbl-phone": "Telefón",
+                "lbl-email": "E-mail",
+                "t-brand-locked-title": "PRO Vlastná Hlavička",
+                "t-brand-locked-desc": "Odomknite vlastnú hlavičku pre PDF výstupy.",
+                "lbl-unlock-btn": "Aktivovať PRO",
+                "btn-reset": "Nový výpočet",
+                "btn-calc": "Vypočítať",
+                "t-estimate": "Položkový rozpočet",
+                "lbl-pdf-btn": "Exportovať PDF / Tlačiť",
+                "lbl-mat-pipe": "Dĺžka potrubia (vrátane rezervy)",
+                "lbl-mat-pipe-sub": "Hlavné rozvody a prívody",
+                "lbl-mat-fittings": "Tvarovky, T-kusy a kolená",
+                "lbl-mat-fittings-sub": "Odhad pre spojovacie uzly",
+                "t-pro-unlock-items": "Odomknúť pokročilé prvky (rozdeľovače, radiátory, izoláciu)",
+                "lbl-unlock-now": "Odomknúť teraz",
+                "lbl-mat-manifold": "Rozdeľovacie bloky",
+                "lbl-mat-manifold-sub": "Zostava s prietokomermi",
+                "lbl-mat-radiators": "Radiátory / Koncové telesá",
+                "lbl-mat-radiators-sub": "Prispôsobené počtu bodov",
+                "lbl-mat-insulation": "Tepelná izolácia potrubia",
+                "lbl-mat-insulation-sub": "Penová hadica na ochranu",
+                "lbl-mat-clamps": "Montážne svorky a hmoždinky",
+                "lbl-mat-clamps-sub": "Ukotvenie každých 0.5 m",
+                "t-history": "História výpočtov",
+                "t-history-empty": "Zatiaľ žiadne uložené výpočty.",
+                "unit-pcs": "ks",
+                "unit-m": "m"
+            }
+        };
+
+        window.onload = function() {
+            lucide.createIcons();
+            setSystemType('water');
+            changeLanguage('en');
+            loadHistory();
+        };
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            
+            const selectEl = document.getElementById('lang-select');
+            if (selectEl) selectEl.value = lang;
+
+            for (const key in translations[lang]) {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.innerHTML = translations[lang][key];
+                }
+            }
+
+            document.getElementById('lbl-free-btn').innerText = 'FREE';
+            document.getElementById('lbl-pro-btn').innerText = 'PRO';
+
+            updateUnitLabels();
+
+            document.querySelectorAll('.currency-symbol').forEach(el => {
+                el.innerText = translations[currentLang]['unit-currency'];
+            });
+
+            calculate();
+        }
+
+        function updateUnitLabels() {
+            ['pipe', 'insulation'].forEach(k => {
+                const el = document.getElementById(`unit-${k}`);
+                if (el) el.innerText = translations[currentLang]['unit-m'];
+            });
+            ['fittings', 'manifold', 'radiators', 'clamps'].forEach(k => {
+                const el = document.getElementById(`unit-${k}`);
+                if (el) el.innerText = translations[currentLang]['unit-pcs'];
+            });
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            const btnFree = document.getElementById('btn-free');
+            const btnPro = document.getElementById('btn-pro');
+            const proLock = document.getElementById('pro-items-lock');
+            const brandLock = document.getElementById('brand-lock-overlay');
+
+            if (mode === 'free') {
+                btnFree.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 bg-yellow-500 text-black";
+                btnPro.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 text-neutral-400 hover:text-white";
+                proLock.classList.remove('hidden');
+                brandLock.classList.remove('hidden');
+            } else {
+                btnPro.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 bg-yellow-500 text-black";
+                btnFree.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 text-neutral-400 hover:text-white";
+                proLock.classList.add('hidden');
+                brandLock.classList.add('hidden');
+            }
+            calculate();
+        }
+
+        function setSystemType(type) {
+            systemType = type;
+            ['water', 'heating', 'floor'].forEach(t => {
+                const btn = document.getElementById(`type-${t}`);
+                if(btn) btn.className = "py-2 text-xs font-bold rounded-lg transition-all text-neutral-400 hover:text-white";
+            });
+            document.getElementById(`type-${type}`).className = "py-2 text-xs font-bold rounded-lg transition-all bg-yellow-500/10 text-yellow-400 border border-yellow-500/20";
+            
+            // Auto adjust default values based on type
+            if(type === 'floor') {
+                document.getElementById('inp-area').value = "80";
+                document.getElementById('inp-points').value = "4";
+            } else if(type === 'heating') {
+                document.getElementById('inp-area').value = "100";
+                document.getElementById('inp-points').value = "8";
+            } else {
+                document.getElementById('inp-area').value = "50";
+                document.getElementById('inp-points').value = "6";
+            }
+            calculate();
+        }
+
+        function calculate() {
+            const area = parseFloat(document.getElementById('inp-area').value) || 0;
+            const points = parseInt(document.getElementById('inp-points').value) || 0;
+            const reserve = parseFloat(document.getElementById('inp-reserve').value) || 15;
+
+            // Calculation formulas for plumbing/heating
+            let basePipeMeters = 0;
+            if (systemType === 'floor') {
+                basePipeMeters = area * 6.5; // ~6.5m pipe per m2 of floor heating
+            } else if (systemType === 'heating') {
+                basePipeMeters = points * 8 + area * 0.5;
+            } else {
+                basePipeMeters = points * 6 + area * 0.8;
+            }
+
+            const totalPipe = Math.ceil(basePipeMeters * (1 + reserve / 100));
+            const fittingsCount = Math.ceil(points * 3.5 + (area * 0.1));
+            const manifoldCount = Math.ceil(points / 6);
+            const radiatorsCount = (systemType === 'heating') ? points : 0;
+            const clampsCount = Math.ceil(totalPipe * 2); // every 0.5m
+
+            document.getElementById('val-pipe').innerText = totalPipe;
+            document.getElementById('val-fittings').innerText = fittingsCount;
+            document.getElementById('val-manifold').innerText = manifoldCount;
+            document.getElementById('val-radiators').innerText = radiatorsCount;
+            document.getElementById('val-insulation').innerText = totalPipe;
+            document.getElementById('val-clamps').innerText = clampsCount;
+
+            // Summary text
+            const summaryEl = document.getElementById('lbl-result-summary');
+            summaryEl.innerText = `Area: ${area} m² | Points/Rads: ${points}`;
+
+            // Prices
+            const pPipe = parseFloat(document.getElementById('inp-price-pipe').value) || 0;
+            const pFitting = parseFloat(document.getElementById('inp-price-fitting').value) || 0;
+            const pManifold = parseFloat(document.getElementById('inp-price-manifold').value) || 0;
+            const pRadiator = parseFloat(document.getElementById('inp-price-radiator').value) || 0;
+
+            let totalMaterials = (totalPipe * pPipe) + (fittingsCount * pFitting);
+            if (currentMode === 'pro') {
+                totalMaterials += (manifoldCount * pManifold) + (radiatorsCount * pRadiator) + (totalPipe * 0.30) + (clampsCount * 0.15);
+            }
+
+            const laborRate = parseFloat(document.getElementById('inp-labor-rate').value) || 0;
+            const profitPct = parseFloat(document.getElementById('inp-profit-rate').value) || 0;
+            const logistics = parseFloat(document.getElementById('inp-other-expenses').value) || 0;
+
+            const totalLabor = (systemType === 'floor') ? (area * laborRate) : (points * laborRate);
+            const totalProfit = (totalMaterials + totalLabor) * (profitPct / 100);
+            const grandTotal = totalMaterials + totalLabor + totalProfit + logistics;
+
+            document.getElementById('val-total-materials').innerText = totalMaterials.toFixed(2);
+            document.getElementById('val-total-labor').innerText = totalLabor.toFixed(2);
+            document.getElementById('val-total-profit').innerText = totalProfit.toFixed(2);
+            document.getElementById('val-total-other').innerText = logistics.toFixed(2);
+            document.getElementById('val-grand-total').innerText = grandTotal.toFixed(2);
+
+            if (area > 0) saveToHistoryDebounced(area, points, systemType);
+        }
+
+        let debounceTimer;
+        function saveToHistoryDebounced(area, points, type) {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                let history = JSON.parse(localStorage.getItem('plumbing_history')) || [];
+                const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const dateStr = new Date().toLocaleDateString();
+                
+                history.unshift({ area, points, type, timestamp, dateStr });
+                if (history.length > 5) history.pop(); 
+                localStorage.setItem('plumbing_history', JSON.stringify(history));
+                loadHistory();
+            }, 1000);
+        }
+
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('plumbing_history')) || [];
+            const container = document.getElementById('history-container');
+            if (history.length === 0) {
+                container.innerHTML = `<p class="text-xs text-neutral-500 text-center py-4">${translations[currentLang]['t-history-empty']}</p>`;
+                return;
+            }
+            container.innerHTML = "";
+            history.forEach(item => {
+                const box = document.createElement('div');
+                box.className = "flex justify-between items-center bg-neutral-900 border border-neutral-800 p-3 rounded-xl hover:border-yellow-500/50 cursor-pointer transition-all";
+                box.onclick = () => {
+                    document.getElementById('inp-area').value = item.area;
+                    document.getElementById('inp-points').value = item.points;
+                    setSystemType(item.type);
+                };
+                box.innerHTML = `
+                    <div>
+                        <p class="font-bold text-white text-xs uppercase">${item.type} (${item.area} m²)</p>
+                        <p class="text-[10px] text-neutral-500">${item.dateStr} | ${item.timestamp}</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-yellow-400 font-extrabold text-xs">${item.points} pts</span>
+                    </div>
+                `;
+                container.appendChild(box);
+            });
+        }
+
+        function resetInputs() {
+            document.getElementById('inp-area').value = "50";
+            document.getElementById('inp-points').value = "6";
+            document.getElementById('inp-reserve').value = "15";
+            setSystemType('water');
+            calculate();
+        }
+
+        function exportToPDF() {
+            if (currentMode === 'free') {
+                alert("Branded PDF is available only in PRO mode! Enable PRO mode from the top bar.");
+                return;
+            }
+            document.getElementById('print-firm-name').innerText = document.getElementById('brand-firm').value;
+            document.getElementById('print-firm-contacts').innerText = `Tel: ${document.getElementById('brand-phone').value} | Mail: ${document.getElementById('brand-email').value}`;
+            document.getElementById('print-date').innerText = new Date().toLocaleDateString();
+            window.print();
+        }
+    </script>
+</body>
+</html>
