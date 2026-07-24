@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Paving Calculator | BUILDcalc</title>
+    <meta name="description" content="Professional paving and landscaping calculator. Estimate paving stones, curbs, sand, gravel, and total project costs.">
+    
+    <!-- ================= GOOGLE ANALYTICS ================= -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPRB8JPVM2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-RPRB8JPVM2');
+    </script>
+
+    <!-- Бібліотека для генерації PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- ================= СТИЛІ (ЖОВТО-ЧОРНА ТЕМА) ================= -->
+    <style>
+        :root {
+            --primary: #FFC107;
+            --primary-hover: #e0a800;
+            --dark: #212529;
+            --dark-light: #343a40;
+            --text-light: #ffffff;
+            --text-muted: #a0a0a0;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--text-light);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 15px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--dark-light);
+        }
+
+        .logo { font-size: 24px; font-weight: bold; color: var(--text-light); }
+        .logo span { color: var(--primary); }
+        .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
+
+        .lang-select-wrapper select {
+            background: var(--dark-light); color: white; border: 1px solid var(--primary);
+            padding: 6px 12px; margin-top: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;
+        }
+
+        .version-switcher { display: flex; background: var(--dark-light); padding: 3px; border-radius: 5px; margin-bottom: 20px; }
+        .tab-btn { flex: 1; background: none; border: none; color: white; padding: 8px; cursor: pointer; border-radius: 4px; }
+        .tab-btn.active { background: var(--primary); color: var(--dark); font-weight: bold; }
+        .badge { background: red; color: white; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 5px; }
+
+        h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; color: var(--text-light); }
+
+        .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px; }
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
+        .input-group input, .input-group select {
+            background: var(--dark-light); color: white; border: 1px solid #555;
+            padding: 10px; border-radius: 5px; font-size: 16px;
+        }
+        .input-group input:focus, .input-group select:focus { border-color: var(--primary); outline: none; }
+
+        .result-box { background: var(--dark-light); padding: 15px; border-radius: 8px; border: 1px solid var(--primary); margin: 15px 0; }
+        .result-box div { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; }
+        .result-box div span { font-weight: bold; color: var(--primary); }
+
+        hr { border: 0; border-top: 1px solid #555; margin: 10px 0; }
+
+        .buttons-container { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; width: 100%; clear: both; }
+        .action-btn {
+            flex: 1; min-width: 100px; background: var(--dark-light); color: white; border: 1px solid var(--primary);
+            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold;
+        }
+        .action-btn:hover { background: var(--primary); color: var(--dark); }
+
+        .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
+
+        .buy-pro-banner {
+            background: linear-gradient(135deg, #343a40, #212529);
+            border: 2px dashed var(--primary); padding: 20px; text-align: center;
+            border-radius: 8px; margin-top: 30px; width: 100%; box-sizing: border-box; clear: both;
+        }
+        .buy-btn {
+            background: var(--primary); color: var(--dark); border: none;
+            padding: 10px 20px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px;
+        }
+        .buy-btn:hover { background: var(--primary-hover); }
+    </style>
+
+    <!-- Підключення навігації -->
+    <script src="../nav.js"></script>
+</head>
+<body>
+
+<!-- Контейнер для глобального меню -->
+<div id="global-nav-container"></div>
+
+    <div class="header">
+        <div class="logo">🛣️ <span>BUILD</span>calc PAVING PRO</div>
+        <div class="subtitle" id="subtitle">Professional Paving & Landscaping Calculator</div>
+
+        <div class="lang-select-wrapper">
+            <select id="language" onchange="changeLanguage()">
+                <option value="en" selected>🇬🇧 English</option>
+                <option value="ua">🇺🇦 Українська</option>
+                <option value="sk">🇸🇰 Slovenčina</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="version-switcher" style="margin-top: 15px;">
+        <button class="tab-btn active" id="tabFree" onclick="setVersion('free')">FREE</button>
+        <button class="tab-btn" id="tabPro" onclick="setVersion('pro')">PRO <span class="badge">Business</span></button>
+    </div>
+
+    <!-- Обгортка розрахунків -->
+    <div id="calcForm">
+        <h3 id="objectTitle">🏠 Object Data</h3>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label id="objectLabel">Object Name</label>
+                <input id="object" type="text" placeholder="Nitra Yard">
+            </div>
+            <div class="input-group">
+                <label id="addressLabel">Address</label>
+                <input id="address" type="text" placeholder="Nitra">
+            </div>
+            <div class="input-group">
+                <label id="clientLabel">Client</label>
+                <input id="client" type="text">
+            </div>
+        </div>
+
+        <!-- БЛОК 1: БРУКІВКА ТА БОРДЮРИ -->
+        <h3 id="hPaving">🧱 Paving & Curbs Specs</h3>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label id="lblPaveArea">Paving Area m²</label>
+                <input id="paveArea" type="number" value="100">
+            </div>
+            <div class="input-group">
+                <label id="lblCurbLength">Curb Length (m)</label>
+                <input id="curbLength" type="number" value="45">
+            </div>
+            <div class="input-group">
+                <label id="lblPaveMargin">Waste Margin %</label>
+                <input id="paveMargin" type="number" value="5">
+            </div>
+        </div>
+        <div class="result-box">
+            <div><span id="txtPTiles">Paving Stones (with waste)</span> <span id="resPaveArea">0 m²</span></div>
+            <div><span id="txtPCurbs">Curbs Total</span> <span id="resCurbs">0 m</span></div>
+            <div><span id="txtPGeotex">Geotextile (with overlaps)</span> <span id="resGeotex">0 m²</span></div>
+        </div>
+
+        <!-- БЛОК 2: ОСНОВА (СИПУЧІ) -->
+        <h3 id="hSubbase">🚜 Subbase & Foundation</h3>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label id="lblGravelDepth">Crushed Stone Layer (m)</label>
+                <input id="gravelDepth" type="number" value="0.15">
+            </div>
+            <div class="input-group">
+                <label id="lblSandDepth">Sand Layer (m)</label>
+                <input id="sandDepth" type="number" value="0.05">
+            </div>
+        </div>
+        <div class="result-box">
+            <div><span id="txtSGravel">Gravel Volume (compacted)</span> <span id="resGravel">0 m³</span></div>
+            <div><span id="txtSSand">Sand Volume (compacted)</span> <span id="resSand">0 m³</span></div>
+            <div><span id="txtSConcr">Concrete for Curbs</span> <span id="resConcrete">0 m³</span></div>
+        </div>
+
+        <!-- БЛОК 3: ЦІНИ ТА ЛОГІСТИКА -->
+        <h3 id="hEstimate">💶 Unit Prices & Labor Cost</h3>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label id="lblPricePave">Paving Price €/m²</label>
+                <input id="pricePave" type="number" value="18">
+            </div>
+            <div class="input-group">
+                <label id="lblPriceCurb">Curb Price €/m</label>
+                <input id="priceCurb" type="number" value="4">
+            </div>
+            <div class="input-group">
+                <label id="lblPriceGravel">Gravel Price €/m³</label>
+                <input id="priceGravel" type="number" value="25">
+            </div>
+            <div class="input-group">
+                <label id="lblPriceSand">Sand Price €/m³</label>
+                <input id="priceSand" type="number" value="20">
+            </div>
+            <div class="input-group">
+                <label id="lblPriceLabor">Labor Price €/m²</label>
+                <input id="priceLabor" type="number" value="30">
+            </div>
+            <div class="input-group">
+                <label id="lblDeliveryPrice">Logistics & Earthworks €</label>
+                <input id="deliveryPrice" type="number" value="400">
+            </div>
+        </div>
+
+        <h3 id="hCompany">🏢 Company Info</h3>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label id="lblCompName">Company Name</label>
+                <input id="companyName" placeholder="BuildMaster">
+            </div>
+            <div class="input-group">
+                <label id="lblCompPhone">Phone</label>
+                <input id="companyPhone" placeholder="+421...">
+            </div>
+            <div class="input-group">
+                <label id="lblCompEmail">Email</label>
+                <input id="companyEmail" placeholder="info@...">
+            </div>
+        </div>
+    </div>
+
+    <!-- ЗАГАЛЬНИЙ ФІНАНСОВИЙ ПІДСУМОК -->
+    <h3 id="hFinal" style="clear: both; width: 100%;">📊 Financial Summary</h3>
+    <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
+        <div><span>🧱 <span id="txtCostPaving">Paving Stones & Curbs</span></span> <span id="costPaving">0 €</span></div>
+        <div><span>🚜 <span id="txtCostSubbase">Subbase Materials (Sand/Gravel)</span></span> <span id="costSubbase">0 €</span></div>
+        <hr>
+        <div><span>📦 <span id="txtFMat">Total Materials</span></span> <span id="materialsTotal">0 €</span></div>
+        <div><span>👷 <span id="txtFWork">Paving & Prep Labor</span></span> <span id="laborTotal">0 €</span></div>
+        <div><span>🚛 <span id="txtFLog">Logistics & Equipment</span></span> <span id="deliveryTotal">0 €</span></div>
+        <hr>
+        <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; width: 100%;">
+            <span>💰 <span id="txtClientPrice">Total Project Price</span></span> <span id="clientTotal">0 €</span>
+        </div>
+    </div>
+
+    <div class="buttons-container">
+        <button class="action-btn" onclick="calculateAll()" id="btnCalc">💰 Calculate</button>
+        <button class="action-btn" onclick="copyEstimate()" id="btnCopy">📋 Copy</button>
+        <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Estimate</button>
+    </div>
+
+    <h3 id="hProjects" style="clear: both; width: 100%;">💾 Project Vault</h3>
+    <div class="buttons-container">
+        <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Save</button>
+        <button class="action-btn" onclick="showHistory()" id="btnHistory">📂 History</button>
+        <button class="action-btn" onclick="btnClear()" id="btnClear">🗑 Clear</button>
+    </div>
+
+    <div id="historyBox" class="history-box" style="display:none;"></div>
+
+    <div class="buy-pro-banner">
+        <h3 style="border:none; padding:0; margin:0;" id="proTitle">🔓 BUILDcalc PRO</h3>
+        <p id="proDesc">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
+        <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
+    </div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+document.getElementById('calcForm').addEventListener('input', calculateAll);
+
+function calculateMaterials() {
+    let area = Number(document.getElementById("paveArea").value) || 0;
+    let curbs = Number(document.getElementById("curbLength").value) || 0;
+    let margin = Number(document.getElementById("paveMargin").value) || 0;
+    let sandD = Number(document.getElementById("sandDepth").value) || 0;
+    let gravelD = Number(document.getElementById("gravelDepth").value) || 0;
+
+    // Розрахунок матеріалів
+    let totalPaveArea = area * (1 + margin / 100);
+    let geotextile = area * 1.15; // 15% на напуски
+    
+    // Сипучі (з коефіцієнтом ущільнення 1.2)
+    let gravelVol = area * gravelD * 1.2;
+    let sandVol = area * sandD * 1.2;
+    
+    // Бетон на бордюри (~0.03 куба на 1 метр пог.)
+    let curbConcrete = curbs * 0.03;
+
+    // Виведення результатів об'ємів
+    document.getElementById("resPaveArea").innerText = totalPaveArea.toFixed(1) + " m²";
+    document.getElementById("resCurbs").innerText = curbs.toFixed(1) + " m";
+    document.getElementById("resGeotex").innerText = geotextile.toFixed(1) + " m²";
+    
+    document.getElementById("resGravel").innerText = gravelVol.toFixed(2) + " m³";
+    document.getElementById("resSand").innerText = sandVol.toFixed(2) + " m³";
+    document.getElementById("resConcrete").innerText = curbConcrete.toFixed(2) + " m³";
+
+    return { totalPaveArea, curbs, gravelVol, sandVol, curbConcrete, geotextile };
+}
+
+function calculateEstimate() {
+    let mats = calculateMaterials();
+    let area = Number(document.getElementById("paveArea").value) || 0;
+
+    // Ціни
+    let pPave = Number(document.getElementById("pricePave").value) || 0;
+    let pCurb = Number(document.getElementById("priceCurb").value) || 0;
+    let pGravel = Number(document.getElementById("priceGravel").value) || 0;
+    let pSand = Number(document.getElementById("priceSand").value) || 0;
+    let pLabor = Number(document.getElementById("priceLabor").value) || 0;
+    let pDeliv = Number(document.getElementById("deliveryPrice").value) || 0;
+
+    // Фіксовані ціни для дрібних матеріалів (Геотекстиль ~1€/м², Бетон ~110€/м³)
+    let pGeotex = 1.0;
+    let pConcrete = 110.0;
+
+    // Категорії витрат
+    let costPaving = (mats.totalPaveArea * pPave) + (mats.curbs * pCurb);
+    let costSubbase = (mats.gravelVol * pGravel) + (mats.sandVol * pSand) + (mats.curbConcrete * pConcrete) + (mats.geotextile * pGeotex);
+    
+    let materialsTotal = costPaving + costSubbase;
+    let laborTotal = area * pLabor;
+    let clientTotal = materialsTotal + laborTotal + pDeliv;
+
+    // Виведення результатів фінансів
+    document.getElementById("costPaving").innerText = costPaving.toFixed(2) + " €";
+    document.getElementById("costSubbase").innerText = costSubbase.toFixed(2) + " €";
+    document.getElementById("materialsTotal").innerText = materialsTotal.toFixed(2) + " €";
+    document.getElementById("laborTotal").innerText = laborTotal.toFixed(2) + " €";
+    document.getElementById("deliveryTotal").innerText = pDeliv.toFixed(2) + " €";
+    document.getElementById("clientTotal").innerText = clientTotal.toFixed(2) + " €";
+}
+
+function calculateAll() {
+    calculateEstimate();
+}
+
+function generatePDF() {
+    let objName = document.getElementById("object").value || "Object";
+    let clientName = document.getElementById("client").value || "Client";
+    let compName = document.getElementById("companyName").value || "Contractor";
+    
+    let printHtml = `
+    <div style="padding: 30px; font-family: Arial, sans-serif; color: #333; background: #fff;">
+        <h2>Paving & Landscaping Estimate: ${objName}</h2>
+        <p>Client: ${clientName} | Contractor: ${compName}</p>
+        <hr>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <tr style="background: #f8f9fa;">
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Category</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">Cost</th>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">Paving Stones & Curbs</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costPaving").innerText}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">Subbase Materials (Sand/Gravel/Concrete)</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costSubbase").innerText}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">Labor Works</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("laborTotal").innerText}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">Logistics, Earthworks & Equipment</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("deliveryTotal").innerText}</td>
+            </tr>
+        </table>
+        <h3 style="text-align: right; margin-top: 30px;">Total Price: <span style="color: #d32f2f;">${document.getElementById("clientTotal").innerText}</span></h3>
+    </div>`;
+
+    let opt = {
+        margin: 10,
+        filename: `Paving_Estimate_${objName}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(printHtml).save();
+}
+
+function saveProject() {
+    let project = {
+        date: new Date().toLocaleString(),
+        object: document.getElementById("object").value || "Unnamed",
+        client: document.getElementById("client").value || "-",
+        price: document.getElementById("clientTotal").innerText
+    };
+    let list = JSON.parse(localStorage.getItem("pavingProjects")) || [];
+    list.unshift(project);
+    localStorage.setItem("pavingProjects", JSON.stringify(list));
+    alert("Project saved successfully!");
+}
+
+function showHistory() {
+    let box = document.getElementById("historyBox");
+    box.style.display = box.style.display === "none" ? "block" : "none";
+    let list = JSON.parse(localStorage.getItem("pavingProjects")) || [];
+    if (list.length == 0) {
+        box.innerHTML = "<p style='color:var(--text-muted);'>History is empty</p>";
+        return;
+    }
+    let html = "";
+    list.forEach(p => {
+        html += `<div style="margin-bottom:10px;"><b>${p.object}</b><br>Client: ${p.client}<br>Total: <span style="color:var(--primary)">${p.price}</span><br><small style="color:#777;">${p.date}</small><hr style="border-top:1px solid #444; margin:5px 0;"></div>`;
+    });
+    box.innerHTML = html;
+}
+
+function btnClear() {
+    if(confirm("Clear history?")) {
+        localStorage.removeItem("pavingProjects");
+        showHistory();
+    }
+}
+
+function copyEstimate() {
+    let res = document.getElementById("clientTotal").innerText;
+    navigator.clipboard.writeText(`Paving Estimate for ${document.getElementById("object").value}:\nTotal Price: ${res}`);
+    alert("Copied to clipboard!");
+}
+
+const langData = {
+    en: {
+        subtitle: "Professional Paving & Landscaping Calculator",
+        objectTitle: "🏠 Object Data", objectLabel: "Object Name", addressLabel: "Address", clientLabel: "Client",
+        hPaving: "🧱 Paving & Curbs Specs", lblPaveArea: "Paving Area m²", lblCurbLength: "Curb Length (m)", lblPaveMargin: "Waste Margin %",
+        txtPTiles: "Paving Stones (with waste)", txtPCurbs: "Curbs Total", txtPGeotex: "Geotextile (with overlaps)",
+        hSubbase: "🚜 Subbase & Foundation", lblGravelDepth: "Crushed Stone Layer (m)", lblSandDepth: "Sand Layer (m)",
+        txtSGravel: "Gravel Volume (compacted)", txtSSand: "Sand Volume (compacted)", txtSConcr: "Concrete for Curbs",
+        hEstimate: "💶 Unit Prices & Labor Cost", lblPricePave: "Paving Price €/m²", lblPriceCurb: "Curb Price €/m",
+        lblPriceGravel: "Gravel Price €/m³", lblPriceSand: "Sand Price €/m³", lblPriceLabor: "Labor Price €/m²", lblDeliveryPrice: "Logistics & Earthworks €",
+        hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
+        hFinal: "📊 Financial Summary", txtCostPaving: "Paving Stones & Curbs", txtCostSubbase: "Subbase Materials (Sand/Gravel)",
+        txtFMat: "Total Materials", txtFWork: "Paving & Prep Labor", txtFLog: "Logistics & Equipment", txtClientPrice: "Total Project Price",
+        btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Estimate", hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing"
+    },
+    ua: {
+        subtitle: "Калькулятор бруківки та благоустрою",
+        objectTitle: "🏠 Дані об'єкта", objectLabel: "Назва об'єкта", addressLabel: "Адреса", clientLabel: "Клієнт",
+        hPaving: "🧱 Бруківка та Бордюри", lblPaveArea: "Площа бруківки м²", lblCurbLength: "Довжина бордюрів (м)", lblPaveMargin: "Запас на підрізку %",
+        txtPTiles: "Бруківка (з запасом)", txtPCurbs: "Бордюри (всього)", txtPGeotex: "Геотекстиль (з напуском)",
+        hSubbase: "🚜 Сипучі матеріали (Основа)", lblGravelDepth: "Шар щебеню (м)", lblSandDepth: "Шар піску (м)",
+        txtSGravel: "Об'єм щебеню (ущільнений)", txtSSand: "Об'єм піску (ущільнений)", txtSConcr: "Бетон під бордюри",
+        hEstimate: "💶 Ціни матеріалів та робіт", lblPricePave: "Ціна бруківки €/m²", lblPriceCurb: "Ціна бордюру €/м",
+        lblPriceGravel: "Ціна щебеню €/m³", lblPriceSand: "Ціна піску €/m³", lblPriceLabor: "Робота (укладка) €/m²", lblDeliveryPrice: "Доставка та земляні роботи €",
+        hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
+        hFinal: "📊 Фінансовий підсумок", txtCostPaving: "Бруківка та бордюри", txtCostSubbase: "Основа (пісок/щебінь/бетон)",
+        txtFMat: "Всього матеріалів", txtFWork: "Робота (мощення та підготовка)", txtFLog: "Логістика та спецтехніка", txtClientPrice: "Загальна ціна проєкту",
+        btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF", hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість"
+    },
+    sk: {
+        subtitle: "Kalkulačka zámkovej dlažby a úprav terénu",
+        objectTitle: "🏠 Údaje o objekte", objectLabel: "Názov objektu", addressLabel: "Adresa", clientLabel: "Klient",
+        hPaving: "🧱 Dlažba a obrubníky", lblPaveArea: "Plocha dlažby m²", lblCurbLength: "Dĺžka obrubníkov (m)", lblPaveMargin: "Rezerva na prerez %",
+        txtPTiles: "Dlažba (s rezervou)", txtPCurbs: "Obrubníky (celkom)", txtPGeotex: "Geotextília (s presahmi)",
+        hSubbase: "🚜 Podkladové vrstvy", lblGravelDepth: "Hrúbka štrku (m)", lblSandDepth: "Hrúbka piesku (m)",
+        txtSGravel: "Objem štrku (zhutnený)", txtSSand: "Objem piesku (zhutnený)", txtSConcr: "Betón pod obrubníky",
+        hEstimate: "💶 Jednotkové ceny a práca", lblPricePave: "Cena dlažby €/m²", lblPriceCurb: "Cena obrubníka €/m",
+        lblPriceGravel: "Cena štrku €/m³", lblPriceSand: "Cena piesku €/m³", lblPriceLabor: "Práca (pokládka) €/m²", lblDeliveryPrice: "Doprava a zemné práce €",
+        hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
+        hFinal: "📊 Finančný prehľad", txtCostPaving: "Dlažba a obrubníky", txtCostSubbase: "Podklad (piesok/štrk/betón)",
+        txtFMat: "Celkovo materiály", txtFWork: "Práca (pokládka a príprava)", txtFLog: "Logistika a technika", txtClientPrice: "Celková cena projektu",
+        btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument", hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu"
+    }
+};
+
+function changeLanguage() {
+    let lang = document.getElementById("language").value;
+    let data = langData[lang];
+    if (data) {
+        for (let id in data) {
+            let el = document.getElementById(id);
+            if (el) {
+                if (el.tagName === "INPUT") el.placeholder = data[id];
+                else el.innerHTML = data[id];
+            }
+        }
+    }
+}
+
+function setVersion(version) {
+    document.getElementById("tabFree").classList.remove("active");
+    document.getElementById("tabPro").classList.remove("active");
+    if (version === 'free') {
+        document.getElementById("tabFree").classList.add("active");
+    } else {
+        document.getElementById("tabPro").classList.add("active");
+    }
+}
+
+// Стартова ініціалізація
+document.getElementById("language").value = "en";
+changeLanguage();
+calculateAll();
+</script>
+</body>
+</html>
