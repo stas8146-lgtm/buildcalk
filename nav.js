@@ -51,7 +51,8 @@ const menuHTML = `
         <a href="../Electric/index.html">⚡ Electric</a>
         <a href="../Facade/index.html">🟫 Facade</a>
         <a href="../Plumbing/index.html">🔧 Plumbing & Heat</a>
-    </div>
+        <a href="../Rough/index.html">🏗 Shell & Core</a>
+     </div>
 `;
 
 window.addEventListener('DOMContentLoaded', () => {
