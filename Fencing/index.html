@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Fencing Calculator | BUILDcalc</title>
+    <meta name="description" content="Professional fencing and gates calculator. Estimate posts, concrete, panels, foundation, and total project costs.">
+    
+    <!-- ================= GOOGLE ANALYTICS ================= -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPRB8JPVM2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-RPRB8JPVM2');
+    </script>
+
+    <!-- Бібліотека для генерації PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- ================= СТИЛІ (ЖОВТО-ЧОРНА ТЕМА) ================= -->
+    <style>
+        :root {
+            --primary: #FFC107;
+            --primary-hover: #e0a800;
+            --dark: #212529;
+            --dark-light: #343a40;
+            --text-light: #ffffff;
+            --text-muted: #a0a0a0;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--text-light);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 15px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--dark-light);
+        }
+
+        .logo { font-size: 24px; font-weight: bold; color: var(--text-light); }
+        .logo span { color: var(--primary); }
+        .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
+
+        .lang-select-wrapper select {
+            background: var(--dark-light); color: white; border: 1px solid var(--primary);
+            padding: 6px 12px; margin-top: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;
+        }
+
+        .version-switcher { display: flex; background: var(--dark-light); padding: 3px; border-radius: 5px; margin-bottom: 20px; }
+        .tab-btn { flex: 1; background: none; border: none; color: white; padding: 8px; cursor: pointer; border-radius: 4px; }
+        .tab-btn.active { background: var(--primary); color: var(--dark); font-weight: bold; }
+        .badge { background: red; color: white; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 5px; }
+
+        h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; color: var(--text-light); }
+
+        .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px; }
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
+        .input-group input, .input-group select {
+            background: var(--dark-light); color: white; border: 1px solid #555;
+            padding: 10px; border-radius: 5px; font-size: 16px;
+        }
+        .input-group input:focus, .input-group select:focus { border-color: var(--primary); outline: none; }
+
+        .result-box { background: var(--dark-light); padding: 15px; border-radius: 8px; border: 1px solid var(--primary); margin: 15px 0; }
+        .result-box div { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; }
+        .result-box div span { font-weight: bold; color: var(--primary); }
+
+        hr { border: 0; border-top: 1px solid #555; margin: 10px 0; }
+
+        .buttons-container { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; width: 100%; clear: both; }
+        .action-btn {
+            flex: 1; min-width: 100px; background: var(--dark-light); color: white; border: 1px solid var(--primary);
+            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold;
+        }
+        .action-btn:hover { background: var(--primary); color: var(--dark); }
+
+        .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
+
+        .buy-pro-banner {
+            background: linear-gradient(135deg, #343a40, #212529);
+            border: 2px dashed var(--primary); padding: 20px; text-align: center;
+            border-radius: 8px; margin-top: 30px; width: 100%; box-sizing: border-box; clear: both;
+        }
+        .buy-btn {
+            background: var(--primary); color: var(--dark); border: none;
+            padding: 10px 20px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px;
+        }
+        .buy-btn:hover { background: var(--primary-hover); }
+    </style>
+
+    <!-- Підключення навігації -->
+    <script src="../nav.js"></script>
+</head>
+<body>
+
+<!-- Контейнер для глобального меню -->
+<div id="global-nav-container"></div>
+
+    <div class="header">
+        <div class="logo">🚧 <span>BUILD</span>calc FENCING</div>
+        <div class="subtitle" id="subtitle">Professional Fencing & Gates Calculator</div>
+
+        <div class="lang-select-wrapper">
+            <select id="language" onchange="changeLanguage()">
+                <option value="en" selected>🇬🇧 English</option>
+                <option value="ua">🇺🇦 Українська</option>
+                <option value="sk">🇸🇰 Slovenčina</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="version-switcher" style="margin-top: 15px;">
+        <button class="tab-btn active" id="tabFree" onclick="setVersion('free')">FREE</button>
+        <button class="tab-btn" id="tabPro" onclick="setVersion('pro')">PRO <span class="badge">Business</span></button>
+    </div>
+
+    <!-- Обгортка розрахунків -->
+    <div id="calcForm">
+        <h3 id="objectTitle">🏠 Object Data</h3>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label id="objectLabel">Object Name</label>
+                <input id="object" type="text" placeholder="Country House Fence">
+            </div>
+            <div class="input-group">
+                <label id="addressLabel">Address</label>
+                <input id="address" type="text" placeholder="Nitra">
+            </div>
+            <div class="input-group">
+                <label id="clientLabel">Client</label>
+                <input id="client" type="text">
+            </div>
+        </div>
+
+        <!-- БЛОК 1: ПАРАМЕТРИ ПАРКАНУ -->
+        <h3 id="hFencing">🚧 Fencing Specs</h3>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label id="lblPerimeter">Total Length / Perimeter (m)</label>
+                <input id="perimeter" type="number" value="40">
+            </div>
+            <div class="input-group">
+                <label id="lblHeight">Fence Height (m)</label>
+                <input id="height" type="number" value="2.0">
+            </div>
+            <div class="input-group">
+                <label id="lblPostStep">Post Step / Distance (m)</label>
+                <input id="postStep" type="number" value="2.5">
+            </div>
+            <div class="input-group">
+                <label id="lblGateCount">Gates & Wickets (Pcs)</label>
+                <input id="gateCount" type="number" value="1">
+            </div>
+        </div>
+        <div class="result-box">
+            <div><span id="txtPostsCount">Total Posts Required</span> <span id="resPosts">0 pcs</span></div>
+            <div><span id="txtFillArea">Filling Area (Panels/Sheets)</span> <span id="resFillArea">0 m²</span></div>
+            <div><span id="txtPostConcrete">Concrete for Posts</span> <span id="resPostConcr">0 m³</span></div>
+        </div>
+
+        <!-- БЛОК 2: ФУНДАМЕНТ -->
+        <h3 id="hFoundation">🏗️ Strip Foundation</h3>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label id="lblFoundWidth">Foundation Width (m)</label>
+                <input id="foundWidth" type="number" value="0.2">
+            </div>
+            <div class="input-group">
+                <label id="lblFoundDepth">Foundation Depth (m)</label>
+                <input id="foundDepth" type="number" value="0.5">
+            </div>
+        </div>
+        <div class="result-box">
+            <div><span id="txtFoundConcr">Foundation Concrete Volume</span> <span id="resFoundConcr">0 m³</span></div>
+        </div>
+
+        <!-- БЛОК 3: ЦІНИ -->
+        <h3 id="hEstimate">💶 Unit Prices & Labor Cost</h3>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label id="lblPricePost">Post Price €/pc</label>
+                <input id="pricePost" type="number" value="18">
+            </div>
+            <div class="input-group">
+                <label id="lblPriceFill">Filling Price €/m²</label>
+                <input id="priceFill" type="number" value="15">
+            </div>
+            <div class="input-group">
+                <label id="lblPriceConcrete">Concrete Price €/m³</label>
+                <input id="priceConcrete" type="number" value="110">
+            </div>
+            <div class="input-group">
+                <label id="lblPriceLabor">Installation Labor €/m</label>
+                <input id="priceLabor" type="number" value="25">
+            </div>
+        </div>
+
+        <h3 id="hCompany">🏢 Company Info</h3>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label id="lblCompName">Company Name</label>
+                <input id="companyName" placeholder="BuildMaster">
+            </div>
+            <div class="input-group">
+                <label id="lblCompPhone">Phone</label>
+                <input id="companyPhone" placeholder="+421...">
+            </div>
+            <div class="input-group">
+                <label id="lblCompEmail">Email</label>
+                <input id="companyEmail" placeholder="info@...">
+            </div>
+        </div>
+    </div>
+
+    <!-- ЗАГАЛЬНИЙ ФІНАНСОВИЙ ПІДСУМОК -->
+    <h3 id="hFinal" style="clear: both; width: 100%;">📊 Financial Summary</h3>
+    <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
+        <div><span>🔩 <span id="txtCostPosts">Posts Cost</span></span> <span id="costPosts">0 €</span></div>
+        <div><span>🧱 <span id="txtCostFill">Filling Cost</span></span> <span id="costFill">0 €</span></div>
+        <div><span>🚜 <span id="txtCostConcrete">Total Concrete (Posts + Foundation)</span></span> <span id="costConcrete">0 €</span></div>
+        <hr>
+        <div><span>📦 <span id="txtFMat">Total Materials</span></span> <span id="materialsTotal">0 €</span></div>
+        <div><span>👷 <span id="txtFWork">Installation Labor</span></span> <span id="laborTotal">0 €</span></div>
+        <hr>
+        <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; width: 100%;">
+            <span>💰 <span id="txtClientPrice">Total Project Price</span></span> <span id="clientTotal">0 €</span>
+        </div>
+    </div>
+
+    <div class="buttons-container">
+        <button class="action-btn" onclick="calculateAll()" id="btnCalc">💰 Calculate</button>
+        <button class="action-btn" onclick="copyEstimate()" id="btnCopy">📋 Copy</button>
+        <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Estimate</button>
+    </div>
+
+    <h3 id="hProjects" style="clear: both; width: 100%;">💾 Project Vault</h3>
+    <div class="buttons-container">
+        <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Save</button>
+        <button class="action-btn" onclick="showHistory()" id="btnHistory">📂 History</button>
+        <button class="action-btn" onclick="btnClear()" id="btnClear">🗑 Clear</button>
+    </div>
+
+    <div id="historyBox" class="history-box" style="display:none;"></div>
+
+    <div class="buy-pro-banner">
+        <h3 style="border:none; padding:0; margin:0;" id="proTitle">🔓 BUILDcalc PRO</h3>
+        <p id="proDesc">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
+        <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
+    </div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+document.getElementById('calcForm').addEventListener('input', calculateAll);
+
+function calculateMaterials() {
+    let perimeter = Number(document.getElementById("perimeter").value) || 0;
+    let height = Number(document.getElementById("height").value) || 0;
+    let postStep = Number(document.getElementById("postStep").value) || 2.5;
+    let foundW = Number(document.getElementById("foundWidth").value) || 0;
+    let foundD = Number(document.getElementById("foundDepth").value) || 0;
+
+    // Розрахунок стовпчиків (Периметр / крок + 1)
+    let postsCount = Math.ceil(perimeter / postStep) + 1;
+    
+    // Площа заповнення (периметр * висоту)
+    let fillArea = perimeter * height;
+    
+    // Бетон на ями під стовпчики (~0.05 м³ на 1 стовп)
+    let postConcrete = postsCount * 0.05;
+
+    // Бетон на стрічковий фундамент
+    let foundConcrete = perimeter * foundW * foundD;
+
+    let totalConcrete = postConcrete + foundConcrete;
+
+    // Виведення результатів
+    document.getElementById("resPosts").innerText = postsCount + " pcs";
+    document.getElementById("resFillArea").innerText = fillArea.toFixed(1) + " m²";
+    document.getElementById("resPostConcr").innerText = postConcrete.toFixed(2) + " m³";
+    document.getElementById("resFoundConcr").innerText = foundConcrete.toFixed(2) + " m³";
+
+    return { postsCount, fillArea, totalConcrete, perimeter };
+}
+
+function calculateEstimate() {
+    let mats = calculateMaterials();
+
+    // Ціни
+    let pPost = Number(document.getElementById("pricePost").value) || 0;
+    let pFill = Number(document.getElementById("priceFill").value) || 0;
+    let pConcrete = Number(document.getElementById("priceConcrete").value) || 0;
+    let pLabor = Number(document.getElementById("priceLabor").value) || 0;
+
+    // Категорії витрат
+    let costPosts = mats.postsCount * pPost;
+    let costFill = mats.fillArea * pFill;
+    let costConcrete = mats.totalConcrete * pConcrete;
+    
+    let materialsTotal = costPosts + costFill + costConcrete;
+    let laborTotal = mats.perimeter * pLabor;
+    let clientTotal = materialsTotal + laborTotal;
+
+    // Виведення фінансів
+    document.getElementById("costPosts").innerText = costPosts.toFixed(2) + " €";
+    document.getElementById("costFill").innerText = costFill.toFixed(2) + " €";
+    document.getElementById("costConcrete").innerText = costConcrete.toFixed(2) + " €";
+    document.getElementById("materialsTotal").innerText = materialsTotal.toFixed(2) + " €";
+    document.getElementById("laborTotal").innerText = laborTotal.toFixed(2) + " €";
+    document.getElementById("clientTotal").innerText = clientTotal.toFixed(2) + " €";
+}
+
+function calculateAll() {
+    calculateEstimate();
+}
+
+function generatePDF() {
+    let objName = document.getElementById("object").value || "Object";
+    let clientName = document.getElementById("client").value || "Client";
+    let compName = document.getElementById("companyName").value || "Contractor";
+    
+    let printHtml = `
+    <div style="padding: 30px; font-family: Arial, sans-serif; color: #333; background: #fff;">
+        <h2>Fencing Estimate: ${objName}</h2>
+        <p>Client: ${clientName} | Contractor: ${compName}</p>
+        <hr>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <tr style="background: #f8f9fa;">
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Category</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">Cost</th>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">Posts</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costPosts").innerText}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">Filling (Panels / Sheets)</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costFill").innerText}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">Concrete (Posts + Foundation)</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costConcrete").innerText}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">Installation Labor</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("laborTotal").innerText}</td>
+            </tr>
+        </table>
+        <h3 style="text-align: right; margin-top: 30px;">Total Price: <span style="color: #d32f2f;">${document.getElementById("clientTotal").innerText}</span></h3>
+    </div>`;
+
+    let opt = {
+        margin: 10,
+        filename: `Fencing_Estimate_${objName}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(printHtml).save();
+}
+
+function saveProject() {
+    let project = {
+        date: new Date().toLocaleString(),
+        object: document.getElementById("object").value || "Unnamed",
+        client: document.getElementById("client").value || "-",
+        price: document.getElementById("clientTotal").innerText
+    };
+    let list = JSON.parse(localStorage.getItem("fencingProjects")) || [];
+    list.unshift(project);
+    localStorage.setItem("fencingProjects", JSON.stringify(list));
+    alert("Project saved successfully!");
+}
+
+function showHistory() {
+    let box = document.getElementById("historyBox");
+    box.style.display = box.style.display === "none" ? "block" : "none";
+    let list = JSON.parse(localStorage.getItem("fencingProjects")) || [];
+    if (list.length == 0) {
+        box.innerHTML = "<p style='color:var(--text-muted);'>History is empty</p>";
+        return;
+    }
+    let html = "";
+    list.forEach(p => {
+        html += `<div style="margin-bottom:10px;"><b>${p.object}</b><br>Client: ${p.client}<br>Total: <span style="color:var(--primary)">${p.price}</span><br><small style="color:#777;">${p.date}</small><hr style="border-top:1px solid #444; margin:5px 0;"></div>`;
+    });
+    box.innerHTML = html;
+}
+
+function btnClear() {
+    if(confirm("Clear history?")) {
+        localStorage.removeItem("fencingProjects");
+        showHistory();
+    }
+}
+
+function copyEstimate() {
+    let res = document.getElementById("clientTotal").innerText;
+    navigator.clipboard.writeText(`Fencing Estimate for ${document.getElementById("object").value}:\nTotal Price: ${res}`);
+    alert("Copied to clipboard!");
+}
+
+const langData = {
+    en: {
+        subtitle: "Professional Fencing & Gates Calculator",
+        objectTitle: "🏠 Object Data", objectLabel: "Object Name", addressLabel: "Address", clientLabel: "Client",
+        hFencing: "🚧 Fencing Specs", lblPerimeter: "Total Length / Perimeter (m)", lblHeight: "Fence Height (m)", lblPostStep: "Post Step / Distance (m)", lblGateCount: "Gates & Wickets (Pcs)",
+        txtPostsCount: "Total Posts Required", txtFillArea: "Filling Area (Panels/Sheets)", txtPostConcrete: "Concrete for Posts",
+        hFoundation: "🏗️ Strip Foundation", lblFoundWidth: "Foundation Width (m)", lblFoundDepth: "Foundation Depth (m)", txtFoundConcr: "Foundation Concrete Volume",
+        hEstimate: "💶 Unit Prices & Labor Cost", lblPricePost: "Post Price €/pc", lblPriceFill: "Filling Price €/m²", lblPriceConcrete: "Concrete Price €/m³", lblPriceLabor: "Installation Labor €/m",
+        hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
+        hFinal: "📊 Financial Summary", txtCostPosts: "Posts Cost", txtCostFill: "Filling Cost", txtCostConcrete: "Total Concrete (Posts + Foundation)",
+        txtFMat: "Total Materials", txtFWork: "Installation Labor", txtClientPrice: "Total Project Price",
+        btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Estimate", hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing"
+    },
+    ua: {
+        subtitle: "Калькулятор парканів та огорож",
+        objectTitle: "🏠 Дані об'єкта", objectLabel: "Назва об'єкта", addressLabel: "Адреса", clientLabel: "Клієнт",
+        hFencing: "🚧 Параметри паркану", lblPerimeter: "Загальна довжина / Периметр (м)", lblHeight: "Висота паркану (м)", lblPostStep: "Крок стовпчиків (м)", lblGateCount: "Ворота та хвіртки (шт)",
+        txtPostsCount: "Всього стовпчиків", txtFillArea: "Площа заповнення (профнастил/сітка)", txtPostConcrete: "Бетон під стовпчики",
+        hFoundation: "🏗️ Стрічковий фундамент", lblFoundWidth: "Ширина фундаменту (м)", lblFoundDepth: "Глибина фундаменту (м)", txtFoundConcr: "Об'єм бетону фундаменту",
+        hEstimate: "💶 Ціни матеріалів та робіт", lblPricePost: "Ціна стовпчика €/шт", lblPriceFill: "Ціна заповнення €/м²", lblPriceConcrete: "Ціна бетону €/м³", lblPriceLabor: "Робота по монтажу €/м",
+        hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
+        hFinal: "📊 Фінансовий підсумок", txtCostPosts: "Вартість стовпчиків", txtCostFill: "Вартість заповнення", txtCostConcrete: "Бетон (стовпчики + фундамент)",
+        txtFMat: "Всього матеріалів", txtFWork: "Монтажні роботи", txtClientPrice: "Загальна ціна проєкту",
+        btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF", hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість"
+    },
+    sk: {
+        subtitle: "Kalkulačka plotov a oplotenia",
+        objectTitle: "🏠 Údaje o objekte", objectLabel: "Názov objektu", addressLabel: "Adresa", clientLabel: "Klient",
+        hFencing: "🚧 Parametre plotu", lblPerimeter: "Celková dĺžka / Obvod (m)", lblHeight: "Výška plotu (m)", lblPostStep: "Rozostup stĺpikov (m)", lblGateCount: "Brány a bráničky (ks)",
+        txtPostsCount: "Celkový počet stĺpikov", txtFillArea: "Plocha výplne (panely/plech)", txtPostConcrete: "Betón pod stĺpiky",
+        hFoundation: "🏗️ Pásikový základ", lblFoundWidth: "Šírka základu (m)", lblFoundDepth: "Hĺbka základu (m)", txtFoundConcr: "Objem betónu základu",
+        hEstimate: "💶 Jednotkové ceny a práca", lblPricePost: "Cena stĺpika €/ks", lblPriceFill: "Cena výplne €/m²", lblPriceConcrete: "Cena betónu €/m³", lblPriceLabor: "Montážna práca €/m",
+        hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
+        hFinal: "📊 Finančný prehľad", txtCostPosts: "Cena stĺpikov", txtCostFill: "Cena výplne", txtCostConcrete: "Celkový betón (stĺpiky + základ)",
+        txtFMat: "Celkovo materiály", txtFWork: "Montážne práce", txtClientPrice: "Celková cena projektu",
+        btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument", hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu"
+    }
+};
+
+function changeLanguage() {
+    let lang = document.getElementById("language").value;
+    let data = langData[lang];
+    if (data) {
+        for (let id in data) {
+            let el = document.getElementById(id);
+            if (el) {
+                if (el.tagName === "INPUT") el.placeholder = data[id];
+                else el.innerHTML = data[id];
+            }
+        }
+    }
+}
+
+function setVersion(version) {
+    document.getElementById("tabFree").classList.remove("active");
+    document.getElementById("tabPro").classList.remove("active");
+    if (version === 'free') {
+        document.getElementById("tabFree").classList.add("active");
+    } else {
+        document.getElementById("tabPro").classList.add("active");
+    }
+}
+
+// Стартова ініціалізація
+document.getElementById("language").value = "en";
+changeLanguage();
+calculateAll();
+</script>
+</body>
+</html>
