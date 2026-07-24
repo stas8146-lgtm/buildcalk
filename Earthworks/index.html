@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Earthworks & Demolition Calculator | BUILDcalc</title>
+    <meta name="description" content="Professional earthworks calculator. Estimate excavation volume, soil swelling, truck trips, excavator hours, and total costs.">
+    
+    <!-- ================= GOOGLE ANALYTICS ================= -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPRB8JPVM2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-RPRB8JPVM2');
+    </script>
+
+    <!-- Бібліотека для генерації PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- ================= СТИЛІ (ЖОВТО-ЧОРНА ТЕМА) ================= -->
+    <style>
+        :root {
+            --primary: #FFC107;
+            --primary-hover: #e0a800;
+            --dark: #212529;
+            --dark-light: #343a40;
+            --text-light: #ffffff;
+            --text-muted: #a0a0a0;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--text-light);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 15px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--dark-light);
+        }
+
+        .logo { font-size: 24px; font-weight: bold; color: var(--text-light); }
+        .logo span { color: var(--primary); }
+        .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
+
+        .lang-select-wrapper select {
+            background: var(--dark-light); color: white; border: 1px solid var(--primary);
+            padding: 6px 12px; margin-top: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;
+        }
+
+        .version-switcher { display: flex; background: var(--dark-light); padding: 3px; border-radius: 5px; margin-bottom: 20px; }
+        .tab-btn { flex: 1; background: none; border: none; color: white; padding: 8px; cursor: pointer; border-radius: 4px; }
+        .tab-btn.active { background: var(--primary); color: var(--dark); font-weight: bold; }
+        .badge { background: red; color: white; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 5px; }
+
+        h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; color: var(--text-light); }
+
+        .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px; }
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
+        .input-group input, .input-group select {
+            background: var(--dark-light); color: white; border: 1px solid #555;
+            padding: 10px; border-radius: 5px; font-size: 16px;
+        }
+        .input-group input:focus, .input-group select:focus { border-color: var(--primary); outline: none; }
+
+        .result-box { background: var(--dark-light); padding: 15px; border-radius: 8px; border: 1px solid var(--primary); margin: 15px 0; }
+        .result-box div { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; }
+        .result-box div span { font-weight: bold; color: var(--primary); }
+
+        hr { border: 0; border-top: 1px solid #555; margin: 10px 0; }
+
+        .buttons-container { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; width: 100%; clear: both; }
+        .action-btn {
+            flex: 1; min-width: 100px; background: var(--dark-light); color: white; border: 1px solid var(--primary);
+            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold;
+        }
+        .action-btn:hover { background: var(--primary); color: var(--dark); }
+
+        .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
+
+        .buy-pro-banner {
+            background: linear-gradient(135deg, #343a40, #212529);
+            border: 2px dashed var(--primary); padding: 20px; text-align: center;
+            border-radius: 8px; margin-top: 30px; width: 100%; box-sizing: border-box; clear: both;
+        }
+        .buy-btn {
+            background: var(--primary); color: var(--dark); border: none;
+            padding: 10px 20px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px;
+        }
+        .buy-btn:hover { background: var(--primary-hover); }
+    </style>
+
+    <!-- Підключення навігації -->
+    <script src="../nav.js"></script>
+</head>
+<body>
+
+<!-- Контейнер для глобального меню -->
+<div id="global-nav-container"></div>
+
+    <div class="header">
+        <div class="logo">🚜 <span>BUILD</span>calc EARTHWORKS</div>
+        <div class="subtitle" id="subtitle">Professional Earthworks & Demolition Calculator</div>
+
+        <div class="lang-select-wrapper">
+            <select id="language" onchange="changeLanguage()">
+                <option value="en" selected>🇬🇧 English</option>
+                <option value="ua">🇺🇦 Українська</option>
+                <option value="sk">🇸🇰 Slovenčina</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="version-switcher" style="margin-top: 15px;">
+        <button class="tab-btn active" id="tabFree" onclick="setVersion('free')">FREE</button>
+        <button class="tab-btn" id="tabPro" onclick="setVersion('pro')">PRO <span class="badge">Business</span></button>
+    </div>
+
+    <!-- Обгортка розрахунків -->
+    <div id="calcForm">
+        <h3 id="objectTitle">🏠 Object Data</h3>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label id="objectLabel">Object Name</label>
+                <input id="object" type="text" placeholder="Site Preparation">
+            </div>
+            <div class="input-group">
+                <label id="addressLabel">Address</label>
+                <input id="address" type="text" placeholder="Nitra">
+            </div>
+            <div class="input-group">
+                <label id="clientLabel">Client</label>
+                <input id="client" type="text">
+            </div>
+        </div>
+
+        <!-- БЛОК 1: ПАРАМЕТРИ ЗЕМЛЯНИХ РОБІТ -->
+        <h3 id="hEarthworks">🚜 Earthworks Specs</h3>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label id="lblExcavation">Excavation Volume (m³)</label>
+                <input id="excavationVol" type="number" value="120">
+            </div>
+            <div class="input-group">
+                <label id="lblSwelling">Soil Swelling Coeff (e.g., 1.25)</label>
+                <input id="swellingCoeff" type="number" step="0.01" value="1.25">
+            </div>
+            <div class="input-group">
+                <label id="lblTruckCap">Dump Truck Capacity (m³)</label>
+                <input id="truckCapacity" type="number" value="15">
+            </div>
+            <div class="input-group">
+                <label id="lblExcHours">Excavator Hours</label>
+                <input id="excavatorHours" type="number" value="10">
+            </div>
+        </div>
+        <div class="result-box">
+            <div><span id="txtLooseVol">Loose Soil Volume (for Transport)</span> <span id="resLooseVol">0 m³</span></div>
+            <div><span id="txtTruckTrips">Required Dump Truck Trips</span> <span id="resTrips">0 trips</span></div>
+        </div>
+
+        <!-- БЛОК 2: ЦІНИ -->
+        <h3 id="hEstimate">💶 Unit Prices & Machinery Rates</h3>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label id="lblPriceExcavation">Excavation & Loading €/m³</label>
+                <input id="priceExcavation" type="number" value="6">
+            </div>
+            <div class="input-group">
+                <label id="lblPriceTransport">Transport / Trip €/trip</label>
+                <input id="priceTransport" type="number" value="90">
+            </div>
+            <div class="input-group">
+                <label id="lblPriceExcHours">Excavator Rate €/hour</label>
+                <input id="priceExcHours" type="number" value="45">
+            </div>
+            <div class="input-group">
+                <label id="lblPriceDemolition">Demolition / Misc Cost €</label>
+                <input id="priceDemolition" type="number" value="350">
+            </div>
+        </div>
+
+        <h3 id="hCompany">🏢 Company Info</h3>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label id="lblCompName">Company Name</label>
+                <input id="companyName" placeholder="BuildMaster">
+            </div>
+            <div class="input-group">
+                <label id="lblCompPhone">Phone</label>
+                <input id="companyPhone" placeholder="+421...">
+            </div>
+            <div class="input-group">
+                <label id="lblCompEmail">Email</label>
+                <input id="companyEmail" placeholder="info@...">
+            </div>
+        </div>
+    </div>
+
+    <!-- ЗАГАЛЬНИЙ ФІНАНСОВИЙ ПІДСУМОК -->
+    <h3 id="hFinal" style="clear: both; width: 100%;">📊 Financial Summary</h3>
+    <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
+        <div><span>⛏️ <span id="txtCostExc">Excavation Cost</span></span> <span id="costExc">0 €</span></div>
+        <div><span>🚚 <span id="txtCostTrans">Transport Cost</span></span> <span id="costTrans">0 €</span></div>
+        <div><span>🚜 <span id="txtCostMach">Excavator Rental Cost</span></span> <span id="costMach">0 €</span></div>
+        <div><span>🔨 <span id="txtCostDemo">Demolition & Misc Cost</span></span> <span id="costDemo">0 €</span></div>
+        <hr>
+        <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; width: 100%;">
+            <span>💰 <span id="txtClientPrice">Total Project Price</span></span> <span id="clientTotal">0 €</span>
+        </div>
+    </div>
+
+    <div class="buttons-container">
+        <button class="action-btn" onclick="calculateAll()" id="btnCalc">💰 Calculate</button>
+        <button class="action-btn" onclick="copyEstimate()" id="btnCopy">📋 Copy</button>
+        <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Estimate</button>
+    </div>
+
+    <h3 id="hProjects" style="clear: both; width: 100%;">💾 Project Vault</h3>
+    <div class="buttons-container">
+        <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Save</button>
+        <button class="action-btn" onclick="showHistory()" id="btnHistory">📂 History</button>
+        <button class="action-btn" onclick="btnClear()" id="btnClear">🗑 Clear</button>
+    </div>
+
+    <div id="historyBox" class="history-box" style="display:none;"></div>
+
+    <div class="buy-pro-banner">
+        <h3 style="border:none; padding:0; margin:0;" id="proTitle">🔓 BUILDcalc PRO</h3>
+        <p id="proDesc">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
+        <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
+    </div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+document.getElementById('calcForm').addEventListener('input', calculateAll);
+
+function calculateMaterials() {
+    let vol = Number(document.getElementById("excavationVol").value) || 0;
+    let swelling = Number(document.getElementById("swellingCoeff").value) || 1.25;
+    let truckCap = Number(document.getElementById("truckCapacity").value) || 15;
+
+    // Об'єм з розпушенням
+    let looseVol = vol * swelling;
+    
+    // Кількість ходок самоскидів
+    let trips = truckCap > 0 ? Math.ceil(looseVol / truckCap) : 0;
+
+    // Виведення результатів
+    document.getElementById("resLooseVol").innerText = looseVol.toFixed(1) + " m³";
+    document.getElementById("resTrips").innerText = trips + " trips";
+
+    return { vol, looseVol, trips };
+}
+
+function calculateEstimate() {
+    let mats = calculateMaterials();
+
+    // Ціни та параметри
+    let pExc = Number(document.getElementById("priceExcavation").value) || 0;
+    let pTrans = Number(document.getElementById("priceTransport").value) || 0;
+    let excHours = Number(document.getElementById("excavatorHours").value) || 0;
+    let pMach = Number(document.getElementById("priceExcHours").value) || 0;
+    let pDemo = Number(document.getElementById("priceDemolition").value) || 0;
+
+    // Категорії витрат
+    let costExc = mats.vol * pExc;
+    let costTrans = mats.trips * pTrans;
+    let costMach = excHours * pMach;
+    let costDemo = pDemo;
+    
+    let clientTotal = costExc + costTrans + costMach + costDemo;
+
+    // Виведення фінансів
+    document.getElementById("costExc").innerText = costExc.toFixed(2) + " €";
+    document.getElementById("costTrans").innerText = costTrans.toFixed(2) + " €";
+    document.getElementById("costMach").innerText = costMach.toFixed(2) + " €";
+    document.getElementById("costDemo").innerText = costDemo.toFixed(2) + " €";
+    document.getElementById("clientTotal").innerText = clientTotal.toFixed(2) + " €";
+}
+
+function calculateAll() {
+    calculateEstimate();
+}
+
+function generatePDF() {
+    let objName = document.getElementById("object").value || "Object";
+    let clientName = document.getElementById("client").value || "Client";
+    let compName = document.getElementById("companyName").value || "Contractor";
+    
+    let printHtml = `
+    <div style="padding: 30px; font-family: Arial, sans-serif; color: #333; background: #fff;">
+        <h2>Earthworks Estimate: ${objName}</h2>
+        <p>Client: ${clientName} | Contractor: ${compName}</p>
+        <hr>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <tr style="background: #f8f9fa;">
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Category</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">Cost</th>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">Excavation & Loading</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costExc").innerText}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">Transport (Dump Truck Trips)</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costTrans").innerText}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">Excavator Rental</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costMach").innerText}</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">Demolition & Misc</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costDemo").innerText}</td>
+            </tr>
+        </table>
+        <h3 style="text-align: right; margin-top: 30px;">Total Price: <span style="color: #d32f2f;">${document.getElementById("clientTotal").innerText}</span></h3>
+    </div>`;
+
+    let opt = {
+        margin: 10,
+        filename: `Earthworks_Estimate_${objName}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(printHtml).save();
+}
+
+function saveProject() {
+    let project = {
+        date: new Date().toLocaleString(),
+        object: document.getElementById("object").value || "Unnamed",
+        client: document.getElementById("client").value || "-",
+        price: document.getElementById("clientTotal").innerText
+    };
+    let list = JSON.parse(localStorage.getItem("earthworksProjects")) || [];
+    list.unshift(project);
+    localStorage.setItem("earthworksProjects", JSON.stringify(list));
+    alert("Project saved successfully!");
+}
+
+function showHistory() {
+    let box = document.getElementById("historyBox");
+    box.style.display = box.style.display === "none" ? "block" : "none";
+    let list = JSON.parse(localStorage.getItem("earthworksProjects")) || [];
+    if (list.length == 0) {
+        box.innerHTML = "<p style='color:var(--text-muted);'>History is empty</p>";
+        return;
+    }
+    let html = "";
+    list.forEach(p => {
+        html += `<div style="margin-bottom:10px;"><b>${p.object}</b><br>Client: ${p.client}<br>Total: <span style="color:var(--primary)">${p.price}</span><br><small style="color:#777;">${p.date}</small><hr style="border-top:1px solid #444; margin:5px 0;"></div>`;
+    });
+    box.innerHTML = html;
+}
+
+function btnClear() {
+    if(confirm("Clear history?")) {
+        localStorage.removeItem("earthworksProjects");
+        showHistory();
+    }
+}
+
+function copyEstimate() {
+    let res = document.getElementById("clientTotal").innerText;
+    navigator.clipboard.writeText(`Earthworks Estimate for ${document.getElementById("object").value}:\nTotal Price: ${res}`);
+    alert("Copied to clipboard!");
+}
+
+const langData = {
+    en: {
+        subtitle: "Professional Earthworks & Demolition Calculator",
+        objectTitle: "🏠 Object Data", objectLabel: "Object Name", addressLabel: "Address", clientLabel: "Client",
+        hEarthworks: "🚜 Earthworks Specs", lblExcavation: "Excavation Volume (m³)", lblSwelling: "Soil Swelling Coeff (e.g., 1.25)", lblTruckCap: "Dump Truck Capacity (m³)", lblExcHours: "Excavator Hours",
+        txtLooseVol: "Loose Soil Volume (for Transport)", txtTruckTrips: "Required Dump Truck Trips",
+        hEstimate: "💶 Unit Prices & Machinery Rates", lblPriceExcavation: "Excavation & Loading €/m³", lblPriceTransport: "Transport / Trip €/trip", lblPriceExcHours: "Excavator Rate €/hour", lblPriceDemolition: "Demolition / Misc Cost €",
+        hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
+        hFinal: "📊 Financial Summary", txtCostExc: "Excavation Cost", txtCostTrans: "Transport Cost", txtCostMach: "Excavator Rental Cost", txtCostDemo: "Demolition & Misc Cost", txtClientPrice: "Total Project Price",
+        btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Estimate", hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing"
+    },
+    ua: {
+        subtitle: "Калькулятор земляних робіт та демонтажу",
+        objectTitle: "🏠 Дані об'єкта", objectLabel: "Назва об'єкта", addressLabel: "Адреса", clientLabel: "Клієнт",
+        hEarthworks: "🚜 Параметри ґрунту та робіт", lblExcavation: "Об'єм виїмки ґрунту (м³)", lblSwelling: "Коефіцієнт розпушення (напр. 1.25)", lblTruckCap: "Місткість самоскида (м³)", lblExcHours: "Години роботи екскаватора",
+        txtLooseVol: "Об'єм розпушеного ґрунту (для вивезення)", txtTruckTrips: "Кількість ходок самоскидів",
+        hEstimate: "💶 Ціни та тарифи спецтехніки", lblPriceExcavation: "Виїмка та навантаження €/м³", lblPriceTransport: "Транспорт / рейс €/рейс", lblPriceExcHours: "Робота екскаватора €/год", lblPriceDemolition: "Демонтаж / Ручна праця €",
+        hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
+        hFinal: "📊 Фінансовий підсумок", txtCostExc: "Вартість виїмки ґрунту", txtCostTrans: "Вартість транспортних послуг", txtCostMach: "Оренда екскаватора", txtCostDemo: "Демонтаж та витрати", txtClientPrice: "Загальна ціна проєкту",
+        btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF", hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість"
+    },
+    sk: {
+        subtitle: "Kalkulačka zemných prác a demontáže",
+        objectTitle: "🏠 Údaje o objekte", objectLabel: "Názov objektu", addressLabel: "Adresa", clientLabel: "Klient",
+        hEarthworks: "🚜 Parametre zemných prác", lblExcavation: "Objem výkopu (m³)", lblSwelling: "Koeficient nakyprenia (napr. 1.25)", lblTruckCap: "Kapacita sklápača (m³)", lblExcHours: "Hodiny bagra",
+        txtLooseVol: "Nakyprený objem (na odvoz)", txtTruckTrips: "Počet jázd sklápača",
+        hEstimate: "💶 Ceny a sadzby mechanizmov", lblPriceExcavation: "Výkop a nakladanie €/m³", lblPriceTransport: "Doprava / jazda €/jazdu", lblPriceExcHours: "Sadzba bagra €/hod", lblPriceDemolition: "Demontáž / Práce €",
+        hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
+        hFinal: "📊 Finančný prehľad", txtCostExc: "Cena výkopu", txtCostTrans: "Cena dopravy", txtCostMach: "Prenájom bagra", txtCostDemo: "Demontáž a ostatné", txtClientPrice: "Celková cena projektu",
+        btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument", hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu"
+    }
+};
+
+function changeLanguage() {
+    let lang = document.getElementById("language").value;
+    let data = langData[lang];
+    if (data) {
+        for (let id in data) {
+            let el = document.getElementById(id);
+            if (el) {
+                if (el.tagName === "INPUT") el.placeholder = data[id];
+                else el.innerHTML = data[id];
+            }
+        }
+    }
+}
+
+function setVersion(version) {
+    document.getElementById("tabFree").classList.remove("active");
+    document.getElementById("tabPro").classList.remove("active");
+    if (version === 'free') {
+        document.getElementById("tabFree").classList.add("active");
+    } else {
+        document.getElementById("tabPro").classList.add("active");
+    }
+}
+
+// Стартова ініціалізація
+document.getElementById("language").value = "en";
+changeLanguage();
+calculateAll();
+</script>
+</body>
+</html>
