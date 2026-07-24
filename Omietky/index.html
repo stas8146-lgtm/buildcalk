@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,6 +56,7 @@
         
         .section-title { font-size: 0.9rem; color: var(--accent-yellow); font-weight: bold; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;}
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         
         .input-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
         .input-group input, .input-group select { width: 100%; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-light); padding: 8px; border-radius: 6px; font-weight: bold; outline: none; }
@@ -151,46 +151,72 @@
                 </div>
             </div>
 
+            <div class="section-title" id="sec-prep">🖌️ Preparation (Primer & Mesh)</div>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label id="lbl-primer-type">Primer Type</label>
+                    <select id="in-primer-type" onchange="recalc()">
+                        <option value="none" id="opt-none">None</option>
+                        <option value="deep" id="opt-deep">Deep Penetrating (~0.15 L/m²)</option>
+                        <option value="beton" id="opt-beton">Betonkontakt (~0.3 kg/m²)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label id="lbl-mesh-area">Mesh for transitions (m²)</label>
+                    <input type="number" id="in-mesh-area" value="5" min="0" step="1" oninput="recalc()">
+                </div>
+            </div>
+
             <div class="section-title" id="sec-profiles">⚙️ Profiles & Accessories</div>
             <div class="grid-2">
                 <div class="input-group">
-                    <label id="lbl-corners">External Corners (pcs / perimeter m)</label>
+                    <label id="lbl-corners">External Corners (pcs)</label>
                     <input type="number" id="in-corners" value="4" min="0" step="1" oninput="recalc()">
                 </div>
                 <div class="input-group">
-                    <label id="lbl-corner-len">Corner Length (m)</label>
+                    <label id="lbl-corner-len">Standard Length (m)</label>
                     <input type="number" id="in-corner-len" value="2.5" min="0.5" step="0.5" oninput="recalc()">
                 </div>
             </div>
 
             <div class="grid-2">
                 <div class="input-group">
-                    <label id="lbl-apubound">APU / Window Connection Beads (m)</label>
+                    <label id="lbl-apubound">APU Beads (m)</label>
                     <input type="number" id="in-apu-meters" value="12" min="0" step="0.5" oninput="recalc()">
                 </div>
                 <div class="input-group">
-                    <label id="lbl-beacons">Plastering Beacons (Mayaky) (m)</label>
+                    <label id="lbl-beacons">Plastering Beacons (m)</label>
                     <input type="number" id="in-beacons-meters" value="20" min="0" step="1" oninput="recalc()">
                 </div>
             </div>
 
             <div class="section-title" id="sec-economy">💶 Economics & Prices</div>
-            <div class="grid-2">
+            <div class="grid-3">
                 <div class="input-group">
-                    <label id="lbl-price-bag">Bag Price (€)</label>
+                    <label id="lbl-price-bag">Bag (€)</label>
                     <input type="number" id="in-price-bag" value="6.50" min="0" step="0.5" oninput="recalc()">
                 </div>
                 <div class="input-group">
-                    <label id="lbl-price-labor">Labor Rate (€/m²)</label>
+                    <label id="lbl-price-labor">Labor (€/m²)</label>
                     <input type="number" id="in-price-labor" value="10.00" min="0" step="0.5" oninput="recalc()">
                 </div>
                 <div class="input-group">
-                    <label id="lbl-price-profile">Profile / Bead Price (€/pc)</label>
+                    <label id="lbl-price-profile">Profile (€/pc)</label>
                     <input type="number" id="in-price-profile" value="1.50" min="0" step="0.1" oninput="recalc()">
                 </div>
+            </div>
+            <div class="grid-3">
                 <div class="input-group">
-                    <label id="lbl-primer-cost">Primer / Other (€)</label>
-                    <input type="number" id="in-other-exp" value="30.00" min="0" step="1" oninput="recalc()">
+                    <label id="lbl-price-primer">Primer (€/L|kg)</label>
+                    <input type="number" id="in-price-primer" value="2.50" min="0" step="0.5" oninput="recalc()">
+                </div>
+                <div class="input-group">
+                    <label id="lbl-price-mesh">Mesh (€/m²)</label>
+                    <input type="number" id="in-price-mesh" value="1.20" min="0" step="0.1" oninput="recalc()">
+                </div>
+                <div class="input-group">
+                    <label id="lbl-other-exp">Other (€)</label>
+                    <input type="number" id="in-other-exp" value="10.00" min="0" step="1" oninput="recalc()">
                 </div>
             </div>
 
@@ -205,10 +231,15 @@
                 </div>
                 
                 <div class="result-row subtext">
+                    <span id="res-prep-need">Primer & Mesh:</span>
+                    <span id="out-prep-need">0.0 L | 0.0 m²</span>
+                </div>
+                <div class="result-row subtext">
                     <span id="res-profiles-count">Corners / APU / Beacons:</span>
                     <span id="out-profiles-count">0 pcs</span>
                 </div>
-                <div class="result-row subtext">
+
+                <div class="result-row subtext" style="border-top: 1px dashed var(--border-color); padding-top: 8px; margin-top: 8px;">
                     <span id="res-mat-cost">Materials Cost:</span>
                     <span id="out-mat-cost">0.00 €</span>
                 </div>
@@ -243,8 +274,8 @@
         function toggleTheme() { document.body.classList.toggle('light-theme'); }
 
         const STANDARDS = {
-            doorArea: 1.8,     // Середня площа дверей (м²) для вирахування з площі стін
-            windowArea: 1.5    // Середня площа вікна (м²) для вирахування з площі стін
+            doorArea: 1.8,     // Середня площа дверей
+            windowArea: 1.5    // Середня площа вікна
         };
 
         const dict = {
@@ -253,10 +284,16 @@
                 secObj: "📐 Parameters & Surfaces", plasterType: "Plaster Type",
                 optGips: "Gypsum Plaster (~9.0 kg/m² per 10mm)", optCement: "Cement-Lime Plaster (~16.0 kg/m² per 10mm)", optDec: "Decorative / Koroid (~3.0 kg/m² fixed)",
                 area: "Wall Area (m²)", thickness: "Layer Thickness (mm)", openings: "Doors / Windows (Openings)", bagWeight: "Bag Weight (kg)",
-                secProf: "⚙️ Profiles & Accessories", corners: "External Corners (pcs)", cornerLen: "Corner Length (m)",
-                apu: "APU / Window Connection Beads (m)", beacons: "Plastering Beacons (m)",
-                secEco: "💶 Economics & Prices", bagPrice: "Bag Price (€)", laborRate: "Labor Rate (€/m²)", profilePrice: "Profile Price (€/pc)", otherExp: "Primer / Other (€)",
-                netArea: "Net Working Area:", mixBags: "Dry Mix Needed:", profCount: "Accessories (Corners/APU/Beacons):",
+                
+                secPrep: "🖌️ Preparation (Primer & Mesh)", primerType: "Primer Type", optNone: "None", optDeep: "Deep Penetrating (~0.15 L/m²)", optBeton: "Betonkontakt (~0.3 kg/m²)", meshArea: "Mesh for transitions (m²)",
+                
+                secProf: "⚙️ Profiles & Accessories", corners: "External Corners (pcs)", cornerLen: "Standard Length (m)",
+                apu: "APU Beads (m)", beacons: "Plastering Beacons (m)",
+                
+                secEco: "💶 Economics & Prices", bagPrice: "Bag (€)", laborRate: "Labor (€/m²)", profilePrice: "Profile (€/pc)", 
+                pricePrimer: "Primer (€/L|kg)", priceMesh: "Mesh (€/m²)", otherExp: "Other (€)",
+                
+                netArea: "Net Working Area:", mixBags: "Dry Mix Needed:", prepNeed: "Primer & Mesh:", profCount: "Accessories (Corners/APU/Beacons):",
                 matCost: "Materials Cost:", labCost: "Labor Cost:", othCost: "Other Expenses:", grandTotal: "Grand Total:",
                 secHist: "📂 Saved Objects", promptMsg: "Enter object name (e.g. Apartment Walls):", del: "Delete"
             },
@@ -265,10 +302,16 @@
                 secObj: "📐 Параметри та Поверхні", plasterType: "Тип штукатурки",
                 optGips: "Гіпсова штукатурка (~9.0 кг/м² на 10мм)", optCement: "Цементно-вапняна (~16.0 кг/м² на 10мм)", optDec: "Декоративна / Короїд (~3.0 кг/м² фіксовано)",
                 area: "Площа стін (м²)", thickness: "Товщина шару (мм)", openings: "Двері / Вікна (прорізи)", bagWeight: "Вага мішка (кг)",
-                secProf: "⚙️ Профілі та Аксесуари", corners: "Зовнішні кутники (шт)", cornerLen: "Довжина кутника (м)",
+                
+                secPrep: "🖌️ Підготовка (Ґрунт та Сітка)", primerType: "Тип ґрунтовки", optNone: "Без ґрунтовки", optDeep: "Глибокого проникнення (~0.15 л/м²)", optBeton: "Бетоноконтакт (~0.3 кг/м²)", meshArea: "Сітка для стиків (м²)",
+                
+                secProf: "⚙️ Профілі та Аксесуари", corners: "Зовнішні кутники (шт)", cornerLen: "Стандартна довжина (м)",
                 apu: "АПУ-линти / Примикання (м)", beacons: "Маяки штукатурні (м)",
-                secEco: "💶 Економіка та Ціни", bagPrice: "Ціна мішка (€)", laborRate: "Робота (€/m²)", profilePrice: "Ціна профілю/маяка (€/шт)", otherExp: "Ґрунтовка / Інше (€)",
-                netArea: "Чиста робоча площа:", mixBags: "Суха суміш:", profCount: "Кутники / АПУ / Маяки (шт):",
+                
+                secEco: "💶 Економіка та Ціни", bagPrice: "Мішок (€)", laborRate: "Робота (€/m²)", profilePrice: "Профіль (€/шт)", 
+                pricePrimer: "Ґрунтовка (€/л|кг)", priceMesh: "Сітка (€/м²)", otherExp: "Інше (€)",
+                
+                netArea: "Чиста робоча площа:", mixBags: "Суха суміш:", prepNeed: "Ґрунт та Сітка:", profCount: "Кутники / АПУ / Маяки (шт):",
                 matCost: "Вартість матеріалів:", labCost: "Вартість робіт:", othCost: "Інші витрати:", grandTotal: "Загальна вартість:",
                 secHist: "📂 Збережені об'єкти", promptMsg: "Введіть назву об'єкта (напр. Квартира):", del: "Видалити"
             },
@@ -277,10 +320,16 @@
                 secObj: "📐 Parametre a Povrchy", plasterType: "Typ omietki",
                 optGips: "Sádrová omietka (~9.0 kg/m² na 10mm)", optCement: "Cementovo-vápenná (~16.0 kg/m² na 10mm)", optDec: "Dekoratívna / Kôrovec (~3.0 kg/m² pevná)",
                 area: "Plocha stien (m²)", thickness: "Hrúbka vrstvy (mm)", openings: "Dvere / Okná (otvory)", bagWeight: "Hmotnosť vrece (kg)",
-                secProf: "⚙️ Profily a Príslušenstvo", corners: "Rohové profily / rohy (ks)", cornerLen: "Dĺžka rohu (m)",
-                apu: "APU lišty / pripojovacie profily (m)", beacons: "Omietkové profily / majáky (m)",
-                secEco: "💶 Ekonomika a Ceny", bagPrice: "Cena vreca (€)", laborRate: "Cena práce (€/m²)", profilePrice: "Cena profilu/majáku (€/ks)", otherExp: "Penetrácia / Iné (€)",
-                netArea: "Čistá pracovná plocha:", mixBags: "Potrebná suchá zmes:", profCount: "Rohy / APU / Majáky (ks):",
+                
+                secPrep: "🖌️ Príprava (Penetrácia a Sieťka)", primerType: "Typ penetrácie", optNone: "Žiadna", optDeep: "Hĺbková penetrácia (~0.15 l/m²)", optBeton: "Betónkontakt (~0.3 kg/m²)", meshArea: "Sieťka na spoje (m²)",
+                
+                secProf: "⚙️ Profily a Príslušenstvo", corners: "Rohové profily (ks)", cornerLen: "Štandardná dĺžka (m)",
+                apu: "APU lišty (m)", beacons: "Omietkové majáky (m)",
+                
+                secEco: "💶 Ekonomika a Ceny", bagPrice: "Vrece (€)", laborRate: "Práca (€/m²)", profilePrice: "Profil/maják (€/ks)", 
+                pricePrimer: "Penetrácia (€/l|kg)", priceMesh: "Sieťka (€/m²)", otherExp: "Iné (€)",
+                
+                netArea: "Čistá pracovná plocha:", mixBags: "Potrebná suchá zmes:", prepNeed: "Penetrácia a Sieťka:", profCount: "Rohy / APU / Majáky (ks):",
                 matCost: "Cena materiálu:", labCost: "Cena práce:", othCost: "Iné náklady:", grandTotal: "Celková cena:",
                 secHist: "📂 Uložené objekty", promptMsg: "Zadajte názov objektu (napr. Byty):", del: "Vymazať"
             }
@@ -319,20 +368,34 @@
             document.getElementById('lbl-openings').innerText = dict[lang].openings;
             document.getElementById('lbl-bag-weight').innerText = dict[lang].bagWeight;
 
+            // Preparation
+            document.getElementById('sec-prep').innerText = dict[lang].secPrep;
+            document.getElementById('lbl-primer-type').innerText = dict[lang].primerType;
+            document.getElementById('opt-none').innerText = dict[lang].optNone;
+            document.getElementById('opt-deep').innerText = dict[lang].optDeep;
+            document.getElementById('opt-beton').innerText = dict[lang].optBeton;
+            document.getElementById('lbl-mesh-area').innerText = dict[lang].meshArea;
+
+            // Profiles
             document.getElementById('sec-profiles').innerText = dict[lang].secProf;
             document.getElementById('lbl-corners').innerText = dict[lang].corners;
             document.getElementById('lbl-corner-len').innerText = dict[lang].cornerLen;
             document.getElementById('lbl-apubound').innerText = dict[lang].apu;
             document.getElementById('lbl-beacons').innerText = dict[lang].beacons;
 
+            // Economy
             document.getElementById('sec-economy').innerText = dict[lang].secEco;
             document.getElementById('lbl-price-bag').innerText = dict[lang].bagPrice;
             document.getElementById('lbl-price-labor').innerText = dict[lang].laborRate;
             document.getElementById('lbl-price-profile').innerText = dict[lang].profilePrice;
-            document.getElementById('lbl-primer-cost').innerText = dict[lang].otherExp;
+            document.getElementById('lbl-price-primer').innerText = dict[lang].pricePrimer;
+            document.getElementById('lbl-price-mesh').innerText = dict[lang].priceMesh;
+            document.getElementById('lbl-other-exp').innerText = dict[lang].otherExp;
 
+            // Results
             document.getElementById('res-net-area').innerText = dict[lang].netArea;
             document.getElementById('res-mix-bags').innerText = dict[lang].mixBags;
+            document.getElementById('res-prep-need').innerText = dict[lang].prepNeed;
             document.getElementById('res-profiles-count').innerText = dict[lang].profCount;
             document.getElementById('res-mat-cost').innerText = dict[lang].matCost;
             document.getElementById('res-lab-cost').innerText = dict[lang].labCost;
@@ -345,13 +408,13 @@
         }
 
         function recalc() {
+            // Площа та базова суміш
             let area = Math.max(0, parseFloat(document.getElementById('in-area').value) || 0);
             let doors = Math.max(0, parseInt(document.getElementById('in-doors').value) || 0);
             let windows = Math.max(0, parseInt(document.getElementById('in-windows').value) || 0);
             
-            // Вирахування прорізів із загальної площі (з урахуем запасів 5%)
             let netArea = Math.max(0, area - (doors * STANDARDS.doorArea) - (windows * STANDARDS.windowArea));
-            let totalAreaWithWaste = netArea * 1.05; // 5% технологічний запас на підрізку
+            let totalAreaWithWaste = netArea * 1.05; // 5% запас
 
             document.getElementById('out-net-area').innerText = netArea.toFixed(2) + " m²";
 
@@ -360,28 +423,35 @@
             let bagWeight = parseFloat(document.getElementById('in-bag-weight').value) || 25;
 
             let kgPerSqM = 0;
-            if (type === 'gips') {
-                kgPerSqM = 0.9 * thickness; // ~9 кг на 10 мм
-            } else if (type === 'cement') {
-                kgPerSqM = 1.6 * thickness; // ~16 кг на 10 мм
-            } else {
-                kgPerSqM = 3.0; // Декоративна фіксована
-            }
+            if (type === 'gips') kgPerSqM = 0.9 * thickness; 
+            else if (type === 'cement') kgPerSqM = 1.6 * thickness;
+            else kgPerSqM = 3.0; 
 
             let totalKg = totalAreaWithWaste * kgPerSqM;
             let totalBags = Math.ceil(totalKg / bagWeight);
             document.getElementById('out-bags').innerText = `${totalBags} bags (${totalKg.toFixed(1)} kg)`;
 
-            // Розрахунок кількості профілів (штук стандартної довжини 2.5 або 3м)
+            // Ґрунтовка та Сітка
+            let primerType = document.getElementById('in-primer-type').value;
+            let primerQty = 0;
+            let primerUnit = "L";
+            if(primerType === 'deep') { primerQty = netArea * 0.15; primerUnit = "L"; }
+            else if(primerType === 'beton') { primerQty = netArea * 0.3; primerUnit = "kg"; }
+            
+            let meshAreaInput = Math.max(0, parseFloat(document.getElementById('in-mesh-area').value) || 0);
+            let meshQty = meshAreaInput * 1.1; // 10% нахлест та обрізки
+
+            document.getElementById('out-prep-need').innerText = 
+                primerQty > 0 ? `${primerQty.toFixed(1)} ${primerUnit} | ${meshQty.toFixed(1)} m²` : `0 L | ${meshQty.toFixed(1)} m²`;
+
+            // Профілі
             let cornersPcs = parseFloat(document.getElementById('in-corners').value) || 0;
             let cornerLenInput = parseFloat(document.getElementById('in-corner-len').value) || 2.5;
-            
             let apuMeters = parseFloat(document.getElementById('in-apu-meters').value) || 0;
             let beaconsMeters = parseFloat(document.getElementById('in-beacons-meters').value) || 0;
 
-            // Переведення погонних метрів у штуки стандартних профільних елементів (приблизно 2.5м профіль)
-            let apuPcs = Math.ceil(apuMeters / 2.5);
-            let beaconsPcs = Math.ceil(beaconsMeters / 2.5);
+            let apuPcs = Math.ceil(apuMeters / cornerLenInput);
+            let beaconsPcs = Math.ceil(beaconsMeters / cornerLenInput);
             let totalProfilesCount = cornersPcs + apuPcs + beaconsPcs;
 
             document.getElementById('out-profiles-count').innerText = `${totalProfilesCount} pcs (C:${cornersPcs}, APU:${apuPcs}, B:${beaconsPcs})`;
@@ -390,9 +460,15 @@
             let priceBag = parseFloat(document.getElementById('in-price-bag').value) || 0;
             let priceLabor = parseFloat(document.getElementById('in-price-labor').value) || 0;
             let priceProfile = parseFloat(document.getElementById('in-price-profile').value) || 0;
+            let pricePrimer = parseFloat(document.getElementById('in-price-primer').value) || 0;
+            let priceMesh = parseFloat(document.getElementById('in-price-mesh').value) || 0;
             let otherExp = parseFloat(document.getElementById('in-other-exp').value) || 0;
 
-            let matCost = (totalBags * priceBag) + (totalProfilesCount * priceProfile);
+            let matCost = (totalBags * priceBag) + 
+                          (totalProfilesCount * priceProfile) + 
+                          (primerQty * pricePrimer) + 
+                          (meshQty * priceMesh);
+
             let laborCost = netArea * priceLabor;
             let grandTotal = matCost + laborCost + otherExp;
 
