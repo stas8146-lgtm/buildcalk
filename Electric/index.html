@@ -94,15 +94,13 @@
         }
         .buy-btn:hover { background: var(--primary-hover); }
     </style>
-<script src="../nav.js"></script>
 </head>
 <body>
-<div id="global-nav-container"></div>
     <div class="header">
         <div class="logo">⚡ <span>BUILD</span>calc ELEC PRO</div>
         <div class="subtitle" id="subtitle">Professional Electrical & Lighting Calculator</div>
         
-        
+        <div id="global-nav-container"></div>
 
         <div class="lang-select-wrapper">
             <select id="language" onchange="changeLanguage()">
@@ -313,23 +311,40 @@
 document.getElementById('calcForm').addEventListener('input', calculateAll);
 
 function calculateElectrical() {
-    let powerKW = Number(document.getElementById("totalPower").value) || 10;
+    let powerKW = Number(document.getElementById("totalPower").value) || 0;
     let voltage = Number(document.getElementById("voltageType").value) || 230;
     let isCopper = document.getElementById("cableMaterial").value === "copper";
-    let cableLen = Number(document.getElementById("cableLength").value) || 250;
+    let cableLen = Number(document.getElementById("cableLength").value) || 0;
+    
+    let sockets = Number(document.getElementById("socketsCount").value) || 0;
+
+    // --- НЕЛІНІЙНИЙ РОЗРАХУНОК: Коефіцієнт попиту (Demand Factor) ---
+    // Чим більше розеток, тим менша ймовірність, що вони всі працюватимуть на максимум.
+    let demandFactor = 1.0;
+    if (sockets >= 40) demandFactor = 0.35;
+    else if (sockets >= 25) demandFactor = 0.45;
+    else if (sockets >= 15) demandFactor = 0.55;
+    else if (sockets >= 10) demandFactor = 0.70;
+    else if (sockets >= 5) demandFactor = 0.85;
+
+    // Розрахункова (реальна) потужність
+    let effectivePowerKW = powerKW * demandFactor;
+    
+    // Мінімальний поріг для житлових приміщень, щоб уникнути занадто малих показників
+    if (effectivePowerKW < 3 && powerKW > 0) effectivePowerKW = Math.min(powerKW, 3);
 
     let current = 0;
     if (voltage === 230) {
-        current = (powerKW * 1000) / (230 * 0.95);
+        current = (effectivePowerKW * 1000) / (230 * 0.95);
     } else {
-        current = (powerKW * 1000) / (1.732 * 400 * 0.95);
+        current = (effectivePowerKW * 1000) / (1.732 * 400 * 0.95);
     }
 
     let ampPerMm2 = isCopper ? 8 : 5.5;
     let rawSection = current / ampPerMm2;
     
     let standardSections = [1.5, 2.5, 4.0, 6.0, 10.0, 16.0, 25.0];
-    let recSection = 2.5;
+    let recSection = 1.5;
     for (let s of standardSections) {
         if (s >= rawSection) {
             recSection = s;
@@ -338,10 +353,11 @@ function calculateElectrical() {
         recSection = s;
     }
 
+    // Стандартні номінали автоматів
     let standardBreakers = [16, 20, 25, 32, 40, 50, 63, 80, 100];
-    let mainBreaker = 40;
+    let mainBreaker = 16;
     for (let b of standardBreakers) {
-        if (b >= current * 1.15) {
+        if (b >= current * 1.10) { // Запас 10%
             mainBreaker = b;
             break;
         }
@@ -355,23 +371,23 @@ function calculateElectrical() {
 }
 
 function calculateEstimate() {
-    let cableLen = Number(document.getElementById("cableLength").value) || 250;
-    let conduitLen = Number(document.getElementById("conduitLength").value) || 200;
-    let sockets = Number(document.getElementById("socketsCount").value) || 25;
-    let switches = Number(document.getElementById("switchesCount").value) || 10;
-    let lights = Number(document.getElementById("lightsCount").value) || 12;
-    let breakers = Number(document.getElementById("breakersCount").value) || 8;
-    let boxes = Number(document.getElementById("boxesCount").value) || 45;
+    let cableLen = Number(document.getElementById("cableLength").value) || 0;
+    let conduitLen = Number(document.getElementById("conduitLength").value) || 0;
+    let sockets = Number(document.getElementById("socketsCount").value) || 0;
+    let switches = Number(document.getElementById("switchesCount").value) || 0;
+    let lights = Number(document.getElementById("lightsCount").value) || 0;
+    let breakers = Number(document.getElementById("breakersCount").value) || 0;
+    let boxes = Number(document.getElementById("boxesCount").value) || 0;
 
-    let cablePrice = Number(document.getElementById("cablePrice").value) || 1.2;
-    let socketPrice = Number(document.getElementById("socketPrice").value) || 8.0;
-    let breakerPrice = Number(document.getElementById("breakerPrice").value) || 6.5;
-    let panelPrice = Number(document.getElementById("panelPrice").value) || 75;
+    let cablePrice = Number(document.getElementById("cablePrice").value) || 0;
+    let socketPrice = Number(document.getElementById("socketPrice").value) || 0;
+    let breakerPrice = Number(document.getElementById("breakerPrice").value) || 0;
+    let panelPrice = Number(document.getElementById("panelPrice").value) || 0;
 
-    let pointLabor = Number(document.getElementById("pointLabor").value) || 12;
-    let cableLabor = Number(document.getElementById("cableLabor").value) || 2.5;
-    let profit = Number(document.getElementById("profitPrice").value) || 150;
-    let delivery = Number(document.getElementById("deliveryPrice").value) || 60;
+    let pointLabor = Number(document.getElementById("pointLabor").value) || 0;
+    let cableLabor = Number(document.getElementById("cableLabor").value) || 0;
+    let profit = Number(document.getElementById("profitPrice").value) || 0;
+    let delivery = Number(document.getElementById("deliveryPrice").value) || 0;
 
     let materialCableCost = (cableLen * cablePrice) + (conduitLen * 0.45) + (boxes * 0.8);
     let totalPointsCount = sockets + switches + lights;
