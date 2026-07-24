@@ -55,6 +55,7 @@ const menuHTML = `
         <a href="../Paving/index.html">🛣️ Paving</a>
         <a href="../Painting/index.html">🎨 Painting</a>
         <a href="../Fencing/index.html">🚧 Fencing</a>
+        <a href="../Earthworks/index.html">🚜 Earthworks</a>
      </div>
 `;
 
