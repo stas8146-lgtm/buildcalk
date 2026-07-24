@@ -50,6 +50,7 @@ const menuHTML = `
         <a href="../Foundation/index.html">🪨 Foundation</a>
         <a href="../Electric/index.html">⚡ Electric</a>
         <a href="../Facade/index.html">🟫 Facade</a>
+        <a href="../Plumbing/index.html">🔧 Plumbing & Heat</a>
     </div>
 `;
 
