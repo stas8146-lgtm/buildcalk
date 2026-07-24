@@ -27,7 +27,6 @@
             padding: 20px; 
         }
 
-        /* Header Styles */
         .header { 
             text-align: center; 
             padding: 15px 0 25px 0; 
@@ -52,7 +51,6 @@
         }
         .lang-select-wrapper select:hover { background: rgba(255, 193, 7, 0.1); }
 
-        /* Typography & Structure */
         h3 { 
             border-left: 4px solid var(--primary); 
             padding-left: 12px; 
@@ -63,7 +61,6 @@
             font-weight: 600;
         }
 
-        /* Grid & Inputs */
         .grid-inputs { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
@@ -105,7 +102,6 @@
             background: #23272b;
         }
 
-        /* Result Boxes */
         .result-box { 
             background: var(--dark-card); 
             padding: 20px; 
@@ -132,7 +128,6 @@
         #result { border: 2px solid var(--primary); background: linear-gradient(145deg, #1e2124 0%, #151719 100%); }
         #result hr { border: 0; border-top: 1px dashed #555; margin: 15px 0; }
         
-        /* Buttons */
         .buttons-container { 
             display: flex; 
             gap: 15px; 
@@ -277,7 +272,7 @@
             <div><span id="txtInsulVol">Insulation Volume</span> <span id="resInsulVol">0 m³</span></div>
             <div><span id="txtGlue">Glue (Gluing + Base Coat)</span> <span id="resGlue">0 bags</span></div>
             <div><span id="txtMesh">Mesh (+10% overlap)</span> <span id="resMesh">0 m²</span></div>
-            <div><span id="txtDowel">Dowels (<span id="resDowelLen">0</span> mm length)</span> <span id="resDowel">0 pcs</span></div>
+            <div><span id="txtDowel">Dowels</span> <span id="resDowelText"><span id="resDowel">0</span> pcs (<span id="resDowelLen">0</span> mm)</span></div>
             <div><span id="txtPrimer">Primer</span> <span id="resPrimer">0 buckets</span></div>
             <div><span id="txtPlaster">Facade Plaster</span> <span id="resPlaster">0 buckets</span></div>
         </div>
@@ -319,41 +314,36 @@
 document.getElementById('calcForm').addEventListener('input', calculateAll);
 
 function calculateAll() {
-    // 1. Площі
     let grossArea = Number(document.getElementById("grossArea").value) || 0;
     let windowsArea = Number(document.getElementById("windowsArea").value) || 0;
     let netArea = grossArea - windowsArea;
     if (netArea < 0) netArea = 0;
 
-    // 2. Периметри та кути
     let starterLen = Number(document.getElementById("starterLen").value) || 0;
     let cornerLen = Number(document.getElementById("cornerLen").value) || 0;
     let apuLen = Number(document.getElementById("apuLen").value) || 0;
     let thickness = Number(document.getElementById("insulThick").value) || 0;
 
-    // 3. Розрахунок кількості матеріалів
-    let insulQty = netArea * 1.05; // 5% запас
-    let insulVol = insulQty * (thickness / 1000); // Об'єм в кубах
-    let glueBags = Math.ceil((netArea * 10) / 25); // 10 кг/м²
-    let meshQty = netArea * 1.1; // 10% нахлест
-    let dowelQty = Math.ceil(netArea * 6); // 6 шт на м²
-    let dowelLength = thickness + 50; // Довжина дюбеля (товщина + 50мм в стіну)
+    let insulQty = netArea * 1.05; 
+    let insulVol = insulQty * (thickness / 1000); 
+    let glueBags = Math.ceil((netArea * 10) / 25); 
+    let meshQty = netArea * 1.1; 
+    let dowelQty = Math.ceil(netArea * 6); 
+    let dowelLength = thickness + 50; 
     
-    let primerBuckets = Math.ceil((netArea * 0.3) / 10); // 0.3 кг/м², відра 10л
-    let plasterBuckets = Math.ceil((netArea * 2.8) / 25); // 2.8 кг/м², відра 25кг
+    let primerBuckets = Math.ceil((netArea * 0.3) / 10); 
+    let plasterBuckets = Math.ceil((netArea * 2.8) / 25); 
 
-    // Вивід кількості
     document.getElementById("resNetArea").innerHTML = netArea.toFixed(1) + " m²";
     document.getElementById("resInsul").innerHTML = insulQty.toFixed(1) + " m²";
     document.getElementById("resInsulVol").innerHTML = insulVol.toFixed(2) + " m³";
-    document.getElementById("resGlue").innerHTML = glueBags;
+    document.getElementById("resGlue").innerHTML = glueBags + " bags";
     document.getElementById("resMesh").innerHTML = meshQty.toFixed(1) + " m²";
     document.getElementById("resDowel").innerHTML = dowelQty;
     document.getElementById("resDowelLen").innerHTML = dowelLength;
-    document.getElementById("resPrimer").innerHTML = primerBuckets;
-    document.getElementById("resPlaster").innerHTML = plasterBuckets;
+    document.getElementById("resPrimer").innerHTML = primerBuckets + " buckets";
+    document.getElementById("resPlaster").innerHTML = plasterBuckets + " buckets";
 
-    // 4. Ціни
     let insulCost = insulQty * (Number(document.getElementById("insulPrice").value) || 0);
     let glueCost = glueBags * (Number(document.getElementById("gluePrice").value) || 0);
     let meshCost = meshQty * (Number(document.getElementById("meshPrice").value) || 0);
@@ -365,7 +355,6 @@ function calculateAll() {
     let apuCost = apuLen * (Number(document.getElementById("apuPrice").value) || 0);
     let starterCost = starterLen * (Number(document.getElementById("starterPrice").value) || 0);
 
-    // 5. Групування вартості
     let costInsulTotal = insulCost;
     let costMixesTotal = glueCost + primerCost + plasterCost;
     let costProfilesTotal = meshCost + dowelCost + cornerCost + apuCost + starterCost;
@@ -376,7 +365,6 @@ function calculateAll() {
     
     let clientTotal = totalMaterials + salaryTotal + deliveryTotal;
 
-    // Форматування валюти
     const formatEur = (num) => num.toFixed(2) + " €";
 
     document.getElementById("costInsul").innerHTML = formatEur(costInsulTotal);
@@ -493,7 +481,7 @@ const langData = {
         lblStarterLen: "Периметр цоколя (м)", lblCornerLen: "Довжина зовнішніх кутів (м)", lblApuLen: "Периметр вікон (м) для АПУ",
         hInsulation: "🧱 Утеплювач та Матеріали", lblInsulType: "Тип утеплювача", optEps: "Пінопласт (EPS)", optWool: "Мінеральна вата",
         lblInsulThick: "Товщина (мм)",
-        lblInsulPrice: "Ціна утеплювача €/м²", lblGluePrice: "Клей €/мішок(25кг)", lblMeshPrice: "Сітка €/м²", lblDowelPrice: "Дюбелі (грибки) €/шт",
+        lblInsulPrice: "Ціна утеплювача €/m²", lblGluePrice: "Клей €/мішок(25кг)", lblMeshPrice: "Сітка €/м²", lblDowelPrice: "Дюбелі (грибки) €/шт",
         hFinishing: "🎨 Оздоблення та Профілі", lblPrimerPrice: "Грунт €/відро(10л)", lblPlasterPrice: "Штукатурка €/відро(25кг)", 
         lblCornerPrice: "Кутник з сіткою €/м", lblApuPrice: "АПУ профіль €/м", lblStarterPrice: "Стартовий профіль €/м",
         hMatResult: "📦 Потреба в матеріалах", txtNetArea: "Чиста площа під утеплення", txtInsul: "Площа утеплювача (+5% запас)", 
@@ -539,7 +527,6 @@ function changeLanguage() {
     calculateAll();
 }
 
-// Запуск при старті
 changeLanguage();
 calculateAll();
 </script>
