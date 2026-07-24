@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIP Paint Mixer Ultimate (Free Edition)</title>
-    <meta name="description" content="Professional paint mixer and pigment volume calculator. Estimate base paint quantity, pigment ratios, and total project costs easily.">
+    <title>VIP Plaster Calculator Ultimate (Free Edition)</title>
+    <meta name="description" content="Professional plaster calculator. Estimate base mix quantity, mesh, beads, apr profiles, and total project costs easily.">
     
     <!-- Підключення Tailwind CSS для стилізації навігаційної панелі -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -38,9 +39,7 @@
         body { background-color: var(--bg-main); color: var(--text-light); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 40px; transition: background 0.3s; }
         
         .calculator-nav::-webkit-scrollbar { display: none; }
-
         .wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; }
-
         .container { width: 100%; max-width: 600px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: background 0.3s; margin-top: 20px; }
 
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px; }
@@ -67,19 +66,6 @@
         .result-row.subtext { font-size: 0.85rem; color: var(--text-muted); font-weight: normal; }
         .result-row.total { font-size: 1.2rem; color: var(--accent-yellow); border-top: 1px solid var(--border-color); padding-top: 8px; margin-top: 8px; font-weight: bold; }
 
-        .preview-box { width: 100%; height: 120px; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 15px; position: relative; background: #FFF; display: flex; align-items: flex-end; overflow: hidden; transition: 0.3s;}
-        .paint-fill { width: 100%; height: 100%; background-color: #FFFFFF; transition: background-color 0.1s; }
-        .preview-label { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7); color: #FFF; padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; border: 1px solid var(--accent-yellow); font-weight: bold; z-index: 10;}
-
-        .status-bar { background: var(--bg-input); padding: 10px; border-radius: 6px; border-left: 4px solid var(--accent-yellow); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 0.9rem;}
-        .warning-msg { color: var(--danger-red); font-size: 0.8rem; font-weight: bold; display: none; text-align: center; padding: 8px; margin-bottom: 15px; background: rgba(255,51,51,0.1); border-radius: 6px; border: 1px solid var(--danger-red);}
-
-        .pigment-row { background: var(--bg-input); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 10px; }
-        .pigment-row select { margin-bottom: 10px; width: 100%; background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-light); padding: 6px; border-radius: 6px; outline: none;}
-        .slider-wrapper { display: flex; align-items: center; }
-        input[type="range"] { flex: 1; margin-right: 15px; accent-color: var(--accent-yellow); }
-        .value-badge { min-width: 70px; text-align: right; font-weight: bold; background: var(--bg-main); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.85rem;}
-
         .history-box { margin-top: 25px; display: none; }
         .history-item { background: var(--bg-input); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center;}
         .history-info strong { color: var(--accent-yellow); display: block; margin-bottom: 3px; font-size: 0.95rem;}
@@ -92,12 +78,12 @@
 <body>
 
     <div class="wrapper">
-        <!-- CALCULATORS SWITCHER BAR (ВИПРАВЛЕНО ПОСИЛАННЯ НА OMIETKY) -->
+        <!-- CALCULATORS SWITCHER BAR -->
         <div class="w-full bg-neutral-950 border-b border-neutral-800 px-4 py-3">
             <div class="max-w-4xl mx-auto flex gap-2 overflow-x-auto calculator-nav whitespace-nowrap">
-                <a href="../Mixer/" class="px-3 py-1.5 bg-yellow-500/10 border border-yellow-500 text-xs font-bold rounded-xl text-yellow-400 flex items-center gap-1.5">🎨 Mixer</a>
+                <a href="../Mixer/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🎨 Mixer</a>
                 <a href="../Gipsokarton/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🧱 Gipsokarton</a>
-                <a href="../Omietky/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🏗️ Omietky</a>
+                <a href="../Omietky/" class="px-3 py-1.5 bg-yellow-500/10 border border-yellow-500 text-xs font-bold rounded-xl text-yellow-400 flex items-center gap-1.5">🏗️ Omietky</a>
                 <a href="../Roof/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🏠 Roof</a>
                 <a href="../Styazhka/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🧹 Styazhka</a>
                 <a href="../ProWall%20%26%20Floor/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🟩 ProWall & Floor</a>
@@ -108,7 +94,7 @@
             <div class="header" data-html2canvas-ignore="true">
                 <div class="logo">
                     <button class="theme-btn" onclick="toggleTheme()">🌓</button>
-                    <span>VIP</span> MIXER
+                    <span>VIP</span> PLASTER
                 </div>
                 <div class="lang-selector">
                     <button id="btn-en" onclick="changeLang('en')">EN</button>
@@ -118,8 +104,8 @@
             </div>
 
             <div class="action-panel" data-html2canvas-ignore="true">
-                <div class="btn" onclick="shareMix()">
-                    <span id="txt-share">📤 Share Mix</span>
+                <div class="btn" onclick="shareCalc()">
+                    <span id="txt-share">📤 Share Estimate</span>
                 </div>
                 <div class="btn" onclick="saveToHistory()">
                     <span id="txt-save">💾 Save Object</span>
@@ -129,72 +115,101 @@
                 </div>
             </div>
 
-            <div class="section-title" id="sec-object">📐 Object Area & Base</div>
-            <div class="grid-2">
-                <div class="input-group">
-                    <label id="lbl-area">Wall Area (m²)</label>
-                    <input type="number" id="in-area" value="30" min="0" step="1" oninput="recalc()">
-                </div>
-                <div class="input-group">
-                    <label id="lbl-surface">Surface Type</label>
-                    <select id="in-surface" onchange="recalc()">
-                        <option value="0.12" id="opt-smooth">Smooth (0.12 L/m²)</option>
-                        <option value="0.15" id="opt-wall">Wallpaper (0.15 L/m²)</option>
-                        <option value="0.25" id="opt-rough">Rough (0.25 L/m²)</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label id="lbl-doors">Doors / Windows</label>
-                    <div style="display: flex; gap:5px;">
-                        <input type="number" id="in-doors" value="1" min="0" step="1" placeholder="🚪" oninput="recalc()">
-                        <input type="number" id="in-windows" value="1" min="0" step="1" placeholder="🪟" oninput="recalc()">
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label id="lbl-layers">Layers</label>
-                    <select id="in-layers" onchange="recalc()">
-                        <option value="1">1</option>
-                        <option value="2" selected>2</option>
-                    </select>
-                </div>
-            </div>
-
+            <div class="section-title" id="sec-object">📐 Parameters & Surfaces</div>
+            
             <div class="input-group" style="margin-bottom: 15px;">
-                <label id="lbl-base-type">Paint Base Type</label>
-                <select id="in-base-type" onchange="recalc()">
-                    <option value="A" id="opt-base-a">Base A (White - for light colors)</option>
-                    <option value="C" id="opt-base-c">Base C (Clear - for dark colors)</option>
+                <label id="lbl-plaster-type">Plaster Type</label>
+                <select id="in-plaster-type" onchange="updateConsumption(); recalc();">
+                    <option value="gips" id="opt-gips">Gypsum Plaster (~9.0 kg/m² per 10mm)</option>
+                    <option value="cement" id="opt-cement">Cement-Lime Plaster (~16.0 kg/m² per 10mm)</option>
+                    <option value="decorative" id="opt-dec">Decorative / Koroid (~3.0 kg/m² fixed layer)</option>
                 </select>
             </div>
 
-            <div class="section-title" id="sec-economy">💶 Economics</div>
             <div class="grid-2">
                 <div class="input-group">
-                    <label id="lbl-price-base">Base Price (€/L)</label>
-                    <input type="number" id="in-price-base" value="5.50" min="0" step="0.5" oninput="recalc()">
+                    <label id="lbl-area">Wall Area (m²)</label>
+                    <input type="number" id="in-area" value="50" min="0" step="1" oninput="recalc()">
+                </div>
+                <div class="input-group" id="group-thickness">
+                    <label id="lbl-thickness">Layer Thickness (mm)</label>
+                    <input type="number" id="in-thickness" value="15" min="2" max="100" step="1" oninput="recalc()">
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="input-group">
+                    <label id="lbl-openings">Doors / Windows (Openings)</label>
+                    <div style="display: flex; gap:5px;">
+                        <input type="number" id="in-doors" value="1" min="0" step="1" placeholder="🚪" title="Doors" oninput="recalc()">
+                        <input type="number" id="in-windows" value="2" min="0" step="1" placeholder="🪟" title="Windows" oninput="recalc()">
+                    </div>
                 </div>
                 <div class="input-group">
-                    <label id="lbl-price-pig">Pigment (€/100ml)</label>
-                    <input type="number" id="in-price-pig" value="3.00" min="0" step="0.5" oninput="recalc()">
+                    <label id="lbl-bag-weight">Bag Weight (kg)</label>
+                    <input type="number" id="in-bag-weight" value="25" min="1" step="5" oninput="recalc()">
+                </div>
+            </div>
+
+            <div class="section-title" id="sec-profiles">⚙️ Profiles & Accessories</div>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label id="lbl-corners">External Corners (pcs / perimeter m)</label>
+                    <input type="number" id="in-corners" value="4" min="0" step="1" oninput="recalc()">
                 </div>
                 <div class="input-group">
-                    <label id="lbl-labor-rate">Labor (€/m²)</label>
-                    <input type="number" id="in-labor-rate" value="5.00" min="0" step="0.5" oninput="recalc()">
+                    <label id="lbl-corner-len">Corner Length (m)</label>
+                    <input type="number" id="in-corner-len" value="2.5" min="0.5" step="0.5" oninput="recalc()">
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="input-group">
+                    <label id="lbl-apubound">APU / Window Connection Beads (m)</label>
+                    <input type="number" id="in-apu-meters" value="12" min="0" step="0.5" oninput="recalc()">
                 </div>
                 <div class="input-group">
-                    <label id="lbl-other-exp">Other Expenses (€)</label>
-                    <input type="number" id="in-other-exp" value="20.00" min="0" step="1" oninput="recalc()">
+                    <label id="lbl-beacons">Plastering Beacons (Mayaky) (m)</label>
+                    <input type="number" id="in-beacons-meters" value="20" min="0" step="1" oninput="recalc()">
+                </div>
+            </div>
+
+            <div class="section-title" id="sec-economy">💶 Economics & Prices</div>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label id="lbl-price-bag">Bag Price (€)</label>
+                    <input type="number" id="in-price-bag" value="6.50" min="0" step="0.5" oninput="recalc()">
+                </div>
+                <div class="input-group">
+                    <label id="lbl-price-labor">Labor Rate (€/m²)</label>
+                    <input type="number" id="in-price-labor" value="10.00" min="0" step="0.5" oninput="recalc()">
+                </div>
+                <div class="input-group">
+                    <label id="lbl-price-profile">Profile / Bead Price (€/pc)</label>
+                    <input type="number" id="in-price-profile" value="1.50" min="0" step="0.1" oninput="recalc()">
+                </div>
+                <div class="input-group">
+                    <label id="lbl-primer-cost">Primer / Other (€)</label>
+                    <input type="number" id="in-other-exp" value="30.00" min="0" step="1" oninput="recalc()">
                 </div>
             </div>
 
             <div class="result-box">
                 <div class="result-row">
-                    <span id="res-base-need">Base Needed:</span>
-                    <span id="out-liters" style="color: var(--text-light);">0.00 L</span>
+                    <span id="res-net-area">Net Working Area:</span>
+                    <span id="out-net-area" style="color: var(--text-light);">0.00 m²</span>
+                </div>
+                <div class="result-row">
+                    <span id="res-mix-bags">Dry Mix Needed:</span>
+                    <span id="out-bags" style="color: var(--accent-yellow);">0 bags (0 kg)</span>
                 </div>
                 
                 <div class="result-row subtext">
-                    <span id="res-mat-cost">Material Cost:</span>
+                    <span id="res-profiles-count">Corners / APU / Beacons:</span>
+                    <span id="out-profiles-count">0 pcs</span>
+                </div>
+                <div class="result-row subtext">
+                    <span id="res-mat-cost">Materials Cost:</span>
                     <span id="out-mat-cost">0.00 €</span>
                 </div>
                 <div class="result-row subtext">
@@ -210,41 +225,6 @@
                     <span id="res-cost">Grand Total:</span>
                     <span id="out-cost">0.00 €</span>
                 </div>
-                <div class="preview-box" id="preview-container">
-                    <div id="lbl-preview" class="preview-label">Mixed Color</div>
-                    <div id="paint-visual" class="paint-fill"></div>
-                </div>
-            </div>
-
-            <div id="warning-banner" class="warning-msg">WARNING: 10% Pigment Limit Reached!</div>
-
-            <div class="status-bar" id="status-panel">
-                <span id="lbl-total-pigment">Total pigment:</span>
-                <span class="value-badge" id="txt-total-percent">0.0%</span>
-            </div>   
-
-            <div class="pigment-row">
-                <select id="color-1" class="dyn-select" onchange="recalc()"></select>
-                <div class="slider-wrapper">
-                    <input type="range" id="slider-1" min="0" max="100" value="0" oninput="recalc()">
-                    <span class="value-badge" id="val-1">0 ml</span>
-                </div>
-            </div>
-            
-            <div class="pigment-row">
-                <select id="color-2" class="dyn-select" onchange="recalc()"></select>
-                <div class="slider-wrapper">
-                    <input type="range" id="slider-2" min="0" max="100" value="0" oninput="recalc()">
-                    <span class="value-badge" id="val-2">0 ml</span>
-                </div>
-            </div>
-
-            <div class="pigment-row">
-                <select id="color-3" class="dyn-select" onchange="recalc()"></select>
-                <div class="slider-wrapper">
-                    <input type="range" id="slider-3" min="0" max="100" value="0" oninput="recalc()">
-                    <span class="value-badge" id="val-3">0 ml</span>
-                </div>
             </div>
 
             <div class="history-box" id="history-section" data-html2canvas-ignore="true">
@@ -253,7 +233,7 @@
             </div>
 
             <div class="footer">
-                <div>✉️ info@vip-mixer.sk | 📞 +421 XX XXX XXX</div>
+                <div>✉️ info@vip-plaster.sk | 📞 +421 XX XXX XXX</div>
                 <div style="margin-top: 5px;">Created for Professionals</div>
             </div>
         </div>
@@ -263,40 +243,61 @@
         function toggleTheme() { document.body.classList.toggle('light-theme'); }
 
         const STANDARDS = {
-            doorArea: 1.5,
-            windowArea: 1.2
+            doorArea: 1.8,     // Середня площа дверей (м²) для вирахування з площі стін
+            windowArea: 1.5    // Середня площа вікна (м²) для вирахування з площі стін
         };
 
-        const pigments = [
-            { id: 'black',  r: 30, g: 30, b: 30,     en: 'Black (Graphite)', uk: 'Чорний (Графіт)', sk: 'Čierna (Grafit)' },
-            { id: 'white',  r: 250, g: 250, b: 250,  en: 'White (Titanium)', uk: 'Білий (Титан)',   sk: 'Biela (Titan)' },
-            { id: 'yellow', r: 255, g: 190, b: 0,    en: 'Yellow (Ochre)',   uk: 'Жовтий (Охра)',   sk: 'Žltá (Oker)' },
-            { id: 'red',    r: 200, g: 30, b: 30,    en: 'Red (Oxide)',      uk: 'Червоний (Оксид)', sk: 'Červená (Oxid)' },
-            { id: 'brown',  r: 100, g: 50, b: 20,    en: 'Brown (Choco)',    uk: 'Коричневий (Шоко)', sk: 'Hnedá (Čoko)' },
-            { id: 'green',  r: 30, g: 130, b: 50,    en: 'Green (Emerald)',  uk: 'Зелений (Смарагд)', sk: 'Zelená (Smaragd)' },
-            { id: 'blue',   r: 20, g: 60, b: 180,    en: 'Blue (Cobalt)',    uk: 'Синій (Кобальт)', sk: 'Modrá (Kobalt)' },
-            { id: 'purple', r: 120, g: 30, b: 150,   en: 'Purple (Violet)',  uk: 'Фіолетовий',       sk: 'Fialová' },
-            { id: 'orange', r: 255, g: 100, b: 0,    en: 'Orange (Amber)',   uk: 'Помаранчевий',     sk: 'Oranžová' }
-        ];
-            
         const dict = {
-            en: { share: "📤 Share Mix", save: "💾 Save Object", pdf: "📄 Generate PDF Estimate", secObj: "📐 Object Area & Base", area: "Wall Area (m²)", surf: "Surface Type", optSm: "Smooth (0.12 L/m²)", optWl: "Wallpaper (0.15 L/m²)", optRg: "Rough (0.25 L/m²)", doors: "Doors / Windows", layers: "Layers", baseType: "Paint Base Type", optBa: "Base A (White)", optBc: "Base C (Clear)", secEco: "💶 Economics", pBase: "Base Price (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Labor (€/m²)", otherExp: "Other Expenses (€)", rNeed: "Base Needed:", matCost: "Material Cost:", labCost: "Labor Cost:", othCost: "Other Expenses:", grandTotal: "Grand Total:", prev: "Mixed Color", warn: "WARNING: 10% Pigment Limit Reached!", tot: "Total pigment:", secHist: "📂 Saved Objects", promptMsg: "Enter object name (e.g. Living Room):", del: "Delete", clearBase: "Clear base (no pigment)" },
-            uk: { share: "📤 Поділитися", save: "💾 Зберегти", pdf: "📄 PDF-кошторис", secObj: "📐 Площа та База", area: "Площа стін (м²)", surf: "Тип поверхні", optSm: "Гладка (0.12 л/м²)", optWl: "Шпалери (0.15 л/м²)", optRg: "Короїд (0.25 л/м²)", doors: "Двері / Вікна", layers: "Шари", baseType: "Тип бази", optBa: "База А (Біла)", optBc: "База С (Прозора)", secEco: "💶 Економіка", pBase: "Ціна бази (€/Л)", pPig: "Пігмент (€/100мл)", laborRate: "Робота (€/m²)", otherExp: "Інші витрати (€)", rNeed: "Потрібно бази:", matCost: "Вартість матеріалів:", labCost: "Вартість робіт:", othCost: "Інші витрати:", grandTotal: "Загальна вартість:", prev: "Колір суміші", warn: "УВАГА: Ліміт 10% пігменту!", tot: "Всього пігменту:", secHist: "📂 Збережені об'єкти", promptMsg: "Введіть назву об'єкта (напр. Кухня):", del: "Видалити", clearBase: "Прозора база (без пігменту)" },
-            sk: { share: "📤 Zdielať", save: "💾 Uložiť objekt", pdf: "📄 PDF Kalkulácia", secObj: "📐 Plocha a Základ", area: "Plocha stien (m²)", surf: "Typ povrchu", optSm: "Hladký (0.12 l/m²)", optWl: "Tapeta (0.15 l/m²)", optRg: "Drsný (0.25 l/m²)", doors: "Dvere / Okná", layers: "Vrstvy", baseType: "Typ základu", optBa: "Báza A (Biela)", optBc: "Priesvitná báza (C)", secEco: "💶 Ekonomika", pBase: "Cena bázy (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Práca (€/m²)", otherExp: "Iné náklady (€)", rNeed: "Potrebný základ:", matCost: "Cena materiálu:", labCost: "Cena práce:", othCost: "Iné náklady:", grandTotal: "Celková cena:", prev: "Výsledná farba", warn: "POZOR: Limit 10% pigmentu!", tot: "Pigment celkom:", secHist: "📂 Uložené objekty", promptMsg: "Zadajte názov objektu (napr. Obývačka):", del: "Vymazať", clearBase: "Priesvitný základ (bez pigmentu)" }
+            en: {
+                share: "📤 Share Estimate", save: "💾 Save Object", pdf: "📄 Generate PDF Estimate",
+                secObj: "📐 Parameters & Surfaces", plasterType: "Plaster Type",
+                optGips: "Gypsum Plaster (~9.0 kg/m² per 10mm)", optCement: "Cement-Lime Plaster (~16.0 kg/m² per 10mm)", optDec: "Decorative / Koroid (~3.0 kg/m² fixed)",
+                area: "Wall Area (m²)", thickness: "Layer Thickness (mm)", openings: "Doors / Windows (Openings)", bagWeight: "Bag Weight (kg)",
+                secProf: "⚙️ Profiles & Accessories", corners: "External Corners (pcs)", cornerLen: "Corner Length (m)",
+                apu: "APU / Window Connection Beads (m)", beacons: "Plastering Beacons (m)",
+                secEco: "💶 Economics & Prices", bagPrice: "Bag Price (€)", laborRate: "Labor Rate (€/m²)", profilePrice: "Profile Price (€/pc)", otherExp: "Primer / Other (€)",
+                netArea: "Net Working Area:", mixBags: "Dry Mix Needed:", profCount: "Accessories (Corners/APU/Beacons):",
+                matCost: "Materials Cost:", labCost: "Labor Cost:", othCost: "Other Expenses:", grandTotal: "Grand Total:",
+                secHist: "📂 Saved Objects", promptMsg: "Enter object name (e.g. Apartment Walls):", del: "Delete"
+            },
+            uk: {
+                share: "📤 Поділитися", save: "💾 Зберегти", pdf: "📄 PDF-кошторис",
+                secObj: "📐 Параметри та Поверхні", plasterType: "Тип штукатурки",
+                optGips: "Гіпсова штукатурка (~9.0 кг/м² на 10мм)", optCement: "Цементно-вапняна (~16.0 кг/м² на 10мм)", optDec: "Декоративна / Короїд (~3.0 кг/м² фіксовано)",
+                area: "Площа стін (м²)", thickness: "Товщина шару (мм)", openings: "Двері / Вікна (прорізи)", bagWeight: "Вага мішка (кг)",
+                secProf: "⚙️ Профілі та Аксесуари", corners: "Зовнішні кутники (шт)", cornerLen: "Довжина кутника (м)",
+                apu: "АПУ-линти / Примикання (м)", beacons: "Маяки штукатурні (м)",
+                secEco: "💶 Економіка та Ціни", bagPrice: "Ціна мішка (€)", laborRate: "Робота (€/m²)", profilePrice: "Ціна профілю/маяка (€/шт)", otherExp: "Ґрунтовка / Інше (€)",
+                netArea: "Чиста робоча площа:", mixBags: "Суха суміш:", profCount: "Кутники / АПУ / Маяки (шт):",
+                matCost: "Вартість матеріалів:", labCost: "Вартість робіт:", othCost: "Інші витрати:", grandTotal: "Загальна вартість:",
+                secHist: "📂 Збережені об'єкти", promptMsg: "Введіть назву об'єкта (напр. Квартира):", del: "Видалити"
+            },
+            sk: {
+                share: "📤 Zdielať", save: "💾 Uložiť objekt", pdf: "📄 PDF Kalkulácia",
+                secObj: "📐 Parametre a Povrchy", plasterType: "Typ omietki",
+                optGips: "Sádrová omietka (~9.0 kg/m² na 10mm)", optCement: "Cementovo-vápenná (~16.0 kg/m² na 10mm)", optDec: "Dekoratívna / Kôrovec (~3.0 kg/m² pevná)",
+                area: "Plocha stien (m²)", thickness: "Hrúbka vrstvy (mm)", openings: "Dvere / Okná (otvory)", bagWeight: "Hmotnosť vrece (kg)",
+                secProf: "⚙️ Profily a Príslušenstvo", corners: "Rohové profily / rohy (ks)", cornerLen: "Dĺžka rohu (m)",
+                apu: "APU lišty / pripojovacie profily (m)", beacons: "Omietkové profily / majáky (m)",
+                secEco: "💶 Ekonomika a Ceny", bagPrice: "Cena vreca (€)", laborRate: "Cena práce (€/m²)", profilePrice: "Cena profilu/majáku (€/ks)", otherExp: "Penetrácia / Iné (€)",
+                netArea: "Čistá pracovná plocha:", mixBags: "Potrebná suchá zmes:", profCount: "Rohy / APU / Majáky (ks):",
+                matCost: "Cena materiálu:", labCost: "Cena práce:", othCost: "Iné náklady:", grandTotal: "Celková cena:",
+                secHist: "📂 Uložené objekty", promptMsg: "Zadajte názov objektu (napr. Byty):", del: "Vymazať"
+            }
         };
 
         let currentLang = 'en';
-        let baseLiters = 0, baseMl = 0, maxLimitMl = 0;
 
-        function initDropdowns() {
-            const selects = [document.getElementById('color-1'), document.getElementById('color-2'), document.getElementById('color-3')];
-            selects.forEach((sel, i) => {
-                let currentVal = sel.value;
-                sel.innerHTML = '';
-                pigments.forEach(p => { sel.appendChild(new Option(p[currentLang], p.id)); });
-                if (currentVal) sel.value = currentVal; 
-                else sel.selectedIndex = i;
-            });
+        function updateConsumption() {
+            let type = document.getElementById('in-plaster-type').value;
+            let thickGroup = document.getElementById('group-thickness');
+            if(type === 'decorative') {
+                thickGroup.style.opacity = '0.4';
+                document.getElementById('in-thickness').disabled = true;
+            } else {
+                thickGroup.style.opacity = '1';
+                document.getElementById('in-thickness').disabled = false;
+            }
         }
 
         function changeLang(lang) {
@@ -308,35 +309,37 @@
             document.getElementById('txt-save').innerText = dict[lang].save;
             document.getElementById('txt-pdf').innerText = dict[lang].pdf;
             document.getElementById('sec-object').innerText = dict[lang].secObj;
-            document.getElementById('lbl-area').innerText = dict[lang].area;
-            document.getElementById('lbl-surface').innerText = dict[lang].surf;
-            document.getElementById('opt-smooth').innerText = dict[lang].optSm;
-            document.getElementById('opt-wall').innerText = dict[lang].optWl;
-            document.getElementById('opt-rough').innerText = dict[lang].optRg;
-            document.getElementById('lbl-doors').innerText = dict[lang].doors;
-            document.getElementById('lbl-layers').innerText = dict[lang].layers;
-            document.getElementById('lbl-base-type').innerText = dict[lang].baseType;
-            document.getElementById('opt-base-a').innerText = dict[lang].optBa;
-            document.getElementById('opt-base-c').innerText = dict[lang].optBc;
-            document.getElementById('sec-economy').innerText = dict[lang].secEco;
+            document.getElementById('lbl-plaster-type').innerText = dict[lang].plasterType;
+            document.getElementById('opt-gips').innerText = dict[lang].optGips;
+            document.getElementById('opt-cement').innerText = dict[lang].optCement;
+            document.getElementById('opt-dec').innerText = dict[lang].optDec;
             
-            document.getElementById('lbl-price-base').innerText = dict[lang].pBase;
-            document.getElementById('lbl-price-pig').innerText = dict[lang].pPig;
-            document.getElementById('lbl-labor-rate').innerText = dict[lang].laborRate;
-            document.getElementById('lbl-other-exp').innerText = dict[lang].otherExp;
+            document.getElementById('lbl-area').innerText = dict[lang].area;
+            document.getElementById('lbl-thickness').innerText = dict[lang].thickness;
+            document.getElementById('lbl-openings').innerText = dict[lang].openings;
+            document.getElementById('lbl-bag-weight').innerText = dict[lang].bagWeight;
 
-            document.getElementById('res-base-need').innerText = dict[lang].rNeed;
+            document.getElementById('sec-profiles').innerText = dict[lang].secProf;
+            document.getElementById('lbl-corners').innerText = dict[lang].corners;
+            document.getElementById('lbl-corner-len').innerText = dict[lang].cornerLen;
+            document.getElementById('lbl-apubound').innerText = dict[lang].apu;
+            document.getElementById('lbl-beacons').innerText = dict[lang].beacons;
+
+            document.getElementById('sec-economy').innerText = dict[lang].secEco;
+            document.getElementById('lbl-price-bag').innerText = dict[lang].bagPrice;
+            document.getElementById('lbl-price-labor').innerText = dict[lang].laborRate;
+            document.getElementById('lbl-price-profile').innerText = dict[lang].profilePrice;
+            document.getElementById('lbl-primer-cost').innerText = dict[lang].otherExp;
+
+            document.getElementById('res-net-area').innerText = dict[lang].netArea;
+            document.getElementById('res-mix-bags').innerText = dict[lang].mixBags;
+            document.getElementById('res-profiles-count').innerText = dict[lang].profCount;
             document.getElementById('res-mat-cost').innerText = dict[lang].matCost;
             document.getElementById('res-lab-cost').innerText = dict[lang].labCost;
             document.getElementById('res-oth-cost').innerText = dict[lang].othCost;
             document.getElementById('res-cost').innerText = dict[lang].grandTotal;
-            
-            document.getElementById('lbl-preview').innerText = dict[lang].prev;
-            document.getElementById('warning-banner').innerText = dict[lang].warn;
-            document.getElementById('lbl-total-pigment').innerText = dict[lang].tot;
             document.getElementById('sec-history').innerText = dict[lang].secHist;
 
-            initDropdowns();
             recalc();
             renderHistory();
         }
@@ -346,120 +349,85 @@
             let doors = Math.max(0, parseInt(document.getElementById('in-doors').value) || 0);
             let windows = Math.max(0, parseInt(document.getElementById('in-windows').value) || 0);
             
-            let cleanArea = Math.max(0, area - (doors * STANDARDS.doorArea) - (windows * STANDARDS.windowArea)); 
+            // Вирахування прорізів із загальної площі (з урахуем запасів 5%)
+            let netArea = Math.max(0, area - (doors * STANDARDS.doorArea) - (windows * STANDARDS.windowArea));
+            let totalAreaWithWaste = netArea * 1.05; // 5% технологічний запас на підрізку
 
-            let surf = parseFloat(document.getElementById('in-surface').value) || 0.12;
-            let layers = parseInt(document.getElementById('in-layers').value) || 1;
+            document.getElementById('out-net-area').innerText = netArea.toFixed(2) + " m²";
 
-            baseLiters = Math.max(1, cleanArea * surf * layers);
-            document.getElementById('out-liters').innerText = baseLiters.toFixed(2) + " L";
+            let type = document.getElementById('in-plaster-type').value;
+            let thickness = parseFloat(document.getElementById('in-thickness').value) || 10;
+            let bagWeight = parseFloat(document.getElementById('in-bag-weight').value) || 25;
 
-            baseMl = baseLiters * 1000;
-            maxLimitMl = baseMl * 0.1;
-
-            const sliders = [document.getElementById('slider-1'), document.getElementById('slider-2'), document.getElementById('slider-3')];
-            sliders.forEach(s => s.max = maxLimitMl);
-
-            let v1 = Math.max(0, parseInt(sliders[0].value) || 0);
-            let v2 = Math.max(0, parseInt(sliders[1].value) || 0);
-            let v3 = Math.max(0, parseInt(sliders[2].value) || 0);
-            let currentTotal = v1 + v2 + v3;
-
-            if (currentTotal > maxLimitMl) {
-                let active = document.activeElement;
-                if (active === sliders[0]) v1 = maxLimitMl - v2 - v3;
-                else if (active === sliders[1]) v2 = maxLimitMl - v1 - v3;
-                else if (active === sliders[2]) v3 = maxLimitMl - v1 - v2;
-                
-                v1 = Math.max(0, v1); v2 = Math.max(0, v2); v3 = Math.max(0, v3);
-                sliders[0].value = v1; sliders[1].value = v2; sliders[2].value = v3;
-                currentTotal = v1 + v2 + v3;
-            }
-
-            document.getElementById('val-1').innerText = v1 + " ml";
-            document.getElementById('val-2').innerText = v2 + " ml";
-            document.getElementById('val-3').innerText = v3 + " ml";
-            document.getElementById('txt-total-percent').innerText = `${((currentTotal / baseMl) * 100).toFixed(1)}% / 10%`;
-
-            if (currentTotal >= maxLimitMl) {
-                document.getElementById('warning-banner').style.display = 'block';
-                document.getElementById('status-panel').style.borderLeftColor = "var(--danger-red)";
+            let kgPerSqM = 0;
+            if (type === 'gips') {
+                kgPerSqM = 0.9 * thickness; // ~9 кг на 10 мм
+            } else if (type === 'cement') {
+                kgPerSqM = 1.6 * thickness; // ~16 кг на 10 мм
             } else {
-                document.getElementById('warning-banner').style.display = 'none';
-                document.getElementById('status-panel').style.borderLeftColor = "var(--accent-yellow)";
+                kgPerSqM = 3.0; // Декоративна фіксована
             }
 
-            let priceBase = Math.max(0, parseFloat(document.getElementById('in-price-base').value) || 0);
-            let pricePig = Math.max(0, parseFloat(document.getElementById('in-price-pig').value) || 0);
-            let laborRate = Math.max(0, parseFloat(document.getElementById('in-labor-rate').value) || 0);
-            let otherExp = Math.max(0, parseFloat(document.getElementById('in-other-exp').value) || 0);
+            let totalKg = totalAreaWithWaste * kgPerSqM;
+            let totalBags = Math.ceil(totalKg / bagWeight);
+            document.getElementById('out-bags').innerText = `${totalBags} bags (${totalKg.toFixed(1)} kg)`;
 
-            let matCost = (baseLiters * priceBase) + ((currentTotal / 100) * pricePig);
-            let laborCost = cleanArea * laborRate;
+            // Розрахунок кількості профілів (штук стандартної довжини 2.5 або 3м)
+            let cornersPcs = parseFloat(document.getElementById('in-corners').value) || 0;
+            let cornerLenInput = parseFloat(document.getElementById('in-corner-len').value) || 2.5;
+            
+            let apuMeters = parseFloat(document.getElementById('in-apu-meters').value) || 0;
+            let beaconsMeters = parseFloat(document.getElementById('in-beacons-meters').value) || 0;
+
+            // Переведення погонних метрів у штуки стандартних профільних елементів (приблизно 2.5м профіль)
+            let apuPcs = Math.ceil(apuMeters / 2.5);
+            let beaconsPcs = Math.ceil(beaconsMeters / 2.5);
+            let totalProfilesCount = cornersPcs + apuPcs + beaconsPcs;
+
+            document.getElementById('out-profiles-count').innerText = `${totalProfilesCount} pcs (C:${cornersPcs}, APU:${apuPcs}, B:${beaconsPcs})`;
+
+            // Економіка
+            let priceBag = parseFloat(document.getElementById('in-price-bag').value) || 0;
+            let priceLabor = parseFloat(document.getElementById('in-price-labor').value) || 0;
+            let priceProfile = parseFloat(document.getElementById('in-price-profile').value) || 0;
+            let otherExp = parseFloat(document.getElementById('in-other-exp').value) || 0;
+
+            let matCost = (totalBags * priceBag) + (totalProfilesCount * priceProfile);
+            let laborCost = netArea * priceLabor;
             let grandTotal = matCost + laborCost + otherExp;
 
             document.getElementById('out-mat-cost').innerText = matCost.toFixed(2) + " €";
             document.getElementById('out-lab-cost').innerText = laborCost.toFixed(2) + " €";
             document.getElementById('out-oth-cost').innerText = otherExp.toFixed(2) + " €";
             document.getElementById('out-cost').innerText = grandTotal.toFixed(2) + " €";
-
-            const p1 = pigments.find(p => p.id === document.getElementById('color-1').value);
-            const p2 = pigments.find(p => p.id === document.getElementById('color-2').value);
-            const p3 = pigments.find(p => p.id === document.getElementById('color-3').value);
-            
-            let isBaseC = document.getElementById('in-base-type').value === 'C';
-            let previewContainer = document.getElementById('preview-container');
-            
-            if(isBaseC && currentTotal === 0) {
-                previewContainer.style.background = "#E0E0E0"; 
-            } else {
-                previewContainer.style.background = "#FFF";
-            }
-
-            if (p1 && p2 && p3) {
-                let w1 = v1 / maxLimitMl, w2 = v2 / maxLimitMl, w3 = v3 / maxLimitMl;
-                let intensity = isBaseC ? 2.5 : 1; 
-                let baseColorStart = isBaseC ? 240 : 255;
-
-                let rOut = baseColorStart - ((255 - p1.r)*w1*intensity) - ((255 - p2.r)*w2*intensity) - ((255 - p3.r)*w3*intensity);
-                let gOut = baseColorStart - ((255 - p1.g)*w1*intensity) - ((255 - p2.g)*w2*intensity) - ((255 - p3.g)*w3*intensity);
-                let bOut = baseColorStart - ((255 - p1.b)*w1*intensity) - ((255 - p2.b)*w2*intensity) - ((255 - p3.b)*w3*intensity);
-
-                document.getElementById('paint-visual').style.backgroundColor = `rgb(${Math.max(0, Math.min(255, Math.round(rOut)))}, ${Math.max(0, Math.min(255, Math.round(gOut)))}, ${Math.max(0, Math.min(255, Math.round(bOut)))})`;
-            }
         }
 
         function saveToHistory() {
-            const name = prompt(dict[currentLang].promptMsg, "Object 1");
+            const name = prompt(dict[currentLang].promptMsg, "Object Plaster 1");
             if (!name) return;
 
-            let mixDetails = [1, 2, 3].map(i => {
-                let sel = document.getElementById(`color-${i}`);
-                let val = parseInt(document.getElementById(`slider-${i}`).value) || 0;
-                return val > 0 ? `${sel.options[sel.selectedIndex].text}: ${val}ml` : null;
-            }).filter(Boolean).join(' + ');
-
             const record = {
-                id: Date.now(), name: name, date: new Date().toLocaleDateString(),
-                base: document.getElementById('out-liters').innerText,
-                cost: document.getElementById('out-cost').innerText,
-                mix: mixDetails || dict[currentLang].clearBase
+                id: Date.now(),
+                name: name,
+                date: new Date().toLocaleDateString(),
+                area: document.getElementById('out-net-area').innerText,
+                bags: document.getElementById('out-bags').innerText,
+                cost: document.getElementById('out-cost').innerText
             };
 
             try {
-                let history = JSON.parse(localStorage.getItem('vipMixerHistory')) || [];
+                let history = JSON.parse(localStorage.getItem('vipPlasterHistory')) || [];
                 history.push(record);
-                localStorage.setItem('vipMixerHistory', JSON.stringify(history));
+                localStorage.setItem('vipPlasterHistory', JSON.stringify(history));
                 renderHistory();
             } catch (e) {
-                console.error("Local storage error:", e);
-                alert("Saving is not available in Private Mode or Local Storage is disabled.");
+                alert("Local storage is disabled.");
             }
         }
 
         function renderHistory() {
             try {
-                const history = JSON.parse(localStorage.getItem('vipMixerHistory')) || [];
+                const history = JSON.parse(localStorage.getItem('vipPlasterHistory')) || [];
                 const box = document.getElementById('history-section');
                 const list = document.getElementById('history-list');
                 list.innerHTML = '';
@@ -471,8 +439,8 @@
                             <div class="history-item">
                                 <div class="history-info">
                                     <strong>${item.name}</strong>
-                                    ${item.date} | ${item.base} | ${item.cost} <br>
-                                    <small>${item.mix}</small>
+                                    ${item.date} | Area: ${item.area} | ${item.bags} <br>
+                                    <small>Total: <b>${item.cost}</b></small>
                                 </div>
                                 <button class="del-btn" onclick="deleteHistory(${item.id})">${dict[currentLang].del}</button>
                             </div>`;
@@ -480,16 +448,14 @@
                 } else {
                     box.style.display = 'none';
                 }
-            } catch (e) {
-                console.warn("Could not load history");
-            }
+            } catch (e) {}
         }
 
         function deleteHistory(id) {
             try {
-                let history = JSON.parse(localStorage.getItem('vipMixerHistory')) || [];
+                let history = JSON.parse(localStorage.getItem('vipPlasterHistory')) || [];
                 history = history.filter(item => item.id !== id);
-                localStorage.setItem('vipMixerHistory', JSON.stringify(history));
+                localStorage.setItem('vipPlasterHistory', JSON.stringify(history));
                 renderHistory();
             } catch (e) {}
         }
@@ -498,7 +464,7 @@
             const element = document.getElementById('app-container');
             const opt = {
                 margin:       0.2,
-                filename:     'VIP_Paint_Mixer_Estimate.pdf',
+                filename:     'VIP_Plaster_Estimate.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true, logging: false },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
@@ -506,23 +472,22 @@
             html2pdf().set(opt).from(element).save();
         }
 
-        function shareMix() {
+        function shareCalc() {
             if (navigator.share) {
                 navigator.share({
-                    title: 'VIP Paint Mixer Estimate',
-                    text: `I need ${document.getElementById('out-liters').innerText} of paint. Total Estimated Cost: ${document.getElementById('out-cost').innerText}.`,
+                    title: 'VIP Plaster Estimate',
+                    text: `Plastering Estimate: Net Area ${document.getElementById('out-net-area').innerText}, Required: ${document.getElementById('out-bags').innerText}. Total Cost: ${document.getElementById('out-cost').innerText}.`,
                     url: window.location.href
                 }).catch(console.error);
             } else {
-                alert("Share is supported natively on mobile devices!");
+                alert("Share feature is supported natively on mobile devices!");
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            initDropdowns();
+            updateConsumption();
             changeLang('en');
         });
     </script>
-
 </body>
 </html>
