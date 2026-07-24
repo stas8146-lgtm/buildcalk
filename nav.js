@@ -49,6 +49,7 @@ const menuHTML = `
         <a href="../ProWall & Floor/index.html">🟩 ProWall & Floor</a>
         <a href="../Foundation/index.html">🪨 Foundation</a>
         <a href="../Electric/index.html">⚡ Electric</a>
+        <a href="../Facade/index.html">🟫 Facade</a>
     </div>
 `;
 
