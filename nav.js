@@ -54,6 +54,7 @@ const menuHTML = `
         <a href="../Rough/index.html">🏗 Shell & Core</a>
         <a href="../Paving/index.html">🛣️ Paving</a>
         <a href="../Painting/index.html">🎨 Painting</a>
+        <a href="../Fencing/index.html">🚧 Fencing</a>
      </div>
 `;
 
