@@ -6,6 +6,22 @@
     <title>Professional Electric & Lighting Calculator | BUILDcalc Suite</title>
     <meta name="description" content="Professional electrical calculation online. Cable cross-section by power, circuit breakers, wiring, conduits, sockets, and estimate costs.">
     
+    <!-- ================= SCHEMA.ORG FOR SEO ================= -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Electrical & Lighting Calculator",
+      "operatingSystem": "Web",
+      "applicationCategory": "BusinessApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    }
+    </script>
+
     <!-- ================= GOOGLE ANALYTICS ================= -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPRB8JPVM2"></script>
     <script>
@@ -15,10 +31,10 @@
         gtag('config', 'G-RPRB8JPVM2');
     </script>
 
-    <!-- Бібліотека для генерації PDF -->
+    <!-- PDF Generator -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    <!-- ================= СТИЛІ (ЖОВТО-ЧОРНА ТЕМА) ================= -->
+    <!-- ================= STYLES ================= -->
     <style>
         :root {
             --primary: #FFC107;
@@ -27,6 +43,8 @@
             --dark-light: #343a40;
             --text-light: #ffffff;
             --text-muted: #a0a0a0;
+            --global-btn: #9c27b0;
+            --global-btn-hover: #7b1fa2;
         }
 
         body {
@@ -37,15 +55,20 @@
             padding: 15px;
         }
 
-        .header {
-            text-align: center;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--dark-light);
+        /* SEO: H1 styled as Logo */
+        h1.logo { 
+            font-size: 24px; font-weight: bold; color: var(--text-light); 
+            text-align: center; margin: 0; padding: 10px 0 0 0;
         }
-
-        .logo { font-size: 24px; font-weight: bold; color: var(--text-light); }
-        .logo span { color: var(--primary); }
+        h1.logo span { color: var(--primary); }
+        
+        .header { text-align: center; padding-bottom: 10px; border-bottom: 1px solid var(--dark-light); }
         .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
+
+        /* Breadcrumbs */
+        .breadcrumbs { font-size: 12px; color: var(--text-muted); margin: 15px 0; }
+        .breadcrumbs a { color: var(--primary); text-decoration: none; }
+        .breadcrumbs a:hover { text-decoration: underline; }
 
         .lang-select-wrapper select {
             background: var(--dark-light); color: white; border: 1px solid var(--primary);
@@ -57,8 +80,8 @@
         .tab-btn.active { background: var(--primary); color: var(--dark); font-weight: bold; }
         .badge { background: red; color: white; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 5px; }
 
-        h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; color: var(--text-light); }
-
+        h2, h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; color: var(--text-light); }
+        
         .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px; }
         .input-group { display: flex; flex-direction: column; }
         .input-group label { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
@@ -77,11 +100,24 @@
         .buttons-container { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; width: 100%; clear: both; }
         .action-btn {
             flex: 1; min-width: 100px; background: var(--dark-light); color: white; border: 1px solid var(--primary);
-            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold;
+            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; text-align: center;
         }
         .action-btn:hover { background: var(--primary); color: var(--dark); }
+        
+        .global-btn { border-color: var(--global-btn); color: var(--global-btn); }
+        .global-btn:hover { background: var(--global-btn); color: white; }
 
         .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
+
+        /* SEO Blocks (FAQ & Links) */
+        .seo-block { background: var(--dark-light); padding: 15px; border-radius: 8px; margin-top: 30px; }
+        .seo-block h3 { margin-top: 0; border: none; padding-left: 0; color: var(--primary); }
+        .faq-item { margin-bottom: 15px; }
+        .faq-item h4 { margin: 0 0 5px 0; font-size: 16px; }
+        .faq-item p { margin: 0; font-size: 14px; color: var(--text-muted); }
+        .related-links ul { padding-left: 20px; }
+        .related-links a { color: var(--text-light); text-decoration: none; }
+        .related-links a:hover { color: var(--primary); }
 
         .buy-pro-banner {
             background: linear-gradient(135deg, #343a40, #212529);
@@ -94,13 +130,15 @@
         }
         .buy-btn:hover { background: var(--primary-hover); }
     </style>
+    <script src="../nav.js"></script>
 </head>
 <body>
+
+<div id="global-nav-container"></div>
+
     <div class="header">
-        <div class="logo">⚡ <span>BUILD</span>calc ELEC PRO</div>
+        <h1 class="logo">⚡ <span>BUILD</span>calc ELEC PRO</h1>
         <div class="subtitle" id="subtitle">Professional Electrical & Lighting Calculator</div>
-        
-        <div id="global-nav-container"></div>
 
         <div class="lang-select-wrapper">
             <select id="language" onchange="changeLanguage()">
@@ -110,8 +148,13 @@
             </select>
         </div>
     </div>
+
+    <!-- SEO Breadcrumbs -->
+    <nav class="breadcrumbs" aria-label="breadcrumb">
+        <a href="/">Home</a> > <a href="/calculators">Calculators</a> > <span id="breadCurrent">Electrical Calculator</span>
+    </nav>
     
-    <div class="version-switcher" style="margin-top: 15px;">
+    <div class="version-switcher">
         <button class="tab-btn active" id="tabFree" onclick="setVersion('free')">FREE</button>
         <button class="tab-btn" id="tabPro" onclick="setVersion('pro')">PRO <span class="badge">Business</span></button>
     </div>
@@ -137,11 +180,11 @@
         <div class="grid-inputs">
             <div class="input-group">
                 <label id="lblArea">Floor Area m²</label>
-                <input id="roomArea" type="number" value="60">
+                <input id="roomArea" type="number" value="60" min="0">
             </div>
             <div class="input-group">
                 <label id="lblPower">Total Power (kW)</label>
-                <input id="totalPower" type="number" value="10">
+                <input id="totalPower" type="number" value="10" min="0">
             </div>
             <div class="input-group">
                 <label id="lblVoltage">Voltage (V)</label>
@@ -163,19 +206,19 @@
         <div class="grid-inputs">
             <div class="input-group">
                 <label id="lblSockets">Sockets (pcs)</label>
-                <input id="socketsCount" type="number" value="25">
+                <input id="socketsCount" type="number" value="25" min="0">
             </div>
             <div class="input-group">
                 <label id="lblSwitches">Switches (pcs)</label>
-                <input id="switchesCount" type="number" value="10">
+                <input id="switchesCount" type="number" value="10" min="0">
             </div>
             <div class="input-group">
                 <label id="lblLights">Light Points (pcs)</label>
-                <input id="lightsCount" type="number" value="12">
+                <input id="lightsCount" type="number" value="12" min="0">
             </div>
             <div class="input-group">
                 <label id="lblBreakers">Circuit Breakers</label>
-                <input id="breakersCount" type="number" value="8">
+                <input id="breakersCount" type="number" value="8" min="0">
             </div>
         </div>
 
@@ -183,15 +226,15 @@
         <div class="grid-inputs">
             <div class="input-group">
                 <label id="lblCableLen">Cable Length (m)</label>
-                <input id="cableLength" type="number" value="250">
+                <input id="cableLength" type="number" value="250" min="0">
             </div>
             <div class="input-group">
                 <label id="lblConduitLen">Corrugated Pipe (m)</label>
-                <input id="conduitLength" type="number" value="200">
+                <input id="conduitLength" type="number" value="200" min="0">
             </div>
             <div class="input-group">
                 <label id="lblBoxes">Switch Boxes (pcs)</label>
-                <input id="boxesCount" type="number" value="45">
+                <input id="boxesCount" type="number" value="45" min="0">
             </div>
             <div class="input-group">
                 <label id="lblShields">Distribution Panel</label>
@@ -215,19 +258,19 @@
         <div class="grid-inputs">
             <div class="input-group">
                 <label id="lblCablePrice">Cable Price €/m</label>
-                <input id="cablePrice" type="number" value="1.2">
+                <input id="cablePrice" type="number" value="1.2" min="0">
             </div>
             <div class="input-group">
                 <label id="lblSocketPrice">Socket/Switch €/pcs</label>
-                <input id="socketPrice" type="number" value="8.0">
+                <input id="socketPrice" type="number" value="8.0" min="0">
             </div>
             <div class="input-group">
                 <label id="lblBreakerPrice">Breaker €/pcs</label>
-                <input id="breakerPrice" type="number" value="6.5">
+                <input id="breakerPrice" type="number" value="6.5" min="0">
             </div>
             <div class="input-group">
                 <label id="lblPanelPrice">Panel & Acc. €</label>
-                <input id="panelPrice" type="number" value="75">
+                <input id="panelPrice" type="number" value="75" min="0">
             </div>
         </div>
 
@@ -235,19 +278,19 @@
         <div class="grid-inputs">
             <div class="input-group">
                 <label id="lblPointLabor">Point Labor €/pcs</label>
-                <input id="pointLabor" type="number" value="12">
+                <input id="pointLabor" type="number" value="12" min="0">
             </div>
             <div class="input-group">
                 <label id="lblCableLabor">Cable Laying €/m</label>
-                <input id="cableLabor" type="number" value="2.5">
+                <input id="cableLabor" type="number" value="2.5" min="0">
             </div>
             <div class="input-group">
                 <label id="lblProfitPrice">Markup/Profit €</label>
-                <input id="profitPrice" type="number" value="150">
+                <input id="profitPrice" type="number" value="150" min="0">
             </div>
             <div class="input-group">
                 <label id="lblDeliveryPrice">Logistics & Consumables €</label>
-                <input id="deliveryPrice" type="number" value="60">
+                <input id="deliveryPrice" type="number" value="60" min="0">
             </div>
         </div>
 
@@ -285,6 +328,11 @@
     </div>
 
     <div class="buttons-container">
+        <!-- Глобальний кошторис -->
+        <button class="action-btn global-btn" onclick="addToGlobalEstimate()" id="btnGlobal">🌍 Add to Global Estimate</button>
+    </div>
+    
+    <div class="buttons-container">
         <button class="action-btn" onclick="calculateAll()" id="btnCalc">💰 Calculate</button>
         <button class="action-btn" onclick="copyEstimate()" id="btnCopy">📋 Copy</button>
         <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Invoice</button>
@@ -299,27 +347,46 @@
 
     <div id="historyBox" class="history-box" style="display:none;"></div>
 
+    <!-- ================= SEO BLOCK: FAQ & LINKS ================= -->
+    <div class="seo-block">
+        <h3 id="faqTitle">❓ Frequently Asked Questions</h3>
+        <div class="faq-item">
+            <h4 id="faq1Q">What is the Demand Factor in electrical calculations?</h4>
+            <p id="faq1A">The demand factor takes into account that not all electrical outlets and devices will be used simultaneously at their maximum capacity. Our calculator adjusts the total power automatically based on the number of sockets.</p>
+        </div>
+        <div class="faq-item">
+            <h4 id="faq2Q">How is the cable cross-section recommended?</h4>
+            <p id="faq2A">The cross-section is calculated based on the effective amperage, conductor material (Copper or Aluminum), and the voltage type (230V or 400V). The tool selects the safest standard cross-section (e.g., 1.5mm², 2.5mm²).</p>
+        </div>
+        
+        <h3 id="relatedTitle" style="margin-top:20px;">🔗 Related Calculators</h3>
+        <div class="related-links">
+            <ul>
+                <li><a href="/plastering-calculator" id="linkPlaster">Plastering & Stucco Calculator</a></li>
+                <li><a href="/drywall-calculator" id="linkDrywall">Drywall & Partition Calculator</a></li>
+                <li><a href="/screed-calculator" id="linkScreed">Floor Screed Calculator</a></li>
+            </ul>
+        </div>
+    </div>
+
     <div class="buy-pro-banner">
         <h3 style="border:none; padding:0; margin:0;" id="proTitle">🔓 BUILDcalc PRO</h3>
         <p id="proDesc">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
         <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
     </div>
 
-<script src="../nav.js"></script>
-
 <script>
 document.getElementById('calcForm').addEventListener('input', calculateAll);
 
 function calculateElectrical() {
-    let powerKW = Number(document.getElementById("totalPower").value) || 0;
-    let voltage = Number(document.getElementById("voltageType").value) || 230;
+    let powerKW = parseFloat(document.getElementById("totalPower").value) || 0;
+    let voltage = parseFloat(document.getElementById("voltageType").value) || 230;
     let isCopper = document.getElementById("cableMaterial").value === "copper";
-    let cableLen = Number(document.getElementById("cableLength").value) || 0;
+    let cableLen = parseFloat(document.getElementById("cableLength").value) || 0;
     
-    let sockets = Number(document.getElementById("socketsCount").value) || 0;
+    let sockets = parseFloat(document.getElementById("socketsCount").value) || 0;
 
     // --- НЕЛІНІЙНИЙ РОЗРАХУНОК: Коефіцієнт попиту (Demand Factor) ---
-    // Чим більше розеток, тим менша ймовірність, що вони всі працюватимуть на максимум.
     let demandFactor = 1.0;
     if (sockets >= 40) demandFactor = 0.35;
     else if (sockets >= 25) demandFactor = 0.45;
@@ -327,10 +394,9 @@ function calculateElectrical() {
     else if (sockets >= 10) demandFactor = 0.70;
     else if (sockets >= 5) demandFactor = 0.85;
 
-    // Розрахункова (реальна) потужність
     let effectivePowerKW = powerKW * demandFactor;
     
-    // Мінімальний поріг для житлових приміщень, щоб уникнути занадто малих показників
+    // Мінімальний поріг для житлових приміщень
     if (effectivePowerKW < 3 && powerKW > 0) effectivePowerKW = Math.min(powerKW, 3);
 
     let current = 0;
@@ -353,7 +419,6 @@ function calculateElectrical() {
         recSection = s;
     }
 
-    // Стандартні номінали автоматів
     let standardBreakers = [16, 20, 25, 32, 40, 50, 63, 80, 100];
     let mainBreaker = 16;
     for (let b of standardBreakers) {
@@ -371,23 +436,23 @@ function calculateElectrical() {
 }
 
 function calculateEstimate() {
-    let cableLen = Number(document.getElementById("cableLength").value) || 0;
-    let conduitLen = Number(document.getElementById("conduitLength").value) || 0;
-    let sockets = Number(document.getElementById("socketsCount").value) || 0;
-    let switches = Number(document.getElementById("switchesCount").value) || 0;
-    let lights = Number(document.getElementById("lightsCount").value) || 0;
-    let breakers = Number(document.getElementById("breakersCount").value) || 0;
-    let boxes = Number(document.getElementById("boxesCount").value) || 0;
+    let cableLen = parseFloat(document.getElementById("cableLength").value) || 0;
+    let conduitLen = parseFloat(document.getElementById("conduitLength").value) || 0;
+    let sockets = parseFloat(document.getElementById("socketsCount").value) || 0;
+    let switches = parseFloat(document.getElementById("switchesCount").value) || 0;
+    let lights = parseFloat(document.getElementById("lightsCount").value) || 0;
+    let breakers = parseFloat(document.getElementById("breakersCount").value) || 0;
+    let boxes = parseFloat(document.getElementById("boxesCount").value) || 0;
 
-    let cablePrice = Number(document.getElementById("cablePrice").value) || 0;
-    let socketPrice = Number(document.getElementById("socketPrice").value) || 0;
-    let breakerPrice = Number(document.getElementById("breakerPrice").value) || 0;
-    let panelPrice = Number(document.getElementById("panelPrice").value) || 0;
+    let cablePrice = parseFloat(document.getElementById("cablePrice").value) || 0;
+    let socketPrice = parseFloat(document.getElementById("socketPrice").value) || 0;
+    let breakerPrice = parseFloat(document.getElementById("breakerPrice").value) || 0;
+    let panelPrice = parseFloat(document.getElementById("panelPrice").value) || 0;
 
-    let pointLabor = Number(document.getElementById("pointLabor").value) || 0;
-    let cableLabor = Number(document.getElementById("cableLabor").value) || 0;
-    let profit = Number(document.getElementById("profitPrice").value) || 0;
-    let delivery = Number(document.getElementById("deliveryPrice").value) || 0;
+    let pointLabor = parseFloat(document.getElementById("pointLabor").value) || 0;
+    let cableLabor = parseFloat(document.getElementById("cableLabor").value) || 0;
+    let profit = parseFloat(document.getElementById("profitPrice").value) || 0;
+    let delivery = parseFloat(document.getElementById("deliveryPrice").value) || 0;
 
     let materialCableCost = (cableLen * cablePrice) + (conduitLen * 0.45) + (boxes * 0.8);
     let totalPointsCount = sockets + switches + lights;
@@ -414,6 +479,42 @@ function calculateEstimate() {
 function calculateAll() {
     calculateElectrical();
     calculateEstimate();
+}
+
+// === НОВА ФУНКЦІЯ: ДОДАТИ ДО СПІЛЬНОГО КОШТОРИСУ ===
+function addToGlobalEstimate() {
+    let objName = document.getElementById("object").value || "Unnamed Object";
+    let totalStr = document.getElementById("clientTotal").innerText;
+    let totalNum = parseFloat(totalStr.replace(/[^\d.-]/g, '')) || 0;
+
+    if(totalNum === 0) {
+        alert("Calculate total price first!");
+        return;
+    }
+
+    let item = {
+        id: Date.now(),
+        category: "Electrical & Lighting",
+        object: objName,
+        cost: totalNum,
+        currency: "€"
+    };
+
+    let globalEst = JSON.parse(localStorage.getItem("buildcalc_global")) || [];
+    globalEst.push(item);
+    localStorage.setItem("buildcalc_global", JSON.stringify(globalEst));
+    
+    let btn = document.getElementById("btnGlobal");
+    let originalText = btn.innerText;
+    btn.innerText = "✅ Added to Global!";
+    btn.style.backgroundColor = "var(--global-btn)";
+    btn.style.color = "white";
+    
+    setTimeout(() => {
+        btn.innerText = originalText;
+        btn.style.backgroundColor = "";
+        btn.style.color = "";
+    }, 2000);
 }
 
 function generatePDF() {
@@ -542,7 +643,7 @@ function copyEstimate() {
 
 const langData = {
     en: {
-        subtitle: "Professional Electrical & Lighting Calculator",
+        subtitle: "Professional Electrical & Lighting Calculator", breadCurrent: "Electrical Calculator",
         objectTitle: "🏠 Object Data", objectLabel: "Object Name", addressLabel: "Address", clientLabel: "Client",
         hRoomSpecs: "📐 Room & Load Specs", lblArea: "Floor Area m²", lblPower: "Total Power (kW)", lblVoltage: "Voltage (V)", lblCableMat: "Conductor Material",
         hPoints: "🔌 Points & Hardware", lblSockets: "Sockets (pcs)", lblSwitches: "Switches (pcs)", lblLights: "Light Points (pcs)", lblBreakers: "Circuit Breakers",
@@ -551,14 +652,17 @@ const langData = {
         lblCablePrice: "Cable Price €/m", lblSocketPrice: "Socket/Switch €/pcs", lblBreakerPrice: "Breaker €/pcs", lblPanelPrice: "Panel & Acc. €",
         hLaborPrices: "👷 Labor & Logistics Cost", lblPointLabor: "Point Labor €/pcs", lblCableLabor: "Cable Laying €/m", lblProfitPrice: "Markup/Profit €", lblDeliveryPrice: "Logistics & Consumables €",
         hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
-        hFinal: "📊 Financial Summary", txtClientPrice: "Total Client Price", btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice",
+        hFinal: "📊 Financial Summary", txtClientPrice: "Total Client Price", 
+        btnGlobal: "🌍 Add to Global Estimate", btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice",
         hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
+        faqTitle: "❓ Frequently Asked Questions", faq1Q: "What is the Demand Factor in electrical calculations?", faq1A: "The demand factor takes into account that not all electrical outlets and devices will be used simultaneously at their maximum capacity. Our calculator adjusts the total power automatically based on the number of sockets.", faq2Q: "How is the cable cross-section recommended?", faq2A: "The cross-section is calculated based on the effective amperage, conductor material, and the voltage type. The tool selects the safest standard cross-section.", relatedTitle: "🔗 Related Calculators",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing",
         txtRecAmperage: "Current (Amperage)", txtRecCrossSection: "Recommended Wire Section", txtRecBreaker: "Main Circuit Breaker", txtRecCableTotal: "Total Cable Est.",
-        txtFCable: "Cable & Conduits", txtFPoints: "Sockets, Switches & Panel", txtFBreakers: "Breakers & Protection", txtFMat: "Materials Total", txtFWork: "Labor Cost", txtFProf: "Markup/Profit", txtFLog: "Logistics & Other"
+        txtFCable: "Cable & Conduits", txtFPoints: "Sockets, Switches & Panel", txtFBreakers: "Breakers & Protection", txtFMat: "Materials Total", txtFWork: "Labor Cost", txtFProf: "Markup/Profit", txtFLog: "Logistics & Other",
+        linkPlaster: "Plastering & Stucco Calculator", linkDrywall: "Drywall & Partition Calculator", linkScreed: "Floor Screed Calculator"
     },
     ua: {
-        subtitle: "Професійний калькулятор електрики та освітлення",
+        subtitle: "Професійний калькулятор електрики", breadCurrent: "Електрика",
         objectTitle: "🏠 Дані об'єкта", objectLabel: "Назва об'єкта", addressLabel: "Адреса", clientLabel: "Клієнт",
         hRoomSpecs: "📐 Параметри приміщення та навантаження", lblArea: "Площа підлоги м²", lblPower: "Потужність (кВт)", lblVoltage: "Напруга (В)", lblCableMat: "Матеріал провідника",
         hPoints: "🔌 Точки та обладнання", lblSockets: "Розетки (шт)", lblSwitches: "Вимикачі (шт)", lblLights: "Світлові точки (шт)", lblBreakers: "Автоматичні вимикачі",
@@ -567,14 +671,17 @@ const langData = {
         lblCablePrice: "Ціна кабелю €/м", lblSocketPrice: "Розетка/вимикач €/шт", lblBreakerPrice: "Автомат €/шт", lblPanelPrice: "Щит та аксесуари €",
         hLaborPrices: "👷 Вартість робіт та логістики", lblPointLabor: "Робота за точку €/шт", lblCableLabor: "Прокладка кабелю €/м", lblProfitPrice: "Прибуток €", lblDeliveryPrice: "Логістика та витратні €",
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
-        hFinal: "📊 Фінансовий підсумок", txtClientPrice: "Ціна клієнту", btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF",
+        hFinal: "📊 Фінансовий підсумок", txtClientPrice: "Ціна клієнту", 
+        btnGlobal: "🌍 В єдиний кошторис", btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF",
         hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
+        faqTitle: "❓ Часті питання", faq1Q: "Що таке Коефіцієнт Попиту?", faq1A: "Він враховує, що не всі розетки працюватимуть одночасно на повну потужність. Калькулятор сам знижує навантаження залежно від кількості точок.", faq2Q: "Як рахується переріз кабелю?", faq2A: "На основі струму, матеріалу (мідь/алюміній) та напруги. Підбирається найближчий безпечний стандарт.", relatedTitle: "🔗 Інші калькулятори",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість",
         txtRecAmperage: "Розрахунковий струм", txtRecCrossSection: "Рекомендований переріз", txtRecBreaker: "Вступний автомат", txtRecCableTotal: "Загальна довжина кабелю",
-        txtFCable: "Кабелі та труби", txtFPoints: "Розетки, вимикачі та щит", txtFBreakers: "Автомати та захист", txtFMat: "Матеріали (загалом)", txtFWork: "Робота", txtFProf: "Прибуток", txtFLog: "Логістика та інше"
+        txtFCable: "Кабелі та труби", txtFPoints: "Розетки, вимикачі та щит", txtFBreakers: "Автомати та захист", txtFMat: "Матеріали (загалом)", txtFWork: "Робота", txtFProf: "Прибуток", txtFLog: "Логістика та інше",
+        linkPlaster: "Калькулятор штукатурки", linkDrywall: "Калькулятор гіпсокартону", linkScreed: "Калькулятор стяжки"
     },
     sk: {
-        subtitle: "Profesionálna elektroinštalačná kalkulačka",
+        subtitle: "Profesionálna elektroinštalačná kalkulačka", breadCurrent: "Elektroinštalácia",
         objectTitle: "🏠 Údaje o objekte", objectLabel: "Názov objektu", addressLabel: "Adresa", clientLabel: "Klient",
         hRoomSpecs: "📐 Parametre miestnosti a záťaže", lblArea: "Plocha podlahy m²", lblPower: "Celkový výkon (kW)", lblVoltage: "Napätie (V)", lblCableMat: "Materiál vodiča",
         hPoints: "🔌 Body a komponenty", lblSockets: "Zásuvky (ks)", lblSwitches: "Vypínače (ks)", lblLights: "Svetelné body (ks)", lblBreakers: "Ističe",
@@ -583,11 +690,14 @@ const langData = {
         lblCablePrice: "Cena kábla €/m", lblSocketPrice: "Zásuvka/Vypínač €/ks", lblBreakerPrice: "Istič €/ks", lblPanelPrice: "Rozvádzač a príslušenstvo €",
         hLaborPrices: "👷 Cena práce a logistiky", lblPointLabor: "Práca za bod €/ks", lblCableLabor: "Uloženie kábla €/m", lblProfitPrice: "Zisk €", lblDeliveryPrice: "Logistika a spotrebný materiál €",
         hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
-        hFinal: "📊 Finančný prehľad", txtClientPrice: "Cena pre klienta", btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument",
+        hFinal: "📊 Finančný prehľad", txtClientPrice: "Cena pre klienta", 
+        btnGlobal: "🌍 Do celkového rozpočtu", btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument",
         hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
+        faqTitle: "❓ Často kladené otázky", faq1Q: "Čo je Koeficient Súčasnosti?", faq1A: "Zohľadňuje fakt, že nie všetky zásuvky a prístroje pôjdu naraz na plný výkon. Nástroj automaticky upraví celkový výkon na základe počtu zásuviek.", faq2Q: "Ako sa počíta prierez kábla?", faq2A: "Prierez sa počíta z prúdu, materiálu (Meď/Hliník) a napätia. Vyberá sa najbližší bezpečný štandard.", relatedTitle: "🔗 Súvisiace kalkulačky",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu",
         txtRecAmperage: "Vypočítaný prúd", txtRecCrossSection: "Odporúčaný prierez vodiča", txtRecBreaker: "Hlavný istič", txtRecCableTotal: "Celková dĺžka kábla",
-        txtFCable: "Káble a chráničky", txtFPoints: "Zásuvky, vypínače a rozvádzač", txtFBreakers: "Ističe a ochrana", txtFMat: "Materiály spolu", txtFWork: "Cena práce", txtFProf: "Zisk", txtFLog: "Logistika a ostatné"
+        txtFCable: "Káble a chráničky", txtFPoints: "Zásuvky, vypínače a rozvádzač", txtFBreakers: "Ističe a ochrana", txtFMat: "Materiály spolu", txtFWork: "Cena práce", txtFProf: "Zisk", txtFLog: "Logistika a ostatné",
+        linkPlaster: "Kalkulačka omietok", linkDrywall: "Kalkulačka sadrokartónu", linkScreed: "Kalkulačka poteru"
     }
 };
 
