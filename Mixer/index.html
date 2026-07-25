@@ -5,8 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIP Paint Mixer Ultimate (Free Edition)</title>
-    <meta name="description" content="Professional paint mixer and pigment volume calculator. Estimate base paint quantity, pigment ratios, and total project costs easily.">
+    <meta name="description" content="Professional paint mixer and pigment volume calculator. Estimate base paint quantity, pigment ratios, and total project costs easily with unified cost estimation.">
     
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "VIP Paint Mixer Ultimate",
+        "applicationCategory": "CalculatorApplication",
+        "operatingSystem": "All",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+        }
+    }
+    </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
@@ -36,19 +52,25 @@
         
         .container { width: 100%; max-width: 600px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: background 0.3s; }
 
+        /* SEO Hidden H1 */
+        .seo-h1 { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+        /* Breadcrumbs */
+        .breadcrumb { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; display: flex; gap: 6px; align-items: center; }
+        .breadcrumb a { color: var(--accent-yellow); text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px; }
         .logo { font-weight: 900; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;}
         .logo span { color: var(--accent-yellow); }
         .theme-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-light); }
         
-        /* Уніфікований перемикач мов */
         .lang-select-wrapper select {
             background: var(--bg-input); color: var(--text-light); border: 1px solid var(--border-color);
             padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; outline: none;
         }
         .lang-select-wrapper select:focus { border-color: var(--accent-yellow); }
 
-        /* Уніфіковані кнопки дій (2 рядки по 3) */
         .action-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
         .btn { background: var(--bg-input); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 5px; font-weight: 600; font-size: 0.85rem; color: var(--text-light); transition: 0.2s;}
         .btn:hover { border-color: var(--accent-yellow); }
@@ -85,6 +107,20 @@
         .del-btn { background: rgba(255,51,51,0.2); border: 1px solid var(--danger-red); color: var(--danger-red); padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s;}
         .del-btn:hover { background: var(--danger-red); color: #FFF; }
 
+        /* Unified Estimate Block (Єдиний кошторис) */
+        .unified-estimate-card { background: var(--bg-input); border: 1px solid var(--accent-yellow); border-radius: 8px; padding: 15px; margin-top: 20px; }
+        .unified-total-row { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; color: var(--accent-yellow); margin-top: 10px; border-top: 1px solid var(--border-color); padding-top: 8px; }
+
+        /* SEO Sections: FAQ & Related Calculators */
+        .seo-section { margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px; }
+        .faq-item { margin-bottom: 12px; }
+        .faq-q { font-weight: bold; font-size: 0.85rem; color: var(--text-light); margin-bottom: 3px; }
+        .faq-a { font-size: 0.8rem; color: var(--text-muted); }
+
+        .related-list { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+        .related-list li a { font-size: 0.82rem; color: var(--accent-yellow); text-decoration: none; }
+        .related-list li a:hover { text-decoration: underline; }
+
         .footer { margin-top: 30px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 15px; font-size: 0.8rem; color: var(--text-muted); }
     </style>
     
@@ -95,6 +131,12 @@
 <div id="global-nav-container"></div>
 
 <div class="container" id="app-container">
+    <h1 class="seo-h1">VIP Paint Mixer Ultimate & Unified Estimate Calculator</h1>
+    
+    <div class="breadcrumb">
+        <a href="#" id="bc-home">Home</a> &gt; <a href="#" id="bc-calcs">Calculators</a> &gt; <span id="bc-current">Paint Mixer</span>
+    </div>
+
     <div class="header" data-html2canvas-ignore="true">
         <div class="logo">
             <button class="theme-btn" onclick="toggleTheme()">🌓</button>
@@ -247,6 +289,41 @@
         <div id="history-list"></div>
     </div>
 
+    <!-- Єдиний кошторис для всіх проектів/калькуляторів -->
+    <div class="unified-estimate-card" data-html2canvas-ignore="true">
+        <div class="section-title" id="sec-unified" style="border:none; margin-bottom:5px;">📊 Unified Master Estimate</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;" id="sec-unified-desc">Total accumulated budget across all saved project objects.</div>
+        <div class="unified-total-row">
+            <span id="lbl-unified-total">Master Project Total:</span>
+            <span id="out-unified-total">0.00 €</span>
+        </div>
+    </div>
+
+    <!-- SEO FAQ Section -->
+    <div class="seo-section">
+        <div class="section-title" id="sec-faq">FAQ</div>
+        <div class="faq-item">
+            <div class="faq-q" id="faq-q1">How much paint do I need for 30 m²?</div>
+            <div class="faq-a" id="faq-a1">On smooth surfaces with 2 layers, approx. 7.2 liters of base paint are required.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" id="faq-q2">What is the maximum pigment limit?</div>
+            <div class="faq-a" id="faq-a2">To maintain paint integrity and adhesion, do not exceed 10% of total volume with pigment.</div>
+        </div>
+    </div>
+
+    <!-- Related Calculators -->
+    <div class="seo-section">
+        <div class="section-title" id="sec-related">Related Calculators</div>
+        <ul class="related-list">
+            <li><a href="#">Screed Calculator</a></li>
+            <li><a href="#">Roof Calculator</a></li>
+            <li><a href="#">Plaster Calculator</a></li>
+            <li><a href="#">Paint Calculator</a></li>
+            <li><a href="#">Foundation Calculator</a></li>
+        </ul>
+    </div>
+
     <div class="footer">
         <div>✉️ info@vip-mixer.sk | 📞 +421 XX XXX XXX</div>
         <div style="margin-top: 5px;">Created for Professionals</div>
@@ -273,15 +350,27 @@
     const dict = {
         en: { 
             share: "📤 Share", copy: "📋 Copy", pdf: "📄 PDF", vault: "💾 Project Vault", save: "💾 Save", history: "📂 History", clear: "🗑 Clear",
-            secObj: "📐 Object Area & Base", area: "Wall Area (m²)", surf: "Surface Type", optSm: "Smooth (0.12 L/m²)", optWl: "Wallpaper (0.15 L/m²)", optRg: "Rough (0.25 L/m²)", doors: "Doors / Windows", layers: "Layers", baseType: "Paint Base Type", optBa: "Base A (White)", optBc: "Base C (Clear)", secEco: "💶 Economics", pBase: "Base Price (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Labor (€/m²)", otherExp: "Other Expenses (€)", rNeed: "Base Needed:", matCost: "Material Cost:", labCost: "Labor Cost:", othCost: "Other Expenses:", grandTotal: "Grand Total:", prev: "Mixed Color", warn: "WARNING: 10% Pigment Limit Reached!", tot: "Total pigment:", promptMsg: "Enter object name:", del: "Delete", clearBase: "Clear base", emptyHist: "History is empty" 
+            secObj: "📐 Object Area & Base", area: "Wall Area (m²)", surf: "Surface Type", optSm: "Smooth (0.12 L/m²)", optWl: "Wallpaper (0.15 L/m²)", optRg: "Rough (0.25 L/m²)", doors: "Doors / Windows", layers: "Layers", baseType: "Paint Base Type", optBa: "Base A (White)", optBc: "Base C (Clear)", secEco: "💶 Economics", pBase: "Base Price (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Labor (€/m²)", otherExp: "Other Expenses (€)", rNeed: "Base Needed:", matCost: "Material Cost:", labCost: "Labor Cost:", othCost: "Other Expenses:", grandTotal: "Grand Total:", prev: "Mixed Color", warn: "WARNING: 10% Pigment Limit Reached!", tot: "Total pigment:", promptMsg: "Enter object name:", del: "Delete", clearBase: "Clear base", emptyHist: "History is empty",
+            bcHome: "Home", bcCalcs: "Calculators", bcCurr: "Paint Mixer",
+            secUnified: "📊 Unified Master Estimate", secUnifiedDesc: "Total accumulated budget across all saved project objects.", lblUnifiedTot: "Master Project Total:",
+            secFaq: "FAQ", faqQ1: "How much paint do I need for 30 m²?", faqA1: "On smooth surfaces with 2 layers, approx. 7.2 liters of base paint are required.", faqQ2: "What is the maximum pigment limit?", faqA2: "To maintain paint integrity and adhesion, do not exceed 10% of total volume with pigment.",
+            secRelated: "Related Calculators"
         },
         uk: { 
             share: "📤 Поділитися", copy: "📋 Копіювати", pdf: "📄 PDF", vault: "💾 Проєкти", save: "💾 Зберегти", history: "📂 Історія", clear: "🗑 Очистити",
-            secObj: "📐 Площа та База", area: "Площа стін (м²)", surf: "Тип поверхні", optSm: "Гладка (0.12 л/м²)", optWl: "Шпалери (0.15 л/м²)", optRg: "Короїд (0.25 л/м²)", doors: "Двері / Вікна", layers: "Шари", baseType: "Тип бази", optBa: "База А (Біла)", optBc: "База С (Прозора)", secEco: "💶 Економіка", pBase: "Ціна бази (€/Л)", pPig: "Пігмент (€/100мл)", laborRate: "Робота (€/m²)", otherExp: "Інші витрати (€)", rNeed: "Потрібно бази:", matCost: "Вартість матеріалів:", labCost: "Вартість робіт:", othCost: "Інші витрати:", grandTotal: "Загальна вартість:", prev: "Колір суміші", warn: "УВАГА: Ліміт 10% пігменту!", tot: "Всього пігменту:", promptMsg: "Введіть назву об'єкта:", del: "Видалити", clearBase: "Прозора база", emptyHist: "Історія порожня" 
+            secObj: "📐 Площа та База", area: "Площа стін (м²)", surf: "Тип поверхні", optSm: "Гладка (0.12 л/м²)", optWl: "Шпалери (0.15 л/м²)", optRg: "Короїд (0.25 л/м²)", doors: "Двері / Вікна", layers: "Шари", baseType: "Тип бази", optBa: "База А (Біла)", optBc: "База С (Прозора)", secEco: "💶 Економіка", pBase: "Ціна бази (€/Л)", pPig: "Пігмент (€/100мл)", laborRate: "Робота (€/m²)", otherExp: "Інші витрати (€)", rNeed: "Потрібно бази:", matCost: "Вартість матеріалів:", labCost: "Вартість робіт:", othCost: "Інші витрати:", grandTotal: "Загальна вартість:", prev: "Колір суміші", warn: "УВАГА: Ліміт 10% пігменту!", tot: "Всього пігменту:", promptMsg: "Введіть назву об'єкта:", del: "Видалити", clearBase: "Прозора база", emptyHist: "Історія порожня",
+            bcHome: "Головна", bcCalcs: "Калькулятори", bcCurr: "Міксер фарби",
+            secUnified: "📊 Єдиний зведений кошторис", secUnifiedDesc: "Загальний накопичувальний бюджет по всіх збережених об'єктах проєкту.", lblUnifiedTot: "Загальний кошторис проєкту:",
+            secFaq: "Часті запитання (FAQ)", faqQ1: "Скільки фарби потрібно на 30 м²?", faqA1: "На гладких поверхнях у 2 шари потрібно приблизно 7.2 літра базової фарби.", faqQ2: "Який максимальний ліміт пігменту?", faqA2: "Для збереження адгезії та властивостей фарби не перевищуйте 10% пігменту від загального об'єму.",
+            secRelated: "Схожі калькулятори"
         },
         sk: { 
             share: "📤 Zdielať", copy: "📋 Kopírovať", pdf: "📄 PDF", vault: "💾 Projekty", save: "💾 Uložiť", history: "📂 História", clear: "🗑 Vymazať",
-            secObj: "📐 Plocha a Základ", area: "Plocha stien (m²)", surf: "Typ povrchu", optSm: "Hladký (0.12 l/m²)", optWl: "Tapeta (0.15 l/m²)", optRg: "Drsný (0.25 l/m²)", doors: "Dvere / Okná", layers: "Vrstvy", baseType: "Typ základu", optBa: "Báza A (Biela)", optBc: "Priesvitná báza (C)", secEco: "💶 Ekonomika", pBase: "Cena bázy (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Práca (€/m²)", otherExp: "Iné náklady (€)", rNeed: "Potrebný základ:", matCost: "Cena materiálu:", labCost: "Cena práce:", othCost: "Iné náklady:", grandTotal: "Celková cena:", prev: "Výsledná farba", warn: "POZOR: Limit 10% pigmentu!", tot: "Pigment celkom:", promptMsg: "Zadajte názov objektu:", del: "Vymazať", clearBase: "Priesvitný základ", emptyHist: "História je prázdna" 
+            secObj: "📐 Plocha a Základ", area: "Plocha stien (m²)", surf: "Typ povrchu", optSm: "Hladký (0.12 l/m²)", optWl: "Tapeta (0.15 l/m²)", optRg: "Drsný (0.25 l/m²)", doors: "Dvere / Okná", layers: "Vrstvy", baseType: "Typ základu", optBa: "Báza A (Biela)", optBc: "Priesvitná báza (C)", secEco: "💶 Ekonomika", pBase: "Cena bázy (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Práca (€/m²)", otherExp: "Iné náklady (€)", rNeed: "Potrebný základ:", matCost: "Cena materiálu:", labCost: "Cena práce:", othCost: "Iné náklady:", grandTotal: "Celková cena:", prev: "Výsledná farba", warn: "POZOR: Limit 10% pigmentu!", tot: "Pigment celkom:", promptMsg: "Zadajte názov objektu:", del: "Vymazať", clearBase: "Priesvitný základ", emptyHist: "História je prázdna",
+            bcHome: "Domov", bcCalcs: "Kalkulačky", bcCurr: "Miešač farieb",
+            secUnified: "📊 Jednotný súhrnný rozpočet", secUnifiedDesc: "Celkový kumulovaný rozpočet pre všetky uložené objekty projektu.", lblUnifiedTot: "Celkový rozpočet projektu:",
+            secFaq: "Často kladené otázky (FAQ)", faqQ1: "Koľko farby potrebujem na 30 m²?", faqA1: "Na hladkých povrchoch v 2 vrstvách je potrebných cca 7.2 litra základnej farby.", faqQ2: "Aký je maximálny limit pigmentu?", faqA2: "Pre zachovanie vlastností farby neprekračujte 10% objemu pigmentu.",
+            secRelated: "Súvisiace kalkulačky"
         }
     };
 
@@ -340,9 +429,24 @@
         document.getElementById('warning-banner').innerText = d.warn;
         document.getElementById('lbl-total-pigment').innerText = d.tot;
 
+        // Breadcrumbs & SEO
+        document.getElementById('bc-home').innerText = d.bcHome;
+        document.getElementById('bc-calcs').innerText = d.bcCalcs;
+        document.getElementById('bc-current').innerText = d.bcCurr;
+        document.getElementById('sec-unified').innerText = d.secUnified;
+        document.getElementById('sec-unified-desc').innerText = d.secUnifiedDesc;
+        document.getElementById('lbl-unified-total').innerText = d.lblUnifiedTot;
+        document.getElementById('sec-faq').innerText = d.secFaq;
+        document.getElementById('faq-q1').innerText = d.faqQ1;
+        document.getElementById('faq-a1').innerText = d.faqA1;
+        document.getElementById('faq-q2').innerText = d.faqQ2;
+        document.getElementById('faq-a2').innerText = d.faqA2;
+        document.getElementById('sec-related').innerText = d.secRelated;
+
         initDropdowns();
         recalc();
         if(isHistoryVisible) renderHistory();
+        updateUnifiedEstimate();
     }
 
     function recalc() {
@@ -422,7 +526,6 @@
         }
     }
 
-    /* ---- НОВІ ФУНКЦІЇ КНОПОК ---- */
     function copyEstimate() {
         let res = document.getElementById("out-cost").innerText;
         let base = document.getElementById("out-liters").innerText;
@@ -461,19 +564,23 @@
             return val > 0 ? `${sel.options[sel.selectedIndex].text}: ${val}ml` : null;
         }).filter(Boolean).join(' + ');
 
+        let rawCost = parseFloat(document.getElementById('out-cost').innerText) || 0;
+
         const record = {
             id: Date.now(), name: name, date: new Date().toLocaleDateString(),
             base: document.getElementById('out-liters').innerText,
             cost: document.getElementById('out-cost').innerText,
+            rawCost: rawCost,
             mix: mixDetails || dict[currentLang].clearBase
         };
 
         try {
             let history = JSON.parse(localStorage.getItem('vipMixerHistory')) || [];
-            history.unshift(record); // Додаємо на початок
+            history.unshift(record);
             localStorage.setItem('vipMixerHistory', JSON.stringify(history));
             if(isHistoryVisible) renderHistory();
             else toggleHistory();
+            updateUnifiedEstimate();
         } catch (e) {
             alert("Saving is not available in Private Mode.");
         }
@@ -515,12 +622,24 @@
         history = history.filter(item => item.id !== id);
         localStorage.setItem('vipMixerHistory', JSON.stringify(history));
         renderHistory();
+        updateUnifiedEstimate();
     }
 
     function clearHistory() {
         if(confirm("Are you sure you want to clear history?")) {
             localStorage.removeItem("vipMixerHistory");
             if(isHistoryVisible) renderHistory();
+            updateUnifiedEstimate();
+        }
+    }
+
+    function updateUnifiedEstimate() {
+        try {
+            const history = JSON.parse(localStorage.getItem('vipMixerHistory')) || [];
+            let totalSum = history.reduce((sum, item) => sum + (item.rawCost || parseFloat(item.cost) || 0), 0);
+            document.getElementById('out-unified-total').innerText = totalSum.toFixed(2) + " €";
+        } catch (e) {
+            document.getElementById('out-unified-total').innerText = "0.00 €";
         }
     }
 
@@ -528,6 +647,7 @@
         initDropdowns();
         document.getElementById("language").value = "en";
         changeLanguage();
+        updateUnifiedEstimate();
     });
 </script>
 
