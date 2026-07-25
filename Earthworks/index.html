@@ -1,11 +1,28 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Earthworks & Demolition Calculator | BUILDcalc</title>
-    <meta name="description" content="Professional earthworks calculator. Estimate excavation volume, soil swelling, truck trips, excavator hours, and total costs.">
+    <title>Earthworks & Demolition Calculator | Free Professional Estimate</title>
+    <meta name="description" content="Free professional earthworks calculator. Estimate excavation volume, soil swelling, truck trips, excavator hours, and generate PDF estimates in seconds.">
     
+    <!-- ================= SCHEMA.ORG FOR SEO ================= -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Earthworks & Demolition Calculator",
+      "operatingSystem": "Web",
+      "applicationCategory": "BusinessApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    }
+    </script>
+
     <!-- ================= GOOGLE ANALYTICS ================= -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPRB8JPVM2"></script>
     <script>
@@ -15,10 +32,10 @@
         gtag('config', 'G-RPRB8JPVM2');
     </script>
 
-    <!-- Бібліотека для генерації PDF -->
+    <!-- PDF Generator -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    <!-- ================= СТИЛІ (ЖОВТО-ЧОРНА ТЕМА) ================= -->
+    <!-- ================= STYLES ================= -->
     <style>
         :root {
             --primary: #FFC107;
@@ -27,6 +44,8 @@
             --dark-light: #343a40;
             --text-light: #ffffff;
             --text-muted: #a0a0a0;
+            --global-btn: #9c27b0;
+            --global-btn-hover: #7b1fa2;
         }
 
         body {
@@ -37,15 +56,20 @@
             padding: 15px;
         }
 
-        .header {
-            text-align: center;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--dark-light);
+        /* SEO: H1 styled as Logo */
+        h1.logo { 
+            font-size: 24px; font-weight: bold; color: var(--text-light); 
+            text-align: center; margin: 0; padding: 10px 0 0 0;
         }
-
-        .logo { font-size: 24px; font-weight: bold; color: var(--text-light); }
-        .logo span { color: var(--primary); }
+        h1.logo span { color: var(--primary); }
+        
+        .header { text-align: center; padding-bottom: 10px; border-bottom: 1px solid var(--dark-light); }
         .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
+
+        /* Breadcrumbs */
+        .breadcrumbs { font-size: 12px; color: var(--text-muted); margin: 15px 0; }
+        .breadcrumbs a { color: var(--primary); text-decoration: none; }
+        .breadcrumbs a:hover { text-decoration: underline; }
 
         .lang-select-wrapper select {
             background: var(--dark-light); color: white; border: 1px solid var(--primary);
@@ -57,8 +81,8 @@
         .tab-btn.active { background: var(--primary); color: var(--dark); font-weight: bold; }
         .badge { background: red; color: white; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 5px; }
 
-        h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; color: var(--text-light); }
-
+        h2, h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; color: var(--text-light); }
+        
         .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px; }
         .input-group { display: flex; flex-direction: column; }
         .input-group label { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
@@ -77,11 +101,24 @@
         .buttons-container { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; width: 100%; clear: both; }
         .action-btn {
             flex: 1; min-width: 100px; background: var(--dark-light); color: white; border: 1px solid var(--primary);
-            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold;
+            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; text-align: center;
         }
         .action-btn:hover { background: var(--primary); color: var(--dark); }
+        
+        .global-btn { border-color: var(--global-btn); color: var(--global-btn); }
+        .global-btn:hover { background: var(--global-btn); color: white; }
 
-        .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
+        .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; }
+
+        /* SEO Blocks (FAQ & Links) */
+        .seo-block { background: var(--dark-light); padding: 15px; border-radius: 8px; margin-top: 30px; }
+        .seo-block h3 { margin-top: 0; border: none; padding-left: 0; color: var(--primary); }
+        .faq-item { margin-bottom: 15px; }
+        .faq-item h4 { margin: 0 0 5px 0; font-size: 16px; }
+        .faq-item p { margin: 0; font-size: 14px; color: var(--text-muted); }
+        .related-links ul { padding-left: 20px; }
+        .related-links a { color: var(--text-light); text-decoration: none; }
+        .related-links a:hover { color: var(--primary); }
 
         .buy-pro-banner {
             background: linear-gradient(135deg, #343a40, #212529);
@@ -94,17 +131,14 @@
         }
         .buy-btn:hover { background: var(--primary-hover); }
     </style>
-
-    <!-- Підключення навігації -->
     <script src="../nav.js"></script>
 </head>
 <body>
 
-<!-- Контейнер для глобального меню -->
 <div id="global-nav-container"></div>
 
     <div class="header">
-        <div class="logo">🚜 <span>BUILD</span>calc EARTHWORKS</div>
+        <h1 class="logo">🚜 <span>BUILD</span>calc EARTHWORKS</h1>
         <div class="subtitle" id="subtitle">Professional Earthworks & Demolition Calculator</div>
 
         <div class="lang-select-wrapper">
@@ -115,13 +149,17 @@
             </select>
         </div>
     </div>
+
+    <!-- SEO Breadcrumbs -->
+    <nav class="breadcrumbs" aria-label="breadcrumb">
+        <a href="/">Home</a> > <a href="/calculators">Calculators</a> > <span id="breadCurrent">Earthworks Calculator</span>
+    </nav>
     
-    <div class="version-switcher" style="margin-top: 15px;">
+    <div class="version-switcher">
         <button class="tab-btn active" id="tabFree" onclick="setVersion('free')">FREE</button>
         <button class="tab-btn" id="tabPro" onclick="setVersion('pro')">PRO <span class="badge">Business</span></button>
     </div>
 
-    <!-- Обгортка розрахунків -->
     <div id="calcForm">
         <h3 id="objectTitle">🏠 Object Data</h3>
         <div class="grid-inputs">
@@ -139,24 +177,23 @@
             </div>
         </div>
 
-        <!-- БЛОК 1: ПАРАМЕТРИ ЗЕМЛЯНИХ РОБІТ -->
         <h3 id="hEarthworks">🚜 Earthworks Specs</h3>
         <div class="grid-inputs">
             <div class="input-group">
                 <label id="lblExcavation">Excavation Volume (m³)</label>
-                <input id="excavationVol" type="number" value="120">
+                <input id="excavationVol" type="number" value="120" min="0">
             </div>
             <div class="input-group">
                 <label id="lblSwelling">Soil Swelling Coeff (e.g., 1.25)</label>
-                <input id="swellingCoeff" type="number" step="0.01" value="1.25">
+                <input id="swellingCoeff" type="number" step="0.01" value="1.25" min="1">
             </div>
             <div class="input-group">
                 <label id="lblTruckCap">Dump Truck Capacity (m³)</label>
-                <input id="truckCapacity" type="number" value="15">
+                <input id="truckCapacity" type="number" value="15" min="1">
             </div>
             <div class="input-group">
                 <label id="lblExcHours">Excavator Hours</label>
-                <input id="excavatorHours" type="number" value="10">
+                <input id="excavatorHours" type="number" value="10" min="0">
             </div>
         </div>
         <div class="result-box">
@@ -164,24 +201,23 @@
             <div><span id="txtTruckTrips">Required Dump Truck Trips</span> <span id="resTrips">0 trips</span></div>
         </div>
 
-        <!-- БЛОК 2: ЦІНИ -->
         <h3 id="hEstimate">💶 Unit Prices & Machinery Rates</h3>
         <div class="grid-inputs">
             <div class="input-group">
                 <label id="lblPriceExcavation">Excavation & Loading €/m³</label>
-                <input id="priceExcavation" type="number" value="6">
+                <input id="priceExcavation" type="number" value="6" min="0">
             </div>
             <div class="input-group">
                 <label id="lblPriceTransport">Transport / Trip €/trip</label>
-                <input id="priceTransport" type="number" value="90">
+                <input id="priceTransport" type="number" value="90" min="0">
             </div>
             <div class="input-group">
                 <label id="lblPriceExcHours">Excavator Rate €/hour</label>
-                <input id="priceExcHours" type="number" value="45">
+                <input id="priceExcHours" type="number" value="45" min="0">
             </div>
             <div class="input-group">
                 <label id="lblPriceDemolition">Demolition / Misc Cost €</label>
-                <input id="priceDemolition" type="number" value="350">
+                <input id="priceDemolition" type="number" value="350" min="0">
             </div>
         </div>
 
@@ -202,26 +238,29 @@
         </div>
     </div>
 
-    <!-- ЗАГАЛЬНИЙ ФІНАНСОВИЙ ПІДСУМОК -->
     <h3 id="hFinal" style="clear: both; width: 100%;">📊 Financial Summary</h3>
-    <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
+    <div class="result-box" id="result" style="width: 100%; box-sizing: border-box;">
         <div><span>⛏️ <span id="txtCostExc">Excavation Cost</span></span> <span id="costExc">0 €</span></div>
         <div><span>🚚 <span id="txtCostTrans">Transport Cost</span></span> <span id="costTrans">0 €</span></div>
         <div><span>🚜 <span id="txtCostMach">Excavator Rental Cost</span></span> <span id="costMach">0 €</span></div>
         <div><span>🔨 <span id="txtCostDemo">Demolition & Misc Cost</span></span> <span id="costDemo">0 €</span></div>
         <hr>
-        <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; width: 100%;">
+        <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap;">
             <span>💰 <span id="txtClientPrice">Total Project Price</span></span> <span id="clientTotal">0 €</span>
         </div>
     </div>
 
+    <div class="buttons-container">
+        <!-- Кнопка додавання до Глобального кошторису -->
+        <button class="action-btn global-btn" onclick="addToGlobalEstimate()" id="btnGlobal">🌍 Add to Global Estimate</button>
+    </div>
     <div class="buttons-container">
         <button class="action-btn" onclick="calculateAll()" id="btnCalc">💰 Calculate</button>
         <button class="action-btn" onclick="copyEstimate()" id="btnCopy">📋 Copy</button>
         <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Estimate</button>
     </div>
 
-    <h3 id="hProjects" style="clear: both; width: 100%;">💾 Project Vault</h3>
+    <h3 id="hProjects">💾 Project Vault</h3>
     <div class="buttons-container">
         <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Save</button>
         <button class="action-btn" onclick="showHistory()" id="btnHistory">📂 History</button>
@@ -230,28 +269,45 @@
 
     <div id="historyBox" class="history-box" style="display:none;"></div>
 
+    <!-- ================= SEO BLOCK: FAQ & LINKS ================= -->
+    <div class="seo-block">
+        <h3 id="faqTitle">❓ Frequently Asked Questions</h3>
+        <div class="faq-item">
+            <h4 id="faq1Q">What is the soil swelling coefficient?</h4>
+            <p id="faq1A">When soil is excavated, it loosens and takes up more space. A coefficient of 1.25 means the volume increases by 25%. This is crucial for calculating dump truck trips.</p>
+        </div>
+        <div class="faq-item">
+            <h4 id="faq2Q">How to calculate dump truck trips?</h4>
+            <p id="faq2A">Divide the loose soil volume by the truck capacity. Our calculator does this automatically and rounds up to the nearest full trip.</p>
+        </div>
+        
+        <h3 id="relatedTitle" style="margin-top:20px;">🔗 Related Calculators</h3>
+        <div class="related-links">
+            <ul>
+                <li><a href="/foundation-calculator" id="linkFoundation">Foundation Concrete Calculator</a></li>
+                <li><a href="/screed-calculator" id="linkScreed">Floor Screed Calculator</a></li>
+                <li><a href="/facade-calculator" id="linkFacade">Facade Insulation Calculator</a></li>
+            </ul>
+        </div>
+    </div>
+
     <div class="buy-pro-banner">
         <h3 style="border:none; padding:0; margin:0;" id="proTitle">🔓 BUILDcalc PRO</h3>
-        <p id="proDesc">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
+        <p id="proDesc">Full professional estimate, PDF export, Global Estimate tool, Company profiles, Unlimited objects.</p>
         <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
     </div>
 
-<!-- ================= SCRIPTS ================= -->
 <script>
 document.getElementById('calcForm').addEventListener('input', calculateAll);
 
 function calculateMaterials() {
-    let vol = Number(document.getElementById("excavationVol").value) || 0;
-    let swelling = Number(document.getElementById("swellingCoeff").value) || 1.25;
-    let truckCap = Number(document.getElementById("truckCapacity").value) || 15;
+    let vol = parseFloat(document.getElementById("excavationVol").value) || 0;
+    let swelling = parseFloat(document.getElementById("swellingCoeff").value) || 1.25;
+    let truckCap = parseFloat(document.getElementById("truckCapacity").value) || 15;
 
-    // Об'єм з розпушенням
     let looseVol = vol * swelling;
-    
-    // Кількість ходок самоскидів
     let trips = truckCap > 0 ? Math.ceil(looseVol / truckCap) : 0;
 
-    // Виведення результатів
     document.getElementById("resLooseVol").innerText = looseVol.toFixed(1) + " m³";
     document.getElementById("resTrips").innerText = trips + " trips";
 
@@ -261,14 +317,12 @@ function calculateMaterials() {
 function calculateEstimate() {
     let mats = calculateMaterials();
 
-    // Ціни та параметри
-    let pExc = Number(document.getElementById("priceExcavation").value) || 0;
-    let pTrans = Number(document.getElementById("priceTransport").value) || 0;
-    let excHours = Number(document.getElementById("excavatorHours").value) || 0;
-    let pMach = Number(document.getElementById("priceExcHours").value) || 0;
-    let pDemo = Number(document.getElementById("priceDemolition").value) || 0;
+    let pExc = parseFloat(document.getElementById("priceExcavation").value) || 0;
+    let pTrans = parseFloat(document.getElementById("priceTransport").value) || 0;
+    let excHours = parseFloat(document.getElementById("excavatorHours").value) || 0;
+    let pMach = parseFloat(document.getElementById("priceExcHours").value) || 0;
+    let pDemo = parseFloat(document.getElementById("priceDemolition").value) || 0;
 
-    // Категорії витрат
     let costExc = mats.vol * pExc;
     let costTrans = mats.trips * pTrans;
     let costMach = excHours * pMach;
@@ -276,7 +330,6 @@ function calculateEstimate() {
     
     let clientTotal = costExc + costTrans + costMach + costDemo;
 
-    // Виведення фінансів
     document.getElementById("costExc").innerText = costExc.toFixed(2) + " €";
     document.getElementById("costTrans").innerText = costTrans.toFixed(2) + " €";
     document.getElementById("costMach").innerText = costMach.toFixed(2) + " €";
@@ -286,6 +339,43 @@ function calculateEstimate() {
 
 function calculateAll() {
     calculateEstimate();
+}
+
+// === НОВА ФУНКЦІЯ: ДОДАТИ ДО СПІЛЬНОГО КОШТОРИСУ ===
+function addToGlobalEstimate() {
+    let objName = document.getElementById("object").value || "Unnamed Object";
+    let totalStr = document.getElementById("clientTotal").innerText;
+    let totalNum = parseFloat(totalStr.replace(/[^\d.-]/g, '')) || 0;
+
+    if(totalNum === 0) {
+        alert("Calculate total price first!");
+        return;
+    }
+
+    let item = {
+        id: Date.now(),
+        category: "Earthworks & Demolition",
+        object: objName,
+        cost: totalNum,
+        currency: "€"
+    };
+
+    let globalEst = JSON.parse(localStorage.getItem("buildcalc_global")) || [];
+    globalEst.push(item);
+    localStorage.setItem("buildcalc_global", JSON.stringify(globalEst));
+    
+    // Анімація або повідомлення для користувача
+    let btn = document.getElementById("btnGlobal");
+    let originalText = btn.innerText;
+    btn.innerText = "✅ Added to Global!";
+    btn.style.backgroundColor = "var(--global-btn)";
+    btn.style.color = "white";
+    
+    setTimeout(() => {
+        btn.innerText = originalText;
+        btn.style.backgroundColor = "";
+        btn.style.color = "";
+    }, 2000);
 }
 
 function generatePDF() {
@@ -376,37 +466,43 @@ function copyEstimate() {
 
 const langData = {
     en: {
-        subtitle: "Professional Earthworks & Demolition Calculator",
+        subtitle: "Professional Earthworks & Demolition Calculator", breadCurrent: "Earthworks Calculator",
         objectTitle: "🏠 Object Data", objectLabel: "Object Name", addressLabel: "Address", clientLabel: "Client",
-        hEarthworks: "🚜 Earthworks Specs", lblExcavation: "Excavation Volume (m³)", lblSwelling: "Soil Swelling Coeff (e.g., 1.25)", lblTruckCap: "Dump Truck Capacity (m³)", lblExcHours: "Excavator Hours",
+        hEarthworks: "🚜 Earthworks Specs", lblExcavation: "Excavation Volume (m³)", lblSwelling: "Soil Swelling Coeff", lblTruckCap: "Dump Truck Capacity (m³)", lblExcHours: "Excavator Hours",
         txtLooseVol: "Loose Soil Volume (for Transport)", txtTruckTrips: "Required Dump Truck Trips",
         hEstimate: "💶 Unit Prices & Machinery Rates", lblPriceExcavation: "Excavation & Loading €/m³", lblPriceTransport: "Transport / Trip €/trip", lblPriceExcHours: "Excavator Rate €/hour", lblPriceDemolition: "Demolition / Misc Cost €",
         hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
         hFinal: "📊 Financial Summary", txtCostExc: "Excavation Cost", txtCostTrans: "Transport Cost", txtCostMach: "Excavator Rental Cost", txtCostDemo: "Demolition & Misc Cost", txtClientPrice: "Total Project Price",
-        btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Estimate", hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing"
+        btnGlobal: "🌍 Add to Global Estimate", btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Estimate", hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
+        faqTitle: "❓ Frequently Asked Questions", faq1Q: "What is the soil swelling coefficient?", faq1A: "When soil is excavated, it loosens and takes up more space. A coefficient of 1.25 means the volume increases by 25%. This is crucial for calculating dump truck trips.", faq2Q: "How to calculate dump truck trips?", faq2A: "Divide the loose soil volume by the truck capacity. Our calculator does this automatically.", relatedTitle: "🔗 Related Calculators",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, Global Estimate tool, Company profiles, Unlimited objects.", btnBuyPro: "Check Pricing",
+        linkFoundation: "Foundation Concrete Calculator", linkScreed: "Floor Screed Calculator", linkFacade: "Facade Insulation Calculator"
     },
     ua: {
-        subtitle: "Калькулятор земляних робіт та демонтажу",
+        subtitle: "Калькулятор земляних робіт та демонтажу", breadCurrent: "Земляні роботи",
         objectTitle: "🏠 Дані об'єкта", objectLabel: "Назва об'єкта", addressLabel: "Адреса", clientLabel: "Клієнт",
-        hEarthworks: "🚜 Параметри ґрунту та робіт", lblExcavation: "Об'єм виїмки ґрунту (м³)", lblSwelling: "Коефіцієнт розпушення (напр. 1.25)", lblTruckCap: "Місткість самоскида (м³)", lblExcHours: "Години роботи екскаватора",
-        txtLooseVol: "Об'єм розпушеного ґрунту (для вивезення)", txtTruckTrips: "Кількість ходок самоскидів",
-        hEstimate: "💶 Ціни та тарифи спецтехніки", lblPriceExcavation: "Виїмка та навантаження €/м³", lblPriceTransport: "Транспорт / рейс €/рейс", lblPriceExcHours: "Робота екскаватора €/год", lblPriceDemolition: "Демонтаж / Ручна праця €",
+        hEarthworks: "🚜 Параметри робіт", lblExcavation: "Об'єм виїмки (м³)", lblSwelling: "Коеф. розпушення", lblTruckCap: "Місткість самоскида (м³)", lblExcHours: "Години екскаватора",
+        txtLooseVol: "Об'єм розпушеного ґрунту", txtTruckTrips: "Кількість ходок",
+        hEstimate: "💶 Ціни та тарифи", lblPriceExcavation: "Виїмка та навантаження €/м³", lblPriceTransport: "Транспорт €/рейс", lblPriceExcHours: "Оренда екскаватора €/год", lblPriceDemolition: "Демонтаж / Різне €",
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
-        hFinal: "📊 Фінансовий підсумок", txtCostExc: "Вартість виїмки ґрунту", txtCostTrans: "Вартість транспортних послуг", txtCostMach: "Оренда екскаватора", txtCostDemo: "Демонтаж та витрати", txtClientPrice: "Загальна ціна проєкту",
-        btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF", hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість"
+        hFinal: "📊 Фінансовий підсумок", txtCostExc: "Вартість виїмки", txtCostTrans: "Вартість транспорту", txtCostMach: "Оренда екскаватора", txtCostDemo: "Демонтаж", txtClientPrice: "Загальна ціна проєкту",
+        btnGlobal: "🌍 В єдиний кошторис", btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF", hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
+        faqTitle: "❓ Часті питання", faq1Q: "Що таке коефіцієнт розпушення?", faq1A: "При копанні ґрунт стає пухким. Коефіцієнт 1.25 означає збільшення об'єму на 25%.", faq2Q: "Як рахуються ходки?", faq2A: "Розпушений об'єм ділиться на місткість машини.", relatedTitle: "🔗 Інші калькулятори",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний кошторис, PDF, Єдиний кошторис, Дані фірми, Необмежені об'єкти.", btnBuyPro: "Дізнатися ціну",
+        linkFoundation: "Калькулятор фундаменту", linkScreed: "Калькулятор стяжки", linkFacade: "Калькулятор фасаду"
     },
     sk: {
-        subtitle: "Kalkulačka zemných prác a demontáže",
+        subtitle: "Kalkulačka zemných prác a demontáže", breadCurrent: "Zemné práce",
         objectTitle: "🏠 Údaje o objekte", objectLabel: "Názov objektu", addressLabel: "Adresa", clientLabel: "Klient",
-        hEarthworks: "🚜 Parametre zemných prác", lblExcavation: "Objem výkopu (m³)", lblSwelling: "Koeficient nakyprenia (napr. 1.25)", lblTruckCap: "Kapacita sklápača (m³)", lblExcHours: "Hodiny bagra",
-        txtLooseVol: "Nakyprený objem (na odvoz)", txtTruckTrips: "Počet jázd sklápača",
-        hEstimate: "💶 Ceny a sadzby mechanizmov", lblPriceExcavation: "Výkop a nakladanie €/m³", lblPriceTransport: "Doprava / jazda €/jazdu", lblPriceExcHours: "Sadzba bagra €/hod", lblPriceDemolition: "Demontáž / Práce €",
+        hEarthworks: "🚜 Parametre prác", lblExcavation: "Objem výkopu (m³)", lblSwelling: "Koef. nakyprenia", lblTruckCap: "Kapacita sklápača (m³)", lblExcHours: "Hodiny bagra",
+        txtLooseVol: "Nakyprený objem", txtTruckTrips: "Počet jázd sklápača",
+        hEstimate: "💶 Ceny a sadzby", lblPriceExcavation: "Výkop a nakladanie €/m³", lblPriceTransport: "Doprava €/jazdu", lblPriceExcHours: "Sadzba bagra €/hod", lblPriceDemolition: "Demontáž / Práce €",
         hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
         hFinal: "📊 Finančný prehľad", txtCostExc: "Cena výkopu", txtCostTrans: "Cena dopravy", txtCostMach: "Prenájom bagra", txtCostDemo: "Demontáž a ostatné", txtClientPrice: "Celková cena projektu",
-        btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument", hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu"
+        btnGlobal: "🌍 Do celkového rozpočtu", btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument", hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
+        faqTitle: "❓ Často kladené otázky", faq1Q: "Čo je koeficient nakyprenia?", faq1A: "Po vykopaní zemina zväčší svoj objem. Koeficient 1.25 znamená nárast o 25%.", faq2Q: "Ako sa počítajú jazdy?", faq2A: "Nakyprený objem sa vydelí kapacitou auta.", relatedTitle: "🔗 Súvisiace kalkulačky",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný rozpočet, PDF, Celkový rozpočet, Údaje o firme, Neobmedzené objekty.", btnBuyPro: "Zistiť cenu",
+        linkFoundation: "Kalkulačka základov", linkScreed: "Kalkulačka poteru", linkFacade: "Kalkulačka fasády"
     }
 };
 
@@ -434,7 +530,6 @@ function setVersion(version) {
     }
 }
 
-// Стартова ініціалізація
 document.getElementById("language").value = "en";
 changeLanguage();
 calculateAll();
