@@ -1,11 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Fencing Calculator | BUILDcalc</title>
-    <meta name="description" content="Professional fencing and gates calculator. Estimate posts, concrete, panels, foundation, and total project costs.">
+    <title>Professional Fencing & Gates Calculator | BUILDcalc</title>
+    <meta name="description" content="Professional fencing and gates calculator. Estimate posts, panels, strip foundation concrete, labor costs, and generate exportable PDF construction estimates.">
+    <meta name="keywords" content="fencing calculator, fence cost estimator, post calculator, concrete volume calculator, buildcalc">
     
     <!-- ================= GOOGLE ANALYTICS ================= -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPRB8JPVM2"></script>
@@ -84,6 +84,35 @@
 
         .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
 
+        /* Специфічні блоки для SEO, FAQ та Перелінковки */
+        .seo-section, .faq-section, .internal-links {
+            background: var(--dark-light);
+            border: 1px solid #444;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            width: 100%;
+            box-sizing: border-box;
+            clear: both;
+        }
+        .seo-section h2, .faq-section h2, .internal-links h2 {
+            font-size: 18px;
+            color: var(--primary);
+            margin-top: 0;
+            border-left: 4px solid var(--primary);
+            padding-left: 10px;
+        }
+        .faq-item { margin-bottom: 15px; }
+        .faq-question { font-weight: bold; color: var(--text-light); margin-bottom: 5px; }
+        .faq-answer { color: var(--text-muted); font-size: 14px; line-height: 1.4; }
+
+        .links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 10px; }
+        .link-card {
+            background: #212529; border: 1px solid #555; padding: 10px 15px; border-radius: 5px;
+            text-align: center; text-decoration: none; color: var(--text-light); font-weight: bold; font-size: 14px;
+        }
+        .link-card:hover { border-color: var(--primary); color: var(--primary); }
+
         .buy-pro-banner {
             background: linear-gradient(135deg, #343a40, #212529);
             border: 2px dashed var(--primary); padding: 20px; text-align: center;
@@ -105,7 +134,7 @@
 <div id="global-nav-container"></div>
 
     <div class="header">
-        <div class="logo">🚧 <span>BUILD</span>calc FENCING</div>
+        <h1 class="logo" style="margin:0; font-size:24px;">🚧 <span>BUILD</span>calc FENCING</h1>
         <div class="subtitle" id="subtitle">Professional Fencing & Gates Calculator</div>
 
         <div class="lang-select-wrapper">
@@ -250,6 +279,38 @@
 
     <div id="historyBox" class="history-box" style="display:none;"></div>
 
+    <!-- SEO БЛОК -->
+    <div class="seo-section">
+        <h2 id="seoTitle">About Professional Fencing Calculation</h2>
+        <p id="seoText" style="color: var(--text-muted); font-size: 14px; line-height: 1.5;">
+            Accurate estimation of fencing materials prevents unnecessary expenses and project delays. Our online calculator allows contractors and homeowners to precisely calculate the number of support posts, panel filling area, concrete volume for post holes and strip foundations, as well as total installation labor costs.
+        </p>
+    </div>
+
+    <!-- FAQ БЛОК -->
+    <div class="faq-section">
+        <h2 id="faqHeaderTitle">Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <div class="faq-question" id="faqQ1">How is the number of posts calculated?</div>
+            <div class="faq-answer" id="faqA1">The number of posts is determined by dividing the total perimeter length by the chosen post step distance, rounding up, and adding one final post.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" id="faqQ2">Does the calculation include strip foundation concrete?</div>
+            <div class="faq-answer" id="faqA2">Yes, the tool computes both individual post hole concrete and continuous strip foundation volume based on your width and depth inputs.</div>
+        </div>
+    </div>
+
+    <!-- ВНУТРІШНЯ ПЕРЕЛІНКОВКА -->
+    <div class="internal-links">
+        <h2 id="linkHeaderTitle">Explore Other BUILDcalc Tools</h2>
+        <div class="links-grid">
+            <a href="../concrete/index.html" class="link-card" id="linkConcrete">Concrete Calculator</a>
+            <a href="../blocks/index.html" class="link-card" id="linkBlocks">Masonry Blocks</a>
+            <a href="../pavers/index.html" class="link-card" id="linkPavers">Pavers & Paving</a>
+            <a href="../roofing/index.html" class="link-card" id="linkRoofing">Roofing Estimator</a>
+        </div>
+    </div>
+
     <div class="buy-pro-banner">
         <h3 style="border:none; padding:0; margin:0;" id="proTitle">🔓 BUILDcalc PRO</h3>
         <p id="proDesc">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
@@ -267,21 +328,12 @@ function calculateMaterials() {
     let foundW = Number(document.getElementById("foundWidth").value) || 0;
     let foundD = Number(document.getElementById("foundDepth").value) || 0;
 
-    // Розрахунок стовпчиків (Периметр / крок + 1)
     let postsCount = Math.ceil(perimeter / postStep) + 1;
-    
-    // Площа заповнення (периметр * висоту)
     let fillArea = perimeter * height;
-    
-    // Бетон на ями під стовпчики (~0.05 м³ на 1 стовп)
     let postConcrete = postsCount * 0.05;
-
-    // Бетон на стрічковий фундамент
     let foundConcrete = perimeter * foundW * foundD;
-
     let totalConcrete = postConcrete + foundConcrete;
 
-    // Виведення результатів
     document.getElementById("resPosts").innerText = postsCount + " pcs";
     document.getElementById("resFillArea").innerText = fillArea.toFixed(1) + " m²";
     document.getElementById("resPostConcr").innerText = postConcrete.toFixed(2) + " m³";
@@ -293,13 +345,11 @@ function calculateMaterials() {
 function calculateEstimate() {
     let mats = calculateMaterials();
 
-    // Ціни
     let pPost = Number(document.getElementById("pricePost").value) || 0;
     let pFill = Number(document.getElementById("priceFill").value) || 0;
     let pConcrete = Number(document.getElementById("priceConcrete").value) || 0;
     let pLabor = Number(document.getElementById("priceLabor").value) || 0;
 
-    // Категорії витрат
     let costPosts = mats.postsCount * pPost;
     let costFill = mats.fillArea * pFill;
     let costConcrete = mats.totalConcrete * pConcrete;
@@ -308,7 +358,6 @@ function calculateEstimate() {
     let laborTotal = mats.perimeter * pLabor;
     let clientTotal = materialsTotal + laborTotal;
 
-    // Виведення фінансів
     document.getElementById("costPosts").innerText = costPosts.toFixed(2) + " €";
     document.getElementById("costFill").innerText = costFill.toFixed(2) + " €";
     document.getElementById("costConcrete").innerText = costConcrete.toFixed(2) + " €";
@@ -419,6 +468,15 @@ const langData = {
         hFinal: "📊 Financial Summary", txtCostPosts: "Posts Cost", txtCostFill: "Filling Cost", txtCostConcrete: "Total Concrete (Posts + Foundation)",
         txtFMat: "Total Materials", txtFWork: "Installation Labor", txtClientPrice: "Total Project Price",
         btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Estimate", hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
+        seoTitle: "About Professional Fencing Calculation",
+        seoText: "Accurate estimation of fencing materials prevents unnecessary expenses and project delays. Our online calculator allows contractors and homeowners to precisely calculate the number of support posts, panel filling area, concrete volume for post holes and strip foundations, as well as total installation labor costs.",
+        faqHeaderTitle: "Frequently Asked Questions",
+        faqQ1: "How is the number of posts calculated?",
+        faqA1: "The number of posts is determined by dividing the total perimeter length by the chosen post step distance, rounding up, and adding one final post.",
+        faqQ2: "Does the calculation include strip foundation concrete?",
+        faqA2: "Yes, the tool computes both individual post hole concrete and continuous strip foundation volume based on your width and depth inputs.",
+        linkHeaderTitle: "Explore Other BUILDcalc Tools",
+        linkConcrete: "Concrete Calculator", linkBlocks: "Masonry Blocks", linkPavers: "Pavers & Paving", linkRoofing: "Roofing Estimator",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing"
     },
     ua: {
@@ -427,11 +485,20 @@ const langData = {
         hFencing: "🚧 Параметри паркану", lblPerimeter: "Загальна довжина / Периметр (м)", lblHeight: "Висота паркану (м)", lblPostStep: "Крок стовпчиків (м)", lblGateCount: "Ворота та хвіртки (шт)",
         txtPostsCount: "Всього стовпчиків", txtFillArea: "Площа заповнення (профнастил/сітка)", txtPostConcrete: "Бетон під стовпчики",
         hFoundation: "🏗️ Стрічковий фундамент", lblFoundWidth: "Ширина фундаменту (м)", lblFoundDepth: "Глибина фундаменту (м)", txtFoundConcr: "Об'єм бетону фундаменту",
-        hEstimate: "💶 Ціни матеріалів та робіт", lblPricePost: "Ціна стовпчика €/шт", lblPriceFill: "Ціна заповнення €/м²", lblPriceConcrete: "Ціна бетону €/м³", lblPriceLabor: "Робота по монтажу €/м",
+        hEstimate: "💶 Ціни матеріалів та робіт", lblPricePost: "Ціна стовпчика €/шт", lblPriceFill: "Ціна заповнення €/м²", lblPriceConcrete: "Ціна бетону €/m³", lblPriceLabor: "Робота по монтажу €/м",
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
         hFinal: "📊 Фінансовий підсумок", txtCostPosts: "Вартість стовпчиків", txtCostFill: "Вартість заповнення", txtCostConcrete: "Бетон (стовпчики + фундамент)",
         txtFMat: "Всього матеріалів", txtFWork: "Монтажні роботи", txtClientPrice: "Загальна ціна проєкту",
         btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF", hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
+        seoTitle: "Про професійний розрахунок паркану",
+        seoText: "Точний розрахунок матеріалів для огорожі запобігає зайвим витратам і затримкам проєкту. Наш калькулятор дозволяє підрядникам і власникам будівель розрахувати кількість стовпів, площу заповнення, об'єм бетону для фундаменту та вартість монтажних робіт.",
+        faqHeaderTitle: "Часті запитання (FAQ)",
+        faqQ1: "Як розраховується кількість стовпчиків?",
+        faqQ2: "Чи враховується бетон для стрічкового фундаменту?",
+        faqA1: "Кількість стовпів визначається діленням загального периметра на крок монтажу з округленням у більшу сторону та додаванням фінального стовпа.",
+        faqA2: "Так, інструмент автоматично обчислює як об'єм бетону під ями для стовпів, так і для безперервного стрічкового фундаменту за вашими розмірами.",
+        linkHeaderTitle: "Інші інструменти BUILDcalc",
+        linkConcrete: "Калькулятор бетону", linkBlocks: "Будівельні блоки", linkPavers: "Бруківка та плитка", linkRoofing: "Розрахунок покрівлі",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість"
     },
     sk: {
@@ -445,6 +512,15 @@ const langData = {
         hFinal: "📊 Finančný prehľad", txtCostPosts: "Cena stĺpikov", txtCostFill: "Cena výplne", txtCostConcrete: "Celkový betón (stĺpiky + základ)",
         txtFMat: "Celkovo materiály", txtFWork: "Montážne práce", txtClientPrice: "Celková cena projektu",
         btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument", hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
+        seoTitle: "O profesionálnom výpočte plotov",
+        seoText: "Presný odhad materiálov na oplotenie zabraňuje zbytočným výdavkom a meškaniu projektu. Naša online kalkulačka umožňuje presne vypočítať počet stĺpikov, plochu výplne, objem betónu a náklady na prácu.",
+        faqHeaderTitle: "Často kladené otázky (FAQ)",
+        faqQ1: "Ako sa vypočítava počet stĺpikov?",
+        faqQ2: "Zahŕňa výpočet betón na pásikový základ?",
+        faqA1: "Počet stĺpikov sa určí vydelením celkového obvodu zvoleným rozostupom, zaokrúhlením nahor a pridaním koncového stĺpika.",
+        faqA2: "Áno, nástroj počíta objem betónu pre jamky stĺpikov aj pre priebežný základ na základe vami zadaných rozmerov.",
+        linkHeaderTitle: "Preskúmajte ďalšie nástroje BUILDcalc",
+        linkConcrete: "Kalkulačka betónu", linkBlocks: "Stavebné bloky", linkPavers: "Dlažba", linkRoofing: "Kalkulačka strechy",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu"
     }
 };
@@ -473,7 +549,6 @@ function setVersion(version) {
     }
 }
 
-// Стартова ініціалізація
 document.getElementById("language").value = "en";
 changeLanguage();
 calculateAll();
