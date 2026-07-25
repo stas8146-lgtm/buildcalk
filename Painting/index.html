@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professional Painting Calculator | BUILDcalc</title>
-    <!-- Додано Meta Description для SEO (відповідно до скріншотів) -->
     <meta name="description" content="Professional painting calculator. Estimate paint, primer, wall area, and total project costs easily with unified cost estimation.">
     
     <!-- Schema.org Structured Data -->
@@ -35,7 +34,7 @@
     <!-- Бібліотека для генерації PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    <!-- ================= СТИЛІ (ЖОВТО-ЧОРНА ТЕМА) ================= -->
+    <!-- ================= СТИЛІ ================= -->
     <style>
         :root {
             --primary: #FFC107;
@@ -64,10 +63,8 @@
             max-width: 600px;
         }
 
-        /* SEO Hidden H1 */
         .seo-h1 { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
-        /* Breadcrumbs */
         .breadcrumb { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; display: flex; gap: 6px; align-items: center; }
         .breadcrumb a { color: var(--primary); text-decoration: none; }
         .breadcrumb a:hover { text-decoration: underline; }
@@ -118,11 +115,9 @@
 
         .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
 
-        /* Unified Estimate Block (Єдиний зведений кошторис) */
         .unified-estimate-card { background: var(--dark-light); border: 1px solid var(--primary); border-radius: 8px; padding: 15px; margin-top: 20px; }
         .unified-total-row { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; color: var(--primary); margin-top: 10px; border-top: 1px solid var(--border-color); padding-top: 8px; }
 
-        /* SEO Sections: FAQ & Related Calculators */
         .seo-section { margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px; }
         .faq-item { margin-bottom: 12px; }
         .faq-q { font-weight: bold; font-size: 0.85rem; color: var(--text-light); margin-bottom: 3px; }
@@ -144,7 +139,6 @@
         .buy-btn:hover { background: var(--primary-hover); }
     </style>
 
-    <!-- Підключення навігації -->
     <script src="../nav.js"></script>
 </head>
 <body>
@@ -152,12 +146,10 @@
 <div class="wrapper" id="app-container">
     <h1 class="seo-h1">Professional Painting Calculator</h1>
 
-    <!-- Breadcrumb (відповідно до скріншотів п.8) -->
     <div class="breadcrumb">
         <a href="#" id="bc-home">Home</a> &gt; <a href="#" id="bc-calcs">Calculators</a> &gt; <span id="bc-current">Painting Calculator</span>
     </div>
 
-    <!-- Контейнер для глобального меню -->
     <div id="global-nav-container"></div>
 
     <div class="header">
@@ -178,7 +170,6 @@
         <button class="tab-btn" id="tabPro" onclick="setVersion('pro')">PRO <span class="badge">Business</span></button>
     </div>
 
-    <!-- Обгортка розрахунків -->
     <div id="calcForm">
         <h3 id="objectTitle">🏠 Object Data</h3>
         <div class="grid-inputs">
@@ -196,7 +187,6 @@
             </div>
         </div>
 
-        <!-- БЛОК 1: ПАРАМЕТРИ ПРИМІЩЕННЯ ТА ФАРБУВАННЯ -->
         <h3 id="hPainting">📐 Painting Specs</h3>
         <div class="grid-inputs">
             <div class="input-group">
@@ -226,11 +216,11 @@
         </div>
         <div class="result-box">
             <div><span id="txtNetArea">Net Area to Paint</span> <span id="resNetArea">0 m²</span></div>
+            <div><span id="txtTotalPaintArea">Total Area with Coats</span> <span id="resTotalPaintArea">0 m²</span></div>
             <div><span id="txtLitersPaint">Paint Required</span> <span id="resPaint">0 L</span></div>
             <div><span id="txtLitersPrimer">Primer Required</span> <span id="resPrimer">0 L</span></div>
         </div>
 
-        <!-- БЛОК 2: ЦІНИ -->
         <h3 id="hEstimate">💶 Unit Prices & Labor Cost</h3>
         <div class="grid-inputs">
             <div class="input-group">
@@ -268,7 +258,6 @@
         </div>
     </div>
 
-    <!-- ЗАГАЛЬНИЙ ФІНАНСОВИЙ ПІДСУМОК -->
     <h3 id="hFinal" style="clear: both; width: 100%;">📊 Financial Summary</h3>
     <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
         <div><span>🪣 <span id="txtCostPaint">Paint Cost</span></span> <span id="costPaint">0 €</span></div>
@@ -283,7 +272,6 @@
         </div>
     </div>
 
-    <!-- Єдиний зведений кошторис для всіх калькуляторів -->
     <div class="unified-estimate-card" data-html2canvas-ignore="true">
         <div class="section-title" id="sec-unified" style="font-weight: bold; color: var(--primary); text-transform: uppercase; font-size: 0.9rem; margin-bottom: 5px;">📊 Unified Master Estimate</div>
         <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;" id="sec-unified-desc">Total accumulated budget across all saved project objects.</div>
@@ -308,7 +296,6 @@
 
     <div id="historyBox" class="history-box" style="display:none;"></div>
 
-    <!-- SEO FAQ Section (відповідно до скріншотів п.6) -->
     <div class="seo-section">
         <h3 id="sec-faq" style="border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 0; color: var(--text-light);">FAQ</h3>
         <div class="faq-item">
@@ -321,7 +308,6 @@
         </div>
     </div>
 
-    <!-- Related Calculators / Внутрішні посилання (відповідно до скріншотів п.7, виправлено помилки 404 на реальні відносні шляхи) -->
     <div class="seo-section">
         <h3 id="sec-related" style="border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 0; color: var(--text-light);">Related calculators</h3>
         <ul class="related-list">
@@ -362,10 +348,11 @@ function calculateMaterials() {
 
     // Виведення результатів об'ємів
     document.getElementById("resNetArea").innerText = netArea.toFixed(1) + " m²";
+    document.getElementById("resTotalPaintArea").innerText = totalPaintArea.toFixed(1) + " m²";
     document.getElementById("resPaint").innerText = paintLiters.toFixed(1) + " L";
     document.getElementById("resPrimer").innerText = primerLiters.toFixed(1) + " L";
 
-    return { netArea, paintLiters, primerLiters };
+    return { netArea, totalPaintArea, paintLiters, primerLiters };
 }
 
 function calculateEstimate() {
@@ -382,7 +369,9 @@ function calculateEstimate() {
     let costPrimer = mats.primerLiters * pPrimer;
     
     let materialsTotal = costPaint + costPrimer + pMisc;
-    let laborTotal = mats.netArea * pLabor;
+    
+    // Робота тепер залежить від загальної площі фарбування (з урахуванням шарів)
+    let laborTotal = mats.totalPaintArea * pLabor;
     let clientTotal = materialsTotal + laborTotal;
 
     // Виведення результатів фінансів
@@ -507,7 +496,7 @@ const langData = {
         objectTitle: "🏠 Object Data", objectLabel: "Object Name", addressLabel: "Address", clientLabel: "Client",
         hPainting: "📐 Painting Specs", lblAreaWalls: "Wall Area (m²)", lblAreaCeilings: "Ceiling Area (m²)", lblSubtract: "Subtract Windows/Doors (m²)",
         lblCoats: "Number of Coats", lblPaintCoverage: "Paint Coverage (m²/L)", lblPrimerCoverage: "Primer Coverage (m²/L)",
-        txtNetArea: "Net Area to Paint", txtLitersPaint: "Paint Required", txtLitersPrimer: "Primer Required",
+        txtNetArea: "Net Area to Paint", txtTotalPaintArea: "Total Area with Coats", txtLitersPaint: "Paint Required", txtLitersPrimer: "Primer Required",
         hEstimate: "💶 Unit Prices & Labor Cost", lblPricePaint: "Paint Price €/L", lblPricePrimer: "Primer Price €/L",
         lblPriceLabor: "Labor Price €/m²", lblMiscMat: "Misc (Tape, Foil, Rollers) €",
         hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
@@ -525,7 +514,7 @@ const langData = {
         objectTitle: "🏠 Дані об'єкта", objectLabel: "Назва об'єкта", addressLabel: "Адреса", clientLabel: "Клієнт",
         hPainting: "📐 Параметри приміщення", lblAreaWalls: "Площа стін (м²)", lblAreaCeilings: "Площа стелі (м²)", lblSubtract: "Відняти вікна/двері (м²)",
         lblCoats: "Кількість шарів", lblPaintCoverage: "Розхід фарби (м²/л)", lblPrimerCoverage: "Розхід ґрунтовки (м²/л)",
-        txtNetArea: "Чиста площа під покраску", txtLitersPaint: "Потрібно фарби", txtLitersPrimer: "Потрібно ґрунтовки",
+        txtNetArea: "Чиста площа стін/стелі", txtTotalPaintArea: "Загальна площа фарбування (з шарами)", txtLitersPaint: "Потрібно фарби", txtLitersPrimer: "Потрібно ґрунтовки",
         hEstimate: "💶 Ціни матеріалів та робіт", lblPricePaint: "Ціна фарби €/л", lblPricePrimer: "Ціна ґрунтовки €/л",
         lblPriceLabor: "Робота (покраска) €/м²", lblMiscMat: "Витратні (плівка, скотч, валики) €",
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
@@ -543,7 +532,7 @@ const langData = {
         objectTitle: "🏠 Údaje o objekte", objectLabel: "Názov objektu", addressLabel: "Adresa", clientLabel: "Klient",
         hPainting: "📐 Parametre maľovania", lblAreaWalls: "Plocha stien (m²)", lblAreaCeilings: "Plocha stropu (m²)", lblSubtract: "Odpočítať okná/dvere (m²)",
         lblCoats: "Počet vrstiev", lblPaintCoverage: "Výdatnosť farby (m²/L)", lblPrimerCoverage: "Výdatnosť penetráku (m²/L)",
-        txtNetArea: "Čistá plocha na maľovanie", txtLitersPaint: "Potrebné množstvo farby", txtLitersPrimer: "Potrebné množstvo penetráku",
+        txtNetArea: "Čistá plocha", txtTotalPaintArea: "Celková plocha maľovania (s vrstvami)", txtLitersPaint: "Potrebné množstvo farby", txtLitersPrimer: "Potrebné množstvo penetráku",
         hEstimate: "💶 Jednotkové ceny a práca", lblPricePaint: "Cena farby €/L", lblPricePrimer: "Cena penetráku €/L",
         lblPriceLabor: "Cena práce €/m²", lblMiscMat: "Spotrebný materiál (pásky, fólie) €",
         hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
@@ -582,7 +571,6 @@ function setVersion(version) {
     }
 }
 
-// Стартова ініціалізація
 document.getElementById("language").value = "en";
 changeLanguage();
 calculateAll();
