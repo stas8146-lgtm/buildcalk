@@ -4,8 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIP Plaster Calculator Ultimate (Free Edition)</title>
-    <meta name="description" content="Professional plaster calculator. Estimate base mix quantity, mesh, beads, apr profiles, and total project costs easily.">
+    <meta name="description" content="Professional plaster calculator. Estimate base mix quantity, mesh, beads, apr profiles, and total project costs easily with unified cost estimation.">
     
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "VIP Plaster Calculator Ultimate",
+        "applicationCategory": "CalculatorApplication",
+        "operatingSystem": "All",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+        }
+    }
+    </script>
+
     <!-- Підключення Tailwind CSS для стилізації навігаційної панелі -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -41,6 +57,14 @@
         .wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; }
         .container { width: 100%; max-width: 600px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: background 0.3s; margin-top: 20px; }
 
+        /* SEO Hidden H1 */
+        .seo-h1 { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+        /* Breadcrumbs */
+        .breadcrumb { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; display: flex; gap: 6px; align-items: center; }
+        .breadcrumb a { color: var(--accent-yellow); text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px; }
         .logo { font-weight: 900; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;}
         .logo span { color: var(--accent-yellow); }
@@ -66,11 +90,25 @@
         .result-row.subtext { font-size: 0.85rem; color: var(--text-muted); font-weight: normal; }
         .result-row.total { font-size: 1.2rem; color: var(--accent-yellow); border-top: 1px solid var(--border-color); padding-top: 8px; margin-top: 8px; font-weight: bold; }
 
-        .history-box { margin-top: 25px; display: none; }
-        .history-item { background: var(--bg-input); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center;}
+        .history-box { margin-top: 25px; display: none; background: var(--bg-input); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); }
+        .history-item { background: var(--bg-main); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center;}
         .history-info strong { color: var(--accent-yellow); display: block; margin-bottom: 3px; font-size: 0.95rem;}
         .del-btn { background: rgba(255,51,51,0.2); border: 1px solid var(--danger-red); color: var(--danger-red); padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s;}
         .del-btn:hover { background: var(--danger-red); color: #FFF; }
+
+        /* Unified Estimate Block (Єдиний кошторис) */
+        .unified-estimate-card { background: var(--bg-input); border: 1px solid var(--accent-yellow); border-radius: 8px; padding: 15px; margin-top: 20px; }
+        .unified-total-row { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; color: var(--accent-yellow); margin-top: 10px; border-top: 1px solid var(--border-color); padding-top: 8px; }
+
+        /* SEO Sections: FAQ & Related Calculators */
+        .seo-section { margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px; }
+        .faq-item { margin-bottom: 12px; }
+        .faq-q { font-weight: bold; font-size: 0.85rem; color: var(--text-light); margin-bottom: 3px; }
+        .faq-a { font-size: 0.8rem; color: var(--text-muted); }
+
+        .related-list { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+        .related-list li a { font-size: 0.82rem; color: var(--accent-yellow); text-decoration: none; }
+        .related-list li a:hover { text-decoration: underline; }
 
         .footer { margin-top: 30px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 15px; font-size: 0.8rem; color: var(--text-muted); }
     </style>
@@ -91,6 +129,12 @@
         </div>
 
         <div class="container" id="app-container">
+            <h1 class="seo-h1">VIP Plaster Material Calculator</h1>
+
+            <div class="breadcrumb">
+                <a href="#" id="bc-home">Home</a> &gt; <a href="#" id="bc-calcs">Calculators</a> &gt; <span id="bc-current">Plaster Calculator</span>
+            </div>
+
             <div class="header" data-html2canvas-ignore="true">
                 <div class="logo">
                     <button class="theme-btn" onclick="toggleTheme()">🌓</button>
@@ -263,6 +307,41 @@
                 <div id="history-list"></div>
             </div>
 
+            <!-- Єдиний кошторис для всіх проектів/калькуляторів -->
+            <div class="unified-estimate-card" data-html2canvas-ignore="true">
+                <div class="section-title" id="sec-unified" style="border:none; margin-bottom:5px;">📊 Unified Master Estimate</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;" id="sec-unified-desc">Total accumulated budget across all saved project objects.</div>
+                <div class="unified-total-row">
+                    <span id="lbl-unified-total">Master Project Total:</span>
+                    <span id="out-unified-total">0.00 €</span>
+                </div>
+            </div>
+
+            <!-- SEO FAQ Section -->
+            <div class="seo-section">
+                <div class="section-title" id="sec-faq">FAQ</div>
+                <div class="faq-item">
+                    <div class="faq-q" id="faq-q1">How much plaster do I need per m²?</div>
+                    <div class="faq-a" id="faq-a1">Gypsum plaster requires roughly 9 kg/m² per 10 mm of thickness.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" id="faq-q2">Do I need a primer before plastering?</div>
+                    <div class="faq-a" id="faq-a2">Yes, a primer ensures proper adhesion and reduces suction from the substrate.</div>
+                </div>
+            </div>
+
+            <!-- Related Calculators -->
+            <div class="seo-section">
+                <div class="section-title" id="sec-related">Related calculators</div>
+                <ul class="related-list">
+                    <li><a href="#">Screed Calculator</a></li>
+                    <li><a href="#">Roof Calculator</a></li>
+                    <li><a href="#">Plaster Calculator</a></li>
+                    <li><a href="#">Paint Calculator</a></li>
+                    <li><a href="#">Foundation Calculator</a></li>
+                </ul>
+            </div>
+
             <div class="footer">
                 <div>✉️ info@vip-plaster.sk | 📞 +421 XX XXX XXX</div>
                 <div style="margin-top: 5px;">Created for Professionals</div>
@@ -295,7 +374,11 @@
                 
                 netArea: "Net Working Area:", mixBags: "Dry Mix Needed:", prepNeed: "Primer & Mesh:", profCount: "Accessories (Corners/APU/Beacons):",
                 matCost: "Materials Cost:", labCost: "Labor Cost:", othCost: "Other Expenses:", grandTotal: "Grand Total:",
-                secHist: "📂 Saved Objects", promptMsg: "Enter object name (e.g. Apartment Walls):", del: "Delete"
+                secHist: "📂 Saved Objects", promptMsg: "Enter object name (e.g. Apartment Walls):", del: "Delete",
+                bcHome: "Home", bcCalcs: "Calculators", bcCurr: "Plaster Calculator",
+                secUnified: "📊 Unified Master Estimate", secUnifiedDesc: "Total accumulated budget across all saved project objects.", lblUnifiedTot: "Master Project Total:",
+                secFaq: "FAQ", faqQ1: "How much plaster do I need per m²?", faqA1: "Gypsum plaster requires roughly 9 kg/m² per 10 mm of thickness.", faqQ2: "Do I need a primer before plastering?", faqA2: "Yes, a primer ensures proper adhesion and reduces suction from the substrate.",
+                secRelated: "Related calculators"
             },
             uk: {
                 share: "📤 Поділитися", save: "💾 Зберегти", pdf: "📄 PDF-кошторис",
@@ -303,17 +386,21 @@
                 optGips: "Гіпсова штукатурка (~9.0 кг/м² на 10мм)", optCement: "Цементно-вапняна (~16.0 кг/м² на 10мм)", optDec: "Декоративна / Короїд (~3.0 кг/м² фіксовано)",
                 area: "Площа стін (м²)", thickness: "Товщина шару (мм)", openings: "Двері / Вікна (прорізи)", bagWeight: "Вага мішка (кг)",
                 
-                secPrep: "🖌️ Підготовка (Ґрунт та Сітка)", primerType: "Тип ґрунтовки", optNone: "Без ґрунтовки", optDeep: "Глибокого проникнення (~0.15 л/м²)", optBeton: "Бетоноконтакт (~0.3 кг/м²)", meshArea: "Сітка для стиків (м²)",
+                secPrep: "🖌️ Підготовка (Ґрунт та Сітка)", primerType: "Тип ґрунтовки", optNone: "Без ґрунтовки", optDeep: "Глибокого проникнення (~0.15 л/м²)", optBeton: "Бетоноконтакт (~0.3 кг/м²)", meshArea: "Сітка для стиків (m²)",
                 
                 secProf: "⚙️ Профілі та Аксесуари", corners: "Зовнішні кутники (шт)", cornerLen: "Стандартна довжина (м)",
                 apu: "АПУ-линти / Примикання (м)", beacons: "Маяки штукатурні (м)",
                 
                 secEco: "💶 Економіка та Ціни", bagPrice: "Мішок (€)", laborRate: "Робота (€/m²)", profilePrice: "Профіль (€/шт)", 
-                pricePrimer: "Ґрунтовка (€/л|кг)", priceMesh: "Сітка (€/м²)", otherExp: "Інше (€)",
+                pricePrimer: "Ґрунтовка (€/л|кг)", priceMesh: "Сітка (€/m²)", otherExp: "Інше (€)",
                 
                 netArea: "Чиста робоча площа:", mixBags: "Суха суміш:", prepNeed: "Ґрунт та Сітка:", profCount: "Кутники / АПУ / Маяки (шт):",
                 matCost: "Вартість матеріалів:", labCost: "Вартість робіт:", othCost: "Інші витрати:", grandTotal: "Загальна вартість:",
-                secHist: "📂 Збережені об'єкти", promptMsg: "Введіть назву об'єкта (напр. Квартира):", del: "Видалити"
+                secHist: "📂 Збережені об'єкти", promptMsg: "Введіть назву об'єкта (напр. Квартира):", del: "Видалити",
+                bcHome: "Головна", bcCalcs: "Калькулятори", bcCurr: "Штукатурний калькулятор",
+                secUnified: "📊 Єдиний зведений кошторис", secUnifiedDesc: "Загальний накопичувальний бюджет по всіх збережених об'єктах проєкту.", lblUnifiedTot: "Загальний кошторис проєкту:",
+                secFaq: "Часті запитання (FAQ)", faqQ1: "Скільки штукатурки потрібно на м²?", faqA1: "Гіпсова штукатурка вимагає приблизно 9 кг/м² на 10 мм товщини.", faqQ2: "Чи потрібна ґрунтовка перед штукатуркою?", faqA2: "Так, ґрунтовка забезпечує належну адгезію та зменшує всмоктування основи.",
+                secRelated: "Схожі калькулятори"
             },
             sk: {
                 share: "📤 Zdielať", save: "💾 Uložiť objekt", pdf: "📄 PDF Kalkulácia",
@@ -331,7 +418,11 @@
                 
                 netArea: "Čistá pracovná plocha:", mixBags: "Potrebná suchá zmes:", prepNeed: "Penetrácia a Sieťka:", profCount: "Rohy / APU / Majáky (ks):",
                 matCost: "Cena materiálu:", labCost: "Cena práce:", othCost: "Iné náklady:", grandTotal: "Celková cena:",
-                secHist: "📂 Uložené objekty", promptMsg: "Zadajte názov objektu (napr. Byty):", del: "Vymazať"
+                secHist: "📂 Uložené objekty", promptMsg: "Zadajte názov objektu (napr. Byty):", del: "Vymazať",
+                bcHome: "Domov", bcCalcs: "Kalkulačky", bcCurr: "Omietková kalkulačka",
+                secUnified: "📊 Jednotný súhrnný rozpočet", secUnifiedDesc: "Celkový kumulovaný rozpočet pre všetky uložené objekty projektu.", lblUnifiedTot: "Celkový rozpočet projektu:",
+                secFaq: "Často kladené otázky (FAQ)", faqQ1: "Koľko omietky potrebujem na m²?", faqA1: "Sadrová omietka vyžaduje približne 9 kg/m² na 10 mm hrúbky.", faqQ2: "Je potrebná penetrácia pred omietaním?", faqA2: "Áno, penetrácia zabezpečuje správnu priľnavosť a znižuje savosť podkladu.",
+                secRelated: "Súvisiace kalkulačky"
             }
         };
 
@@ -403,8 +494,23 @@
             document.getElementById('res-cost').innerText = dict[lang].grandTotal;
             document.getElementById('sec-history').innerText = dict[lang].secHist;
 
+            // Breadcrumbs & SEO Elements
+            document.getElementById('bc-home').innerText = dict[lang].bcHome;
+            document.getElementById('bc-calcs').innerText = dict[lang].bcCalcs;
+            document.getElementById('bc-current').innerText = dict[lang].bcCurr;
+            document.getElementById('sec-unified').innerText = dict[lang].secUnified;
+            document.getElementById('sec-unified-desc').innerText = dict[lang].secUnifiedDesc;
+            document.getElementById('lbl-unified-total').innerText = dict[lang].lblUnifiedTot;
+            document.getElementById('sec-faq').innerText = dict[lang].secFaq;
+            document.getElementById('faq-q1').innerText = dict[lang].faqQ1;
+            document.getElementById('faq-a1').innerText = dict[lang].faqA1;
+            document.getElementById('faq-q2').innerText = dict[lang].faqQ2;
+            document.getElementById('faq-a2').innerText = dict[lang].faqA2;
+            document.getElementById('sec-related').innerText = dict[lang].secRelated;
+
             recalc();
             renderHistory();
+            updateUnifiedEstimate();
         }
 
         function recalc() {
@@ -482,13 +588,16 @@
             const name = prompt(dict[currentLang].promptMsg, "Object Plaster 1");
             if (!name) return;
 
+            let rawCost = parseFloat(document.getElementById('out-cost').innerText) || 0;
+
             const record = {
                 id: Date.now(),
                 name: name,
                 date: new Date().toLocaleDateString(),
                 area: document.getElementById('out-net-area').innerText,
                 bags: document.getElementById('out-bags').innerText,
-                cost: document.getElementById('out-cost').innerText
+                cost: document.getElementById('out-cost').innerText,
+                rawCost: rawCost
             };
 
             try {
@@ -496,6 +605,7 @@
                 history.push(record);
                 localStorage.setItem('vipPlasterHistory', JSON.stringify(history));
                 renderHistory();
+                updateUnifiedEstimate();
             } catch (e) {
                 alert("Local storage is disabled.");
             }
@@ -533,7 +643,18 @@
                 history = history.filter(item => item.id !== id);
                 localStorage.setItem('vipPlasterHistory', JSON.stringify(history));
                 renderHistory();
+                updateUnifiedEstimate();
             } catch (e) {}
+        }
+
+        function updateUnifiedEstimate() {
+            try {
+                const history = JSON.parse(localStorage.getItem('vipPlasterHistory')) || [];
+                let totalSum = history.reduce((sum, item) => sum + (item.rawCost || parseFloat(item.cost) || 0), 0);
+                document.getElementById('out-unified-total').innerText = totalSum.toFixed(2) + " €";
+            } catch (e) {
+                document.getElementById('out-unified-total').innerText = "0.00 €";
+            }
         }
 
         function generatePDF() {
@@ -563,6 +684,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateConsumption();
             changeLang('en');
+            updateUnifiedEstimate();
         });
     </script>
 </body>
