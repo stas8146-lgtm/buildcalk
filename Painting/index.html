@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Painting Calculator | BUILDcalc</title>
-    <meta name="description" content="Professional painting calculator. Estimate paint, primer, wall area, and total project costs easily with unified cost estimation.">
+    <title>Professional Painting & Putty Calculator | BUILDcalc</title>
+    <meta name="description" content="Professional painting and putty calculator. Estimate paint, primer, putty, wall area, and total project costs easily with unified cost estimation.">
     
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "Professional Painting Calculator",
+        "name": "Professional Painting and Putty Calculator",
         "applicationCategory": "CalculatorApplication",
         "operatingSystem": "All",
         "offers": {
@@ -144,17 +144,17 @@
 <body>
 
 <div class="wrapper" id="app-container">
-    <h1 class="seo-h1">Professional Painting Calculator</h1>
+    <h1 class="seo-h1">Professional Painting & Putty Calculator</h1>
 
     <div class="breadcrumb">
-        <a href="#" id="bc-home">Home</a> &gt; <a href="#" id="bc-calcs">Calculators</a> &gt; <span id="bc-current">Painting Calculator</span>
+        <a href="#" id="bc-home">Home</a> &gt; <a href="#" id="bc-calcs">Calculators</a> &gt; <span id="bc-current">Painting & Putty Calculator</span>
     </div>
 
     <div id="global-nav-container"></div>
 
     <div class="header">
-        <div class="logo">🎨 <span>BUILD</span>calc PAINTING</div>
-        <div class="subtitle" id="subtitle">Professional Painting Calculator</div>
+        <div class="logo">🧱 <span>BUILD</span>calc PRO</div>
+        <div class="subtitle" id="subtitle">Professional Painting & Putty Calculator</div>
 
         <div class="lang-select-wrapper">
             <select id="language" onchange="changeLanguage()">
@@ -187,7 +187,8 @@
             </div>
         </div>
 
-        <h3 id="hPainting">📐 Painting Specs</h3>
+        <!-- БЛОК ПАРАМЕТРІВ ПРИМІЩЕННЯ -->
+        <h3 id="hRoomSpecs">📐 Room Specs</h3>
         <div class="grid-inputs">
             <div class="input-group">
                 <label id="lblAreaWalls">Wall Area (m²)</label>
@@ -201,8 +202,55 @@
                 <label id="lblSubtract">Subtract Windows/Doors (m²)</label>
                 <input id="subtractArea" type="number" value="5">
             </div>
+        </div>
+        <div class="result-box">
+            <div><span id="txtNetArea">Net Surface Area</span> <span id="resNetArea">0 m²</span></div>
+        </div>
+
+        <!-- БЛОК ШПАКЛЮВАННЯ -->
+        <h3 id="hPuttySpecs">🔨 Putty Specs (Шпаклівка)</h3>
+        <div class="grid-inputs">
             <div class="input-group">
-                <label id="lblCoats">Number of Coats</label>
+                <label id="lblPuttyLayers">Putty Layers (Шари)</label>
+                <select id="puttyLayers">
+                    <option value="1">1 Layer (Один шар)</option>
+                    <option value="2" selected>2 Layers (Два шари)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label id="lblPuttyConsumption">Putty Consumption (kg/m² per mm)</label>
+                <input id="puttyConsumption" type="number" value="1.2">
+            </div>
+            <div class="input-group">
+                <label id="lblPuttyBagWeight">Bag Weight (kg)</label>
+                <input id="puttyBagWeight" type="number" value="25">
+            </div>
+            <div class="input-group">
+                <label id="lblFugenPerM2">Fugen / Füller (kg/m²)</label>
+                <input id="fugenConsumption" type="number" value="0.3">
+            </div>
+            <div class="input-group">
+                <label id="lblFugenBagWeight">Fugen Bag Weight (kg)</label>
+                <input id="fugenBagWeight" type="number" value="25">
+            </div>
+            <div class="input-group">
+                <label id="lblSerpyankaPerM2">Serpyanka / Tape (m/m²)</label>
+                <input id="serpyankaRate" type="number" value="1.5">
+            </div>
+        </div>
+        <div class="result-box">
+            <div><span id="txtPuttyKg">Total Putty Required</span> <span id="resPuttyKg">0 kg</span></div>
+            <div><span id="txtPuttyBags">Putty Bags (Мішків)</span> <span id="resPuttyBags">0 pcs</span></div>
+            <div><span id="txtFugenKg">Fugen / Füller Required</span> <span id="resFugenKg">0 kg</span></div>
+            <div><span id="txtFugenBags">Fugen Bags (Мішків)</span> <span id="resFugenBags">0 pcs</span></div>
+            <div><span id="txtSerpyankaMeters">Serpyanka Tape (Серпянка)</span> <span id="resSerpyankaMeters">0 m</span></div>
+        </div>
+
+        <!-- БЛОК ФАРБУВАННЯ -->
+        <h3 id="hPainting">🎨 Painting Specs</h3>
+        <div class="grid-inputs">
+            <div class="input-group">
+                <label id="lblCoats">Number of Coats (Шари фарби)</label>
                 <input id="coats" type="number" value="2">
             </div>
             <div class="input-group">
@@ -215,14 +263,26 @@
             </div>
         </div>
         <div class="result-box">
-            <div><span id="txtNetArea">Net Area to Paint</span> <span id="resNetArea">0 m²</span></div>
-            <div><span id="txtTotalPaintArea">Total Area with Coats</span> <span id="resTotalPaintArea">0 m²</span></div>
+            <div><span id="txtTotalPaintArea">Total Painting Area (with coats)</span> <span id="resTotalPaintArea">0 m²</span></div>
             <div><span id="txtLitersPaint">Paint Required</span> <span id="resPaint">0 L</span></div>
             <div><span id="txtLitersPrimer">Primer Required</span> <span id="resPrimer">0 L</span></div>
         </div>
 
+        <!-- БЛОК ЦІН -->
         <h3 id="hEstimate">💶 Unit Prices & Labor Cost</h3>
         <div class="grid-inputs">
+            <div class="input-group">
+                <label id="lblPricePutty">Putty Price €/bag</label>
+                <input id="pricePutty" type="number" value="15">
+            </div>
+            <div class="input-group">
+                <label id="lblPriceFugen">Fugen Price €/bag</label>
+                <input id="priceFugen" type="number" value="18">
+            </div>
+            <div class="input-group">
+                <label id="lblPriceSerpyanka">Serpyanka Price €/roll (50m)</label>
+                <input id="priceSerpyanka" type="number" value="5">
+            </div>
             <div class="input-group">
                 <label id="lblPricePaint">Paint Price €/L</label>
                 <input id="pricePaint" type="number" value="12">
@@ -232,8 +292,12 @@
                 <input id="pricePrimer" type="number" value="5">
             </div>
             <div class="input-group">
-                <label id="lblPriceLabor">Labor Price €/m²</label>
-                <input id="priceLabor" type="number" value="8">
+                <label id="lblPricePuttyLabor">Putty Labor €/m²</label>
+                <input id="pricePuttyLabor" type="number" value="6">
+            </div>
+            <div class="input-group">
+                <label id="lblPricePaintLabor">Painting Labor €/m²</label>
+                <input id="pricePaintLabor" type="number" value="8">
             </div>
             <div class="input-group">
                 <label id="lblMiscMat">Misc (Tape, Foil, Rollers) €</label>
@@ -258,20 +322,25 @@
         </div>
     </div>
 
+    <!-- ФІНАНСОВИЙ ПІДСУМОК -->
     <h3 id="hFinal" style="clear: both; width: 100%;">📊 Financial Summary</h3>
     <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
+        <div><span>🧱 <span id="txtCostPutty">Putty Material</span></span> <span id="costPutty">0 €</span></div>
+        <div><span>📦 <span id="txtCostFugen">Fugen / Füller Material</span></span> <span id="costFugen">0 €</span></div>
+        <div><span>🔗 <span id="txtCostSerpyanka">Serpyanka Tape</span></span> <span id="costSerpyanka">0 €</span></div>
         <div><span>🪣 <span id="txtCostPaint">Paint Cost</span></span> <span id="costPaint">0 €</span></div>
         <div><span>🧴 <span id="txtCostPrimer">Primer Cost</span></span> <span id="costPrimer">0 €</span></div>
         <div><span>✂️ <span id="txtCostMisc">Misc Materials</span></span> <span id="costMisc">0 €</span></div>
         <hr>
         <div><span>📦 <span id="txtFMat">Total Materials</span></span> <span id="materialsTotal">0 €</span></div>
-        <div><span>👷 <span id="txtFWork">Painting Labor</span></span> <span id="laborTotal">0 €</span></div>
+        <div><span>👷 <span id="txtFWork">Total Labor (Putty + Painting)</span></span> <span id="laborTotal">0 €</span></div>
         <hr>
         <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; width: 100%;">
             <span>💰 <span id="txtClientPrice">Total Project Price</span></span> <span id="clientTotal">0 €</span>
         </div>
     </div>
 
+    <!-- Єдиний зведений кошторис -->
     <div class="unified-estimate-card" data-html2canvas-ignore="true">
         <div class="section-title" id="sec-unified" style="font-weight: bold; color: var(--primary); text-transform: uppercase; font-size: 0.9rem; margin-bottom: 5px;">📊 Unified Master Estimate</div>
         <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;" id="sec-unified-desc">Total accumulated budget across all saved project objects.</div>
@@ -299,12 +368,8 @@
     <div class="seo-section">
         <h3 id="sec-faq" style="border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 0; color: var(--text-light);">FAQ</h3>
         <div class="faq-item">
-            <div class="faq-q" id="faq-q1">How much paint do I need per m²?</div>
-            <div class="faq-a" id="faq-a1">Standard paint coverage is roughly 10 m² per liter per single coat.</div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-q" id="faq-q2">Do I need a primer before painting?</div>
-            <div class="faq-a" id="faq-a2">Yes, applying a primer ensures better paint adhesion and reduces overall paint consumption.</div>
+            <div class="faq-q" id="faq-q1">How many layers of putty should I apply?</div>
+            <div class="faq-a" id="faq-a1">Typically 2 layers are used for a smooth finish (base + finish layer).</div>
         </div>
     </div>
 
@@ -334,47 +399,95 @@ function calculateMaterials() {
     let walls = Number(document.getElementById("areaWalls").value) || 0;
     let ceilings = Number(document.getElementById("areaCeilings").value) || 0;
     let subtract = Number(document.getElementById("subtractArea").value) || 0;
+    
+    let netArea = Math.max(0, (walls + ceilings) - subtract);
+
+    // Шпаклівка
+    let puttyLayers = Number(document.getElementById("puttyLayers").value) || 1;
+    let puttyConsumption = Number(document.getElementById("puttyConsumption").value) || 1.2;
+    let puttyBagWeight = Number(document.getElementById("puttyBagWeight").value) || 25;
+    
+    // Розрахунок шпаклівки (приблизно 1 мм товщини на шар або базовий розхід на шар)
+    let totalPuttyKg = netArea * puttyConsumption * puttyLayers;
+    let totalPuttyBags = Math.ceil(totalPuttyKg / (puttyBagWeight > 0 ? puttyBagWeight : 25));
+
+    // Fugen / Füller
+    let fugenConsumption = Number(document.getElementById("fugenConsumption").value) || 0.3;
+    let fugenBagWeight = Number(document.getElementById("fugenBagWeight").value) || 25;
+    let totalFugenKg = netArea * fugenConsumption;
+    let totalFugenBags = Math.ceil(totalFugenKg / (fugenBagWeight > 0 ? fugenBagWeight : 25));
+
+    // Серпянка / Стрічка
+    let serpyankaRate = Number(document.getElementById("serpyankaRate").value) || 1.5;
+    let totalSerpyankaMeters = netArea * serpyankaRate;
+
+    // Фарбування
     let coats = Number(document.getElementById("coats").value) || 1;
     let pCoverage = Number(document.getElementById("paintCoverage").value) || 10;
     let prCoverage = Number(document.getElementById("primerCoverage").value) || 8;
 
-    // Розрахунок площ
-    let netArea = Math.max(0, (walls + ceilings) - subtract);
     let totalPaintArea = netArea * coats;
-    
-    // Об'єми рідин
     let paintLiters = totalPaintArea / pCoverage;
     let primerLiters = netArea / prCoverage;
 
     // Виведення результатів об'ємів
     document.getElementById("resNetArea").innerText = netArea.toFixed(1) + " m²";
+    document.getElementById("resPuttyKg").innerText = totalPuttyKg.toFixed(1) + " kg";
+    document.getElementById("resPuttyBags").innerText = totalPuttyBags + " pcs";
+    document.getElementById("resFugenKg").innerText = totalFugenKg.toFixed(1) + " kg";
+    document.getElementById("resFugenBags").innerText = totalFugenBags + " pcs";
+    document.getElementById("resSerpyankaMeters").innerText = totalSerpyankaMeters.toFixed(1) + " m";
+
     document.getElementById("resTotalPaintArea").innerText = totalPaintArea.toFixed(1) + " m²";
     document.getElementById("resPaint").innerText = paintLiters.toFixed(1) + " L";
     document.getElementById("resPrimer").innerText = primerLiters.toFixed(1) + " L";
 
-    return { netArea, totalPaintArea, paintLiters, primerLiters };
+    return { 
+        netArea, 
+        totalPuttyBags, 
+        totalFugenBags, 
+        totalSerpyankaMeters, 
+        paintLiters, 
+        primerLiters, 
+        totalPaintArea 
+    };
 }
 
 function calculateEstimate() {
     let mats = calculateMaterials();
 
-    // Ціни
+    // Ціни матеріалів
+    let pricePutty = Number(document.getElementById("pricePutty").value) || 0;
+    let priceFugen = Number(document.getElementById("priceFugen").value) || 0;
+    let priceSerpyankaRoll = Number(document.getElementById("priceSerpyanka").value) || 0; // за рулон 50м
     let pPaint = Number(document.getElementById("pricePaint").value) || 0;
     let pPrimer = Number(document.getElementById("pricePrimer").value) || 0;
-    let pLabor = Number(document.getElementById("priceLabor").value) || 0;
     let pMisc = Number(document.getElementById("priceMisc").value) || 0;
 
-    // Категорії витрат
+    // Ціни робіт
+    let pPuttyLabor = Number(document.getElementById("pricePuttyLabor").value) || 0;
+    let pPaintLabor = Number(document.getElementById("pricePaintLabor").value) || 0;
+
+    let costPutty = mats.totalPuttyBags * pricePutty;
+    let costFugen = mats.totalFugenBags * priceFugen;
+    let serpyankaRolls = Math.ceil(mats.totalSerpyankaMeters / 50);
+    let costSerpyanka = serpyankaRolls * priceSerpyankaRoll;
+    
     let costPaint = mats.paintLiters * pPaint;
     let costPrimer = mats.primerLiters * pPrimer;
+
+    let materialsTotal = costPutty + costFugen + costSerpyanka + costPaint + costPrimer + pMisc;
     
-    let materialsTotal = costPaint + costPrimer + pMisc;
+    let puttyLaborTotal = mats.netArea * pPuttyLabor;
+    let paintingLaborTotal = mats.totalPaintArea * pPaintLabor;
+    let laborTotal = puttyLaborTotal + paintingLaborTotal;
     
-    // Робота тепер залежить від загальної площі фарбування (з урахуванням шарів)
-    let laborTotal = mats.totalPaintArea * pLabor;
     let clientTotal = materialsTotal + laborTotal;
 
-    // Виведення результатів фінансів
+    // Виведення фінансів
+    document.getElementById("costPutty").innerText = costPutty.toFixed(2) + " €";
+    document.getElementById("costFugen").innerText = costFugen.toFixed(2) + " €";
+    document.getElementById("costSerpyanka").innerText = costSerpyanka.toFixed(2) + " €";
     document.getElementById("costPaint").innerText = costPaint.toFixed(2) + " €";
     document.getElementById("costPrimer").innerText = costPrimer.toFixed(2) + " €";
     document.getElementById("costMisc").innerText = pMisc.toFixed(2) + " €";
@@ -396,7 +509,7 @@ function generatePDF() {
     
     let printHtml = `
     <div style="padding: 30px; font-family: Arial, sans-serif; color: #333; background: #fff;">
-        <h2>Painting Estimate: ${objName}</h2>
+        <h2>Estimate: ${objName}</h2>
         <p>Client: ${clientName} | Contractor: ${compName}</p>
         <hr>
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
@@ -404,29 +517,19 @@ function generatePDF() {
                 <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Category</th>
                 <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">Cost</th>
             </tr>
-            <tr>
-                <td style="padding: 10px; border: 1px solid #ddd;">Paint</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costPaint").innerText}</td>
-            </tr>
-            <tr>
-                <td style="padding: 10px; border: 1px solid #ddd;">Primer</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costPrimer").innerText}</td>
-            </tr>
-            <tr>
-                <td style="padding: 10px; border: 1px solid #ddd;">Misc Materials (Tape, foil, etc.)</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costMisc").innerText}</td>
-            </tr>
-            <tr>
-                <td style="padding: 10px; border: 1px solid #ddd;">Painting Labor</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("laborTotal").innerText}</td>
-            </tr>
+            <tr><td style="padding: 10px; border: 1px solid #ddd;">Putty Material</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costPutty").innerText}</td></tr>
+            <tr><td style="padding: 10px; border: 1px solid #ddd;">Fugen / Füller Material</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costFugen").innerText}</td></tr>
+            <tr><td style="padding: 10px; border: 1px solid #ddd;">Serpyanka Tape</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costSerpyanka").innerText}</td></tr>
+            <tr><td style="padding: 10px; border: 1px solid #ddd;">Paint & Primer</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${(Number.parseFloat(document.getElementById("costPaint").innerText) + Number.parseFloat(document.getElementById("costPrimer").innerText)).toFixed(2)} €</td></tr>
+            <tr><td style="padding: 10px; border: 1px solid #ddd;">Misc Materials</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costMisc").innerText}</td></tr>
+            <tr><td style="padding: 10px; border: 1px solid #ddd;">Total Labor (Putty + Painting)</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("laborTotal").innerText}</td></tr>
         </table>
         <h3 style="text-align: right; margin-top: 30px;">Total Price: <span style="color: #d32f2f;">${document.getElementById("clientTotal").innerText}</span></h3>
     </div>`;
 
     let opt = {
         margin: 10,
-        filename: `Painting_Estimate_${objName}.pdf`,
+        filename: `Estimate_${objName}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -486,63 +589,75 @@ function updateUnifiedEstimate() {
 
 function copyEstimate() {
     let res = document.getElementById("clientTotal").innerText;
-    navigator.clipboard.writeText(`Painting Estimate for ${document.getElementById("object").value}:\nTotal Price: ${res}`);
+    navigator.clipboard.writeText(`Estimate for ${document.getElementById("object").value}:\nTotal Price: ${res}`);
     alert("Copied to clipboard!");
 }
 
 const langData = {
     en: {
-        subtitle: "Professional Painting Calculator",
+        subtitle: "Professional Painting & Putty Calculator",
         objectTitle: "🏠 Object Data", objectLabel: "Object Name", addressLabel: "Address", clientLabel: "Client",
-        hPainting: "📐 Painting Specs", lblAreaWalls: "Wall Area (m²)", lblAreaCeilings: "Ceiling Area (m²)", lblSubtract: "Subtract Windows/Doors (m²)",
-        lblCoats: "Number of Coats", lblPaintCoverage: "Paint Coverage (m²/L)", lblPrimerCoverage: "Primer Coverage (m²/L)",
-        txtNetArea: "Net Area to Paint", txtTotalPaintArea: "Total Area with Coats", txtLitersPaint: "Paint Required", txtLitersPrimer: "Primer Required",
-        hEstimate: "💶 Unit Prices & Labor Cost", lblPricePaint: "Paint Price €/L", lblPricePrimer: "Primer Price €/L",
-        lblPriceLabor: "Labor Price €/m²", lblMiscMat: "Misc (Tape, Foil, Rollers) €",
+        hRoomSpecs: "📐 Room Specs", lblAreaWalls: "Wall Area (m²)", lblAreaCeilings: "Ceiling Area (m²)", lblSubtract: "Subtract Windows/Doors (m²)",
+        txtNetArea: "Net Surface Area",
+        hPuttySpecs: "🔨 Putty Specs", lblPuttyLayers: "Putty Layers", lblPuttyConsumption: "Putty Consumption (kg/m²)", lblPuttyBagWeight: "Bag Weight (kg)",
+        lblFugenPerM2: "Fugen / Füller (kg/m²)", lblFugenBagWeight: "Fugen Bag Weight (kg)", lblSerpyankaPerM2: "Serpyanka Tape (m/m²)",
+        txtPuttyKg: "Total Putty Required", txtPuttyBags: "Putty Bags", txtFugenKg: "Fugen / Füller Required", txtFugenBags: "Fugen Bags", txtSerpyankaMeters: "Serpyanka Tape",
+        hPainting: "🎨 Painting Specs", lblCoats: "Number of Coats", lblPaintCoverage: "Paint Coverage (m²/L)", lblPrimerCoverage: "Primer Coverage (m²/L)",
+        txtTotalPaintArea: "Total Painting Area (with coats)", txtLitersPaint: "Paint Required", txtLitersPrimer: "Primer Required",
+        hEstimate: "💶 Unit Prices & Labor Cost", lblPricePutty: "Putty Price €/bag", lblPriceFugen: "Fugen Price €/bag", lblPriceSerpyanka: "Serpyanka Price €/roll",
+        lblPricePaint: "Paint Price €/L", lblPricePrimer: "Primer Price €/L", lblPricePuttyLabor: "Putty Labor €/m²", lblPricePaintLabor: "Painting Labor €/m²", lblMiscMat: "Misc €",
         hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
-        hFinal: "📊 Financial Summary", txtCostPaint: "Paint Cost", txtCostPrimer: "Primer Cost", txtCostMisc: "Misc Materials",
-        txtFMat: "Total Materials", txtFWork: "Painting Labor", txtClientPrice: "Total Project Price",
+        hFinal: "📊 Financial Summary", txtCostPutty: "Putty Material", txtCostFugen: "Fugen Material", txtCostSerpyanka: "Serpyanka Tape", txtCostPaint: "Paint Cost", txtCostPrimer: "Primer Cost", txtCostMisc: "Misc Materials",
+        txtFMat: "Total Materials", txtFWork: "Total Labor", txtClientPrice: "Total Project Price",
         btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Estimate", hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing",
-        bcHome: "Home", bcCalcs: "Calculators", bcCurr: "Painting Calculator",
+        bcHome: "Home", bcCalcs: "Calculators", bcCurr: "Painting & Putty Calculator",
         secUnified: "📊 Unified Master Estimate", secUnifiedDesc: "Total accumulated budget across all saved project objects.", lblUnifiedTotal: "Master Project Total:",
-        secFaq: "FAQ", faqQ1: "How much paint do I need per m²?", faqA1: "Standard paint coverage is roughly 10 m² per liter per single coat.", faqQ2: "Do I need a primer before painting?", faqA2: "Yes, applying a primer ensures better paint adhesion and reduces overall paint consumption.",
+        secFaq: "FAQ", faqQ1: "How many layers of putty should I apply?", faqA1: "Typically 2 layers are used for a smooth finish (base + finish layer).",
         secRelated: "Related calculators"
     },
     ua: {
-        subtitle: "Професійний малярний калькулятор",
+        subtitle: "Професійний калькулятор малярки та шпаклювання",
         objectTitle: "🏠 Дані об'єкта", objectLabel: "Назва об'єкта", addressLabel: "Адреса", clientLabel: "Клієнт",
-        hPainting: "📐 Параметри приміщення", lblAreaWalls: "Площа стін (м²)", lblAreaCeilings: "Площа стелі (м²)", lblSubtract: "Відняти вікна/двері (м²)",
-        lblCoats: "Кількість шарів", lblPaintCoverage: "Розхід фарби (м²/л)", lblPrimerCoverage: "Розхід ґрунтовки (м²/л)",
-        txtNetArea: "Чиста площа стін/стелі", txtTotalPaintArea: "Загальна площа фарбування (з шарами)", txtLitersPaint: "Потрібно фарби", txtLitersPrimer: "Потрібно ґрунтовки",
-        hEstimate: "💶 Ціни матеріалів та робіт", lblPricePaint: "Ціна фарби €/л", lblPricePrimer: "Ціна ґрунтовки €/л",
-        lblPriceLabor: "Робота (покраска) €/м²", lblMiscMat: "Витратні (плівка, скотч, валики) €",
+        hRoomSpecs: "📐 Параметри приміщення", lblAreaWalls: "Площа стін (м²)", lblAreaCeilings: "Площа стелі (м²)", lblSubtract: "Відняти вікна/двері (м²)",
+        txtNetArea: "Чиста площа поверхонь",
+        hPuttySpecs: "🔨 Параметри шпаклювання", lblPuttyLayers: "Шари шпаклівки", lblPuttyConsumption: "Розхід шпаклівки (кг/м²)", lblPuttyBagWeight: "Вага мішка (кг)",
+        lblFugenPerM2: "Фуген/Фюллер (кг/м²)", lblFugenBagWeight: "Вага мішка Фуген (кг)", lblSerpyankaPerM2: "Серпянка (м/м²)",
+        txtPuttyKg: "Загалом шпаклівки", txtPuttyBags: "Мішків шпаклівки", txtFugenKg: "Фуген / Фюллер", txtFugenBags: "Мішків Фуген", txtSerpyankaMeters: "Серпянка (стрічка)",
+        hPainting: "🎨 Параметри фарбування", lblCoats: "Кількість шарів фарби", lblPaintCoverage: "Розхід фарби (м²/л)", lblPrimerCoverage: "Розхід ґрунтовки (м²/л)",
+        txtTotalPaintArea: "Загальна площа фарбування (з шарами)", txtLitersPaint: "Потрібно фарби", txtLitersPrimer: "Потрібно ґрунтовки",
+        hEstimate: "💶 Ціни матеріалів та робіт", lblPricePutty: "Ціна шпаклівки €/мішок", lblPriceFugen: "Ціна Фуген €/мішок", lblPriceSerpyanka: "Ціна серпянки €/рулон",
+        lblPricePaint: "Ціна фарби €/л", lblPricePrimer: "Ціна ґрунтовки €/л", lblPricePuttyLabor: "Робота шпаклівка €/м²", lblPricePaintLabor: "Робота фарбування €/м²", lblMiscMat: "Витратні €",
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
-        hFinal: "📊 Фінансовий підсумок", txtCostPaint: "Вартість фарби", txtCostPrimer: "Вартість ґрунтовки", txtCostMisc: "Витратні матеріали",
-        txtFMat: "Всього матеріалів", txtFWork: "Робота маляра", txtClientPrice: "Загальна ціна проєкту",
+        hFinal: "📊 Фінансовий підсумок", txtCostPutty: "Матеріал шпаклівка", txtCostFugen: "Матеріал Фуген", txtCostSerpyanka: "Серпянка", txtCostPaint: "Вартість фарби", txtCostPrimer: "Вартість ґрунтовки", txtCostMisc: "Витратні матеріали",
+        txtFMat: "Всього матеріалів", txtFWork: "Загальна робота", txtClientPrice: "Загальна ціна проєкту",
         btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF", hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість",
-        bcHome: "Головна", bcCalcs: "Калькулятори", bcCurr: "Малярний калькулятор",
+        bcHome: "Головна", bcCalcs: "Калькулятори", bcCurr: "Калькулятор шпаклювання",
         secUnified: "📊 Єдиний зведений кошторис", secUnifiedDesc: "Загальний накопичувальний бюджет по всіх збережених об'єктах проєкту.", lblUnifiedTotal: "Загальний кошторис проєкту:",
-        secFaq: "Часті запитання (FAQ)", faqQ1: "Скільки фарби потрібно на м²?", faqA1: "Стандартний розхід фарби становить приблизно 10 м² на літр в один шар.", faqQ2: "Чи потрібна ґрунтовка перед фарбуванням?", faqA2: "Так, ґрунтовка забезпечує кращу адгезію фарби та зменшує загальний розхід.",
+        secFaq: "Часті запитання (FAQ)", faqQ1: "Скільки шарів шпаклівки зазвичай роблять?", faqA1: "Зазвичай роблять 2 шари (стартовий та фінішний) для досягнення ідеально рівної поверхні.",
         secRelated: "Схожі калькулятори"
     },
     sk: {
-        subtitle: "Kalkulačka maliarskych prác",
+        subtitle: "Kalkulačka tmelenia a maľovania",
         objectTitle: "🏠 Údaje o objekte", objectLabel: "Názov objektu", addressLabel: "Adresa", clientLabel: "Klient",
-        hPainting: "📐 Parametre maľovania", lblAreaWalls: "Plocha stien (m²)", lblAreaCeilings: "Plocha stropu (m²)", lblSubtract: "Odpočítať okná/dvere (m²)",
-        lblCoats: "Počet vrstiev", lblPaintCoverage: "Výdatnosť farby (m²/L)", lblPrimerCoverage: "Výdatnosť penetráku (m²/L)",
-        txtNetArea: "Čistá plocha", txtTotalPaintArea: "Celková plocha maľovania (s vrstvami)", txtLitersPaint: "Potrebné množstvo farby", txtLitersPrimer: "Potrebné množstvo penetráku",
-        hEstimate: "💶 Jednotkové ceny a práca", lblPricePaint: "Cena farby €/L", lblPricePrimer: "Cena penetráku €/L",
-        lblPriceLabor: "Cena práce €/m²", lblMiscMat: "Spotrebný materiál (pásky, fólie) €",
+        hRoomSpecs: "📐 Parametre miestnosti", lblAreaWalls: "Plocha stien (m²)", lblAreaCeilings: "Plocha stropu (m²)", lblSubtract: "Odpočítať okná/dvere (m²)",
+        txtNetArea: "Čistá plocha",
+        hPuttySpecs: "🔨 Parametre tmelenia", lblPuttyLayers: "Vrstvy tmelu", lblPuttyConsumption: "Spotreba tmelu (kg/m²)", lblPuttyBagWeight: "Hmotnosť vrece (kg)",
+        lblFugenPerM2: "Fugen / Füller (kg/m²)", lblFugenBagWeight: "Hmotnosť vrece Fugen (kg)", lblSerpyankaPerM2: "Páska Serpyanka (m/m²)",
+        txtPuttyKg: "Celkom tmelu", txtPuttyBags: "Vriec tmelu", txtFugenKg: "Fugen / Füller", txtFugenBags: "Vriec Fugen", txtSerpyankaMeters: "Páska Serpyanka",
+        hPainting: "🎨 Parametre maľovania", lblCoats: "Počet vrstiev farby", lblPaintCoverage: "Výdatnosť farby (m²/L)", lblPrimerCoverage: "Výdatnosť penetráku (m²/L)",
+        txtTotalPaintArea: "Celková plocha maľovania (s vrstvami)", txtLitersPaint: "Potrebné množstvo farby", txtLitersPrimer: "Potrebné množstvo penetráku",
+        hEstimate: "💶 Jednotkové ceny a práca", lblPricePutty: "Cena tmelu €/vrece", lblPriceFugen: "Cena Fugen €/vrece", lblPriceSerpyanka: "Cena pásky €/rolka",
+        lblPricePaint: "Cena farby €/L", lblPricePrimer: "Cena penetráku €/L", lblPricePuttyLabor: "Práca tmelenie €/m²", lblPricePaintLabor: "Práca maľowanie €/m²", lblMiscMat: "Spotrebný materiál €",
         hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
-        hFinal: "📊 Finančný prehľad", txtCostPaint: "Cena farby", txtCostPrimer: "Cena penetráku", txtCostMisc: "Spotrebný materiál",
-        txtFMat: "Celkovo materiály", txtFWork: "Práca maliara", txtClientPrice: "Celková cena projektu",
+        hFinal: "📊 Finančný prehľad", txtCostPutty: "Materiál tmel", txtCostFugen: "Materiál Fugen", txtCostSerpyanka: "Páska Serpyanka", txtCostPaint: "Cena farby", txtCostPrimer: "Cena penetráku", txtCostMisc: "Spotrebný materiál",
+        txtFMat: "Celkovo materiály", txtFWork: "Celková práca", txtClientPrice: "Celková cena projektu",
         btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument", hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu",
-        bcHome: "Domov", bcCalcs: "Kalkulačky", bcCurr: "Maliarska kalkulačka",
+        bcHome: "Domov", bcCalcs: "Kalkulačky", bcCurr: "Kalkulačka tmelenia",
         secUnified: "📊 Jednotný súhrnný rozpočet", secUnifiedDesc: "Celkový kumulovaný rozpočet pre všetky uložené objekty projektu.", lblUnifiedTotal: "Celkový rozpočet projektu:",
-        secFaq: "Často kladené otázky (FAQ)", faqQ1: "Koľko farby potrebujem na m²?", faqA1: "Štandardná výdatnosť farby je približne 10 m² na liter v jednej vrstve.", faqQ2: "Je potrebná penetrácia pred maľovaním?", faqA2: "Áno, penetrácia zabezpečuje lepšiu priľnavosť farby a znižuje celkovú spotrebu.",
+        secFaq: "Často kladené otázky (FAQ)", faqQ1: "Koľko vrstiev tmelu sa zvyčajne nanáša?", faqA1: "Zvyčajne sa nanášajú 2 vrstvy (základná a finálna) pre dosiahnutie hladkého povrchu.",
         secRelated: "Súvisiace kalkulačky"
     }
 };
