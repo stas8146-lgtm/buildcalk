@@ -496,7 +496,7 @@
                 </div>
             </div>
 
-            <!-- GLOBAL PROJECT ESTIMATE WIDGET (СУСПІЛЬНИЙ КОШТОРИС ПРОЄКТУ) -->
+            <!-- GLOBAL PROJECT ESTIMATE WIDGET -->
             <div class="bg-neutral-950 border border-yellow-500/30 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
                 <div class="flex items-center justify-between mb-3 border-b border-neutral-900 pb-3">
                     <h3 class="text-base font-bold text-white flex items-center gap-2">
@@ -528,7 +528,7 @@
         </div>
     </main>
 
-    <!-- FAQ SECTION (SEO OPTIMIZED) -->
+    <!-- FAQ SECTION -->
     <section class="no-print bg-neutral-950 border-t border-neutral-800 py-12 px-4 lg:px-8 mt-12 w-full">
         <div class="max-w-4xl mx-auto">
             <h2 class="text-xl font-bold text-white flex items-center gap-2 mb-8 text-center justify-center">
@@ -553,7 +553,7 @@
         </div>
     </section>
 
-    <!-- RELATED CALCULATORS (ECOSYSTEM INTERNAL LINKING) -->
+    <!-- RELATED CALCULATORS -->
     <section class="no-print bg-neutral-950/60 border-t border-neutral-900 py-10 px-4 lg:px-8 w-full">
         <div class="max-w-6xl mx-auto">
             <h3 class="text-sm font-extrabold uppercase tracking-widest text-yellow-500 mb-6 text-center" id="t-related-title">Related Calculators (BUILDcalc Ecosystem)</h3>
@@ -590,6 +590,8 @@
                 "lbl-sheet-size": "Sheet Size",
                 "lbl-waste": "Waste (%)",
                 "lbl-layers": "Drywall Layers (per side)",
+                "opt-layer-1": "1 Layer (Standard)",
+                "opt-layer-2": "2 Layers (Reinforced)",
                 "t-economics": "Economics & Pricing",
                 "t-financial-summary": "Financial Summary",
                 "lbl-total-materials": "Materials (All)",
@@ -657,6 +659,8 @@
                 "lbl-sheet-size": "Розмір листа",
                 "lbl-waste": "Запас на обрізку (%)",
                 "lbl-layers": "Шари гіпсокартону (на одну сторону)",
+                "opt-layer-1": "1 шар (Стандарт)",
+                "opt-layer-2": "2 шари (Посилений)",
                 "t-economics": "Ціни та Економіка",
                 "t-financial-summary": "Фінансовий підсумок",
                 "lbl-total-materials": "Матеріали (усі)",
@@ -724,6 +728,8 @@
                 "lbl-sheet-size": "Veľkosť dosky",
                 "lbl-waste": "Odpad (%)",
                 "lbl-layers": "Vrstvy sadrokartónu (na stranu)",
+                "opt-layer-1": "1 vrstva (Štandard)",
+                "opt-layer-2": "2 vrstvy (Vystužené)",
                 "t-economics": "Ekonómika a ceny",
                 "t-financial-summary": "Finančné zhrnutie",
                 "lbl-total-materials": "Materiály (spolu)",
@@ -1012,7 +1018,6 @@
             }
         }
 
-        // Global Project Estimate Functions (Суспільний кошторис)
         function addToGlobalEstimate() {
             let globalList = JSON.parse(localStorage.getItem('global_project_estimate')) || [];
             const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
