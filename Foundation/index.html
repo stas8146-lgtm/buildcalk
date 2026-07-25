@@ -3,9 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free professional foundation calculator. Calculate concrete, formwork, rebar, base cushion, labor costs and generate PDF estimates in seconds.">
     <title>Professional Foundation Calculator | BUILDcalc</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Schema.org for Software Application -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Professional Foundation Calculator | BUILDcalc",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "description": "Calculate concrete, formwork, rebar, base cushion, and labor costs for strip and slab foundations.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    }
+    </script>
 
     <style>
         :root {
@@ -18,8 +36,14 @@
         }
 
         body { background-color: var(--dark); color: var(--text-light); font-family: Arial, sans-serif; margin: 0; padding: 15px; }
+        
+        /* Breadcrumbs */
+        .breadcrumbs { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+        .breadcrumbs a { color: var(--primary); text-decoration: none; }
+        .breadcrumbs a:hover { text-decoration: underline; }
+
         .header { text-align: center; padding: 10px 0; border-bottom: 1px solid var(--dark-light); }
-        .logo { font-size: 24px; font-weight: bold; color: var(--text-light); }
+        .logo { font-size: 24px; font-weight: bold; color: var(--text-light); margin: 0; } /* Changed to H1 but kept styling */
         .logo span { color: var(--primary); }
         .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
 
@@ -34,7 +58,8 @@
         .tab-btn.active { background: var(--primary); color: var(--dark); font-weight: bold; }
         .badge { background: red; color: white; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 5px; }
 
-        h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; color: var(--text-light); }
+        h2, h3 { color: var(--text-light); }
+        h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; }
 
         .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px; }
         .input-group { display: flex; flex-direction: column; }
@@ -58,9 +83,29 @@
         .action-btn:hover { background: var(--primary); color: var(--dark); }
         .btn-global { background: #28a745; border-color: #28a745; }
         .btn-global:hover { background: #218838; }
+        .btn-view-global { background: #17a2b8; border-color: #17a2b8; }
+        .btn-view-global:hover { background: #138496; }
 
-        .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; }
-        
+        /* SEO Sections (FAQ & Related) */
+        .seo-section { background: var(--dark-light); padding: 20px; border-radius: 8px; margin-top: 30px; }
+        .seo-section h2 { border-bottom: 1px solid #555; padding-bottom: 10px; margin-top: 0; font-size: 18px; }
+        .faq-item { margin-bottom: 15px; }
+        .faq-item strong { color: var(--primary); display: block; margin-bottom: 5px; }
+        .faq-item p { margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.4; }
+        .related-links { list-style: none; padding: 0; margin: 0; }
+        .related-links li { margin-bottom: 10px; }
+        .related-links a { color: var(--primary); text-decoration: none; font-size: 15px; }
+        .related-links a:hover { text-decoration: underline; }
+
+        /* Global Estimate Modal */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); }
+        .modal-content { background-color: var(--dark); margin: 10% auto; padding: 20px; border: 1px solid var(--primary); border-radius: 8px; width: 90%; max-width: 500px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #555; padding-bottom: 10px; }
+        .modal-header h2 { margin: 0; color: var(--primary); font-size: 20px; }
+        .close-btn { color: white; font-size: 24px; cursor: pointer; background: none; border: none; }
+        .global-item { background: var(--dark-light); padding: 10px; margin: 10px 0; border-radius: 5px; display: flex; justify-content: space-between; }
+        .global-total { font-size: 20px; font-weight: bold; text-align: right; margin-top: 15px; color: #28a745; }
+
         .buy-pro-banner {
             background: linear-gradient(135deg, #343a40, #212529); border: 2px dashed var(--primary); padding: 20px; 
             text-align: center; border-radius: 8px; margin-top: 30px; width: 100%; box-sizing: border-box;
@@ -72,11 +117,18 @@
 <body>
 <div id="global-nav-container"></div>
     
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumbs" aria-label="breadcrumb">
+        <a href="/" id="breadHome">Home</a> &gt; 
+        <a href="/calculators" id="breadCalc">Calculators</a> &gt; 
+        <span id="breadCurrent">Foundation Calculator</span>
+    </nav>
+
     <div class="header">
-        <div class="logo">🧱 <span>BUILD</span>calc FOUNDATION</div>
+        <!-- H1 used instead of div for SEO -->
+        <h1 class="logo">🧱 <span>BUILD</span>calc FOUNDATION</h1>
         <div class="subtitle" id="subtitle">Professional Foundation Calculator</div>
         
-        <!-- Меню тепер підтягується з nav.js -->
         <div id="nav-container"></div>
 
         <div class="settings-row">
@@ -189,15 +241,38 @@
 
     <div class="buttons-container">
         <button class="action-btn btn-global" onclick="addToGlobalEstimate()" id="btnGlobal">➕ Add to Global Estimate</button>
+        <button class="action-btn btn-view-global" onclick="openGlobalModal()" id="btnViewGlobal">📊 View Global Estimate</button>
     </div>
     <div class="buttons-container">
         <button class="action-btn" onclick="copyEstimate()" id="btnCopy">📋 Copy</button>
         <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Invoice</button>
         <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Save</button>
-        <button class="action-btn" onclick="showHistory()" id="btnHistory">📂 History</button>
     </div>
 
-    <div id="historyBox" class="history-box" style="display:none;"></div>
+    <!-- SEO FAQ Section -->
+    <div class="seo-section">
+        <h2 id="faqTitle">❓ Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <strong id="faq1Q">Strip vs. Slab Foundation?</strong>
+            <p id="faq1A">Strip foundations support load-bearing walls and are cost-effective. Slab foundations provide a solid flat base for the entire structure, ideal for weak soils.</p>
+        </div>
+        <div class="faq-item">
+            <strong id="faq2Q">How much rebar is needed per m³ of concrete?</strong>
+            <p id="faq2A">On average, standard residential foundations require about 80 kg of rebar per cubic meter of concrete, though precise structural calculations may vary.</p>
+        </div>
+    </div>
+
+    <!-- SEO Internal Linking -->
+    <div class="seo-section">
+        <h2 id="relatedTitle">🔗 Related Calculators</h2>
+        <ul class="related-links">
+            <li><a href="/facade-calculator">Facade Calculator</a></li>
+            <li><a href="/screed-calculator">Screed Calculator</a></li>
+            <li><a href="/roof-calculator">Roof Calculator</a></li>
+            <li><a href="/plaster-calculator">Plaster Calculator</a></li>
+            <li><a href="/paint-calculator">Paint Calculator</a></li>
+        </ul>
+    </div>
 
     <div class="buy-pro-banner" id="promoBanner">
         <h3 style="border:none; padding:0; margin:0;" id="proTitle">🔓 BUILDcalc PRO</h3>
@@ -205,15 +280,36 @@
         <button class="buy-btn" id="btnBuyPro">Upgrade to PRO</button>
     </div>
 
-<!-- Підключення навігації -->
+    <!-- GLOBAL ESTIMATE MODAL -->
+    <div id="globalModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Global Estimate Dashboard</h2>
+                <button class="close-btn" onclick="closeGlobalModal()">&times;</button>
+            </div>
+            <div id="globalList" style="max-height: 300px; overflow-y: auto; margin-top: 15px;">
+                <!-- Items will be injected here -->
+            </div>
+            <div class="global-total">
+                <span id="modalTotalText">Total:</span> <span id="globalSum">0</span>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="action-btn" style="background: #dc3545; border-color: #dc3545;" onclick="clearGlobalEstimate()" id="modalClearBtn">🗑 Clear All</button>
+            </div>
+        </div>
+    </div>
+
 <script src="nav.js"></script>
 
 <script>
+// Keep original logic and inputs
 document.querySelectorAll('input, select').forEach(el => {
     if (el.id !== 'language' && el.id !== 'currency' && el.id !== 'fundType') {
         el.addEventListener('input', calculateAll);
     }
 });
+
+let currentNumericTotal = 0; // Store numeric value for global estimate addition
 
 function toggleInputs() {
     let type = document.getElementById("fundType").value;
@@ -274,6 +370,7 @@ function calculateAll() {
     let delivery = (Number(document.getElementById("deliveryPrice").value) || 0) + (Number(document.getElementById("otherPrice").value) || 0);
 
     let clientTotal = materialsTotal + salary + profit + delivery;
+    currentNumericTotal = clientTotal; // Save for Global Dashboard
 
     document.getElementById("costConcrete").innerText = costConc.toFixed(2) + " " + cur;
     document.getElementById("costRebar").innerText = costRebar.toFixed(2) + " " + cur;
@@ -286,15 +383,18 @@ function calculateAll() {
     document.getElementById("clientTotal").innerText = clientTotal.toFixed(2) + " " + cur;
 }
 
+// ---- UNIFIED ESTIMATE LOGIC ----
 function addToGlobalEstimate() {
     let objName = document.getElementById("object").value || "Unnamed Object";
-    let total = document.getElementById("clientTotal").innerText;
+    let cur = document.getElementById("currency").value;
     
     let item = {
         id: Date.now(),
         category: "Foundation",
         object: objName,
-        price: total,
+        priceFormatted: document.getElementById("clientTotal").innerText,
+        priceValue: currentNumericTotal,
+        currency: cur,
         date: new Date().toLocaleDateString()
     };
 
@@ -305,8 +405,55 @@ function addToGlobalEstimate() {
     alert("✅ Foundation added to Global Estimate!");
 }
 
+function openGlobalModal() {
+    let listContainer = document.getElementById("globalList");
+    listContainer.innerHTML = "";
+    
+    let globalList = JSON.parse(localStorage.getItem("globalEstimates")) || [];
+    let totalSum = 0;
+    let mainCurrency = document.getElementById("currency").value; // Display total in current selected currency
+
+    if (globalList.length === 0) {
+        listContainer.innerHTML = "<p style='color: #a0a0a0; text-align:center;'>List is empty.</p>";
+    } else {
+        globalList.forEach(item => {
+            totalSum += item.priceValue;
+            listContainer.innerHTML += `
+                <div class="global-item">
+                    <div>
+                        <strong style="color:var(--primary);">${item.category}</strong> - ${item.object}<br>
+                        <small style="color:#777;">${item.date}</small>
+                    </div>
+                    <div style="font-weight:bold;">${item.priceFormatted}</div>
+                </div>
+            `;
+        });
+    }
+
+    document.getElementById("globalSum").innerText = totalSum.toFixed(2) + " " + mainCurrency;
+    document.getElementById("globalModal").style.display = "block";
+}
+
+function closeGlobalModal() {
+    document.getElementById("globalModal").style.display = "none";
+}
+
+function clearGlobalEstimate() {
+    if (confirm("Are you sure you want to clear the entire global estimate?")) {
+        localStorage.removeItem("globalEstimates");
+        openGlobalModal();
+    }
+}
+// Close modal when clicking outside
+window.onclick = function(event) {
+    let modal = document.getElementById("globalModal");
+    if (event.target == modal) { modal.style.display = "none"; }
+}
+// --------------------------------
+
 const langData = {
     ua: {
+        breadHome: "Головна", breadCalc: "Калькулятори", breadCurrent: "Калькулятор фундаменту",
         subtitle: "Професійний калькулятор фундаменту", objectTitle: "🏠 Дані об'єкта", objectLabel: "Назва об'єкта", addressLabel: "Адреса", clientLabel: "Клієнт",
         hParams: "📐 Параметри фундаменту", lblType: "Тип фундаменту", optStrip: "Стрічковий (Strip)", optSlab: "Плитний (Slab)",
         lblLength: "Загальна довжина стрічки (м)", lblSlabL: "Довжина плити (м)", lblSlabW: "Ширина плити (м)", lblDepth: "Глибина/Висота (м)", lblThickness: "Товщина (м)",
@@ -316,11 +463,15 @@ const langData = {
         hCompany: "🏢 Дані фірми (PRO)", lblCompName: "Назва фірми", lblCompPhone: "Телефон",
         hFinal: "📊 Фінансовий підсумок", txtFConc: "Бетон", txtFRebar: "Арматура", txtFForm: "Опалубка", txtFCushion: "Подушка",
         txtFMat: "Матеріали Разом", txtFWork: "Робота", txtFLog: "Логістика + Інше", txtFProf: "Прибуток", txtClientPrice: "Разом до оплати",
-        btnGlobal: "➕ В Загальний Кошторис", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF", btnSave: "💾 Зберегти", btnHistory: "📂 Історія",
+        btnGlobal: "➕ В Загальний Кошторис", btnViewGlobal: "📊 Відкрити Кошторис", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF", btnSave: "💾 Зберегти",
+        faqTitle: "❓ Часті питання", faq1Q: "Стрічковий чи плитний фундамент?", faq1A: "Стрічковий підтримує несучі стіни та є економічним. Плитний забезпечує суцільну плоску основу для всієї будівлі, що ідеально підходить для слабких ґрунтів.",
+        faq2Q: "Скільки арматури потрібно на 1 м³ бетону?", faq2A: "В середньому для стандартних житлових фундаментів потрібно близько 80 кг арматури на кубічний метр бетону, хоча точні конструктивні розрахунки можуть відрізнятися.",
+        relatedTitle: "🔗 Схожі калькулятори", modalTitle: "Загальний Кошторис Об'єкта", modalTotalText: "Разом:", modalClearBtn: "🗑 Очистити все",
         pdfTitle: "Кошторис: Фундамент", pdfDate: "Дата", pdfClient: "Клієнт", pdfObject: "Об'єкт", pdfMat: "Матеріали", pdfItem: "Найменування", pdfCost: "Сума", pdfLabor: "Роботи та Логістика", pdfTotalDue: "Разом до оплати:",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Розблокуй дані фірми, логотип у PDF та загальний кошторис об'єктів.", btnBuyPro: "Оформити PRO"
     },
     en: {
+        breadHome: "Home", breadCalc: "Calculators", breadCurrent: "Foundation Calculator",
         subtitle: "Professional Foundation Calculator", objectTitle: "🏠 Object Data", objectLabel: "Object Name", addressLabel: "Address", clientLabel: "Client",
         hParams: "📐 Foundation Parameters", lblType: "Foundation Type", optStrip: "Strip Foundation", optSlab: "Slab Foundation",
         lblLength: "Total Wall Length (m)", lblSlabL: "Slab Length (m)", lblSlabW: "Slab Width (m)", lblDepth: "Depth/Height (m)", lblThickness: "Thickness (m)",
@@ -330,11 +481,15 @@ const langData = {
         hCompany: "🏢 Company Info (PRO)", lblCompName: "Company Name", lblCompPhone: "Phone",
         hFinal: "📊 Financial Summary", txtFConc: "Concrete", txtFRebar: "Rebar", txtFForm: "Formwork", txtFCushion: "Cushion",
         txtFMat: "Total Materials", txtFWork: "Labor", txtFLog: "Logistics & Extra", txtFProf: "Profit", txtClientPrice: "Total Client Price",
-        btnGlobal: "➕ Add to Global Estimate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice", btnSave: "💾 Save", btnHistory: "📂 History",
+        btnGlobal: "➕ Add to Global Estimate", btnViewGlobal: "📊 View Global Estimate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice", btnSave: "💾 Save",
+        faqTitle: "❓ Frequently Asked Questions", faq1Q: "Strip vs. Slab Foundation?", faq1A: "Strip foundations support load-bearing walls and are cost-effective. Slab foundations provide a solid flat base for the entire structure, ideal for weak soils.",
+        faq2Q: "How much rebar is needed per m³ of concrete?", faq2A: "On average, standard residential foundations require about 80 kg of rebar per cubic meter of concrete, though precise structural calculations may vary.",
+        relatedTitle: "🔗 Related Calculators", modalTitle: "Global Estimate Dashboard", modalTotalText: "Total:", modalClearBtn: "🗑 Clear All",
         pdfTitle: "Foundation Estimate", pdfDate: "Date", pdfClient: "Client", pdfObject: "Object", pdfMat: "Materials", pdfItem: "Item", pdfCost: "Amount", pdfLabor: "Labor & Services", pdfTotalDue: "Total Due:",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Unlock company info, PDF generation, and global estimate feature.", btnBuyPro: "Upgrade to PRO"
     },
     sk: {
+        breadHome: "Domov", breadCalc: "Kalkulačky", breadCurrent: "Kalkulačka základov",
         subtitle: "Profesionálna kalkulačka základov", objectTitle: "🏠 Údaje o objekte", objectLabel: "Názov objektu", addressLabel: "Adresa", clientLabel: "Klient",
         hParams: "📐 Parametre základov", lblType: "Typ základov", optStrip: "Pásové základy", optSlab: "Základová doska",
         lblLength: "Celková dĺžka pásov (m)", lblSlabL: "Dĺžka dosky (m)", lblSlabW: "Šírka dosky (m)", lblDepth: "Hĺbka/Výška (m)", lblThickness: "Hrúbka (m)",
@@ -344,7 +499,10 @@ const langData = {
         hCompany: "🏢 Údaje o firme (PRO)", lblCompName: "Názov firmy", lblCompPhone: "Telefón",
         hFinal: "📊 Finančný prehľad", txtFConc: "Betón", txtFRebar: "Oceľ", txtFForm: "Debnenie", txtFCushion: "Podklad",
         txtFMat: "Materiály Spolu", txtFWork: "Práca", txtFLog: "Logistika a iné", txtFProf: "Zisk", txtClientPrice: "Cena pre klienta",
-        btnGlobal: "➕ Pridať do celkového rozpočtu", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument", btnSave: "💾 Uložiť", btnHistory: "📂 História",
+        btnGlobal: "➕ Pridať do celkového rozpočtu", btnViewGlobal: "📊 Zobraziť rozpočet", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument", btnSave: "💾 Uložiť",
+        faqTitle: "❓ Často kladené otázky", faq1Q: "Pásové základy vs. Základová doska?", faq1A: "Pásové základy podopierajú nosné steny a sú nákladovo efektívne. Základová doska poskytuje pevnú rovnú základňu pre celú stavbu, ideálne pre slabé pôdy.",
+        faq2Q: "Koľko výstuže je potrebné na 1 m³ betónu?", faq2A: "V priemere bežné základy rodinných domov vyžadujú približne 80 kg výstuže na meter kubický betónu, hoci presné výpočty sa môžu líšiť.",
+        relatedTitle: "🔗 Súvisiace kalkulačky", modalTitle: "Celkový rozpočet projektu", modalTotalText: "Spolu:", modalClearBtn: "🗑 Vymazať všetko",
         pdfTitle: "Rozpočet: Základy", pdfDate: "Dátum", pdfClient: "Klient", pdfObject: "Objekt", pdfMat: "Materiály", pdfItem: "Položka", pdfCost: "Suma", pdfLabor: "Práca a služby", pdfTotalDue: "Spolu na úhradu:",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Odomknúť údaje o firme, generovanie PDF a funkciu celkového rozpočtu.", btnBuyPro: "Prejsť na PRO"
     }
@@ -376,12 +534,14 @@ function setVersion(version) {
         document.getElementById("tabFree").classList.add("active");
         proFeatures.style.opacity = "0.5"; proFeatures.style.pointerEvents = "none";
         document.getElementById("btnPdf").style.display = "none";
-        document.getElementById("btnGlobal").style.display = "none"; 
+        document.getElementById("btnGlobal").style.display = "none";
+        document.getElementById("btnViewGlobal").style.display = "none";
     } else {
         document.getElementById("tabPro").classList.add("active");
         proFeatures.style.opacity = "1"; proFeatures.style.pointerEvents = "auto";
         document.getElementById("btnPdf").style.display = "block";
         document.getElementById("btnGlobal").style.display = "block";
+        document.getElementById("btnViewGlobal").style.display = "block";
     }
 }
 
@@ -422,7 +582,6 @@ function generatePDF() {
 
 function copyEstimate() { navigator.clipboard.writeText(`Estimate: ${document.getElementById("clientTotal").innerText}`); alert("Copied!"); }
 function saveProject() { alert("Saved to history!"); }
-function showHistory() { alert("History module will be loaded here"); }
 
 window.onload = () => { changeLanguage(); toggleInputs(); setVersion('free'); };
 </script>
