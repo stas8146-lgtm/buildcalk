@@ -45,6 +45,7 @@
             --text-muted: #a0a0a0;
             --border-color: #555;
             --danger-red: #d32f2f;
+            --success-green: #2e7d32;
         }
 
         body {
@@ -109,9 +110,15 @@
         .buttons-container { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; width: 100%; clear: both; }
         .action-btn {
             flex: 1; min-width: 100px; background: var(--dark-light); color: white; border: 1px solid var(--primary);
-            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold;
+            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; text-align: center;
         }
         .action-btn:hover { background: var(--primary); color: var(--dark); }
+
+        .btn-success { background: var(--success-green) !important; border: none !important; color: white !important; }
+        .btn-success:hover { opacity: 0.9; }
+
+        .btn-danger-outline { background: var(--dark-light) !important; border: 1px solid var(--danger-red) !important; color: var(--danger-red) !important; }
+        .btn-danger-outline:hover { background: var(--danger-red) !important; color: white !important; }
 
         .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
 
@@ -303,6 +310,14 @@
                 <label id="lblMiscMat">Misc (Tape, Foil, Rollers) €</label>
                 <input id="priceMisc" type="number" value="45">
             </div>
+            <div class="input-group">
+                <label id="lblMarkup">Markup / Profit (%)</label>
+                <input id="markupPercent" type="number" value="20">
+            </div>
+            <div class="input-group">
+                <label id="lblLogistics">Logistics / Delivery (€)</label>
+                <input id="logisticsCost" type="number" value="50">
+            </div>
         </div>
 
         <h3 id="hCompany">🏢 Company Info</h3>
@@ -322,44 +337,44 @@
         </div>
     </div>
 
-    <!-- ФІНАНСОВИЙ ПІДСУМОК -->
+    <!-- ФІНАНСОВИЙ ПІДСУМОК (Відповідно до скріншота) -->
     <h3 id="hFinal" style="clear: both; width: 100%;">📊 Financial Summary</h3>
     <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
-        <div><span>🧱 <span id="txtCostPutty">Putty Material</span></span> <span id="costPutty">0 €</span></div>
-        <div><span>📦 <span id="txtCostFugen">Fugen / Füller Material</span></span> <span id="costFugen">0 €</span></div>
-        <div><span>🔗 <span id="txtCostSerpyanka">Serpyanka Tape</span></span> <span id="costSerpyanka">0 €</span></div>
-        <div><span>🪣 <span id="txtCostPaint">Paint Cost</span></span> <span id="costPaint">0 €</span></div>
-        <div><span>🧴 <span id="txtCostPrimer">Primer Cost</span></span> <span id="costPrimer">0 €</span></div>
-        <div><span>✂️ <span id="txtCostMisc">Misc Materials</span></span> <span id="costMisc">0 €</span></div>
-        <hr>
-        <div><span>📦 <span id="txtFMat">Total Materials</span></span> <span id="materialsTotal">0 €</span></div>
-        <div><span>👷 <span id="txtFWork">Total Labor (Putty + Painting)</span></span> <span id="laborTotal">0 €</span></div>
+        <div><span>📦 <span id="txtFMat">Materials</span></span> <span id="materialsTotal">0.00 €</span></div>
+        <div><span>👷 <span id="txtFWork">Labor</span></span> <span id="laborTotal">0.00 €</span></div>
+        <div><span>📈 <span id="txtMarkupProfit">Markup/Profit</span></span> <span id="markupTotal">0.00 €</span></div>
+        <div><span>🚚 <span id="txtLogisticsCost">Logistics</span></span> <span id="logisticsTotal">0.00 €</span></div>
         <hr>
         <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; width: 100%;">
-            <span>💰 <span id="txtClientPrice">Total Project Price</span></span> <span id="clientTotal">0 €</span>
+            <span>💰 <span id="txtClientPrice">Total Client Price</span></span> <span id="clientTotal">0.00 €</span>
         </div>
     </div>
 
-    <!-- Єдиний зведений кошторис -->
-    <div class="unified-estimate-card" data-html2canvas-ignore="true">
-        <div class="section-title" id="sec-unified" style="font-weight: bold; color: var(--primary); text-transform: uppercase; font-size: 0.9rem; margin-bottom: 5px;">📊 Unified Master Estimate</div>
-        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;" id="sec-unified-desc">Total accumulated budget across all saved project objects.</div>
-        <div class="unified-total-row">
-            <span id="lbl-unified-total">Master Project Total:</span>
-            <span id="out-unified-total">0.00 €</span>
-        </div>
-    </div>
-
+    <!-- КНОПКИ ДІЙ -->
     <div class="buttons-container">
         <button class="action-btn" onclick="calculateAll()" id="btnCalc">💰 Calculate</button>
         <button class="action-btn" onclick="copyEstimate()" id="btnCopy">📋 Copy</button>
-        <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Estimate</button>
+        <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Invoice</button>
     </div>
 
+    <!-- ГЛОБАЛЬНИЙ КОШТОРИС (Згідно зі скріншотом) -->
+    <div class="unified-estimate-card" data-html2canvas-ignore="true">
+        <div style="font-weight: bold; color: var(--text-light); font-size: 1rem; margin-bottom: 5px;" id="sec-global-title">🌍 Global Estimate (All Calculators)</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;" id="sec-global-desc">Combine costs from Roof, Facade, Screed etc. into one unified project estimate.</div>
+        
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="action-btn btn-success" onclick="addToGlobalEstimate()" id="btnAddGlobal">+ Add to Global Estimate</button>
+            <button class="action-btn btn-success" onclick="viewGlobalEstimate()" id="btnViewGlobal">👁 View Global Estimate</button>
+            <button class="action-btn btn-danger-outline" onclick="clearGlobalEstimate()" id="btnClearGlobal">🗑 Clear Global</button>
+        </div>
+        <div id="globalEstimateBox" class="history-box" style="display:none; margin-top: 10px;"></div>
+    </div>
+
+    <!-- ПРОЄКТИ (PROJECT VAULT) -->
     <h3 id="hProjects" style="clear: both; width: 100%;">💾 Project Vault</h3>
     <div class="buttons-container">
-        <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Save</button>
-        <button class="action-btn" onclick="showHistory()" id="btnHistory">📂 History</button>
+        <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Save Local</button>
+        <button class="action-btn" onclick="showHistory()" id="btnHistory">📁 Local History</button>
         <button class="action-btn" onclick="btnClear()" id="btnClear">🗑 Clear</button>
     </div>
 
@@ -402,26 +417,21 @@ function calculateMaterials() {
     
     let netArea = Math.max(0, (walls + ceilings) - subtract);
 
-    // Шпаклівка
     let puttyLayers = Number(document.getElementById("puttyLayers").value) || 1;
     let puttyConsumption = Number(document.getElementById("puttyConsumption").value) || 1.2;
     let puttyBagWeight = Number(document.getElementById("puttyBagWeight").value) || 25;
     
-    // Розрахунок шпаклівки (приблизно 1 мм товщини на шар або базовий розхід на шар)
     let totalPuttyKg = netArea * puttyConsumption * puttyLayers;
     let totalPuttyBags = Math.ceil(totalPuttyKg / (puttyBagWeight > 0 ? puttyBagWeight : 25));
 
-    // Fugen / Füller
     let fugenConsumption = Number(document.getElementById("fugenConsumption").value) || 0.3;
     let fugenBagWeight = Number(document.getElementById("fugenBagWeight").value) || 25;
     let totalFugenKg = netArea * fugenConsumption;
     let totalFugenBags = Math.ceil(totalFugenKg / (fugenBagWeight > 0 ? fugenBagWeight : 25));
 
-    // Серпянка / Стрічка
     let serpyankaRate = Number(document.getElementById("serpyankaRate").value) || 1.5;
     let totalSerpyankaMeters = netArea * serpyankaRate;
 
-    // Фарбування
     let coats = Number(document.getElementById("coats").value) || 1;
     let pCoverage = Number(document.getElementById("paintCoverage").value) || 10;
     let prCoverage = Number(document.getElementById("primerCoverage").value) || 8;
@@ -430,7 +440,6 @@ function calculateMaterials() {
     let paintLiters = totalPaintArea / pCoverage;
     let primerLiters = netArea / prCoverage;
 
-    // Виведення результатів об'ємів
     document.getElementById("resNetArea").innerText = netArea.toFixed(1) + " m²";
     document.getElementById("resPuttyKg").innerText = totalPuttyKg.toFixed(1) + " kg";
     document.getElementById("resPuttyBags").innerText = totalPuttyBags + " pcs";
@@ -456,15 +465,13 @@ function calculateMaterials() {
 function calculateEstimate() {
     let mats = calculateMaterials();
 
-    // Ціни матеріалів
     let pricePutty = Number(document.getElementById("pricePutty").value) || 0;
     let priceFugen = Number(document.getElementById("priceFugen").value) || 0;
-    let priceSerpyankaRoll = Number(document.getElementById("priceSerpyanka").value) || 0; // за рулон 50м
+    let priceSerpyankaRoll = Number(document.getElementById("priceSerpyanka").value) || 0; 
     let pPaint = Number(document.getElementById("pricePaint").value) || 0;
     let pPrimer = Number(document.getElementById("pricePrimer").value) || 0;
     let pMisc = Number(document.getElementById("priceMisc").value) || 0;
 
-    // Ціни робіт
     let pPuttyLabor = Number(document.getElementById("pricePuttyLabor").value) || 0;
     let pPaintLabor = Number(document.getElementById("pricePaintLabor").value) || 0;
 
@@ -482,17 +489,16 @@ function calculateEstimate() {
     let paintingLaborTotal = mats.totalPaintArea * pPaintLabor;
     let laborTotal = puttyLaborTotal + paintingLaborTotal;
     
-    let clientTotal = materialsTotal + laborTotal;
+    let markupPercent = Number(document.getElementById("markupPercent").value) || 0;
+    let logisticsCost = Number(document.getElementById("logisticsCost").value) || 0;
 
-    // Виведення фінансів
-    document.getElementById("costPutty").innerText = costPutty.toFixed(2) + " €";
-    document.getElementById("costFugen").innerText = costFugen.toFixed(2) + " €";
-    document.getElementById("costSerpyanka").innerText = costSerpyanka.toFixed(2) + " €";
-    document.getElementById("costPaint").innerText = costPaint.toFixed(2) + " €";
-    document.getElementById("costPrimer").innerText = costPrimer.toFixed(2) + " €";
-    document.getElementById("costMisc").innerText = pMisc.toFixed(2) + " €";
+    let markupTotal = (materialsTotal + laborTotal) * (markupPercent / 100);
+    let clientTotal = materialsTotal + laborTotal + markupTotal + logisticsCost;
+
     document.getElementById("materialsTotal").innerText = materialsTotal.toFixed(2) + " €";
     document.getElementById("laborTotal").innerText = laborTotal.toFixed(2) + " €";
+    document.getElementById("markupTotal").innerText = markupTotal.toFixed(2) + " €";
+    document.getElementById("logisticsTotal").innerText = logisticsCost.toFixed(2) + " €";
     document.getElementById("clientTotal").innerText = clientTotal.toFixed(2) + " €";
 
     return clientTotal;
@@ -509,7 +515,7 @@ function generatePDF() {
     
     let printHtml = `
     <div style="padding: 30px; font-family: Arial, sans-serif; color: #333; background: #fff;">
-        <h2>Estimate: ${objName}</h2>
+        <h2>Estimate Invoice: ${objName}</h2>
         <p>Client: ${clientName} | Contractor: ${compName}</p>
         <hr>
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
@@ -517,19 +523,17 @@ function generatePDF() {
                 <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Category</th>
                 <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">Cost</th>
             </tr>
-            <tr><td style="padding: 10px; border: 1px solid #ddd;">Putty Material</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costPutty").innerText}</td></tr>
-            <tr><td style="padding: 10px; border: 1px solid #ddd;">Fugen / Füller Material</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costFugen").innerText}</td></tr>
-            <tr><td style="padding: 10px; border: 1px solid #ddd;">Serpyanka Tape</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costSerpyanka").innerText}</td></tr>
-            <tr><td style="padding: 10px; border: 1px solid #ddd;">Paint & Primer</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${(Number.parseFloat(document.getElementById("costPaint").innerText) + Number.parseFloat(document.getElementById("costPrimer").innerText)).toFixed(2)} €</td></tr>
-            <tr><td style="padding: 10px; border: 1px solid #ddd;">Misc Materials</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costMisc").innerText}</td></tr>
-            <tr><td style="padding: 10px; border: 1px solid #ddd;">Total Labor (Putty + Painting)</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("laborTotal").innerText}</td></tr>
+            <tr><td style="padding: 10px; border: 1px solid #ddd;">Materials</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("materialsTotal").innerText}</td></tr>
+            <tr><td style="padding: 10px; border: 1px solid #ddd;">Labor</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("laborTotal").innerText}</td></tr>
+            <tr><td style="padding: 10px; border: 1px solid #ddd;">Markup / Profit</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("markupTotal").innerText}</td></tr>
+            <tr><td style="padding: 10px; border: 1px solid #ddd;">Logistics</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("logisticsTotal").innerText}</td></tr>
         </table>
-        <h3 style="text-align: right; margin-top: 30px;">Total Price: <span style="color: #d32f2f;">${document.getElementById("clientTotal").innerText}</span></h3>
+        <h3 style="text-align: right; margin-top: 30px;">Total Client Price: <span style="color: #d32f2f;">${document.getElementById("clientTotal").innerText}</span></h3>
     </div>`;
 
     let opt = {
         margin: 10,
-        filename: `Estimate_${objName}.pdf`,
+        filename: `Invoice_${objName}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -550,8 +554,7 @@ function saveProject() {
     let list = JSON.parse(localStorage.getItem("paintingProjects")) || [];
     list.unshift(project);
     localStorage.setItem("paintingProjects", JSON.stringify(list));
-    alert("Project saved successfully!");
-    updateUnifiedEstimate();
+    alert("Project saved locally!");
 }
 
 function showHistory() {
@@ -570,26 +573,57 @@ function showHistory() {
 }
 
 function btnClear() {
-    if(confirm("Clear history?")) {
+    if(confirm("Clear local history?")) {
         localStorage.removeItem("paintingProjects");
         showHistory();
-        updateUnifiedEstimate();
     }
 }
 
-function updateUnifiedEstimate() {
-    try {
-        const history = JSON.parse(localStorage.getItem("paintingProjects")) || [];
-        let totalSum = history.reduce((sum, item) => sum + (item.rawCost || 0), 0);
-        document.getElementById("out-unified-total").innerText = totalSum.toFixed(2) + " €";
-    } catch (e) {
-        document.getElementById("out-unified-total").innerText = "0.00 €";
+function addToGlobalEstimate() {
+    let totalVal = calculateEstimate();
+    let objName = document.getElementById("object").value || "Unnamed Object";
+    let item = {
+        id: Date.now(),
+        name: objName,
+        cost: totalVal,
+        date: new Date().toLocaleString()
+    };
+    let globalList = JSON.parse(localStorage.getItem("buildcalc_global")) || [];
+    globalList.push(item);
+    localStorage.setItem("buildcalc_global", JSON.stringify(globalList));
+    alert("Added to Global Estimate!");
+}
+
+function viewGlobalEstimate() {
+    let box = document.getElementById("globalEstimateBox");
+    box.style.display = box.style.display === "none" ? "block" : "none";
+    let globalList = JSON.parse(localStorage.getItem("buildcalc_global")) || [];
+    if (globalList.length === 0) {
+        box.innerHTML = "<p style='color:var(--text-muted);'>Global estimate is empty.</p>";
+        return;
+    }
+    let total = 0;
+    let html = "<b style='color:var(--primary);'>Global Estimate Items:</b><br><br>";
+    globalList.forEach(item => {
+        total += item.cost;
+        html += `<div><b>${item.name}</b>: <span style='color:var(--primary);'>${item.cost.toFixed(2)} €</span><br><small style='color:var(--text-muted);'>${item.date}</small><hr style='border-top:1px solid #444; margin:5px 0;'></div>`;
+    });
+    html += `<div style='margin-top:10px; font-weight:bold;'>Total Global Budget: <span style='color:var(--primary);'>${total.toFixed(2)} €</span></div>`;
+    box.innerHTML = html;
+}
+
+function clearGlobalEstimate() {
+    if(confirm("Clear Global Estimate?")) {
+        localStorage.removeItem("buildcalc_global");
+        let box = document.getElementById("globalEstimateBox");
+        box.innerHTML = "<p style='color:var(--text-muted);'>Global estimate is empty.</p>";
+        alert("Global estimate cleared!");
     }
 }
 
 function copyEstimate() {
     let res = document.getElementById("clientTotal").innerText;
-    navigator.clipboard.writeText(`Estimate for ${document.getElementById("object").value}:\nTotal Price: ${res}`);
+    navigator.clipboard.writeText(`Estimate for ${document.getElementById("object").value || "Object"}:\nTotal Client Price: ${res}`);
     alert("Copied to clipboard!");
 }
 
@@ -605,14 +639,14 @@ const langData = {
         hPainting: "🎨 Painting Specs", lblCoats: "Number of Coats", lblPaintCoverage: "Paint Coverage (m²/L)", lblPrimerCoverage: "Primer Coverage (m²/L)",
         txtTotalPaintArea: "Total Painting Area (with coats)", txtLitersPaint: "Paint Required", txtLitersPrimer: "Primer Required",
         hEstimate: "💶 Unit Prices & Labor Cost", lblPricePutty: "Putty Price €/bag", lblPriceFugen: "Fugen Price €/bag", lblPriceSerpyanka: "Serpyanka Price €/roll",
-        lblPricePaint: "Paint Price €/L", lblPricePrimer: "Primer Price €/L", lblPricePuttyLabor: "Putty Labor €/m²", lblPricePaintLabor: "Painting Labor €/m²", lblMiscMat: "Misc €",
+        lblPricePaint: "Paint Price €/L", lblPricePrimer: "Primer Price €/L", lblPricePuttyLabor: "Putty Labor €/m²", lblPricePaintLabor: "Painting Labor €/m²", lblMiscMat: "Misc €", lblMarkup: "Markup / Profit (%)", lblLogistics: "Logistics / Delivery (€)",
         hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
-        hFinal: "📊 Financial Summary", txtCostPutty: "Putty Material", txtCostFugen: "Fugen Material", txtCostSerpyanka: "Serpyanka Tape", txtCostPaint: "Paint Cost", txtCostPrimer: "Primer Cost", txtCostMisc: "Misc Materials",
-        txtFMat: "Total Materials", txtFWork: "Total Labor", txtClientPrice: "Total Project Price",
-        btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Estimate", hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
+        hFinal: "📊 Financial Summary", txtFMat: "Materials", txtFWork: "Labor", txtMarkupProfit: "Markup/Profit", txtLogisticsCost: "Logistics", txtClientPrice: "Total Client Price",
+        btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice", hProjects: "💾 Project Vault", btnSave: "💾 Save Local", btnHistory: "📁 Local History", btnClear: "🗑 Clear",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing",
         bcHome: "Home", bcCalcs: "Calculators", bcCurr: "Painting & Putty Calculator",
-        secUnified: "📊 Unified Master Estimate", secUnifiedDesc: "Total accumulated budget across all saved project objects.", lblUnifiedTotal: "Master Project Total:",
+        secGlobalTitle: "🌍 Global Estimate (All Calculators)", secGlobalDesc: "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.",
+        btnAddGlobal: "+ Add to Global Estimate", btnViewGlobal: "👁 View Global Estimate", btnClearGlobal: "🗑 Clear Global",
         secFaq: "FAQ", faqQ1: "How many layers of putty should I apply?", faqA1: "Typically 2 layers are used for a smooth finish (base + finish layer).",
         secRelated: "Related calculators"
     },
@@ -627,14 +661,14 @@ const langData = {
         hPainting: "🎨 Параметри фарбування", lblCoats: "Кількість шарів фарби", lblPaintCoverage: "Розхід фарби (м²/л)", lblPrimerCoverage: "Розхід ґрунтовки (м²/л)",
         txtTotalPaintArea: "Загальна площа фарбування (з шарами)", txtLitersPaint: "Потрібно фарби", txtLitersPrimer: "Потрібно ґрунтовки",
         hEstimate: "💶 Ціни матеріалів та робіт", lblPricePutty: "Ціна шпаклівки €/мішок", lblPriceFugen: "Ціна Фуген €/мішок", lblPriceSerpyanka: "Ціна серпянки €/рулон",
-        lblPricePaint: "Ціна фарби €/л", lblPricePrimer: "Ціна ґрунтовки €/л", lblPricePuttyLabor: "Робота шпаклівка €/м²", lblPricePaintLabor: "Робота фарбування €/м²", lblMiscMat: "Витратні €",
+        lblPricePaint: "Ціна фарби €/л", lblPricePrimer: "Ціна ґрунтовки €/л", lblPricePuttyLabor: "Робота шпаклівка €/m²", lblPricePaintLabor: "Робота фарбування €/m²", lblMiscMat: "Витратні €", lblMarkup: "Націнка / Прибуток (%)", lblLogistics: "Логістика / Доставка (€)",
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
-        hFinal: "📊 Фінансовий підсумок", txtCostPutty: "Матеріал шпаклівка", txtCostFugen: "Матеріал Фуген", txtCostSerpyanka: "Серпянка", txtCostPaint: "Вартість фарби", txtCostPrimer: "Вартість ґрунтовки", txtCostMisc: "Витратні матеріали",
-        txtFMat: "Всього матеріалів", txtFWork: "Загальна робота", txtClientPrice: "Загальна ціна проєкту",
-        btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF", hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
+        hFinal: "📊 Фінансовий підсумок", txtFMat: "Матеріали", txtFWork: "Робота", txtMarkupProfit: "Націнка/Прибуток", txtLogisticsCost: "Логістика", txtClientPrice: "Загальна ціна клієнта",
+        btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Рахунок PDF", hProjects: "💾 Сховище проєктів", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість",
         bcHome: "Головна", bcCalcs: "Калькулятори", bcCurr: "Калькулятор шпаклювання",
-        secUnified: "📊 Єдиний зведений кошторис", secUnifiedDesc: "Загальний накопичувальний бюджет по всіх збережених об'єктах проєкту.", lblUnifiedTotal: "Загальний кошторис проєкту:",
+        secGlobalTitle: "🌍 Глобальний кошторис (Всі калькулятори)", secGlobalDesc: "Об'єднуйте витрати з даху, фасаду, стяжки тощо в єдиний зведений кошторис.",
+        btnAddGlobal: "+ Додати в глобальний", btnViewGlobal: "👁 Переглянути глобальний", btnClearGlobal: "🗑 Очистити глобальний",
         secFaq: "Часті запитання (FAQ)", faqQ1: "Скільки шарів шпаклівки зазвичай роблять?", faqA1: "Зазвичай роблять 2 шари (стартовий та фінішний) для досягнення ідеально рівної поверхні.",
         secRelated: "Схожі калькулятори"
     },
@@ -649,14 +683,14 @@ const langData = {
         hPainting: "🎨 Parametre maľovania", lblCoats: "Počet vrstiev farby", lblPaintCoverage: "Výdatnosť farby (m²/L)", lblPrimerCoverage: "Výdatnosť penetráku (m²/L)",
         txtTotalPaintArea: "Celková plocha maľovania (s vrstvami)", txtLitersPaint: "Potrebné množstvo farby", txtLitersPrimer: "Potrebné množstvo penetráku",
         hEstimate: "💶 Jednotkové ceny a práca", lblPricePutty: "Cena tmelu €/vrece", lblPriceFugen: "Cena Fugen €/vrece", lblPriceSerpyanka: "Cena pásky €/rolka",
-        lblPricePaint: "Cena farby €/L", lblPricePrimer: "Cena penetráku €/L", lblPricePuttyLabor: "Práca tmelenie €/m²", lblPricePaintLabor: "Práca maľowanie €/m²", lblMiscMat: "Spotrebný materiál €",
+        lblPricePaint: "Cena farby €/L", lblPricePrimer: "Cena penetráku €/L", lblPricePuttyLabor: "Práca tmelenie €/m²", lblPricePaintLabor: "Práca maľovanie €/m²", lblMiscMat: "Spotrebný materiál €", lblMarkup: "Marža / Zisk (%)", lblLogistics: "Logistika / Doprava (€)",
         hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
-        hFinal: "📊 Finančný prehľad", txtCostPutty: "Materiál tmel", txtCostFugen: "Materiál Fugen", txtCostSerpyanka: "Páska Serpyanka", txtCostPaint: "Cena farby", txtCostPrimer: "Cena penetráku", txtCostMisc: "Spotrebný materiál",
-        txtFMat: "Celkovo materiály", txtFWork: "Celková práca", txtClientPrice: "Celková cena projektu",
-        btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument", hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
+        hFinal: "📊 Finančný prehľad", txtFMat: "Materiály", txtFWork: "Práca", txtMarkupProfit: "Marža/Zisk", txtLogisticsCost: "Logistika", txtClientPrice: "Celková cena pre klienta",
+        btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Faktúra", hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu",
         bcHome: "Domov", bcCalcs: "Kalkulačky", bcCurr: "Kalkulačka tmelenia",
-        secUnified: "📊 Jednotný súhrnný rozpočet", secUnifiedDesc: "Celkový kumulovaný rozpočet pre všetky uložené objekty projektu.", lblUnifiedTotal: "Celkový rozpočet projektu:",
+        secGlobalTitle: "🌍 Globálny rozpočet (Všetky kalkulačky)", secGlobalDesc: "Skombinujte náklady z tok, strechy, fasády do jedného projektu.",
+        btnAddGlobal: "+ Pridať do globálneho", btnViewGlobal: "👁 Zobraziť globálny", btnClearGlobal: "🗑 Vymazať globálny",
         secFaq: "Často kladené otázky (FAQ)", faqQ1: "Koľko vrstiev tmelu sa zvyčajne nanáša?", faqA1: "Zvyčajne sa nanášajú 2 vrstvy (základná a finálna) pre dosiahnutie hladkého povrchu.",
         secRelated: "Súvisiace kalkulačky"
     }
@@ -689,7 +723,6 @@ function setVersion(version) {
 document.getElementById("language").value = "en";
 changeLanguage();
 calculateAll();
-updateUnifiedEstimate();
 </script>
 </body>
 </html>
