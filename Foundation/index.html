@@ -61,7 +61,6 @@
         h2, h3 { color: var(--text-light); }
         h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; }
         
-        /* Custom Headers for Modules */
         .header-green { border-left: 4px solid var(--green); padding-left: 10px; margin-top: 25px; font-size: 1.17em; font-weight: bold; }
         .header-yellow { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; font-size: 1.17em; font-weight: bold; }
         .desc-text { color: var(--text-muted); font-size: 13px; margin: 10px 0 15px 0; line-height: 1.4; }
@@ -87,6 +86,13 @@
             font-size: 13px; text-align: center; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; gap: 4px;
         }
+        
+        /* Main action buttons layout (Side-by-side icon & text matching screenshot) */
+        .main-btn-row button {
+            flex-direction: row;
+            gap: 6px;
+        }
+
         .btn-outline { background: var(--dark-light); color: white; border: 1px solid var(--primary); }
         .btn-outline:hover { background: var(--primary); color: var(--dark); }
         .btn-green { background: var(--green); color: white; border: 1px solid var(--green); }
@@ -230,7 +236,7 @@
         </div>
     </div>
 
-    <!-- NEW FINANCIAL SUMMARY DESIGN -->
+    <!-- FINANCIAL SUMMARY DESIGN -->
     <div class="result-box" id="result" style="margin-top: 25px;">
         <div><span style="color:white; font-weight:normal;">📦 <span id="txtFMat">Materials</span></span> <span id="materialsTotal" style="color:var(--primary); font-weight:bold;">0</span></div>
         <div><span style="color:white; font-weight:normal;">👷 <span id="txtFWork">Labor</span></span> <span id="salaryTotal" style="color:var(--primary); font-weight:bold;">0</span></div>
@@ -242,7 +248,7 @@
         </div>
     </div>
 
-    <!-- ПРИХОВАНИЙ БЛОК ДЛЯ ГЕНЕРАЦІЇ ОРИГІНАЛЬНОГО PDF -->
+    <!-- HIDDEN FIELDS FOR PDF -->
     <div style="display: none;">
         <span id="costConcrete">0</span>
         <span id="costRebar">0</span>
@@ -250,8 +256,8 @@
         <span id="costCushion">0</span>
     </div>
 
-    <!-- MAIN ACTION BUTTONS -->
-    <div class="btn-row">
+    <!-- MAIN ACTION BUTTONS (Horizontal Row matching screenshot) -->
+    <div class="btn-row main-btn-row">
         <button class="btn-outline" onclick="calculateAll()" id="btnCalc"><span>💰</span> <span id="lblBtnCalc">Calculate</span></button>
         <button class="btn-outline" onclick="copyEstimate()" id="btnCopy"><span>📋</span> <span id="lblBtnCopy">Copy</span></button>
         <button class="btn-outline" onclick="generatePDF()" id="btnPdf"><span>📄</span> <span id="lblBtnPdf">PDF Invoice</span></button>
@@ -298,7 +304,7 @@
         </ul>
     </div>
 
-    <!-- NEW PRO BANNER DESIGN -->
+    <!-- PRO BANNER -->
     <div class="buy-pro-banner" id="promoBanner">
         <h3 style="border:none; padding:0; margin:0; font-size:18px; color:white; display:flex; justify-content:center; align-items:center; gap:8px;" id="proTitle">🔒 BUILDcalc PRO</h3>
         <p id="proDesc" style="color: #ccc; font-size: 14px; margin: 15px 0;">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
@@ -313,7 +319,6 @@
                 <button class="close-btn" onclick="closeGlobalModal()">&times;</button>
             </div>
             <div id="globalList" style="max-height: 300px; overflow-y: auto; margin-top: 15px;">
-                <!-- Items will be injected here -->
             </div>
             <div class="global-total">
                 <span id="modalTotalText">Total:</span> <span id="globalSum">0</span>
@@ -396,13 +401,11 @@ function calculateAll() {
     let clientTotal = materialsTotal + salary + profit + delivery;
     currentNumericTotal = clientTotal;
 
-    /* Оновлюємо приховані поля для коректної роботи генерації PDF */
     document.getElementById("costConcrete").innerText = costConc.toFixed(2) + " " + cur;
     document.getElementById("costRebar").innerText = costRebar.toFixed(2) + " " + cur;
     document.getElementById("costFormwork").innerText = costForm.toFixed(2) + " " + cur;
     document.getElementById("costCushion").innerText = costCushion.toFixed(2) + " " + cur;
 
-    /* Оновлюємо основний інтерфейс фінансового підсумку */
     document.getElementById("materialsTotal").innerText = materialsTotal.toFixed(2) + " " + cur;
     document.getElementById("salaryTotal").innerText = salary.toFixed(2) + " " + cur;
     document.getElementById("deliveryTotal").innerText = delivery.toFixed(2) + " " + cur;
@@ -410,7 +413,6 @@ function calculateAll() {
     document.getElementById("clientTotal").innerText = clientTotal.toFixed(2) + " " + cur;
 }
 
-// ---- UNIFIED ESTIMATE LOGIC ----
 function addToGlobalEstimate() {
     let objName = document.getElementById("object").value || "Unnamed Object";
     let cur = document.getElementById("currency").value;
@@ -467,7 +469,6 @@ window.onclick = function(event) {
     if (event.target == modal) { modal.style.display = "none"; }
 }
 
-/* Англійська перша, всі втрачені ключі для PDF відновлені */
 const langData = {
     en: {
         breadHome: "Home", breadCalc: "Calculators", breadCurrent: "Foundation Calculator", subtitle: "Professional Foundation Calculator", 
@@ -565,7 +566,6 @@ function setVersion(version) {
     }
 }
 
-// ПОВНІСТЮ ВІДНОВЛЕНА ОРИГІНАЛЬНА ФУНКЦІЯ PDF
 function generatePDF() {
     let t = currentTranslations; 
     let compName = document.getElementById("companyName").value || "-";
