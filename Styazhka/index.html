@@ -3,8 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Meta description updated for SEO -->
+    <meta name="description" content="Free professional floor screed calculator. Calculate cement, sand, fiber, plasticizer, labor costs and generate PDF estimates in seconds.">
     <title>Professional Floor Screed Calculator | Online Material Estimator</title>
-    <meta name="description" content="Calculate your floor screed materials quickly and accurately. Professional estimation tool for cement, sand, and fiber. Free online calculator for construction projects in Europe.">
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Professional Floor Screed Calculator",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    }
+    </script>
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPRB8JPVM2"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,7 +33,7 @@
 <style>
 :root {
     --bg-dark: #0f172a;
-    --card-bg: #1e293b; /* Повністю темний фон картки */
+    --card-bg: #1e293b;
     --primary: #38bdf8;
     --accent: #f5a623;
     --accent-hover: #e0961b;
@@ -31,9 +49,22 @@ body {
     padding: 15px;
     min-height: 100vh;
 }
+.breadcrumb {
+    max-width: 900px;
+    margin: 0 auto 10px auto;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+.breadcrumb a {
+    color: var(--primary);
+    text-decoration: none;
+}
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
 .app-container {
     max-width: 900px;
-    margin: 30px auto;
+    margin: 0 auto 30px auto;
     background: var(--card-bg);
     border-radius: 24px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
@@ -48,7 +79,9 @@ body {
     position: relative;
     border-bottom: 4px solid var(--accent);
 }
-.logo {
+/* Changed .logo div to h1 for SEO */
+h1.logo {
+    margin: 0;
     font-size: 36px;
     font-weight: 800;
     letter-spacing: -1px;
@@ -59,7 +92,7 @@ body {
     flex-wrap: wrap;
     color: #fff;
 }
-.logo span { color: var(--accent); }
+h1.logo span { color: var(--accent); }
 .subtitle { font-size: 18px; color: var(--text-muted); margin-top: 8px; }
 .lang-select-wrapper { margin-top: 15px; }
 select {
@@ -153,6 +186,21 @@ button.action-btn {
 button.action-btn:hover { background: var(--accent); color: #000; }
 button#calcBtn { background: var(--accent); color: #000; flex-grow: 2; }
 button#calcBtn:hover { background: var(--accent-hover); }
+
+/* Global Estimate Buttons */
+.btn-green { background: #22c55e !important; color: #fff !important; }
+.btn-green:hover { background: #16a34a !important; }
+.btn-outline-red { background: transparent !important; color: #ef4444 !important; border: 1px solid #ef4444 !important; }
+.btn-outline-red:hover { background: rgba(239, 68, 68, 0.1) !important; }
+
+.global-box {
+    margin-top: 25px;
+    background: #1e293b;
+    border: 1px solid var(--border);
+    padding: 15px 20px 25px 20px;
+    border-radius: 16px;
+}
+
 .result-box {
     margin-top: 25px;
     background: #0f172a;
@@ -190,20 +238,55 @@ button#calcBtn:hover { background: var(--accent-hover); }
 .buy-btn:hover { background: #1e293b; }
 @media(max-width: 600px) { 
     .grid-inputs { grid-template-columns: 1fr; }
-    .logo { font-size: 28px; }
+    h1.logo { font-size: 28px; }
 }
 .nav-link { padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 13px; transition: all 0.3s; text-decoration: none; display: inline-block; }
 .nav-link.active { background: #eab308; color: #000; }
 .nav-link.inactive { background: #171717; color: #a3a3a3; }
 .nav-link:hover { background: #333; color: #fff; }
+
+.seo-section {
+    margin-top: 50px; 
+    padding: 20px; 
+    font-size: 15px; 
+    color: #cbd5e1; 
+    border-top: 1px solid var(--border); 
+    text-align: left; 
+    max-width: 800px; 
+    margin-left: auto; 
+    margin-right: auto;
+}
+.seo-section h2 {
+    font-size: 20px; 
+    color: #f8fafc; 
+    border-left: 5px solid var(--primary); 
+    padding-left: 12px;
+    margin-top: 30px;
+}
+.seo-section ul { list-style: none; padding-left: 0; }
+.seo-section ul li { margin-bottom: 10px; }
+.seo-section ul li a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+.seo-section ul li a:hover { text-decoration: underline; }
 </style>
 <script src="../nav.js"></script>
 </head>
 <body>  
 <div id="global-nav-container"></div>
+
+<!-- Breadcrumbs added for SEO -->
+<nav aria-label="breadcrumb" class="breadcrumb">
+  <a href="/">Home</a> &gt; 
+  <a href="/calculators">Calculators</a> &gt; 
+  <span>Floor Screed Calculator</span>
+</nav>
+
 <div class="app-container">
     <div class="header">
-        <div class="logo">🏗 <span>BUILDcalc</span> PRO</div>
+        <h1 class="logo">🏗 <span>BUILDcalc</span> PRO</h1>
         <div class="subtitle" id="subtitle">Кошторис стяжки</div>
         <div class="lang-select-wrapper">
             <select id="language" onchange="changeLanguage()">
@@ -259,17 +342,32 @@ button#calcBtn:hover { background: var(--accent-hover); }
             <button id="calcBtn" class="action-btn" onclick="calculate()">Розрахувати</button>
             <button id="copyBtn" class="action-btn" onclick="copyQuote()">Копіювати</button>
             <button id="newBtn" class="action-btn" onclick="newProject()">Новий об'єкт</button>
-            <button id="saveBtn" class="action-btn" onclick="saveProject()">Зберегти</button>
-            <button id="histBtn" class="action-btn" onclick="showHistory()">Історія</button>
-            <button id="clearBtn" class="action-btn" onclick="clearHistory()">Очистити</button>
         </div>
 
         <div class="result-box" id="result">Тут з'явиться ваш розрахунок...</div>
+
+        <!-- NEW: Global Estimate Section -->
+        <div class="global-box pro-only-block locked" id="globalEstimateBox">
+            <h3 style="border-left-color: #22c55e; margin-top: 5px;"><span id="globalTitle">🌍 Єдиний кошторис (Всі калькулятори)</span> <span class="lock-badge">PRO</span></h3>
+            <p id="globalDesc" style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">Об'єднайте витрати на дах, фасад, стяжку тощо в один загальний кошторис проєкту.</p>
+            <div class="buttons-container" style="margin-top: 15px;">
+                <button id="addGlobalBtn" class="action-btn btn-green" onclick="addToGlobal()">➕ Додати до кошторису</button>
+                <button id="viewGlobalBtn" class="action-btn btn-green" style="background:#10b981;" onclick="viewGlobal()">👁 Переглянути кошторис</button>
+                <button id="clearGlobalBtn" class="action-btn btn-outline-red" onclick="clearGlobal()">🗑 Очистити кошторис</button>
+            </div>
+        </div>
         
         <div class="buy-pro-banner" id="promoBanner">
             <h4 id="bannerTitle">🔓 Відкрийте повну версію PRO</h4>
             <p id="bannerDesc" style="margin: 5px 0 15px 0;">Точний розхід матеріалів у мішках та кубах, редагування цін, збереження об'єктів та генерація PDF кошторисів для клієнтів!</p>
             <button id="bannerBtn" class="buy-btn" onclick="trackTeaserClick()">Дізнатися вартість PRO</button>
+        </div>
+
+        <!-- Local Vault / History -->
+        <div class="buttons-container pro-only-block locked">
+            <button id="saveBtn" class="action-btn" onclick="saveProject()">💾 Зберегти локально</button>
+            <button id="histBtn" class="action-btn" onclick="showHistory()">📂 Локальна історія</button>
+            <button id="clearBtn" class="action-btn" style="background: transparent; border: 1px solid var(--border); color: var(--text-muted);" onclick="clearHistory()">🗑 Очистити</button>
         </div>
 
         <div class="history-box" id="history" style="display:none;"></div>
@@ -282,15 +380,17 @@ button#calcBtn:hover { background: var(--accent-hover); }
                 <div class="input-group"><label id="emailLabel">Email</label><input id="companyEmail" value=""></div>
             </div>
             <div class="buttons-container" style="margin-top: 15px;">
-                <button id="pdfBtn" class="action-btn" onclick="createPDF()" style="background:#10b981;">📄 Згенерувати PDF звіт</button>
+                <button id="pdfBtn" class="action-btn" onclick="createPDF()" style="background:#3b82f6;">📄 Згенерувати PDF звіт</button>
             </div>
         </div>
     </div>
 </div>
+
 <script>
 let report = "";
 let htmlReportForPDF = "";
 let currentVersion = "free";
+let windowCurrentClientTotal = 0; // Для єдиного кошторису
 
 const words = {
     ua: {
@@ -299,10 +399,11 @@ const words = {
         normTitle: "Норми матеріалів на 1 м³", cNorm: "Цемент (мішків)", sNorm: "Пісок (м³)", fNorm: "Фібра (кг)", pNorm: "Пластифікатор (л)",
         priceTitle: "Ціни матеріалів", cPrice: "Цемент €/мішок", sPrice: "Пісок €/м³", fPrice: "Фібра €/кг", pPrice: "Пластифікатор €/л", logPrice: "Доставка, податки, інше €/м²",
         workTitle: "Робота", salary: "Зарплата €/м²", profit: "Прибуток €/м²",
-        calc: "Розрахувати", copy: "Копіювати", newp: "Новий об'єкт", save: "Зберегти", hist: "Історія", clear: "Очистити",
+        calc: "Розрахувати", copy: "Копіювати", newp: "Новий об'єкт", save: "💾 Зберегти", hist: "📂 Історія", clear: "🗑 Очистити",
         bannerT: "🔓 Відкрийте повну версію PRO", bannerD: "Точний розхід матеріалів у мішках та кубах, редагування цін, збереження об'єктів та генерація PDF кошторисів для клієнтів!", bannerB: "Дізнатися вартість PRO",
         compTitle: "Дані фірми", compName: "Назва фірми", phone: "Телефон", email: "Email", pdfBtn: "📄 Згенерувати PDF звіт",
         resEstimate: "Кошторис BUILDcalc PRO", resVolume: "Об'єм", resCement: "Цемент", resSand: "Пісок", resFiber: "Фібра", resPlastic: "Пластифікатор", resMatCost: "Матеріали", resSalary: "Зарплата", resProfit: "Прибуток", resLogTotal: "Доставка та податки", resTotal: "ЦІНА КЛІЄНТА",
+        globalT: "🌍 Єдиний кошторис (Всі калькулятори)", globalD: "Об'єднайте витрати на дах, фасад, стяжку тощо в один загальний кошторис проєкту.", addGl: "➕ Додати до кошторису", viewGl: "👁 Переглянути кошторис", clearGl: "🗑 Очистити кошторис", alertGlAdd: "Успішно додано до Єдиного кошторису!", alertGlClear: "Єдиний кошторис очищено!", alertGlEmpty: "Єдиний кошторис порожній.",
         alertFree: "💡 Детальний розхід матеріалів, кошторис робіт, кнопки збереження та друку заблоковані.", alertNoCalc: "Спочатку зробіть розрахунок", alertCopied: "Скопійовано!", alertSaved: "Збережено!", alertNoHist: "Збережень немає", alertHistTitle: "Історія кошторисів", alertConfirmClear: "Видалити всю історію?", alertHistCleared: "Історія очищена", alertProOnly: "Функція доступна тільки в PRO версії"
     },
     sk: {
@@ -311,10 +412,11 @@ const words = {
         normTitle: "Normy materiálu na 1 m³", cNorm: "Cement (vriec)", sNorm: "Piesok (m³)", fNorm: "Vlákno (kg)", pNorm: "Plastifikátor (l)",
         priceTitle: "Ceny materiálu", cPrice: "Cement €/vrece", sPrice: "Piesok €/m³", fPrice: "Vlákno €/kg", pPrice: "Plastifikátor €/l", logPrice: "Doprava, dane, iné €/m²",
         workTitle: "Práca", salary: "Mzda €/m²", profit: "Zisk €/m²",
-        calc: "Vypočítať", copy: "Kopírovať", newp: "Nový objekt", save: "Uložiť", hist: "História", clear: "Vymazať",
+        calc: "Vypočítať", copy: "Kopírovať", newp: "Nový objekt", save: "💾 Uložiť", hist: "📂 História", clear: "🗑 Vymazať",
         bannerT: "🔓 Otvorte plnú verziu PRO", bannerD: "Presná spotreba materiálu vo vreciach a kubíkoch, úprava cien, ukladanie objektov a generovanie PDF rozpočtov pre klientov!", bannerB: "Zistiť cenu PRO",
         compTitle: "Údaje o firme", compName: "Názov firmy", phone: "Telefón", email: "Email", pdfBtn: "📄 Vygenerovať PDF správu",
         resEstimate: "Rozpočet BUILDcalc PRO", resVolume: "Objem", resCement: "Cement", resSand: "Piesok", resFiber: "Vlákno", resPlastic: "Plastifikátor", resMatCost: "Materiály", resSalary: "Mzda", resProfit: "Zisk", resLogTotal: "Doprava a dane", resTotal: "CENA PRE KLIENTA",
+        globalT: "🌍 Celkový rozpočet (Všetky kalkulačky)", globalD: "Spojte náklady na strechu, fasádu, poter atď. do jedného celkového rozpočtu projektu.", addGl: "➕ Pridať do celkového", viewGl: "👁 Zobraziť celkový", clearGl: "🗑 Vymazať celkový", alertGlAdd: "Úspešne pridané do Celkového rozpočtu!", alertGlClear: "Celkový rozpočet bol vymazaný!", alertGlEmpty: "Celkový rozpočet je prázdny.",
         alertFree: "💡 Detailná spotreba materiálu, rozpočet prác, tlačidlá na uloženie a tlač sú zablokované.", alertNoCalc: "Najprv vykonajte výpočet", alertCopied: "Skopírované!", alertSaved: "Uložené!", alertNoHist: "Žiadne záznamy", alertHistTitle: "História rozpočtov", alertConfirmClear: "Vymazať celú históriu?", alertHistCleared: "História bola vymazaná", alertProOnly: "Funkcia je dostupná iba v PRO verzii"
     },
     en: {
@@ -323,10 +425,11 @@ const words = {
         normTitle: "Material norms per 1 m³", cNorm: "Cement (bags)", sNorm: "Sand (m³)", fNorm: "Fiber (kg)", pNorm: "Plasticizer (l)",
         priceTitle: "Material prices", cPrice: "Cement €/bag", sPrice: "Sand €/m³", fPrice: "Fiber €/kg", pPrice: "Plasticizer €/l", logPrice: "Delivery, taxes, etc. €/m²",
         workTitle: "Work", salary: "Salary €/m²", profit: "Profit €/m²",
-        calc: "Calculate", copy: "Copy", newp: "New project", save: "Save", hist: "History", clear: "Clear",
+        calc: "Calculate", copy: "Copy", newp: "New project", save: "💾 Save", hist: "📂 History", clear: "🗑 Clear",
         bannerT: "🔓 Unlock full PRO version", bannerD: "Accurate material consumption in bags and cubic meters, price editing, saving objects and generating PDF estimates for clients!", bannerB: "Find out PRO price",
         compTitle: "Company Info", compName: "Company Name", phone: "Phone", email: "Email", pdfBtn: "📄 Generate PDF report",
         resEstimate: "BUILDcalc PRO Estimate", resVolume: "Volume", resCement: "Cement", resSand: "Sand", resFiber: "Fiber", resPlastic: "Plasticizer", resMatCost: "Materials", resSalary: "Salary", resProfit: "Profit", resLogTotal: "Delivery & Taxes", resTotal: "CLIENT PRICE",
+        globalT: "🌍 Global Estimate (All Calculators)", globalD: "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.", addGl: "➕ Add to Global Estimate", viewGl: "👁 View Global Estimate", clearGl: "🗑 Clear Global", alertGlAdd: "Successfully added to Global Estimate!", alertGlClear: "Global Estimate cleared!", alertGlEmpty: "Global Estimate is empty.",
         alertFree: "💡 Detailed material consumption, work budget, save and print buttons are locked.", alertNoCalc: "Perform calculation first", alertCopied: "Copied!", alertSaved: "Saved!", alertNoHist: "No records found", alertHistTitle: "Estimate History", alertConfirmClear: "Delete all history?", alertHistCleared: "History cleared", alertProOnly: "Feature available only in PRO version"
     }
 };
@@ -381,6 +484,9 @@ function calculate(){
     let profit = area * profitPrice;
     let logisticsTotal = area * logisticsPrice;
     let clientTotal = materialsCost + salary + profit + logisticsTotal;
+    
+    // Save to global variable for Global Estimate feature
+    windowCurrentClientTotal = clientTotal;
 
     if(typeof gtag === 'function') {
         gtag('event', 'click_calculate', { 'version_type': currentVersion, 'area_size': area });
@@ -463,6 +569,13 @@ function changeLanguage(){
     document.getElementById("emailLabel").innerHTML = t.email;
     document.getElementById("pdfBtn").innerHTML = t.pdfBtn;
     
+    // Global Estimate Translations
+    document.getElementById("globalTitle").innerHTML = t.globalT;
+    document.getElementById("globalDesc").innerHTML = t.globalD;
+    document.getElementById("addGlobalBtn").innerHTML = t.addGl;
+    document.getElementById("viewGlobalBtn").innerHTML = t.viewGl;
+    document.getElementById("clearGlobalBtn").innerHTML = t.clearGl;
+    
     calculate();
 }
 
@@ -483,7 +596,7 @@ function newProject(){
     document.getElementById("area").value = 100;
     document.getElementById("thickness").value = 6;
     document.getElementById("result").innerHTML = "Тут з'явиться ваш розрахунок...";
-    report = ""; htmlReportForPDF = "";
+    report = ""; htmlReportForPDF = ""; windowCurrentClientTotal = 0;
 }
 
 function saveProject(){
@@ -520,6 +633,55 @@ function clearHistory(){
     }
 }
 
+/* === Global Estimate Functions === */
+function addToGlobal() {
+    let lang = document.getElementById("language").value;
+    if(currentVersion === 'free') { alert(words[lang].alertProOnly); return; }
+    if(report === "") { alert(words[lang].alertNoCalc); return; }
+
+    let globalList = JSON.parse(localStorage.getItem("buildGlobalList") || "[]");
+    let objName = document.getElementById("object").value;
+    
+    globalList.push({
+        name: objName + " (Стяжка/Screed)",
+        total: windowCurrentClientTotal
+    });
+    
+    localStorage.setItem("buildGlobalList", JSON.stringify(globalList));
+    alert(words[lang].alertGlAdd);
+}
+
+function viewGlobal() {
+    let lang = document.getElementById("language").value;
+    if(currentVersion === 'free') { alert(words[lang].alertProOnly); return; }
+    
+    let globalList = JSON.parse(localStorage.getItem("buildGlobalList") || "[]");
+    if (globalList.length === 0) {
+        alert(words[lang].alertGlEmpty);
+        return;
+    }
+
+    let totalSum = 0;
+    let text = "=== " + words[lang].globalT + " ===\n\n";
+    globalList.forEach((item, index) => {
+        text += `${index + 1}. ${item.name}: ${item.total.toFixed(2)} €\n`;
+        totalSum += item.total;
+    });
+    text += `\n----------------------\nВсього / Total: ${totalSum.toFixed(2)} €`;
+
+    alert(text);
+}
+
+function clearGlobal() {
+    let lang = document.getElementById("language").value;
+    if(currentVersion === 'free') { alert(words[lang].alertProOnly); return; }
+    
+    if(confirm(words[lang].alertConfirmClear)) {
+        localStorage.removeItem("buildGlobalList");
+        alert(words[lang].alertGlClear);
+    }
+}
+
 function createPDF() {
     let lang = document.getElementById("language").value;
     if(currentVersion === 'free') { alert("Друк PDF доступний тільки в PRO версії"); return; }
@@ -547,17 +709,24 @@ window.onload = function() {
 };
 changeLanguage();  
 </script>
-<section style="margin-top: 50px; padding: 20px; font-size: 14px; color: #94a3b8; border-top: 1px solid var(--border); text-align: left; max-width: 800px; margin-left: auto; margin-right: auto;">
-    <h3 style="font-size: 16px; color: #f8fafc; border-left-color: var(--accent);">About this Semi-Dry Floor Screed Calculator</h3>
+
+<!-- SEO Section (FAQ + Internal Links) -->
+<section class="seo-section">
+    <h2>About this Semi-Dry Floor Screed Calculator</h2>
     <p>This professional online estimator is designed for builders, contractors, and floor screed specialists in Europe. It provides highly accurate material calculations for cement and sand floor screed projects.</p>
-    <p><strong>Technical Specifications & Formula Parameters:</strong></p>
-    <ul style="padding-left: 20px;">
-        <li><strong>Cement Consumption:</strong> Calculated based on standard European <strong>Cement Class 32.5 (CEM I/II)</strong>.</li>
-        <li><strong>Sand Requirements:</strong> Optimized for standard screed <strong>0-4 mm fraction sand</strong> (with small pebbles).</li>
-        <li><strong>Additives & Fiber:</strong> Includes calculations for fiber reinforcement and plasticizer.</li>
-        <li><strong>Financial Estimator:</strong> Real-time estimation of material costs, labor rates (work costs), and projected net profit.</li>
+    
+    <h2>FAQ</h2>
+    <p><strong>What is the standard thickness for floor screed?</strong><br>Typically, semi-dry floor screed is laid at a thickness of 5-8 cm.</p>
+    <p><strong>How much cement do I need per m³?</strong><br>For standard strength, around 250-300 kg of cement per cubic meter is recommended. Our calculator adjusts based on European Cement Class 32.5.</p>
+
+    <h2>Related Calculators</h2>
+    <ul>
+        <li><a href="/roof-calculator">Roof Material Calculator</a></li>
+        <li><a href="/facade-calculator">Facade Insulation Calculator</a></li>
+        <li><a href="/plaster-calculator">Plaster Estimate Calculator</a></li>
+        <li><a href="/paint-calculator">Paint Calculator</a></li>
     </ul>
-    <p>Simply enter your area size (sqm) and floor screed thickness (mm) to get an instant, ready-to-use material and budget breakdown.</p>
 </section>
+
 </body>
 </html>
