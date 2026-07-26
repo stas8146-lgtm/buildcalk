@@ -273,6 +273,7 @@ button#calcBtn:hover { background: var(--accent-hover); }
 .seo-section ul li a:hover { text-decoration: underline; }
 </style>
 <script src="../nav.js"></script>
+<script src="../global-estimate.js"></script>
 </head>
 <body>  
 <div id="global-nav-container"></div>
@@ -345,17 +346,8 @@ button#calcBtn:hover { background: var(--accent-hover); }
         </div>
 
         <div class="result-box" id="result">Тут з'явиться ваш розрахунок...</div>
-
-        <!-- NEW: Global Estimate Section -->
-        <div class="global-box pro-only-block locked" id="globalEstimateBox">
-            <h3 style="border-left-color: #22c55e; margin-top: 5px;"><span id="globalTitle">🌍 Єдиний кошторис (Всі калькулятори)</span> <span class="lock-badge">PRO</span></h3>
-            <p id="globalDesc" style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">Об'єднайте витрати на дах, фасад, стяжку тощо в один загальний кошторис проєкту.</p>
-            <div class="buttons-container" style="margin-top: 15px;">
-                <button id="addGlobalBtn" class="action-btn btn-green" onclick="addToGlobal()">➕ Додати до кошторису</button>
-                <button id="viewGlobalBtn" class="action-btn btn-green" style="background:#10b981;" onclick="viewGlobal()">👁 Переглянути кошторис</button>
-                <button id="clearGlobalBtn" class="action-btn btn-outline-red" onclick="clearGlobal()">🗑 Очистити кошторис</button>
-            </div>
-        </div>
+<div id="global-estimate-container"></div>
+        
         
         <div class="buy-pro-banner" id="promoBanner">
             <h4 id="bannerTitle">🔓 Відкрийте повну версію PRO</h4>
