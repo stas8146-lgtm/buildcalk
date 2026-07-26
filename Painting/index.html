@@ -147,6 +147,7 @@
     </style>
 
     <script src="../nav.js"></script>
+<script src="../global-estimate.js"></script>
 </head>
 <body>
 
@@ -357,11 +358,7 @@
         <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Invoice</button>
     </div>
 
-    <!-- ГЛОБАЛЬНИЙ КОШТОРИС (Згідно зі скріншотом) -->
-    <div class="unified-estimate-card" data-html2canvas-ignore="true">
-        <div style="font-weight: bold; color: var(--text-light); font-size: 1rem; margin-bottom: 5px;" id="sec-global-title">🌍 Global Estimate (All Calculators)</div>
-        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;" id="sec-global-desc">Combine costs from Roof, Facade, Screed etc. into one unified project estimate.</div>
-        
+    <div id="global-estimate-container"></div>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
             <button class="action-btn btn-success" onclick="addToGlobalEstimate()" id="btnAddGlobal">+ Add to Global Estimate</button>
             <button class="action-btn btn-success" onclick="viewGlobalEstimate()" id="btnViewGlobal">👁 View Global Estimate</button>
