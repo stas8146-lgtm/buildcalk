@@ -40,11 +40,12 @@
             --primary: #FFC107;
             --primary-hover: #e0a800;
             --dark: #212529;
-            --dark-light: #343a40;
+            --dark-light: #2c3136;
             --text-light: #ffffff;
             --text-muted: #a0a0a0;
-            --global-btn: #9c27b0;
-            --global-btn-hover: #7b1fa2;
+            --success: #28a745;
+            --success-hover: #218838;
+            --danger: #dc3545;
         }
 
         body {
@@ -62,7 +63,7 @@
         }
         h1.logo span { color: var(--primary); }
         
-        .header { text-align: center; padding-bottom: 10px; border-bottom: 1px solid var(--dark-light); }
+        .header { text-align: center; padding-bottom: 10px; border-bottom: 1px solid #444; }
         .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
 
         /* Breadcrumbs */
@@ -80,7 +81,7 @@
         .tab-btn.active { background: var(--primary); color: var(--dark); font-weight: bold; }
         .badge { background: red; color: white; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 5px; }
 
-        h2, h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; color: var(--text-light); }
+        h2, h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; color: var(--text-light); display: flex; align-items: center; gap: 8px; }
         
         .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px; }
         .input-group { display: flex; flex-direction: column; }
@@ -97,17 +98,40 @@
 
         hr { border: 0; border-top: 1px solid #555; margin: 10px 0; }
 
-        .buttons-container { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; width: 100%; clear: both; }
+        /* ================= BUTTONS UPDATE (Like Screenshot) ================= */
+        .buttons-container { display: flex; gap: 10px; margin: 15px 0 25px 0; flex-wrap: wrap; width: 100%; clear: both; }
         .action-btn {
-            flex: 1; min-width: 100px; background: var(--dark-light); color: white; border: 1px solid var(--primary);
-            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; text-align: center;
+            flex: 1; min-width: 100px; background: var(--dark-light); color: var(--text-light); 
+            border: 1px solid var(--primary); padding: 12px; border-radius: 6px; 
+            cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: normal;
         }
-        .action-btn:hover { background: var(--primary); color: var(--dark); }
+        .action-btn:hover { background: #3a4047; }
         
-        .global-btn { border-color: var(--global-btn); color: var(--global-btn); }
-        .global-btn:hover { background: var(--global-btn); color: white; }
+        /* Global Estimate Specific Styles */
+        .global-section h3 { border-left-color: var(--success); margin-bottom: 5px; }
+        .global-desc { color: var(--text-muted); font-size: 13px; margin: 0 0 15px 14px; }
+        
+        .btn-green { background: var(--success) !important; color: white !important; border: none !important; }
+        .btn-green:hover { background: var(--success-hover) !important; }
+        
+        .btn-outline-red { background: transparent !important; color: var(--danger) !important; border: 1px solid var(--danger) !important; }
+        .btn-outline-red:hover { background: rgba(220, 53, 69, 0.1) !important; }
 
-        .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
+        .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; }
+
+        /* ================= PRO BANNER UPDATE ================= */
+        .buy-pro-banner {
+            background: var(--dark-light);
+            border: 2px dashed var(--primary); padding: 20px; text-align: center;
+            border-radius: 12px; margin-top: 30px; width: 100%; box-sizing: border-box; clear: both;
+        }
+        .buy-pro-banner h3 { margin: 0 0 10px 0; border: none; padding: 0; justify-content: center; color: var(--text-light); display: flex; align-items: center; gap: 8px;}
+        .buy-pro-banner p { color: var(--text-muted); font-size: 14px; margin-bottom: 15px; }
+        .buy-btn {
+            background: var(--primary); color: var(--dark); border: none;
+            padding: 12px 25px; font-weight: bold; border-radius: 6px; cursor: pointer;
+        }
+        .buy-btn:hover { background: var(--primary-hover); }
 
         /* SEO Blocks (FAQ & Links) */
         .seo-block { background: var(--dark-light); padding: 15px; border-radius: 8px; margin-top: 30px; }
@@ -118,17 +142,6 @@
         .related-links ul { padding-left: 20px; }
         .related-links a { color: var(--text-light); text-decoration: none; }
         .related-links a:hover { color: var(--primary); }
-
-        .buy-pro-banner {
-            background: linear-gradient(135deg, #343a40, #212529);
-            border: 2px dashed var(--primary); padding: 20px; text-align: center;
-            border-radius: 8px; margin-top: 30px; width: 100%; box-sizing: border-box; clear: both;
-        }
-        .buy-btn {
-            background: var(--primary); color: var(--dark); border: none;
-            padding: 10px 20px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px;
-        }
-        .buy-btn:hover { background: var(--primary-hover); }
     </style>
     <script src="../nav.js"></script>
 </head>
@@ -327,25 +340,40 @@
         </div>
     </div>
 
-    <div class="buttons-container">
-        <!-- Глобальний кошторис -->
-        <button class="action-btn global-btn" onclick="addToGlobalEstimate()" id="btnGlobal">🌍 Add to Global Estimate</button>
-    </div>
-    
+    <!-- MAIN ACTION BUTTONS -->
     <div class="buttons-container">
         <button class="action-btn" onclick="calculateAll()" id="btnCalc">💰 Calculate</button>
         <button class="action-btn" onclick="copyEstimate()" id="btnCopy">📋 Copy</button>
         <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Invoice</button>
     </div>
 
-    <h3 id="hProjects" style="clear: both; width: 100%;">💾 Project Vault</h3>
+    <!-- GLOBAL ESTIMATE SECTION -->
+    <div class="global-section">
+        <h3 id="hGlobalTitle">🌍 Global Estimate (All Calculators)</h3>
+        <p class="global-desc" id="hGlobalDesc">Combine costs from Roof, Facade, Screed etc. into one unified project estimate.</p>
+        <div class="buttons-container">
+            <button class="action-btn btn-green" onclick="addToGlobalEstimate()" id="btnGlobalAdd">➕ Add to Global Estimate</button>
+            <button class="action-btn btn-green" onclick="viewGlobalEstimate()" id="btnGlobalView">👁 View Global Estimate</button>
+            <button class="action-btn btn-outline-red" onclick="clearGlobalEstimate()" id="btnGlobalClear">🗑 Clear Global</button>
+        </div>
+    </div>
+
+    <!-- PROJECT VAULT SECTION -->
+    <h3 id="hProjects">💾 Electrical Project Vault</h3>
     <div class="buttons-container">
-        <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Save</button>
-        <button class="action-btn" onclick="showHistory()" id="btnHistory">📂 History</button>
+        <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Save Local</button>
+        <button class="action-btn" onclick="showHistory()" id="btnHistory">📂 Local History</button>
         <button class="action-btn" onclick="clearHistory()" id="btnClear">🗑 Clear</button>
     </div>
 
     <div id="historyBox" class="history-box" style="display:none;"></div>
+
+    <!-- PRO BANNER -->
+    <div class="buy-pro-banner">
+        <h3 id="proTitle">🔒 BUILDcalc PRO</h3>
+        <p id="proDesc">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
+        <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
+    </div>
 
     <!-- ================= SEO BLOCK: FAQ & LINKS ================= -->
     <div class="seo-block">
@@ -367,12 +395,6 @@
                 <li><a href="/screed-calculator" id="linkScreed">Floor Screed Calculator</a></li>
             </ul>
         </div>
-    </div>
-
-    <div class="buy-pro-banner">
-        <h3 style="border:none; padding:0; margin:0;" id="proTitle">🔓 BUILDcalc PRO</h3>
-        <p id="proDesc">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
-        <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
     </div>
 
 <script>
@@ -481,7 +503,7 @@ function calculateAll() {
     calculateEstimate();
 }
 
-// === НОВА ФУНКЦІЯ: ДОДАТИ ДО СПІЛЬНОГО КОШТОРИСУ ===
+// === ФУНКЦІЇ ЄДИНОГО КОШТОРИСУ ===
 function addToGlobalEstimate() {
     let objName = document.getElementById("object").value || "Unnamed Object";
     let totalStr = document.getElementById("clientTotal").innerText;
@@ -504,17 +526,33 @@ function addToGlobalEstimate() {
     globalEst.push(item);
     localStorage.setItem("buildcalc_global", JSON.stringify(globalEst));
     
-    let btn = document.getElementById("btnGlobal");
-    let originalText = btn.innerText;
-    btn.innerText = "✅ Added to Global!";
-    btn.style.backgroundColor = "var(--global-btn)";
-    btn.style.color = "white";
-    
-    setTimeout(() => {
-        btn.innerText = originalText;
-        btn.style.backgroundColor = "";
-        btn.style.color = "";
-    }, 2000);
+    let btn = document.getElementById("btnGlobalAdd");
+    let originalText = btn.innerHTML;
+    btn.innerHTML = "✅ Added!";
+    setTimeout(() => { btn.innerHTML = originalText; }, 2000);
+}
+
+function viewGlobalEstimate() {
+    let globalEst = JSON.parse(localStorage.getItem("buildcalc_global")) || [];
+    if(globalEst.length === 0) {
+        alert("Global Estimate is empty.");
+        return;
+    }
+    let text = "=== Global Estimate ===\n\n";
+    let total = 0;
+    globalEst.forEach((item, index) => {
+        text += `${index + 1}. ${item.category} (${item.object}): ${item.cost.toFixed(2)} ${item.currency}\n`;
+        total += item.cost;
+    });
+    text += `\nTotal: ${total.toFixed(2)} €`;
+    alert(text);
+}
+
+function clearGlobalEstimate() {
+    if(confirm("Clear the entire Global Estimate?")) {
+        localStorage.removeItem("buildcalc_global");
+        alert("Global Estimate cleared.");
+    }
 }
 
 function generatePDF() {
@@ -610,7 +648,7 @@ function saveProject() {
     let list = JSON.parse(localStorage.getItem("electricProjects")) || [];
     list.unshift(project);
     localStorage.setItem("electricProjects", JSON.stringify(list));
-    alert("Project saved to history!");
+    alert("Project saved successfully!");
 }
 
 function showHistory() {
@@ -653,10 +691,12 @@ const langData = {
         hLaborPrices: "👷 Labor & Logistics Cost", lblPointLabor: "Point Labor €/pcs", lblCableLabor: "Cable Laying €/m", lblProfitPrice: "Markup/Profit €", lblDeliveryPrice: "Logistics & Consumables €",
         hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
         hFinal: "📊 Financial Summary", txtClientPrice: "Total Client Price", 
-        btnGlobal: "🌍 Add to Global Estimate", btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice",
-        hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
+        hGlobalTitle: "🌍 Global Estimate (All Calculators)", hGlobalDesc: "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.",
+        btnGlobalAdd: "➕ Add to Global Estimate", btnGlobalView: "👁 View Global Estimate", btnGlobalClear: "🗑 Clear Global",
+        btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice",
+        hProjects: "💾 Electrical Project Vault", btnSave: "💾 Save Local", btnHistory: "📂 Local History", btnClear: "🗑 Clear",
         faqTitle: "❓ Frequently Asked Questions", faq1Q: "What is the Demand Factor in electrical calculations?", faq1A: "The demand factor takes into account that not all electrical outlets and devices will be used simultaneously at their maximum capacity. Our calculator adjusts the total power automatically based on the number of sockets.", faq2Q: "How is the cable cross-section recommended?", faq2A: "The cross-section is calculated based on the effective amperage, conductor material, and the voltage type. The tool selects the safest standard cross-section.", relatedTitle: "🔗 Related Calculators",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing",
+        proTitle: "🔒 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing",
         txtRecAmperage: "Current (Amperage)", txtRecCrossSection: "Recommended Wire Section", txtRecBreaker: "Main Circuit Breaker", txtRecCableTotal: "Total Cable Est.",
         txtFCable: "Cable & Conduits", txtFPoints: "Sockets, Switches & Panel", txtFBreakers: "Breakers & Protection", txtFMat: "Materials Total", txtFWork: "Labor Cost", txtFProf: "Markup/Profit", txtFLog: "Logistics & Other",
         linkPlaster: "Plastering & Stucco Calculator", linkDrywall: "Drywall & Partition Calculator", linkScreed: "Floor Screed Calculator"
@@ -672,10 +712,12 @@ const langData = {
         hLaborPrices: "👷 Вартість робіт та логістики", lblPointLabor: "Робота за точку €/шт", lblCableLabor: "Прокладка кабелю €/м", lblProfitPrice: "Прибуток €", lblDeliveryPrice: "Логістика та витратні €",
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
         hFinal: "📊 Фінансовий підсумок", txtClientPrice: "Ціна клієнту", 
-        btnGlobal: "🌍 В єдиний кошторис", btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF",
-        hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
+        hGlobalTitle: "🌍 Єдиний кошторис", hGlobalDesc: "Об'єднайте витрати на дах, фасад, стяжку тощо в один загальний кошторис проєкту.",
+        btnGlobalAdd: "➕ Додати до кошторису", btnGlobalView: "👁 Переглянути кошторис", btnGlobalClear: "🗑 Очистити глобальний",
+        btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF",
+        hProjects: "💾 Сховище проєктів", btnSave: "💾 Зберегти локально", btnHistory: "📂 Локальна історія", btnClear: "🗑 Очистити",
         faqTitle: "❓ Часті питання", faq1Q: "Що таке Коефіцієнт Попиту?", faq1A: "Він враховує, що не всі розетки працюватимуть одночасно на повну потужність. Калькулятор сам знижує навантаження залежно від кількості точок.", faq2Q: "Як рахується переріз кабелю?", faq2A: "На основі струму, матеріалу (мідь/алюміній) та напруги. Підбирається найближчий безпечний стандарт.", relatedTitle: "🔗 Інші калькулятори",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість",
+        proTitle: "🔒 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість",
         txtRecAmperage: "Розрахунковий струм", txtRecCrossSection: "Рекомендований переріз", txtRecBreaker: "Вступний автомат", txtRecCableTotal: "Загальна довжина кабелю",
         txtFCable: "Кабелі та труби", txtFPoints: "Розетки, вимикачі та щит", txtFBreakers: "Автомати та захист", txtFMat: "Матеріали (загалом)", txtFWork: "Робота", txtFProf: "Прибуток", txtFLog: "Логістика та інше",
         linkPlaster: "Калькулятор штукатурки", linkDrywall: "Калькулятор гіпсокартону", linkScreed: "Калькулятор стяжки"
@@ -691,10 +733,12 @@ const langData = {
         hLaborPrices: "👷 Cena práce a logistiky", lblPointLabor: "Práca za bod €/ks", lblCableLabor: "Uloženie kábla €/m", lblProfitPrice: "Zisk €", lblDeliveryPrice: "Logistika a spotrebný materiál €",
         hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
         hFinal: "📊 Finančný prehľad", txtClientPrice: "Cena pre klienta", 
-        btnGlobal: "🌍 Do celkového rozpočtu", btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument",
-        hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
+        hGlobalTitle: "🌍 Celkový rozpočet", hGlobalDesc: "Spojte náklady na strechu, fasádu, poter atď. do jedného celkového rozpočtu projektu.",
+        btnGlobalAdd: "➕ Pridať do celkového", btnGlobalView: "👁 Zobraziť celkový", btnGlobalClear: "🗑 Vymazať celkový",
+        btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument",
+        hProjects: "💾 Úložisko projektov", btnSave: "💾 Uložiť lokálne", btnHistory: "📂 Lokálna história", btnClear: "🗑 Vymazať",
         faqTitle: "❓ Často kladené otázky", faq1Q: "Čo je Koeficient Súčasnosti?", faq1A: "Zohľadňuje fakt, že nie všetky zásuvky a prístroje pôjdu naraz na plný výkon. Nástroj automaticky upraví celkový výkon na základe počtu zásuviek.", faq2Q: "Ako sa počíta prierez kábla?", faq2A: "Prierez sa počíta z prúdu, materiálu (Meď/Hliník) a napätia. Vyberá sa najbližší bezpečný štandard.", relatedTitle: "🔗 Súvisiace kalkulačky",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu",
+        proTitle: "🔒 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu",
         txtRecAmperage: "Vypočítaný prúd", txtRecCrossSection: "Odporúčaný prierez vodiča", txtRecBreaker: "Hlavný istič", txtRecCableTotal: "Celková dĺžka kábla",
         txtFCable: "Káble a chráničky", txtFPoints: "Zásuvky, vypínače a rozvádzač", txtFBreakers: "Ističe a ochrana", txtFMat: "Materiály spolu", txtFWork: "Cena práce", txtFProf: "Zisk", txtFLog: "Logistika a ostatné",
         linkPlaster: "Kalkulačka omietok", linkDrywall: "Kalkulačka sadrokartónu", linkScreed: "Kalkulačka poteru"
