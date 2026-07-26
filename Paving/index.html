@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO: Оновлений Title та Meta Description (Скріншот 1) -->
+    <!-- SEO: Оновлений Title та Meta Description -->
     <title>Professional Paving Calculator | BUILDcalc</title>
     <meta name="description" content="Free professional paving calculator. Calculate paving stones, curbs, sand, gravel, labor costs and generate PDF estimates in seconds.">
     
-    <!-- SEO: Schema.org Structured Data (Скріншот 2) -->
+    <!-- SEO: Schema.org Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -38,7 +38,7 @@
     <!-- Бібліотека для генерації PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    <!-- ================= СТИЛІ (ЖОВТО-ЧОРНА ТЕМА) ================= -->
+    <!-- ================= СТИЛІ ================= -->
     <style>
         :root {
             --primary: #FFC107;
@@ -48,18 +48,20 @@
             --text-light: #ffffff;
             --text-muted: #a0a0a0;
             --success: #28a745;
+            --danger-red: #d32f2f;
+            --success-green: #2e7d32;
         }
 
-        body { background-color: var(--dark); color: var(--text-light); font-family: Arial, sans-serif; margin: 0; padding: 15px; }
+        body { background-color: var(--dark); color: var(--text-light); font-family: Arial, sans-serif; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
+
+        .wrapper { width: 100%; max-width: 600px; }
 
         .header { text-align: center; padding: 10px 0; border-bottom: 1px solid var(--dark-light); }
         
-        /* SEO: H1 замість div для логотипу (Скріншот 1) */
         h1.logo { margin: 0; font-size: 24px; font-weight: bold; color: var(--text-light); }
         h1.logo span { color: var(--primary); }
         .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
 
-        /* SEO: Breadcrumbs (Скріншот 4) */
         .breadcrumb { font-size: 12px; color: var(--text-muted); margin: 15px 0; }
         .breadcrumb a { color: var(--primary); text-decoration: none; }
         .breadcrumb a:hover { text-decoration: underline; }
@@ -69,31 +71,36 @@
         .tab-btn { flex: 1; background: none; border: none; color: white; padding: 8px; cursor: pointer; border-radius: 4px; }
         .tab-btn.active { background: var(--primary); color: var(--dark); font-weight: bold; }
         .badge { background: red; color: white; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 5px; }
+        
         h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; color: var(--text-light); }
+        
         .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px; }
         .input-group { display: flex; flex-direction: column; }
         .input-group label { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
         .input-group input, .input-group select { background: var(--dark-light); color: white; border: 1px solid #555; padding: 10px; border-radius: 5px; font-size: 16px; }
         .input-group input:focus, .input-group select:focus { border-color: var(--primary); outline: none; }
+        
         .result-box { background: var(--dark-light); padding: 15px; border-radius: 8px; border: 1px solid var(--primary); margin: 15px 0; }
         .result-box div { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; }
         .result-box div span { font-weight: bold; color: var(--primary); }
-        hr { border: 0; border-top: 1px solid #555; margin: 10px 0; }
-        .buttons-container { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; width: 100%; clear: both; }
-        .action-btn { flex: 1; min-width: 100px; background: var(--dark-light); color: white; border: 1px solid var(--primary); padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .action-btn:hover { background: var(--primary); color: var(--dark); }
-        .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
-        .buy-pro-banner { background: linear-gradient(135deg, #343a40, #212529); border: 2px dashed var(--primary); padding: 20px; text-align: center; border-radius: 8px; margin-top: 30px; width: 100%; box-sizing: border-box; clear: both; }
-        .buy-btn { background: var(--primary); color: var(--dark); border: none; padding: 10px 20px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px; }
         
-        /* Стилі для блоку "Єдиний кошторис" (Скріншот 5) */
-        .unified-estimate { background: #111; border: 2px solid var(--success); padding: 15px; border-radius: 8px; margin: 25px 0; }
-        .unified-estimate h3 { border-left-color: var(--success); margin-top: 0; }
-        .unified-list { margin-bottom: 10px; }
-        .unified-list div { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 14px; color: var(--text-muted); }
-        .unified-total { display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; color: var(--success); border-top: 1px dashed #444; padding-top: 10px; margin-top: 10px; }
+        hr { border: 0; border-top: 1px solid #555; margin: 10px 0; }
+        
+        .buttons-container { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; width: 100%; clear: both; }
+        .action-btn { flex: 1; min-width: 100px; background: var(--dark-light); color: white; border: 1px solid var(--primary); padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; text-align: center; }
+        .action-btn:hover { background: var(--primary); color: var(--dark); }
 
-        /* Стилі для FAQ та Перелінковки (Скріншоти 3 та 4) */
+        .btn-success { background: var(--success-green) !important; border: none !important; color: white !important; }
+        .btn-success:hover { opacity: 0.9; }
+
+        .btn-danger-outline { background: var(--dark-light) !important; border: 1px solid var(--danger-red) !important; color: var(--danger-red) !important; }
+        .btn-danger-outline:hover { background: var(--danger-red) !important; color: white !important; }
+
+        .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
+
+        /* Стилі для блоку "Єдиний кошторис" */
+        .unified-estimate-card { background: var(--dark-light); border: 1px solid var(--primary); border-radius: 8px; padding: 15px; margin-top: 20px; width: 100%; box-sizing: border-box; clear: both; }
+
         .seo-section { background: var(--dark-light); padding: 20px; border-radius: 8px; margin-top: 30px; }
         .faq-item { margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 10px; }
         .faq-q { font-weight: bold; color: var(--primary); margin-bottom: 5px; font-size: 16px; }
@@ -102,13 +109,17 @@
         .related-links li { margin-bottom: 10px; }
         .related-links a { color: var(--text-light); text-decoration: none; border-bottom: 1px dashed var(--primary); }
         .related-links a:hover { color: var(--primary); }
+
+        .buy-pro-banner { background: linear-gradient(135deg, #343a40, #212529); border: 2px dashed var(--primary); padding: 20px; text-align: center; border-radius: 8px; margin-top: 30px; width: 100%; box-sizing: border-box; clear: both; }
+        .buy-btn { background: var(--primary); color: var(--dark); border: none; padding: 10px 20px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        .buy-btn:hover { background: var(--primary-hover); }
     </style>
-<script src="../nav.js"></script>
+    <script src="../nav.js"></script>
 </head>
 <body>
-<div id="global-nav-container"></div>
-  <div class="header">
-        <!-- SEO: H1 (Скріншот 1) -->
+<div class="wrapper">
+    <div id="global-nav-container"></div>
+    <div class="header">
         <h1 class="logo">🛣️ <span>BUILD</span>calc PAVING PRO</h1>
         <div class="subtitle" id="subtitle">Professional Paving & Landscaping Calculator</div>
 
@@ -121,7 +132,6 @@
         </div>
     </div>
     
-    <!-- SEO: Breadcrumbs (Скріншот 4) -->
     <div class="breadcrumb" id="breadcrumbNav">
         <a href="/">Home</a> > <a href="/calculators">Calculators</a> > <span>Paving Calculator</span>
     </div>
@@ -247,31 +257,31 @@
         </div>
     </div>
 
-    <!-- ================= ЄДИНИЙ КОШТОРИС (Скріншот 5) ================= -->
-    <div class="unified-estimate" id="unifiedEstimateBlock">
-        <h3 id="hGlobalProject">🌍 Global Project Estimate</h3>
-        <p style="font-size: 12px; color: var(--text-muted);" id="txtGlobalDesc">Automatically sums up values from all your BUILDcalc tools.</p>
-        <div class="unified-list">
-            <div><span id="lblG_Paving">🛣️ Paving Calculator</span> <span id="gTotalPaving">0 €</span></div>
-            <div><span id="lblG_Facade">🏢 Facade Calculator</span> <span id="gTotalFacade">0 €</span></div>
-            <div><span id="lblG_Roof">🏠 Roof Calculator</span> <span id="gTotalRoof">0 €</span></div>
-        </div>
-        <div class="unified-total">
-            <span id="txtGrandTotal">GRAND TOTAL</span> <span id="globalGrandTotal">0 €</span>
-        </div>
-    </div>
-
+    <!-- КНОПКИ ДІЙ -->
     <div class="buttons-container">
         <button class="action-btn" onclick="calculateAll()" id="btnCalc">💰 Calculate</button>
         <button class="action-btn" onclick="copyEstimate()" id="btnCopy">📋 Copy</button>
         <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Estimate</button>
     </div>
 
+    <!-- ================= ГЛОБАЛЬНИЙ КОШТОРИС (Уніфікований стиль кнопок) ================= -->
+    <div class="unified-estimate-card" data-html2canvas-ignore="true">
+        <div style="font-weight: bold; color: var(--text-light); font-size: 1rem; margin-bottom: 5px;" id="sec-global-title">🌍 Global Estimate (All Calculators)</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;" id="sec-global-desc">Combine costs from Roof, Facade, Screed etc. into one unified project estimate.</div>
+        
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="action-btn btn-success" onclick="addToGlobalEstimate()" id="btnAddGlobal">+ Add to Global Estimate</button>
+            <button class="action-btn btn-success" onclick="viewGlobalEstimate()" id="btnViewGlobal">👁 View Global Estimate</button>
+            <button class="action-btn btn-danger-outline" onclick="clearGlobalEstimate()" id="btnClearGlobal">🗑 Clear Global</button>
+        </div>
+        <div id="globalEstimateBox" class="history-box" style="display:none; margin-top: 10px;"></div>
+    </div>
+
     <h3 id="hProjects" style="clear: both; width: 100%;">💾 Project Vault</h3>
     <div class="buttons-container">
         <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Save</button>
         <button class="action-btn" onclick="showHistory()" id="btnHistory">📂 History</button>
-        <button class="action-btn" onclick="btnClear()" id="btnClear">🗑 Clear</button>
+        <button class="action-btn" onclick="btnClearLocal()" id="btnClearLoc">🗑 Clear</button>
     </div>
 
     <div id="historyBox" class="history-box" style="display:none;"></div>
@@ -282,7 +292,7 @@
         <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
     </div>
 
-    <!-- ================= SEO: FAQ ТА ПЕРЕЛІНКОВКА (Скріншоти 3 та 4) ================= -->
+    <!-- ================= SEO: FAQ ТА ПЕРЕЛІНКОВКА ================= -->
     <div class="seo-section">
         <h3 id="hFaq">❓ Frequently Asked Questions</h3>
         <div class="faq-item">
@@ -303,6 +313,7 @@
             </ul>
         </div>
     </div>
+</div>
 
 <!-- ================= SCRIPTS ================= -->
 <script>
@@ -359,34 +370,54 @@ function calculateEstimate() {
     document.getElementById("deliveryTotal").innerText = pDeliv.toFixed(2) + " €";
     document.getElementById("clientTotal").innerText = clientTotal.toFixed(2) + " €";
 
-    // Оновлення Єдиного Кошторису (Unified Estimate)
-    updateUnifiedEstimate(clientTotal);
-}
-
-// Функція оновлення глобального об'єкта "Єдиного кошторису"
-function updateUnifiedEstimate(currentPavingTotal) {
-    // 1. Отримуємо існуючі дані або створюємо нові
-    let globalData = JSON.parse(localStorage.getItem("BUILDcalc_Global")) || { paving: 0, facade: 0, roof: 0 };
-    
-    // 2. Оновлюємо значення поточного калькулятора
-    globalData.paving = currentPavingTotal;
-    
-    // (Для демонстрації - якщо фасад або дах порожні, додамо фіктивні нулі, 
-    // але в реальності інші калькулятори будуть записувати сюди свої суми)
-    localStorage.setItem("BUILDcalc_Global", JSON.stringify(globalData));
-
-    // 3. Рахуємо Grand Total
-    let grandTotal = globalData.paving + globalData.facade + globalData.roof;
-
-    // 4. Виводимо на екран
-    document.getElementById("gTotalPaving").innerText = globalData.paving.toFixed(2) + " €";
-    document.getElementById("gTotalFacade").innerText = globalData.facade.toFixed(2) + " €";
-    document.getElementById("gTotalRoof").innerText = globalData.roof.toFixed(2) + " €";
-    document.getElementById("globalGrandTotal").innerText = grandTotal.toFixed(2) + " €";
+    return clientTotal;
 }
 
 function calculateAll() {
     calculateEstimate();
+}
+
+// Уніфіковані функції Глобального Кошторису
+function addToGlobalEstimate() {
+    let totalVal = calculateEstimate();
+    let objName = document.getElementById("object").value || "Paving Object";
+    let item = {
+        id: Date.now(),
+        name: objName,
+        cost: totalVal,
+        date: new Date().toLocaleString()
+    };
+    let globalList = JSON.parse(localStorage.getItem("buildcalc_global")) || [];
+    globalList.push(item);
+    localStorage.setItem("buildcalc_global", JSON.stringify(globalList));
+    alert("Added to Global Estimate!");
+}
+
+function viewGlobalEstimate() {
+    let box = document.getElementById("globalEstimateBox");
+    box.style.display = box.style.display === "none" ? "block" : "none";
+    let globalList = JSON.parse(localStorage.getItem("buildcalc_global")) || [];
+    if (globalList.length === 0) {
+        box.innerHTML = "<p style='color:var(--text-muted);'>Global estimate is empty.</p>";
+        return;
+    }
+    let total = 0;
+    let html = "<b style='color:var(--primary);'>Global Estimate Items:</b><br><br>";
+    globalList.forEach(item => {
+        total += item.cost;
+        html += `<div><b>${item.name}</b>: <span style='color:var(--primary);'>${item.cost.toFixed(2)} €</span><br><small style='color:var(--text-muted);'>${item.date}</small><hr style='border-top:1px solid #444; margin:5px 0;'></div>`;
+    });
+    html += `<div style='margin-top:10px; font-weight:bold;'>Total Global Budget: <span style='color:var(--primary);'>${total.toFixed(2)} €</span></div>`;
+    box.innerHTML = html;
+}
+
+function clearGlobalEstimate() {
+    if(confirm("Clear Global Estimate?")) {
+        localStorage.removeItem("buildcalc_global");
+        let box = document.getElementById("globalEstimateBox");
+        box.innerHTML = "<p style='color:var(--text-muted);'>Global estimate is empty.</p>";
+        alert("Global estimate cleared!");
+    }
 }
 
 function generatePDF() {
@@ -409,8 +440,7 @@ function generatePDF() {
             <tr><td style="padding: 10px; border: 1px solid #ddd;">Labor Works</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("laborTotal").innerText}</td></tr>
             <tr><td style="padding: 10px; border: 1px solid #ddd;">Logistics</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("deliveryTotal").innerText}</td></tr>
         </table>
-        <h3 style="text-align: right; margin-top: 30px;">Local Price: <span style="color: #d32f2f;">${document.getElementById("clientTotal").innerText}</span></h3>
-        <h3 style="text-align: right; border-top:2px solid #000; padding-top:10px;">Global Project Total: <span style="color: #28a745;">${document.getElementById("globalGrandTotal").innerText}</span></h3>
+        <h3 style="text-align: right; margin-top: 30px;">Total Project Price: <span style="color: #d32f2f;">${document.getElementById("clientTotal").innerText}</span></h3>
     </div>`;
 
     let opt = { margin: 10, filename: `Estimate_${objName}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
@@ -435,20 +465,19 @@ function showHistory() {
     box.innerHTML = html;
 }
 
-function btnClear() {
+function clearLocalHistory() {
     if(confirm("Clear history?")) { localStorage.removeItem("pavingProjects"); showHistory(); }
 }
 
 function copyEstimate() {
     let res = document.getElementById("clientTotal").innerText;
-    let globalRes = document.getElementById("globalGrandTotal").innerText;
-    navigator.clipboard.writeText(`Paving Estimate for ${document.getElementById("object").value}:\nPaving Subtotal: ${res}\nGlobal Project Total: ${globalRes}`);
+    navigator.clipboard.writeText(`Paving Estimate for ${document.getElementById("object").value || "Object"}:\nTotal Project Price: ${res}`);
     alert("Copied to clipboard!");
 }
 
 const langData = {
     en: {
-        subtitle: "Professional Paving & Landscaping Calculator", breadcrumbNav: `<a href="/">Home</a> > <a href="/calculators">Calculators</a> > <span>Paving Calculator</span>`,
+        subtitle: "Professional Paving & Landscaping Calculator",
         objectTitle: "🏠 Object Data", objectLabel: "Object Name", addressLabel: "Address", clientLabel: "Client",
         hPaving: "🧱 Paving & Curbs Specs", lblPaveArea: "Paving Area m²", lblCurbLength: "Curb Length (m)", lblPaveMargin: "Waste Margin %",
         txtPTiles: "Paving Stones (with waste)", txtPCurbs: "Curbs Total", txtPGeotex: "Geotextile (with overlaps)",
@@ -456,31 +485,29 @@ const langData = {
         txtSGravel: "Gravel Volume (compacted)", txtSSand: "Sand Volume (compacted)", txtSConcr: "Concrete for Curbs",
         hEstimate: "💶 Unit Prices & Labor Cost", lblPricePave: "Paving Price €/m²", lblPriceCurb: "Curb Price €/m", lblPriceGravel: "Gravel Price €/m³", lblPriceSand: "Sand Price €/m³", lblPriceLabor: "Labor Price €/m²", lblDeliveryPrice: "Logistics €",
         hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
-        hFinal: "📊 Local Financial Summary", txtCostPaving: "Paving Stones & Curbs", txtCostSubbase: "Subbase Materials", txtFMat: "Total Materials", txtFWork: "Paving Labor", txtFLog: "Logistics", txtClientPrice: "Local Project Price",
-        hGlobalProject: "🌍 Global Project Estimate", txtGlobalDesc: "Automatically sums up values from all your BUILDcalc tools.", lblG_Paving: "🛣️ Paving Calculator", lblG_Facade: "🏢 Facade Calculator", lblG_Roof: "🏠 Roof Calculator", txtGrandTotal: "GRAND TOTAL",
-        btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF", hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF, History, Unlimited objects.", btnBuyPro: "Check Pricing",
-        hFaq: "❓ Frequently Asked Questions", faq1Q: "How much waste margin should I add for paving?", faq1A: "Usually, a 5% margin is standard for straight patterns. For diagonal patterns consider 8-10%.", faq2Q: "What is the standard depth for gravel subbase?", faq2A: "For pedestrian paths 10-15 cm. For driveways 20-30 cm of crushed stone is recommended.",
-        hRelated: "🔗 Related Calculators", linkFacade: "Facade Insulation Calculator", linkRoof: "Roof Calculator", linkScreed: "Screed Calculator"
+        hFinal: "📊 Local Financial Summary", txtCostPaving: "Paving Stones & Curbs", txtCostSubbase: "Subbase Materials", txtFMat: "Total Materials", txtFWork: "Paving Labor", txtFLog: "Logistics", txtClientPrice: "Total Project Price",
+        secGlobalTitle: "🌍 Global Estimate (All Calculators)", secGlobalDesc: "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.",
+        btnAddGlobal: "+ Add to Global Estimate", btnViewGlobal: "👁 View Global Estimate", btnClearGlobal: "🗑 Clear Global",
+        btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Estimate", hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClearLoc: "🗑 Clear",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing"
     },
     ua: {
-        subtitle: "Калькулятор бруківки та благоустрою", breadcrumbNav: `<a href="/">Головна</a> > <a href="/calculators">Калькулятори</a> > <span>Калькулятор бруківки</span>`,
+        subtitle: "Калькулятор бруківки та благоустрою",
         objectTitle: "🏠 Дані об'єкта", objectLabel: "Назва об'єкта", addressLabel: "Адреса", clientLabel: "Клієнт",
-        hPaving: "🧱 Бруківка та Бордюри", lblPaveArea: "Площа бруківки м²", lblCurbLength: "Довжина бордюрів (м)", lblPaveMargin: "Запас на підрізку %",
+        hPaving: "🧱 Бруківка та Бордюри", lblPaveArea: "Площа бруківки м²", lblCurbLength: "Довжина бордюрів (m)", lblPaveMargin: "Запас на підрізку %",
         txtPTiles: "Бруківка (з запасом)", txtPCurbs: "Бордюри (всього)", txtPGeotex: "Геотекстиль",
         hSubbase: "🚜 Сипучі матеріали (Основа)", lblGravelDepth: "Шар щебеню (м)", lblSandDepth: "Шар піску (м)",
         txtSGravel: "Об'єм щебеню", txtSSand: "Об'єм піску", txtSConcr: "Бетон під бордюри",
         hEstimate: "💶 Ціни матеріалів та робіт", lblPricePave: "Ціна бруківки €/m²", lblPriceCurb: "Ціна бордюру €/м", lblPriceGravel: "Ціна щебеню €/m³", lblPriceSand: "Ціна піску €/m³", lblPriceLabor: "Робота €/m²", lblDeliveryPrice: "Логістика €",
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
-        hFinal: "📊 Локальний підсумок", txtCostPaving: "Бруківка та бордюри", txtCostSubbase: "Основа", txtFMat: "Всього матеріалів", txtFWork: "Робота", txtFLog: "Логістика", txtClientPrice: "Локальна ціна",
-        hGlobalProject: "🌍 Єдиний кошторис проєкту", txtGlobalDesc: "Автоматично підсумовує значення з усіх інструментів BUILDcalc.", lblG_Paving: "🛣️ Калькулятор бруківки", lblG_Facade: "🏢 Калькулятор фасаду", lblG_Roof: "🏠 Калькулятор даху", txtGrandTotal: "ЗАГАЛЬНА СУМА",
-        btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 PDF", hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний кошторис, PDF, Історія, Дані фірми.", btnBuyPro: "Дізнатися вартість",
-        hFaq: "❓ Часті запитання", faq1Q: "Який відсоток запасу на підрізку обрати?", faq1A: "Зазвичай 5% для прямого мощення. Для діагонального - 8-10%.", faq2Q: "Яка стандартна товщина щебеневої основи?", faq2A: "Для пішохідних зон 10-15 см. Для авто 20-30 см.",
-        hRelated: "🔗 Інші калькулятори", linkFacade: "Калькулятор фасаду", linkRoof: "Калькулятор даху", linkScreed: "Калькулятор стяжки"
+        hFinal: "📊 Локальний підсумок", txtCostPaving: "Бруківка та бордюри", txtCostSubbase: "Основа", txtFMat: "Всього матеріалів", txtFWork: "Робота", txtFLog: "Логістика", txtClientPrice: "Загальна ціна проєкту",
+        secGlobalTitle: "🌍 Глобальний кошторис (Всі калькулятори)", secGlobalDesc: "Об'єднуйте витрати з даху, фасаду, стяжки тощо в єдиний зведений кошторис.",
+        btnAddGlobal: "+ Додати в глобальний", btnViewGlobal: "👁 Переглянути глобальний", btnClearGlobal: "🗑 Очистити глобальний",
+        btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Рахунок PDF", hProjects: "💾 Сховище проєктів", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClearLoc: "🗑 Очистити",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість"
     },
     sk: {
-        subtitle: "Kalkulačka dlažby a úprav terénu", breadcrumbNav: `<a href="/">Domov</a> > <a href="/calculators">Kalkulačky</a> > <span>Kalkulačka dlažby</span>`,
+        subtitle: "Kalkulačka dlažby a úprav terénu",
         objectTitle: "🏠 Údaje o objekte", objectLabel: "Názov objektu", addressLabel: "Adresa", clientLabel: "Klient",
         hPaving: "🧱 Dlažba a obrubníky", lblPaveArea: "Plocha dlažby m²", lblCurbLength: "Dĺžka obrubníkov (m)", lblPaveMargin: "Rezerva na prerez %",
         txtPTiles: "Dlažba (s rezervou)", txtPCurbs: "Obrubníky (celkom)", txtPGeotex: "Geotextília",
@@ -488,12 +515,11 @@ const langData = {
         txtSGravel: "Objem štrku", txtSSand: "Objem piesku", txtSConcr: "Betón pod obrubníky",
         hEstimate: "💶 Jednotkové ceny a práca", lblPricePave: "Cena dlažby €/m²", lblPriceCurb: "Cena obrubníka €/m", lblPriceGravel: "Cena štrku €/m³", lblPriceSand: "Cena piesku €/m³", lblPriceLabor: "Práca €/m²", lblDeliveryPrice: "Doprava €",
         hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
-        hFinal: "📊 Lokálny finančný prehľad", txtCostPaving: "Dlažba a obrubníky", txtCostSubbase: "Podklad", txtFMat: "Celkovo materiály", txtFWork: "Práca", txtFLog: "Logistika", txtClientPrice: "Lokálna cena",
-        hGlobalProject: "🌍 Celkový rozpočet projektu", txtGlobalDesc: "Automaticky spočítava hodnoty zo všetkých nástrojov BUILDcalc.", lblG_Paving: "🛣️ Kalkulačka dlažby", lblG_Facade: "🏢 Kalkulačka fasády", lblG_Roof: "🏠 Kalkulačka strechy", txtGrandTotal: "CELKOVÁ SUMA",
-        btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF", hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný rozpočet, PDF, História, Neobmedzené objekty.", btnBuyPro: "Zistiť cenu",
-        hFaq: "❓ Často kladené otázky", faq1Q: "Akú rezervu na prerez zvoliť?", faq1A: "Zvyčajne 5% pre rovnú pokládku. Pre diagonálnu 8-10%.", faq2Q: "Aká je štandardná hrúbka štrkového lôžka?", faq2A: "Pre chodníky 10-15 cm. Pre autá 20-30 cm.",
-        hRelated: "🔗 Súvisiace kalkulačky", linkFacade: "Kalkulačka zateplenia fasády", linkRoof: "Kalkulačka strechy", linkScreed: "Kalkulačka poteru"
+        hFinal: "📊 Finančný prehľad", txtCostPaving: "Dlažba a obrubníky", txtCostSubbase: "Podklad", txtFMat: "Celkovo materiály", txtFWork: "Práca", txtFLog: "Logistika", txtClientPrice: "Celková cena pre klienta",
+        secGlobalTitle: "🌍 Globálny rozpočet (Všetky kalkulačky)", secGlobalDesc: "Skombinujte náklady z tok, strechy, fasády do jedného projektu.",
+        btnAddGlobal: "+ Pridať do globálneho", btnViewGlobal: "👁 Zobraziť globálny", btnClearGlobal: "🗑 Vymazať globálny",
+        btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Faktúra", hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClearLoc: "🗑 Vymazať",
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu"
     }
 };
 
