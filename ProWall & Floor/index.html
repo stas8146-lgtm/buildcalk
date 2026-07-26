@@ -19,9 +19,70 @@
     
     <!-- SEO Optimization -->
     <title>PRO Tile & Grout Calculator | Tile Estimate</title>
-    <meta name="description" content="Professional tile calculator online. Estimate floor and wall tiles, adhesive, grout, SVP levelling clips, labor cost, and waste percentage for herringbone or diagonal patterns.">
+    <!-- Оновлений Meta Description -->
+    <meta name="description" content="Free professional tile calculator. Calculate floor and wall tiles, adhesive, grout, SVP levelling clips, labor costs and generate PDF estimates in seconds.">
     <meta name="keywords" content="tile calculator, grout calculator, adhesive calculation, SVP clips, tile layout waste, herringbone pattern, labor cost calculation">
     
+    <!-- Schema.org Microdata -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "PRO Tile & Grout Calculator",
+          "operatingSystem": "Web",
+          "applicationCategory": "BusinessApplication",
+          "description": "Professional tile calculator online. Calculate floor and wall tiles, adhesive, grout, SVP levelling clips, and labor cost.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [{
+            "@type": "ListItem", "position": 1, "name": "Home", "item": "https://yoursite.com/"
+          },{
+            "@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://yoursite.com/calculators/"
+          },{
+            "@type": "ListItem", "position": 3, "name": "Tile Calculator"
+          }]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How much extra tile should I buy for waste?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "For a standard straight layout, add 5%. For large format tiles or diagonal layouts, add 7-10%. Herringbone patterns usually require up to 10-15% extra for waste."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How much tile adhesive do I need per m²?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Standard consumption is about 1.3 kg per m² for every 1mm of adhesive thickness. With a 10mm notched trowel, expect about 4-5mm of solid glue, meaning ~5-6.5 kg per m²."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How are SVP levelling clips calculated?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The amount of clips depends on the tile dimensions. Smaller tiles require more clips per square meter. Wedges are reusable, so you only need enough for your daily laying rate."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
     <!-- Tailwind CSS for modern premium design -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons for premium visual style -->
@@ -33,6 +94,13 @@
         .gold-glow { box-shadow: 0 0 20px rgba(234, 179, 8, 0.15); }
         .gold-border-glow:focus { border-color: #eab308; box-shadow: 0 0 10px rgba(234, 179, 8, 0.3); }
         
+        /* Unified Toast Animation */
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .toast-animate { animation: slideUp 0.3s ease-out forwards; }
+
         @media print {
             body { background-color: #ffffff !important; color: #000000 !important; }
             .no-print { display: none !important; }
@@ -44,15 +112,18 @@
 </head>
 <body class="text-neutral-100 min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
     
+    <!-- Unified Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-2 pointer-events-none"></div>
+
     <div id="global-nav-container"></div>
     
     <!-- TOP NAVIGATION BAR (UNTOUCHED AS REQUESTED) -->
     <header class="no-print border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md sticky top-0 z-50 px-4 lg:px-8 py-4">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-            <!-- Brand Logo -->
+            <!-- Brand Logo (Єдиний H1 на сторінці) -->
             <div class="flex items-center gap-3">
                 <div class="p-2.5 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-xl text-black shadow-lg">
-                    <i data-lucide="grid-2x2" class="w-6 h-6"></i>
+                    <i data-lucide="grid-2x2" class="w-6 h-6" aria-hidden="true"></i>
                 </div>
                 <div>
                     <span class="text-xs uppercase tracking-widest text-yellow-500 font-bold">BUILDcalc Suite</span>
@@ -66,15 +137,15 @@
             <div class="flex flex-wrap items-center gap-3 sm:gap-4">
                 <div class="flex bg-neutral-900 border border-neutral-800 p-1 rounded-xl">
                     <button id="btn-free" onclick="setMode('free')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 bg-yellow-500 text-black">
-                        <i data-lucide="unlock" class="w-3.5 h-3.5"></i> <span id="lbl-free-btn">FREE</span>
+                        <i data-lucide="unlock" class="w-3.5 h-3.5" aria-hidden="true"></i> <span id="lbl-free-btn">FREE</span>
                     </button>
                     <button id="btn-pro" onclick="setMode('pro')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 text-neutral-400 hover:text-white">
-                        <i data-lucide="crown" class="w-3.5 h-3.5 text-yellow-500"></i> <span id="lbl-pro-btn">PRO</span>
+                        <i data-lucide="crown" class="w-3.5 h-3.5 text-yellow-500" aria-hidden="true"></i> <span id="lbl-pro-btn">PRO</span>
                     </button>
                 </div>
 
                 <div class="relative">
-                    <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-neutral-900 border border-neutral-800 text-sm font-semibold rounded-xl px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-yellow-500 cursor-pointer">
+                    <select id="lang-select" onchange="changeLanguage(this.value)" aria-label="Select Language" class="bg-neutral-900 border border-neutral-800 text-sm font-semibold rounded-xl px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-yellow-500 cursor-pointer">
                         <option value="en" selected>🇬🇧 EN</option>
                         <option value="uk">🇺🇦 UKR</option>
                         <option value="sk">🇸🇰 SK</option>
@@ -83,9 +154,20 @@
             </div>
         </div>
     </header>
+
+    <!-- SEO Breadcrumbs -->
+    <nav class="no-print max-w-7xl mx-auto px-4 lg:px-8 py-3 text-xs text-neutral-400 font-medium">
+        <ol class="flex items-center gap-2">
+            <li><a href="/" class="hover:text-yellow-500 transition-colors" id="bc-home">Home</a></li>
+            <li><i data-lucide="chevron-right" class="w-3 h-3" aria-hidden="true"></i></li>
+            <li><a href="/calculators" class="hover:text-yellow-500 transition-colors" id="bc-calcs">Calculators</a></li>
+            <li><i data-lucide="chevron-right" class="w-3 h-3" aria-hidden="true"></i></li>
+            <li class="text-white font-bold" id="bc-current">Tile Calculator</li>
+        </ol>
+    </nav>
        
     <!-- MAIN APP WRAPPER -->
-    <main class="max-w-7xl mx-auto px-4 lg:px-8 py-8 w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <main class="max-w-7xl mx-auto px-4 lg:px-8 py-4 w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         <!-- LEFT COLUMN: INPUTS & SETTINGS -->
         <div class="no-print lg:col-span-5 space-y-6">
@@ -93,7 +175,7 @@
             <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
                 <div class="absolute -right-16 -top-16 w-32 h-32 bg-yellow-500/5 rounded-full blur-3xl"></div>
                 <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
-                    <i data-lucide="ruler" class="w-5 h-5 text-yellow-500"></i>
+                    <i data-lucide="ruler" class="w-5 h-5 text-yellow-500" aria-hidden="true"></i>
                     <span id="t-dimensions">Room & Tile Specifications</span>
                 </h2>
                 
@@ -101,30 +183,30 @@
                     <!-- Area Inputs -->
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-width">Width (m)</label>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-width" for="inp-w">Width (m)</label>
                             <input type="number" id="inp-w" value="3.0" min="0.1" step="0.1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-length">Length (m)</label>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-length" for="inp-l">Length (m)</label>
                             <input type="number" id="inp-l" value="4.0" min="0.1" step="0.1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
                         </div>
                     </div>
 
-                    <!-- Deductions (Doors/Openings) - NEW -->
+                    <!-- Deductions (Doors/Openings) -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-deduct">Minus Openings / Doors (m²)</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-deduct" for="inp-deduct">Minus Openings / Doors (m²)</label>
                         <input type="number" id="inp-deduct" value="0" min="0" step="0.1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-sm focus:outline-none gold-border-glow transition-all" placeholder="0">
                     </div>
 
                     <!-- Labor Rate Input -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-labor">Labor Rate (per m²)</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-labor" for="inp-labor">Labor Rate (per m²)</label>
                         <input type="number" id="inp-labor" value="0" min="0" step="1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all" placeholder="0">
                     </div>
 
                     <!-- Tile Format & Pattern -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1" id="lbl-format">Tile Size (cm)</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1" id="lbl-format" for="inp-tile">Tile Size (cm)</label>
                         <select id="inp-tile" onchange="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-3 text-white font-semibold focus:border-yellow-500 focus:outline-none">
                             <option value="30x30">30 x 30 cm (Standard)</option>
                             <option value="60x60" selected>60 x 60 cm (Porcelain)</option>
@@ -136,7 +218,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1" id="lbl-pattern">Laying Pattern</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1" id="lbl-pattern" for="inp-pattern">Laying Pattern</label>
                         <select id="inp-pattern" onchange="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-3 text-white focus:border-yellow-500 focus:outline-none">
                             <option value="straight" selected id="opt-straight">Straight (Standard)</option>
                             <option value="diagonal" id="opt-diag">Diagonal</option>
@@ -147,15 +229,15 @@
                     <!-- Technical Specs -->
                     <div class="grid grid-cols-3 gap-3 pt-2">
                         <div>
-                            <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-thick">Thickness (mm)</label>
+                            <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-thick" for="inp-th">Thickness (mm)</label>
                             <input type="number" id="inp-th" value="10" min="4" max="30" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white text-sm text-center">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-joint">Joint (mm)</label>
+                            <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-joint" for="inp-joint">Joint (mm)</label>
                             <input type="number" id="inp-joint" value="2" min="0" step="0.5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white text-sm text-center">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-glue">Glue Layer (mm)</label>
+                            <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-glue" for="inp-glue">Glue Layer (mm)</label>
                             <input type="number" id="inp-glue" value="5" min="1" step="1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white text-sm text-center">
                         </div>
                     </div>
@@ -170,7 +252,7 @@
             <div id="branding-card" class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden transition-all duration-300">
                 <div id="brand-lock-overlay" class="absolute inset-0 bg-neutral-950/80 backdrop-blur-sm flex flex-col justify-center items-center p-6 text-center z-20">
                     <div class="p-3 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 rounded-full mb-3">
-                        <i data-lucide="lock" class="w-6 h-6"></i>
+                        <i data-lucide="lock" class="w-6 h-6" aria-hidden="true"></i>
                     </div>
                     <h3 class="text-white font-bold text-base" id="t-brand-locked-title">PRO Custom Branding</h3>
                     <p class="text-xs text-neutral-400 max-w-[280px] mt-1 mb-4" id="t-brand-locked-desc">Add your logo, phone and email to the PDF client report.</p>
@@ -180,22 +262,22 @@
                 </div>
 
                 <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
-                    <i data-lucide="file-badge" class="w-5 h-5 text-yellow-500"></i>
+                    <i data-lucide="file-badge" class="w-5 h-5 text-yellow-500" aria-hidden="true"></i>
                     <span id="t-branding">PDF Branding Info</span>
                 </h2>
                 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold uppercase text-neutral-400 mb-1.5" id="lbl-firm">Company Name</label>
+                        <label class="block text-xs font-semibold uppercase text-neutral-400 mb-1.5" id="lbl-firm" for="brand-firm">Company Name</label>
                         <input type="text" id="brand-firm" value="TileMaster Pro" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-white font-semibold">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold uppercase text-neutral-400 mb-1.5">Phone</label>
+                            <label class="block text-xs font-semibold uppercase text-neutral-400 mb-1.5" for="brand-phone">Phone</label>
                             <input type="text" id="brand-phone" value="+380 99 123 4567" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-white font-semibold">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold uppercase text-neutral-400 mb-1.5">Email</label>
+                            <label class="block text-xs font-semibold uppercase text-neutral-400 mb-1.5" for="brand-email">Email</label>
                             <input type="email" id="brand-email" value="office@tilepro.com" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-white font-semibold">
                         </div>
                     </div>
@@ -205,7 +287,7 @@
             <!-- RESET BUTTON -->
             <div class="flex gap-4">
                 <button onclick="resetInputs()" class="flex-1 py-3 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 font-bold rounded-xl transition-all flex items-center justify-center gap-2">
-                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i> <span id="btn-reset">New Project</span>
+                    <i data-lucide="rotate-ccw" class="w-4 h-4" aria-hidden="true"></i> <span id="btn-reset">New Project</span>
                 </button>
             </div>
         </div>
@@ -230,15 +312,22 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                     <div>
                         <span class="text-xs uppercase tracking-widest text-yellow-500 font-extrabold" id="t-estimate">Materials & Labor Estimate</span>
                         <h2 class="text-3xl font-black text-white" id="lbl-result-area">12.00 m²</h2>
                         <p class="text-xs text-neutral-400 mt-1" id="lbl-waste-info">Calculated Waste: <span id="waste-percent" class="text-yellow-400 font-bold">5%</span></p>
                     </div>
-                    <button id="btn-pdf" onclick="exportToPDF()" class="no-print px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-yellow-400 font-extrabold rounded-xl transition-all shadow-lg flex items-center gap-2 text-xs">
-                        <i data-lucide="printer" class="w-4 h-4"></i> <span id="lbl-pdf-btn">Export PDF / Print</span>
-                    </button>
+                    
+                    <!-- Action Buttons: PDF & Unified Estimate -->
+                    <div class="flex flex-wrap gap-2">
+                        <button id="btn-unified" onclick="addToUnifiedEstimate()" class="no-print px-4 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-black border border-yellow-500 font-extrabold rounded-xl transition-all shadow-lg flex items-center gap-2 text-xs">
+                            <i data-lucide="plus-circle" class="w-4 h-4" aria-hidden="true"></i> <span id="lbl-unified-btn">Add to Unified Estimate</span>
+                        </button>
+                        <button id="btn-pdf" onclick="exportToPDF()" class="no-print px-4 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-yellow-400 font-extrabold rounded-xl transition-all shadow-lg flex items-center gap-2 text-xs">
+                            <i data-lucide="printer" class="w-4 h-4" aria-hidden="true"></i> <span id="lbl-pdf-btn">Export PDF</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- MATERIALS & COST LIST -->
@@ -248,7 +337,7 @@
                     <div class="grid grid-cols-12 items-center bg-yellow-500/10 border border-yellow-500/30 px-4 py-4 rounded-xl print-card relative overflow-hidden">
                         <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-500"></div>
                         <div class="col-span-8 flex items-center gap-3 pl-2">
-                            <div class="p-2.5 bg-yellow-500/20 text-yellow-400 rounded-lg"><i data-lucide="banknote" class="w-5 h-5"></i></div>
+                            <div class="p-2.5 bg-yellow-500/20 text-yellow-400 rounded-lg"><i data-lucide="banknote" class="w-5 h-5" aria-hidden="true"></i></div>
                             <div>
                                 <h4 class="font-bold text-white text-base" id="lbl-res-labor">Labor Cost</h4>
                                 <p class="text-xs text-neutral-400" id="lbl-res-labor-sub">Calculated based on area</p>
@@ -262,7 +351,7 @@
                     <!-- TILES -->
                     <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-4 rounded-xl print-card relative overflow-hidden">
                         <div class="col-span-8 flex items-center gap-3">
-                            <div class="p-2.5 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="layers" class="w-5 h-5"></i></div>
+                            <div class="p-2.5 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="layers" class="w-5 h-5" aria-hidden="true"></i></div>
                             <div>
                                 <h4 class="font-bold text-white text-base" id="lbl-mat-tiles">Tiles (Pieces)</h4>
                                 <p class="text-xs text-neutral-400" id="lbl-mat-tiles-sub">Area including waste buffer: <span id="tile-m2" class="text-white font-semibold">12.6</span> m²</p>
@@ -276,7 +365,7 @@
                     <!-- ADHESIVE -->
                     <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
                         <div class="col-span-8 flex items-center gap-3">
-                            <div class="p-2 bg-neutral-800 text-neutral-300 rounded-lg"><i data-lucide="waves" class="w-4 h-4"></i></div>
+                            <div class="p-2 bg-neutral-800 text-neutral-300 rounded-lg"><i data-lucide="waves" class="w-4 h-4" aria-hidden="true"></i></div>
                             <div>
                                 <h4 class="font-bold text-white" id="lbl-mat-glue">Tile Adhesive</h4>
                                 <p class="text-[11px] text-neutral-400" id="lbl-mat-glue-sub">Based on solid glue thickness ~<span id="glue-mm">5</span>mm (1.3 kg/m²/mm)</p>
@@ -291,7 +380,7 @@
                     <div id="pro-materials-box" class="space-y-3.5 relative mt-6">
                         <div id="pro-items-lock" class="absolute -inset-2 bg-neutral-950/60 backdrop-blur-[4px] flex flex-col justify-center items-center z-10 rounded-2xl border border-yellow-500/10 p-4">
                             <div class="p-3 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 rounded-full mb-2">
-                                <i data-lucide="crown" class="w-5 h-5"></i>
+                                <i data-lucide="crown" class="w-5 h-5" aria-hidden="true"></i>
                             </div>
                             <p class="text-xs font-black text-white uppercase tracking-widest text-center" id="t-pro-unlock-items">Unlock: Grout, Primer and Levelling Clips (SVP)</p>
                             <button onclick="setMode('pro')" class="mt-3 px-4 py-1.5 bg-yellow-500 text-black text-xs font-extrabold uppercase rounded-lg transition-all hover:bg-yellow-400">
@@ -302,7 +391,7 @@
                         <!-- GROUT -->
                         <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
                             <div class="col-span-8 flex items-center gap-3">
-                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="paintbrush" class="w-4 h-4"></i></div>
+                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="paintbrush" class="w-4 h-4" aria-hidden="true"></i></div>
                                 <div>
                                     <h4 class="font-bold text-white" id="lbl-mat-grout">Joint Grout</h4>
                                     <p class="text-[11px] text-neutral-400" id="lbl-mat-grout-sub">Depends on joint width and tile size</p>
@@ -316,7 +405,7 @@
                         <!-- PRIMER -->
                         <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
                             <div class="col-span-8 flex items-center gap-3">
-                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="droplet" class="w-4 h-4"></i></div>
+                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="droplet" class="w-4 h-4" aria-hidden="true"></i></div>
                                 <div>
                                     <h4 class="font-bold text-white" id="lbl-mat-primer">Deep Penetrating Primer</h4>
                                     <p class="text-[11px] text-neutral-400" id="lbl-mat-primer-sub">Consumption ~150-200 ml per m²</p>
@@ -330,7 +419,7 @@
                         <!-- SVP CLIPS -->
                         <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
                             <div class="col-span-8 flex items-center gap-3">
-                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="scissors" class="w-4 h-4"></i></div>
+                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="scissors" class="w-4 h-4" aria-hidden="true"></i></div>
                                 <div>
                                     <h4 class="font-bold text-white" id="lbl-mat-clips">Levelling Clips (SVP)</h4>
                                     <p class="text-[11px] text-neutral-400" id="lbl-mat-clips-sub">Disposable levelling elements</p>
@@ -344,7 +433,7 @@
                         <!-- SVP WEDGES -->
                         <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
                             <div class="col-span-8 flex items-center gap-3">
-                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="triangle" class="w-4 h-4"></i></div>
+                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="triangle" class="w-4 h-4" aria-hidden="true"></i></div>
                                 <div>
                                     <h4 class="font-bold text-white" id="lbl-mat-wedges">Levelling Wedges</h4>
                                     <p class="text-[11px] text-neutral-400" id="lbl-mat-wedges-sub">Reusable, estimated for daily laying rate</p>
@@ -362,7 +451,7 @@
             <!-- CALCULATION HISTORY -->
             <div class="no-print bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
                 <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
-                    <i data-lucide="history" class="w-5 h-5 text-yellow-500"></i>
+                    <i data-lucide="history" class="w-5 h-5 text-yellow-500" aria-hidden="true"></i>
                     <span id="t-history">Calculation History</span>
                 </h2>
                 <div id="history-container" class="space-y-2 max-h-[220px] overflow-y-auto pr-2 text-sm text-neutral-400">
@@ -372,30 +461,43 @@
         </div>
     </main>
 
-    <!-- INSTRUCTIONS / DETAILED GUIDE SECTION -->
-    <section class="no-print bg-neutral-950 border-t border-neutral-800 py-12 px-4 lg:px-8 mt-12 w-full">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-xl font-bold text-white flex items-center gap-2 mb-6 text-center justify-center">
-                <i data-lucide="book-open" class="text-yellow-500"></i>
-                <span id="t-guide-title">Calculation & Waste Guide</span>
-            </h2>
-            
-            <div class="space-y-6 text-sm leading-relaxed text-neutral-300">
-                <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
-                    <h3 class="font-bold text-yellow-500 mb-2" id="t-tip-1-title">📐 Waste Formula</h3>
-                    <p id="t-tip-1-desc">Waste percentage is dynamic: standard layout with small tiles requires 5%. Large formats (120x60) increase waste due to large offcuts. Diagonal and Herringbone patterns automatically add 5-10% to the buffer.</p>
-                </div>
+    <!-- SEO FAQ SECTION (Structured for Rich Snippets) -->
+    <section class="no-print max-w-4xl mx-auto px-4 lg:px-8 py-12 w-full mt-8">
+        <h2 class="text-xl font-bold text-white mb-6 text-center" id="t-faq-title">Frequently Asked Questions</h2>
+        
+        <div class="space-y-4 text-sm">
+            <div class="bg-neutral-900/80 p-5 rounded-xl border border-neutral-800">
+                <h3 class="font-bold text-yellow-500 mb-2 flex items-center gap-2" id="faq-q1"><i data-lucide="help-circle" class="w-4 h-4"></i> How much extra tile should I buy for waste?</h3>
+                <p class="text-neutral-300 leading-relaxed" id="faq-a1">For a standard straight layout, add 5%. For large format tiles or diagonal layouts, add 7-10%. Herringbone patterns usually require up to 10-15% extra for waste.</p>
+            </div>
 
-                <div class="bg-neutral-900 p-5 rounded-xl border border-neutral-800">
-                    <h3 class="font-bold text-yellow-500 mb-2" id="t-tip-2-title">💧 Adhesive & Grout</h3>
-                    <p id="t-tip-2-desc">Adhesive is calculated at 1.3 kg per m² per 1mm of solid layer. A 10mm trowel leaves approx 4-5mm solid glue. Grout uses a formula based on total joint length, width, and tile thickness.</p>
-                </div>
+            <div class="bg-neutral-900/80 p-5 rounded-xl border border-neutral-800">
+                <h3 class="font-bold text-yellow-500 mb-2 flex items-center gap-2" id="faq-q2"><i data-lucide="help-circle" class="w-4 h-4"></i> How much tile adhesive do I need per m²?</h3>
+                <p class="text-neutral-300 leading-relaxed" id="faq-a2">Standard consumption is about 1.3 kg per m² for every 1mm of adhesive thickness. With a 10mm notched trowel, expect about 4-5mm of solid glue, meaning ~5-6.5 kg per m².</p>
+            </div>
+            
+            <div class="bg-neutral-900/80 p-5 rounded-xl border border-neutral-800">
+                <h3 class="font-bold text-yellow-500 mb-2 flex items-center gap-2" id="faq-q3"><i data-lucide="help-circle" class="w-4 h-4"></i> How are SVP levelling clips calculated?</h3>
+                <p class="text-neutral-300 leading-relaxed" id="faq-a3">The amount of clips depends on the tile dimensions. Smaller tiles require more clips per square meter. Wedges are reusable, so you only need enough for your daily laying rate.</p>
             </div>
         </div>
     </section>
 
-    <footer class="no-print bg-neutral-950 py-6 text-center text-xs text-neutral-500 border-t border-neutral-900">
-        <p>© 2026 TILEcalc Suite. Precision engineering for builders.</p>
+    <!-- INTERNAL LINKS: RELATED CALCULATORS -->
+    <section class="no-print border-t border-neutral-900 bg-neutral-950 py-10 w-full">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8">
+            <h3 class="text-sm uppercase tracking-widest font-bold text-neutral-500 mb-6 text-center" id="t-related">Related Ecosystem Calculators</h3>
+            <ul class="flex flex-wrap justify-center gap-4 text-sm font-medium">
+                <li><a href="/screed-calculator" class="text-neutral-400 hover:text-black hover:bg-yellow-500 transition-all flex items-center gap-2 bg-neutral-900 px-5 py-2.5 rounded-xl border border-neutral-800"><i data-lucide="calculator" class="w-4 h-4"></i> <span id="rel-screed">Screed Calculator</span></a></li>
+                <li><a href="/plaster-calculator" class="text-neutral-400 hover:text-black hover:bg-yellow-500 transition-all flex items-center gap-2 bg-neutral-900 px-5 py-2.5 rounded-xl border border-neutral-800"><i data-lucide="calculator" class="w-4 h-4"></i> <span id="rel-plaster">Plaster Calculator</span></a></li>
+                <li><a href="/paint-calculator" class="text-neutral-400 hover:text-black hover:bg-yellow-500 transition-all flex items-center gap-2 bg-neutral-900 px-5 py-2.5 rounded-xl border border-neutral-800"><i data-lucide="calculator" class="w-4 h-4"></i> <span id="rel-paint">Paint Calculator</span></a></li>
+                <li><a href="/facade-calculator" class="text-neutral-400 hover:text-black hover:bg-yellow-500 transition-all flex items-center gap-2 bg-neutral-900 px-5 py-2.5 rounded-xl border border-neutral-800"><i data-lucide="calculator" class="w-4 h-4"></i> <span id="rel-facade">Facade Calculator</span></a></li>
+            </ul>
+        </div>
+    </section>
+
+    <footer class="no-print bg-neutral-950 py-6 text-center text-xs text-neutral-600 border-t border-neutral-900">
+        <p>© 2026 BUILDcalc Suite. Precision engineering for builders.</p>
     </footer>
     
     <!-- JS LOGIC ENGINE -->
@@ -403,6 +505,7 @@
         let currentMode = 'free'; 
         let currentLang = 'en';
 
+        // Translations include the new Breadcrumbs, FAQ, Unified Estimate, and Related Calculators.
         const translations = {
             uk: {
                 "t-dimensions": "Параметри Приміщення та Плитки",
@@ -427,7 +530,9 @@
                 "t-brand-locked-desc": "Додайте свій логотип, телефон та пошту у PDF-звіт для клієнтів.",
                 "lbl-unlock-btn": "Активувати PRO",
                 "t-estimate": "Розрахунок Матеріалів та Робіт",
-                "lbl-pdf-btn": "PDF / Друк",
+                "lbl-pdf-btn": "Експорт PDF",
+                "lbl-unified-btn": "В загальний кошторис",
+                "toast-success": "Додано до загального кошторису!",
                 "lbl-waste-info": "Розрахований запас: ",
                 "lbl-mat-tiles": "Плитка (Кількість)",
                 "lbl-mat-tiles-sub": "Площа з урахуванням запасу на підрізку: ",
@@ -445,15 +550,25 @@
                 "lbl-mat-wedges-sub": "Багаторазові, розраховано на денну норму укладки",
                 "t-history": "Історія Розрахунків",
                 "t-history-empty": "Немає збережених розрахунків.",
-                "t-guide-title": "Як працює розрахунок та запаси",
-                "t-tip-1-title": "📐 Формула запасу (Відходи)",
-                "t-tip-1-desc": "Відсоток на підрізку розраховується динамічно: базова пряма укладка невеликої плитки потребує 5% запасу. Якщо ви обираєте великий формат (наприклад 120х60), відсоток зростає, оскільки залишаються великі обрізки. Діагональне укладання та 'Ялинка' автоматично додають від 5% до 10% до загального запасу.",
-                "t-tip-2-title": "💧 Клей та Затірка",
-                "t-tip-2-desc": "Витрата клею вважається за стандартом 1.3 кг на 1 м² при товщині суцільного шару 1 мм. Зауважте, що зубчастий шпатель 10 мм залишає шар клею приблизно 4-5 мм після притискання. Затірка рахується за математичною формулою, яка враховує сумарну довжину швів, їх ширину та глибину.",
                 "unit-pcs": "шт",
                 "unit-kg": "кг",
                 "unit-l": "Літрів",
-                "calc-btn": "Розрахувати"
+                "calc-btn": "Розрахувати",
+                "bc-home": "Головна",
+                "bc-calcs": "Калькулятори",
+                "bc-current": "Калькулятор плитки",
+                "t-faq-title": "Часті питання (FAQ)",
+                "faq-q1": "Скільки плитки брати на запас (підрізку)?",
+                "faq-a1": "Для стандартного прямого укладання додайте 5%. Для великих форматів або діагонального укладання додайте 7-10%. Схема «Ялинка» зазвичай потребує до 10-15% запасу.",
+                "faq-q2": "Яка витрата клею для плитки на 1 м²?",
+                "faq-a2": "Стандартна норма — 1,3 кг на 1 м² при товщині суцільного шару 1 мм. Під зубчастий шпатель 10 мм товщина клею складе 4-5 мм, отже витрата буде ~5-6.5 кг на м².",
+                "faq-q3": "Як розраховується кількість СВП (кліпсів)?",
+                "faq-a3": "Кількість кліпсів залежить від формату плитки. Чим дрібніша плитка, тим більше кліпсів на 1 м². Клини є багаторазовими, тому їх рахують із запасом лише на денну норму укладання.",
+                "t-related": "Інші калькулятори екосистеми",
+                "rel-screed": "Калькулятор стяжки",
+                "rel-plaster": "Калькулятор штукатурки",
+                "rel-paint": "Калькулятор фарби",
+                "rel-facade": "Калькулятор фасаду"
             },
             en: {
                 "t-dimensions": "Room & Tile Specifications",
@@ -478,7 +593,9 @@
                 "t-brand-locked-desc": "Add your logo, phone and email to the PDF client report.",
                 "lbl-unlock-btn": "Go PRO",
                 "t-estimate": "Materials & Labor Estimate",
-                "lbl-pdf-btn": "Export PDF / Print",
+                "lbl-pdf-btn": "Export PDF",
+                "lbl-unified-btn": "Add to Unified Estimate",
+                "toast-success": "Added to Unified Estimate!",
                 "lbl-waste-info": "Calculated Waste: ",
                 "lbl-mat-tiles": "Tiles (Pieces)",
                 "lbl-mat-tiles-sub": "Area including waste buffer: ",
@@ -496,15 +613,25 @@
                 "lbl-mat-wedges-sub": "Reusable, estimated for daily laying rate",
                 "t-history": "Calculation History",
                 "t-history-empty": "No calculations saved yet.",
-                "t-guide-title": "Calculation & Waste Guide",
-                "t-tip-1-title": "📐 Waste Formula",
-                "t-tip-1-desc": "Waste percentage is dynamic: standard layout with small tiles requires 5%. Large formats (120x60) increase waste due to large offcuts. Diagonal and Herringbone patterns automatically add 5-10% to the buffer.",
-                "t-tip-2-title": "💧 Adhesive & Grout",
-                "t-tip-2-desc": "Adhesive is calculated at 1.3 kg per m² per 1mm of solid layer. A 10mm trowel leaves approx 4-5mm solid glue. Grout uses a formula based on total joint length, width, and tile thickness.",
                 "unit-pcs": "pcs",
                 "unit-kg": "kg",
                 "unit-l": "Liters",
-                "calc-btn": "Calculate"
+                "calc-btn": "Calculate",
+                "bc-home": "Home",
+                "bc-calcs": "Calculators",
+                "bc-current": "Tile Calculator",
+                "t-faq-title": "Frequently Asked Questions",
+                "faq-q1": "How much extra tile should I buy for waste?",
+                "faq-a1": "For a standard straight layout, add 5%. For large format tiles or diagonal layouts, add 7-10%. Herringbone patterns usually require up to 10-15% extra for waste.",
+                "faq-q2": "How much tile adhesive do I need per m²?",
+                "faq-a2": "Standard consumption is about 1.3 kg per m² for every 1mm of adhesive thickness. With a 10mm notched trowel, expect about 4-5mm of solid glue, meaning ~5-6.5 kg per m².",
+                "faq-q3": "How are SVP levelling clips calculated?",
+                "faq-a3": "The amount of clips depends on the tile dimensions. Smaller tiles require more clips per square meter. Wedges are reusable, so you only need enough for your daily laying rate.",
+                "t-related": "Related Ecosystem Calculators",
+                "rel-screed": "Screed Calculator",
+                "rel-plaster": "Plaster Calculator",
+                "rel-paint": "Paint Calculator",
+                "rel-facade": "Facade Calculator"
             },
             sk: {
                 "t-dimensions": "Rozmery a špecifikácia dlažby",
@@ -529,7 +656,9 @@
                 "t-brand-locked-desc": "Pridajte svoje logo, telefón a email do PDF reportu pre klienta.",
                 "lbl-unlock-btn": "Aktivovať PRO",
                 "t-estimate": "Odhad materiálu a práce",
-                "lbl-pdf-btn": "PDF / Tlačiť",
+                "lbl-pdf-btn": "Export PDF",
+                "lbl-unified-btn": "Do spoločného rozpočtu",
+                "toast-success": "Pridané do spoločného rozpočtu!",
                 "lbl-waste-info": "Vypočítaný prerez: ",
                 "lbl-mat-tiles": "Dlaždice (Kusy)",
                 "lbl-mat-tiles-sub": "Plocha vrátane rezervy na prerez: ",
@@ -547,17 +676,30 @@
                 "lbl-mat-wedges-sub": "Opakovane použiteľné, na dennú pokládku",
                 "t-history": "História výpočtov",
                 "t-history-empty": "Zatiaľ žiadne uložené výpočty.",
-                "t-guide-title": "Ako funguje výpočet a prerez",
-                "t-tip-1-title": "📐 Vzorec pre prerez",
-                "t-tip-1-desc": "Percento prerezu sa mení dynamicky: rovná pokládka malých formátov potrebuje 5%. Veľké formáty (120x60) zvyšujú odpad. Diagonála a rybia kosť automaticky pridávajú 5-10% k rezerve.",
-                "t-tip-2-title": "💧 Lepidlo a Škárovačka",
-                "t-tip-2-desc": "Spotreba lepidla je 1.3 kg na m² pri 1 mm vrstve. 10 mm zubové hladítko zanechá cca 4-5 mm vrstvu. Škárovacia hmota sa počíta podľa vzorca zohľadňujúceho celkovú dĺžku špár, ich šírku a hrúbku dlažby.",
                 "unit-pcs": "ks",
                 "unit-kg": "kg",
                 "unit-l": "Litre",
-                "calc-btn": "Vypočítať"
+                "calc-btn": "Vypočítať",
+                "bc-home": "Domov",
+                "bc-calcs": "Kalkulačky",
+                "bc-current": "Kalkulačka dlažby",
+                "t-faq-title": "Často kladené otázky (FAQ)",
+                "faq-q1": "Koľko dlažby navyše potrebujem na prerez?",
+                "faq-a1": "Pre štandardnú rovnú pokládku pridajte 5%. Pre veľké formáty alebo diagonálnu pokládku 7-10%. Rybia kosť si bežne vyžaduje až 10-15% rezervu na prerez.",
+                "faq-q2": "Aká je spotreba lepidla na 1 m²?",
+                "faq-a2": "Štandardná spotreba je 1,3 kg na 1 m² pri 1 mm hrúbke lepidla. Pri použití 10 mm zubového hladidla zostane asi 4-5 mm súvislej vrstvy, t.j. spotreba bude ~5-6,5 kg na m².",
+                "faq-q3": "Ako sa počíta množstvo SVP spôn?",
+                "faq-a3": "Množstvo spôn závisí od formátu obkladu/dlažby. Menšie dlaždice si vyžadujú viac spôn na meter štvorcový. Kliny sú na viacnásobné použitie, počítajú sa iba na dennú kapacitu.",
+                "t-related": "Ďalšie kalkulačky ekosystému",
+                "rel-screed": "Kalkulačka poteru",
+                "rel-plaster": "Kalkulačka omietky",
+                "rel-paint": "Kalkulačka farby",
+                "rel-facade": "Kalkulačka fasády"
             }
         };
+
+        // Holds current state values for the Unified Estimate feature
+        let currentCalculations = {};
 
         window.onload = function() {
             lucide.createIcons();
@@ -573,8 +715,11 @@
             for (const key in translations[lang]) {
                 const element = document.getElementById(key);
                 if (element && element.tagName !== 'INPUT' && element.tagName !== 'SELECT') {
-                    if(element.children.length === 0) {
-                        element.innerText = translations[lang][key];
+                    if(element.children.length === 0 || element.tagName === 'A' || element.tagName === 'H3') {
+                        // For mixed content like text and icons, use innerHTML replace logic carefully
+                        // Or simply change text nodes
+                        let iconHTML = element.querySelector('i') ? element.querySelector('i').outerHTML + " " : "";
+                        element.innerHTML = iconHTML + translations[lang][key];
                     }
                 }
             }
@@ -647,7 +792,6 @@
 
             const glueKg = Math.ceil(area * glue * 1.3);
 
-            // Corrected grout calculation formula based on dimensions in meters and joints in mm
             const tw_m = tileW_cm / 100;
             const tl_m = tileL_cm / 100;
             const joint_m = joint / 1000;
@@ -659,6 +803,19 @@
             const clipsPerM2 = getClipsPerM2(tileW_cm, tileL_cm);
             const clipsTotal = Math.ceil(area * clipsPerM2 * 1.1);
             const wedgesTotal = Math.ceil(clipsTotal / 3); 
+
+            // Save values globally for the Unified Estimate
+            currentCalculations = {
+                type: "Tile Install",
+                area: area.toFixed(2),
+                laborCost: laborCost,
+                tilesPcs: tilePieces,
+                glueKg: glueKg,
+                groutKg: groutKg,
+                primerL: primerL,
+                clipsPcs: clipsTotal,
+                wedgesPcs: wedgesTotal
+            };
 
             document.getElementById('lbl-result-area').innerText = `${area.toFixed(2)} m²`;
             document.getElementById('waste-percent').innerText = `${waste}%`;
@@ -777,6 +934,41 @@
             document.getElementById('print-firm-contacts').innerText = `Tel: ${phone} | Mail: ${email}`;
 
             window.print();
+        }
+
+        // Unified Estimate Logic (Єдиний кошторис)
+        function addToUnifiedEstimate() {
+            // Save to localStorage 'unified_estimate' array
+            let unifiedData = JSON.parse(localStorage.getItem('unified_estimate')) || [];
+            
+            // Generate simple ID based on timestamp
+            const entryId = "est_" + Date.now();
+            currentCalculations.id = entryId;
+            currentCalculations.date = new Date().toLocaleDateString();
+            
+            unifiedData.push(currentCalculations);
+            localStorage.setItem('unified_estimate', JSON.stringify(unifiedData));
+
+            // Show Toast Notification
+            showToast(translations[currentLang]['toast-success']);
+        }
+
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            toast.className = "bg-yellow-500 text-black px-5 py-3 rounded-xl font-bold shadow-2xl flex items-center gap-3 toast-animate";
+            toast.innerHTML = `<i data-lucide="check-circle" class="w-5 h-5 text-black"></i> <span>${message}</span>`;
+            
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                toast.style.transition = 'all 0.3s ease-in';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
     </script>
 </body>
