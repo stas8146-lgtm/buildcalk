@@ -107,6 +107,7 @@
             .text-yellow-400, .text-yellow-500 { color: #d97706 !important; }
         }
     </style>
+<script src="../global-estimate.js"></script>
 </head>
 <body class="text-neutral-100 min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
     
@@ -433,25 +434,7 @@
                     </div>
                 </div>
             </div>
-
-            <!-- STANDARDIZED GLOBAL ESTIMATE BLOCK (Matches screenshot design) -->
-            <div class="no-print bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
-                <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                    <span>🌍</span> <span id="t-global-est">Global Estimate (All Calculators)</span>
-                </h2>
-                <p class="text-xs text-neutral-400 mb-4" id="t-global-desc">Combine costs from Tile, Screed, Plaster etc. into one unified project estimate.</p>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <button onclick="addToUnifiedEstimate()" class="bg-green-600 hover:bg-green-500 text-white font-extrabold px-4 py-3 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg text-xs">
-                        <i data-lucide="plus-circle" class="w-4 h-4"></i> <span id="lbl-add-global">Add to Global Estimate</span>
-                    </button>
-                    <button onclick="window.location.href='/global-estimate.html'" class="bg-green-600 hover:bg-green-500 text-white font-extrabold px-4 py-3 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg text-xs">
-                        <i data-lucide="eye" class="w-4 h-4"></i> <span id="lbl-view-global">View Global Estimate</span>
-                    </button>
-                    <button onclick="clearGlobalEstimate()" class="bg-neutral-900 hover:bg-red-500/10 border border-red-500/50 text-red-400 font-extrabold px-4 py-3 rounded-xl flex items-center justify-center gap-2 transition-all text-xs">
-                        <i data-lucide="trash-2" class="w-4 h-4"></i> <span id="lbl-clear-global">Clear Global</span>
-                    </button>
-                </div>
+<div id="global-estimate-container"></div>
             </div>
 
             <!-- CALCULATION HISTORY -->
