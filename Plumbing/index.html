@@ -254,13 +254,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- RESET BUTTON -->
-                <div class="flex gap-4">
-                    <button onclick="resetInputs()" class="flex-1 py-3 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer">
-                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i> <span id="btn-reset">New Calculation</span>
-                    </button>
-                </div>
             </div>
             
             <!-- RIGHT COLUMN: RESULTS & OUTPUTS -->
@@ -288,10 +281,6 @@
                             <span class="text-xs uppercase tracking-widest text-yellow-500 font-extrabold" id="t-estimate">System Unified Estimate</span>
                             <h2 class="text-2xl font-black text-white" id="lbl-result-summary">Area: 50 m² | Points: 6</h2>
                         </div>
-                        <!-- Export PDF -->
-                        <button id="btn-pdf" onclick="exportToPDF()" class="no-print px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-yellow-400 font-extrabold rounded-xl transition-all shadow-lg flex items-center gap-2 text-xs cursor-pointer">
-                            <i data-lucide="file-down" class="w-4 h-4"></i> <span id="lbl-pdf-btn">Export PDF / Print</span>
-                        </button>
                     </div>
 
                     <!-- MATERIALS LIST -->
@@ -428,14 +417,60 @@
                         </div>
                     </div>
 
+                    <!-- UNIFIED ACTION BUTTONS (Matching Screenshot Design) -->
+                    <div class="no-print grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6 pt-4 border-t border-neutral-800">
+                        <button onclick="calculate()" class="bg-neutral-900 hover:bg-neutral-800 border border-yellow-500/40 text-yellow-400 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer">
+                            <i data-lucide="calculator" class="w-4 h-4"></i> <span id="btn-action-calc">Calculate</span>
+                        </button>
+                        <button onclick="copyEstimate()" class="bg-neutral-900 hover:bg-neutral-800 border border-yellow-500/40 text-yellow-400 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer">
+                            <i data-lucide="copy" class="w-4 h-4"></i> <span id="btn-action-copy">Copy</span>
+                        </button>
+                        <button id="btn-pdf" onclick="exportToPDF()" class="bg-neutral-900 hover:bg-neutral-800 border border-yellow-500/40 text-yellow-400 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer">
+                            <i data-lucide="file-text" class="w-4 h-4"></i> <span id="lbl-pdf-btn">PDF Invoice</span>
+                        </button>
+                    </div>
+
                 </div>
 
-                <!-- CALCULATION HISTORY -->
+                <!-- GLOBAL ESTIMATE (ALL CALCULATORS) SECTION -->
+                <div class="no-print bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-yellow-500 mb-3 flex items-center gap-2">
+                        <i data-lucide="globe" class="w-4 h-4"></i> <span id="t-global-estimate-title">Global Estimate (All Calculators)</span>
+                    </h3>
+                    <p class="text-xs text-neutral-400 mb-4" id="t-global-estimate-desc">Combine costs from Roof, Plumb, Screed etc. into one unified project estimate.</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <button onclick="addToGlobalEstimate()" class="bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i> <span id="btn-global-add">Add to Global</span>
+                        </button>
+                        <button onclick="viewGlobalEstimate()" class="bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg">
+                            <i data-lucide="eye" class="w-4 h-4"></i> <span id="btn-global-view">View Global</span>
+                        </button>
+                        <button onclick="clearGlobalEstimate()" class="bg-neutral-900 hover:bg-neutral-800 border border-red-500/50 text-red-400 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i> <span id="btn-global-clear">Clear Global</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PROJECT VAULT / LOCAL HISTORY SECTION -->
                 <div class="no-print bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
                     <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
-                        <i data-lucide="history" class="w-5 h-5 text-yellow-500"></i>
-                        <span id="t-history">Calculation History</span>
+                        <i data-lucide="hard-drive" class="w-5 h-5 text-yellow-500"></i>
+                        <span id="t-vault-title">Plumbing Project Vault</span>
                     </h2>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                        <button onclick="saveLocalProject()" class="bg-neutral-900 hover:bg-neutral-800 border border-yellow-500/40 text-yellow-400 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer">
+                            <i data-lucide="save" class="w-4 h-4"></i> <span id="btn-vault-save">Save Local</span>
+                        </button>
+                        <button onclick="toggleHistoryView()" class="bg-neutral-900 hover:bg-neutral-800 border border-yellow-500/40 text-yellow-400 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer">
+                            <i data-lucide="folder-open" class="w-4 h-4"></i> <span id="btn-vault-history">Local History</span>
+                        </button>
+                        <button onclick="resetInputs()" class="bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer">
+                            <i data-lucide="rotate-ccw" class="w-4 h-4"></i> <span id="btn-vault-clear">Clear</span>
+                        </button>
+                    </div>
+
                     <div id="history-container" class="space-y-2 max-h-[220px] overflow-y-auto pr-2 text-sm text-neutral-400">
                         <p class="text-xs text-neutral-500 text-center py-4" id="t-history-empty">No calculations saved yet.</p>
                     </div>
@@ -526,10 +561,10 @@
                 "t-brand-locked-title": "PRO Custom Branding",
                 "t-brand-locked-desc": "Unlock custom brand headers on your exports and reports.",
                 "lbl-unlock-btn": "Go PRO",
-                "btn-reset": "New Calculation",
-                "btn-calc": "Calculate",
+                "btn-action-calc": "Calculate",
+                "btn-action-copy": "Copy",
+                "lbl-pdf-btn": "PDF Invoice",
                 "t-estimate": "System Unified Estimate",
-                "lbl-pdf-btn": "Export PDF / Print",
                 "lbl-mat-pipe": "Pipeline Length (with reserve)",
                 "lbl-mat-pipe-sub": "Main lines & distribution network",
                 "lbl-mat-fittings": "Fittings, Tees & Elbows",
@@ -544,8 +579,16 @@
                 "lbl-mat-insulation-sub": "Foam sleeves for piping protection",
                 "lbl-mat-clamps": "Mounting Clamps & Dowels",
                 "lbl-mat-clamps-sub": "Wall fastening every 0.5m",
-                "t-history": "Calculation History",
+                "t-vault-title": "Plumbing Project Vault",
+                "btn-vault-save": "Save Local",
+                "btn-vault-history": "Local History",
+                "btn-vault-clear": "Clear",
                 "t-history-empty": "No calculations saved yet.",
+                "t-global-estimate-title": "Global Estimate (All Calculators)",
+                "t-global-estimate-desc": "Combine costs from Roof, Plumb, Screed etc. into one unified project estimate.",
+                "btn-global-add": "Add to Global",
+                "btn-global-view": "View Global",
+                "btn-global-clear": "Clear Global",
                 "unit-pcs": "pcs",
                 "unit-m": "m"
             },
@@ -582,10 +625,10 @@
                 "t-brand-locked-title": "PRO Брендування",
                 "t-brand-locked-desc": "Додавайте власну шапку з контактами компанії у звіт.",
                 "lbl-unlock-btn": "Перейти на PRO",
-                "btn-reset": "Новий розрахунок",
-                "btn-calc": "Розрахувати",
+                "btn-action-calc": "Розрахувати",
+                "btn-action-copy": "Копіювати",
+                "lbl-pdf-btn": "PDF Рахунок",
                 "t-estimate": "Єдиний кошторис системи",
-                "lbl-pdf-btn": "Експорт в PDF / Друк",
                 "lbl-mat-pipe": "Довжина труб (з урахуванням запасу)",
                 "lbl-mat-pipe-sub": "Головні магістралі та розводка",
                 "lbl-mat-fittings": "Фітинги, кутники та трійники",
@@ -600,8 +643,16 @@
                 "lbl-mat-insulation-sub": "Спінений поліетилен",
                 "lbl-mat-clamps": "Кліпси та дюбелі кріплення",
                 "lbl-mat-clamps-sub": "Фіксація кожні 0.5 м",
-                "t-history": "Історія розрахунків",
+                "t-vault-title": "Сховище проєктів сантехніки",
+                "btn-vault-save": "Зберегти локально",
+                "btn-vault-history": "Історія",
+                "btn-vault-clear": "Очистити",
                 "t-history-empty": "Збережених розрахунків поки немає.",
+                "t-global-estimate-title": "Глобальний кошторис (Всі калькулятори)",
+                "t-global-estimate-desc": "Об'єднуйте витрати з даху, сантехніки, стяжки тощо в єдиний проєктний кошторис.",
+                "btn-global-add": "Додати до глобального",
+                "btn-global-view": "Переглянути глобальний",
+                "btn-global-clear": "Очистити глобальний",
                 "unit-pcs": "шт",
                 "unit-m": "м"
             },
@@ -638,10 +689,10 @@
                 "t-brand-locked-title": "PRO Vlastná Hlavička",
                 "t-brand-locked-desc": "Odomknite vlastnú hlavičku pre PDF výstupy.",
                 "lbl-unlock-btn": "Aktivovať PRO",
-                "btn-reset": "Nový výpočet",
-                "btn-calc": "Vypočítať",
+                "btn-action-calc": "Vypočítať",
+                "btn-action-copy": "Kopírovať",
+                "lbl-pdf-btn": "PDF Faktúra",
                 "t-estimate": "Jednotný rozpočet systému",
-                "lbl-pdf-btn": "Exportovať PDF / Tlačiť",
                 "lbl-mat-pipe": "Dĺžka potrubia (vrátane rezervy)",
                 "lbl-mat-pipe-sub": "Hlavné rozvody a prívody",
                 "lbl-mat-fittings": "Tvarovky, T-kusy a kolená",
@@ -656,8 +707,16 @@
                 "lbl-mat-insulation-sub": "Penová hadica na ochranu",
                 "lbl-mat-clamps": "Montážne svorky a hmoždinky",
                 "lbl-mat-clamps-sub": "Ukotvenie každých 0.5 m",
-                "t-history": "História výpočtov",
+                "t-vault-title": "Zostava projektov",
+                "btn-vault-save": "Uložiť lokálne",
+                "btn-vault-history": "Lokálna história",
+                "btn-vault-clear": "Vymazať",
                 "t-history-empty": "Zatiaľ žiadne uložené výpočty.",
+                "t-global-estimate-title": "Globálny rozpočet (Všetky kalkulačky)",
+                "t-global-estimate-desc": "Skombinujte náklady zrekonštruovaného projektu do jedného súhrnného rozpočtu.",
+                "btn-global-add": "Pridať do globálneho",
+                "btn-global-view": "Zobraziť globálny",
+                "btn-global-clear": "Vymazať globálny",
                 "unit-pcs": "ks",
                 "unit-m": "m"
             }
@@ -749,6 +808,8 @@
             calculate();
         }
 
+        let currentGrandTotal = 0;
+
         function calculate() {
             const area = parseFloat(document.getElementById('inp-area').value) || 0;
             const points = parseInt(document.getElementById('inp-points').value) || 0;
@@ -795,30 +856,40 @@
 
             const totalLabor = (systemType === 'floor') ? (area * laborRate) : (points * laborRate);
             const totalProfit = (totalMaterials + totalLabor) * (profitPct / 100);
-            const grandTotal = totalMaterials + totalLabor + totalProfit + logistics;
+            currentGrandTotal = totalMaterials + totalLabor + totalProfit + logistics;
 
             document.getElementById('val-total-materials').innerText = totalMaterials.toFixed(2);
             document.getElementById('val-total-labor').innerText = totalLabor.toFixed(2);
             document.getElementById('val-total-profit').innerText = totalProfit.toFixed(2);
             document.getElementById('val-total-other').innerText = logistics.toFixed(2);
-            document.getElementById('val-grand-total').innerText = grandTotal.toFixed(2);
-
-            if (area > 0) saveToHistoryDebounced(area, points, systemType);
+            document.getElementById('val-grand-total').innerText = currentGrandTotal.toFixed(2);
         }
 
-        let debounceTimer;
-        function saveToHistoryDebounced(area, points, type) {
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => {
-                let history = JSON.parse(localStorage.getItem('plumbing_history')) || [];
-                const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                const dateStr = new Date().toLocaleDateString();
-                
-                history.unshift({ area, points, type, timestamp, dateStr });
-                if (history.length > 5) history.pop(); 
-                localStorage.setItem('plumbing_history', JSON.stringify(history));
-                loadHistory();
-            }, 1000);
+        function copyEstimate() {
+            const area = document.getElementById('inp-area').value;
+            const points = document.getElementById('inp-points').value;
+            const text = `Plumbing & Heating Estimate (${systemType.toUpperCase()}):\nArea: ${area} m², Points: ${points}\nGrand Total: ${currentGrandTotal.toFixed(2)} €`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Estimate copied to clipboard!");
+            });
+        }
+
+        function saveLocalProject() {
+            const area = parseFloat(document.getElementById('inp-area').value) || 0;
+            const points = parseInt(document.getElementById('inp-points').value) || 0;
+            let history = JSON.parse(localStorage.getItem('plumbing_history')) || [];
+            const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            const dateStr = new Date().toLocaleDateString();
+            
+            history.unshift({ area, points, type: systemType, total: currentGrandTotal.toFixed(2), timestamp, dateStr });
+            if (history.length > 10) history.pop(); 
+            localStorage.setItem('plumbing_history', JSON.stringify(history));
+            loadHistory();
+            alert("Project saved locally!");
+        }
+
+        function toggleHistoryView() {
+            loadHistory();
         }
 
         function loadHistory() {
@@ -843,11 +914,28 @@
                         <p class="text-[10px] text-neutral-500">${item.dateStr} | ${item.timestamp}</p>
                     </div>
                     <div class="text-right">
-                        <span class="text-yellow-400 font-extrabold text-xs">${item.points} pts</span>
+                        <span class="text-yellow-400 font-extrabold text-xs">${item.total || 0} €</span>
                     </div>
                 `;
                 container.appendChild(box);
             });
+        }
+
+        function addToGlobalEstimate() {
+            let globalEst = parseFloat(localStorage.getItem('global_estimate')) || 0;
+            globalEst += currentGrandTotal;
+            localStorage.setItem('global_estimate', globalEst.toFixed(2));
+            alert(`Added ${currentGrandTotal.toFixed(2)} € to Global Estimate! Total: ${globalEst.toFixed(2)} €`);
+        }
+
+        function viewGlobalEstimate() {
+            const globalEst = parseFloat(localStorage.getItem('global_estimate')) || 0;
+            alert(`Global Estimate Total: ${globalEst.toFixed(2)} €`);
+        }
+
+        function clearGlobalEstimate() {
+            localStorage.setItem('global_estimate', '0.00');
+            alert("Global Estimate cleared!");
         }
 
         function resetInputs() {
