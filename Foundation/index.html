@@ -129,6 +129,7 @@
         .buy-btn:hover { background: var(--primary-hover); }
     </style>
     <script src="../nav.js"></script>
+<script src="../global-estimate.js"></script>
 </head>
 <body>
 <div id="global-nav-container"></div>
@@ -263,14 +264,7 @@
         <button class="btn-outline" onclick="generatePDF()" id="btnPdf"><span>📄</span> <span id="lblBtnPdf">PDF Invoice</span></button>
     </div>
 
-    <!-- GLOBAL ESTIMATE MODULE -->
-    <div class="header-green" id="hGlobalEst">🌍 Global Estimate (All Calculators)</div>
-    <p class="desc-text" id="descGlobal">Combine costs from Roof, Facade, Screed etc. into one unified project estimate.</p>
-    <div class="btn-row" id="globalEstimateButtons">
-        <button class="btn-green" onclick="addToGlobalEstimate()"><span>➕</span> <span id="lblBtnGlobalAdd">Add to Global Estimate</span></button>
-        <button class="btn-green" onclick="openGlobalModal()"><span>👁</span> <span id="lblBtnGlobalView">View Global Estimate</span></button>
-        <button class="btn-red-outline" onclick="clearGlobalEstimate()"><span>🗑</span> <span id="lblBtnGlobalClear">Clear Global</span></button>
-    </div>
+    <div id="global-estimate-container"></div>
 
     <!-- PROJECT VAULT MODULE -->
     <div class="header-yellow" id="hVault">💾 Foundation Project Vault</div>
