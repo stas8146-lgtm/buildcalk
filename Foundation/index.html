@@ -61,7 +61,6 @@
         h2, h3 { color: var(--text-light); }
         h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; }
         
-        /* Custom Headers for Modules */
         .header-green { border-left: 4px solid var(--green); padding-left: 10px; margin-top: 25px; font-size: 1.17em; font-weight: bold; }
         .header-yellow { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; font-size: 1.17em; font-weight: bold; }
         .desc-text { color: var(--text-muted); font-size: 13px; margin: 10px 0 15px 0; line-height: 1.4; }
@@ -80,7 +79,6 @@
         .result-box div span { font-weight: bold; color: var(--primary); }
         hr { border: 0; border-top: 1px solid #555; margin: 15px 0; }
 
-        /* Unified Button Layout */
         .btn-row { display: flex; gap: 10px; margin-top: 15px; flex-wrap: nowrap; }
         .btn-row button {
             flex: 1; padding: 12px 5px; border-radius: 5px; cursor: pointer; font-weight: bold; 
@@ -94,7 +92,6 @@
         .btn-red-outline { background: var(--dark-light); color: var(--red); border: 1px solid var(--red); }
         .btn-red-outline:hover { background: var(--red); color: white; }
 
-        /* SEO Sections */
         .seo-section { background: var(--dark-light); padding: 20px; border-radius: 8px; margin-top: 30px; }
         .seo-section h2 { border-bottom: 1px solid #555; padding-bottom: 10px; margin-top: 0; font-size: 18px; }
         .faq-item { margin-bottom: 15px; }
@@ -105,7 +102,6 @@
         .related-links a { color: var(--primary); text-decoration: none; font-size: 15px; }
         .related-links a:hover { text-decoration: underline; }
 
-        /* Modal */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); }
         .modal-content { background-color: var(--dark); margin: 10% auto; padding: 20px; border: 1px solid var(--primary); border-radius: 8px; width: 90%; max-width: 500px; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #555; padding-bottom: 10px; }
@@ -114,7 +110,6 @@
         .global-item { background: var(--dark-light); padding: 10px; margin: 10px 0; border-radius: 5px; display: flex; justify-content: space-between; }
         .global-total { font-size: 20px; font-weight: bold; text-align: right; margin-top: 15px; color: #28a745; }
 
-        /* PRO Banner Update */
         .buy-pro-banner {
             background: var(--dark-light); border: 1px dashed var(--primary); padding: 20px; 
             text-align: center; border-radius: 8px; margin-top: 30px; width: 100%; box-sizing: border-box;
@@ -122,7 +117,6 @@
         .buy-btn { background: var(--primary); color: var(--dark); border: none; padding: 10px 25px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px; font-size: 15px; }
         .buy-btn:hover { background: var(--primary-hover); }
     </style>
-    <script src="../nav.js"></script>
 </head>
 <body>
 <div id="global-nav-container"></div>
@@ -230,19 +224,19 @@
         </div>
     </div>
 
-    <!-- NEW FINANCIAL SUMMARY DESIGN -->
+    <!-- ТОЧНИЙ ДИЗАЙН ФІНАНСОВОГО ПІДСУМКУ ЯК НА СКРІНШОТІ -->
     <div class="result-box" id="result" style="margin-top: 25px;">
-        <div><span style="color:white; font-weight:normal;">📦 <span id="txtFMat">Materials</span></span> <span id="materialsTotal">0</span></div>
-        <div><span style="color:white; font-weight:normal;">👷 <span id="txtFWork">Labor</span></span> <span id="salaryTotal">0</span></div>
-        <div><span style="color:white; font-weight:normal;">📈 <span id="txtFProf">Markup/Profit</span></span> <span id="profitTotal">0</span></div>
-        <div><span style="color:white; font-weight:normal;">🚛 <span id="txtFLog">Logistics</span></span> <span id="deliveryTotal">0</span></div>
+        <div><span style="color:white; font-weight:normal;">📦 <span id="txtFMat">Materials</span></span> <span id="materialsTotal" style="color:var(--primary); font-weight:bold;">0</span></div>
+        <div><span style="color:white; font-weight:normal;">👷 <span id="txtFWork">Labor</span></span> <span id="salaryTotal" style="color:var(--primary); font-weight:bold;">0</span></div>
+        <div><span style="color:white; font-weight:normal;">📈 <span id="txtFProf">Markup/Profit</span></span> <span id="profitTotal" style="color:var(--primary); font-weight:bold;">0</span></div>
+        <div><span style="color:white; font-weight:normal;">🚛 <span id="txtFLog">Logistics</span></span> <span id="deliveryTotal" style="color:var(--primary); font-weight:bold;">0</span></div>
         <hr>
         <div style="font-size:20px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between;">
-            <span>💰 <span id="txtClientPrice">Total Client Price</span></span> <span id="clientTotal">0</span>
+            <span>💰 <span id="txtClientPrice">Total Client Price</span></span> <span id="clientTotal" style="color:var(--primary); font-weight:bold;">0</span>
         </div>
     </div>
 
-    <!-- ПРИХОВАНИЙ БЛОК ДЛЯ ГЕНЕРАЦІЇ ОРИГІНАЛЬНОГО PDF -->
+    <!-- ПРИХОВАНИЙ БЛОК ДЛЯ ГЕНЕРАЦІЇ PDF -->
     <div style="display: none;">
         <span id="costConcrete">0</span>
         <span id="costRebar">0</span>
@@ -250,14 +244,14 @@
         <span id="costCushion">0</span>
     </div>
 
-    <!-- MAIN ACTION BUTTONS -->
+    <!-- ГОЛОВНІ КНОПКИ ДІЙ -->
     <div class="btn-row">
         <button class="btn-outline" onclick="calculateAll()" id="btnCalc"><span>💰</span> <span id="lblBtnCalc">Calculate</span></button>
         <button class="btn-outline" onclick="copyEstimate()" id="btnCopy"><span>📋</span> <span id="lblBtnCopy">Copy</span></button>
         <button class="btn-outline" onclick="generatePDF()" id="btnPdf"><span>📄</span> <span id="lblBtnPdf">PDF Invoice</span></button>
     </div>
 
-    <!-- GLOBAL ESTIMATE MODULE -->
+    <!-- МОДУЛЬ ГЛОБАЛЬНОГО КОШТОРИСУ -->
     <div class="header-green" id="hGlobalEst">🌍 Global Estimate (All Calculators)</div>
     <p class="desc-text" id="descGlobal">Combine costs from Roof, Facade, Screed etc. into one unified project estimate.</p>
     <div class="btn-row" id="globalEstimateButtons">
@@ -266,8 +260,8 @@
         <button class="btn-red-outline" onclick="clearGlobalEstimate()"><span>🗑</span> <span id="lblBtnGlobalClear">Clear Global</span></button>
     </div>
 
-    <!-- PROJECT VAULT MODULE -->
-    <div class="header-yellow" id="hVault">💾 Foundation Project Vault</div>
+    <!-- МОДУЛЬ СХОВИЩА ПРОЄКТІВ -->
+    <div class="header-yellow" id="hVault">💾 Roof Project Vault</div>
     <div class="btn-row" id="vaultButtons">
         <button class="btn-outline" onclick="saveProject()"><span>💾</span> <span id="lblBtnSaveLoc">Save Local</span></button>
         <button class="btn-outline"><span>📁</span> <span id="lblBtnLocHist">Local History</span></button>
@@ -298,23 +292,21 @@
         </ul>
     </div>
 
-    <!-- NEW PRO BANNER DESIGN -->
+    <!-- ПРО БАНЕР -->
     <div class="buy-pro-banner" id="promoBanner">
         <h3 style="border:none; padding:0; margin:0; font-size:18px; color:white; display:flex; justify-content:center; align-items:center; gap:8px;" id="proTitle">🔒 BUILDcalc PRO</h3>
         <p id="proDesc" style="color: #ccc; font-size: 14px; margin: 15px 0;">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
         <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
     </div>
 
-    <!-- GLOBAL ESTIMATE MODAL -->
+    <!-- МОДАЛЬНЕ ВІКНО ГЛОБАЛЬНОГО КОШТОРИСУ -->
     <div id="globalModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="modalTitle">Global Estimate Dashboard</h2>
                 <button class="close-btn" onclick="closeGlobalModal()">&times;</button>
             </div>
-            <div id="globalList" style="max-height: 300px; overflow-y: auto; margin-top: 15px;">
-                <!-- Items will be injected here -->
-            </div>
+            <div id="globalList" style="max-height: 300px; overflow-y: auto; margin-top: 15px;"></div>
             <div class="global-total">
                 <span id="modalTotalText">Total:</span> <span id="globalSum">0</span>
             </div>
@@ -323,8 +315,6 @@
             </div>
         </div>
     </div>
-
-<script src="nav.js"></script>
 
 <script>
 document.querySelectorAll('input, select').forEach(el => {
@@ -396,13 +386,11 @@ function calculateAll() {
     let clientTotal = materialsTotal + salary + profit + delivery;
     currentNumericTotal = clientTotal;
 
-    /* Оновлюємо приховані поля для коректної роботи генерації PDF */
     document.getElementById("costConcrete").innerText = costConc.toFixed(2) + " " + cur;
     document.getElementById("costRebar").innerText = costRebar.toFixed(2) + " " + cur;
     document.getElementById("costFormwork").innerText = costForm.toFixed(2) + " " + cur;
     document.getElementById("costCushion").innerText = costCushion.toFixed(2) + " " + cur;
 
-    /* Оновлюємо основний інтерфейс фінансового підсумку */
     document.getElementById("materialsTotal").innerText = materialsTotal.toFixed(2) + " " + cur;
     document.getElementById("salaryTotal").innerText = salary.toFixed(2) + " " + cur;
     document.getElementById("deliveryTotal").innerText = delivery.toFixed(2) + " " + cur;
@@ -410,7 +398,6 @@ function calculateAll() {
     document.getElementById("clientTotal").innerText = clientTotal.toFixed(2) + " " + cur;
 }
 
-// ---- UNIFIED ESTIMATE LOGIC ----
 function addToGlobalEstimate() {
     let objName = document.getElementById("object").value || "Unnamed Object";
     let cur = document.getElementById("currency").value;
@@ -467,7 +454,6 @@ window.onclick = function(event) {
     if (event.target == modal) { modal.style.display = "none"; }
 }
 
-/* Англійська перша, всі втрачені ключі для PDF відновлені */
 const langData = {
     en: {
         breadHome: "Home", breadCalc: "Calculators", breadCurrent: "Foundation Calculator", subtitle: "Professional Foundation Calculator", 
@@ -483,7 +469,7 @@ const langData = {
         lblBtnCalc: "Calculate", lblBtnCopy: "Copy", lblBtnPdf: "PDF Invoice",
         hGlobalEst: "🌍 Global Estimate (All Calculators)", descGlobal: "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.",
         lblBtnGlobalAdd: "Add to Global Estimate", lblBtnGlobalView: "View Global Estimate", lblBtnGlobalClear: "Clear Global",
-        hVault: "💾 Foundation Project Vault", lblBtnSaveLoc: "Save Local", lblBtnLocHist: "Local History", lblBtnVaultClear: "Clear",
+        hVault: "💾 Roof Project Vault", lblBtnSaveLoc: "Save Local", lblBtnLocHist: "Local History", lblBtnVaultClear: "Clear",
         modalTitle: "Global Estimate Dashboard", modalTotalText: "Total:", modalClearBtn: "🗑 Clear All",
         proTitle: "🔒 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing",
         pdfTitle: "Foundation Estimate", pdfDate: "Date", pdfClient: "Client", pdfObject: "Object", pdfMat: "Materials", pdfItem: "Item", pdfCost: "Amount", pdfLabor: "Labor & Services", pdfTotalDue: "Total Due:"
@@ -502,7 +488,7 @@ const langData = {
         lblBtnCalc: "Рахувати", lblBtnCopy: "Копіювати", lblBtnPdf: "Бланк PDF",
         hGlobalEst: "🌍 Загальний Кошторис", descGlobal: "Об'єднайте витрати з усіх калькуляторів в один проєкт.",
         lblBtnGlobalAdd: "В Кошторис", lblBtnGlobalView: "Відкрити Кошторис", lblBtnGlobalClear: "Очистити",
-        hVault: "💾 Збережені Проєкти", lblBtnSaveLoc: "Зберегти", lblBtnLocHist: "Історія", lblBtnVaultClear: "Очистити",
+        hVault: "💾 Сховище Проєкту", lblBtnSaveLoc: "Зберегти", lblBtnLocHist: "Історія", lblBtnVaultClear: "Очистити",
         modalTitle: "Загальний Кошторис", modalTotalText: "Разом:", modalClearBtn: "🗑 Очистити все",
         proTitle: "🔒 BUILDcalc PRO", proDesc: "Повний розрахунок, експорт PDF, історія, профілі фірм, 3 мови.", btnBuyPro: "Оформити PRO",
         pdfTitle: "Кошторис: Фундамент", pdfDate: "Дата", pdfClient: "Клієнт", pdfObject: "Об'єкт", pdfMat: "Матеріали", pdfItem: "Найменування", pdfCost: "Сума", pdfLabor: "Роботи та Логістика", pdfTotalDue: "Разом до оплати:"
@@ -521,7 +507,7 @@ const langData = {
         lblBtnCalc: "Počítať", lblBtnCopy: "Kopírovať", lblBtnPdf: "PDF Dokument",
         hGlobalEst: "🌍 Celkový Rozpočet", descGlobal: "Spojte náklady zo všetkých kalkulačiek do jedného rozpočtu.",
         lblBtnGlobalAdd: "Pridať do Rozpočtu", lblBtnGlobalView: "Zobraziť Rozpočet", lblBtnGlobalClear: "Vymazať",
-        hVault: "💾 Uložené Projekty", lblBtnSaveLoc: "Uložiť", lblBtnLocHist: "História", lblBtnVaultClear: "Vymazať",
+        hVault: "💾 Úložisko Projektu", lblBtnSaveLoc: "Uložiť", lblBtnLocHist: "História", lblBtnVaultClear: "Vymazať",
         modalTitle: "Celkový Rozpočet", modalTotalText: "Spolu:", modalClearBtn: "🗑 Vymazať všetko",
         proTitle: "🔒 BUILDcalc PRO", proDesc: "Kompletný výpočet, PDF export, história, firemné profily, 3 jazyky.", btnBuyPro: "Zistiť cenu",
         pdfTitle: "Rozpočet: Základy", pdfDate: "Dátum", pdfClient: "Klient", pdfObject: "Objekt", pdfMat: "Materiály", pdfItem: "Položka", pdfCost: "Suma", pdfLabor: "Práca a služby", pdfTotalDue: "Spolu na úhradu:"
@@ -565,7 +551,6 @@ function setVersion(version) {
     }
 }
 
-// ПОВНІСТЮ ВІДНОВЛЕНА ОРИГІНАЛЬНА ФУНКЦІЯ PDF
 function generatePDF() {
     let t = currentTranslations; 
     let compName = document.getElementById("companyName").value || "-";
