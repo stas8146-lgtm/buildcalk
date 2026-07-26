@@ -4,8 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Roof Calculator | Roof</title>
-    <meta name="description" content="Professional roofing calculator online. Easily calculate roof area, estimate roofing materials, metal sheets, shingles, tiles, and project costs.">
+    
+    <!-- SEO: Title -->
+    <title>Professional Roof Calculator | Estimate Materials & Costs</title>
+    
+    <!-- SEO: Оновлений Meta Description згідно рекомендацій -->
+    <meta name="description" content="Free professional roof calculator. Calculate roof area, timber, metal sheets, shingles, membranes, fasteners, labor costs and generate PDF estimates in seconds.">
     
     <!-- ================= GOOGLE ANALYTICS ================= -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPRB8JPVM2"></script>
@@ -14,6 +18,23 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-RPRB8JPVM2');
+    </script>
+
+    <!-- SEO: Schema.org Structured Data (SoftwareApplication) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "BUILDcalc ROOF PRO",
+      "operatingSystem": "All",
+      "applicationCategory": "BusinessApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Professional roofing calculator online. Easily calculate roof area, estimate roofing materials, metal sheets, shingles, tiles, and project costs."
+    }
     </script>
 
     <!-- Бібліотека для генерації PDF -->
@@ -38,14 +59,34 @@
             padding: 15px;
         }
 
+        /* SEO: Breadcrumbs styling */
+        .breadcrumbs {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .breadcrumbs a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .breadcrumbs a:hover { text-decoration: underline; }
+
         .header {
             text-align: center;
             padding: 10px 0;
             border-bottom: 1px solid var(--dark-light);
         }
 
-        .logo { font-size: 24px; font-weight: bold; color: var(--text-light); }
-        .logo span { color: var(--primary); }
+        /* SEO: H1 styled as the old logo */
+        h1.logo { 
+            font-size: 24px; 
+            font-weight: bold; 
+            color: var(--text-light); 
+            margin: 0;
+            padding: 0;
+        }
+        h1.logo span { color: var(--primary); }
         .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
 
         .lang-select-wrapper select {
@@ -78,11 +119,24 @@
         .buttons-container { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; width: 100%; clear: both; }
         .action-btn {
             flex: 1; min-width: 100px; background: var(--dark-light); color: white; border: 1px solid var(--primary);
-            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold;
+            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.2s;
         }
         .action-btn:hover { background: var(--primary); color: var(--dark); }
+        .action-btn.global-btn { background: #28a745; border-color: #28a745; }
+        .action-btn.global-btn:hover { background: #218838; color: white;}
 
-        .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
+        .history-box, .global-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
+
+        /* SEO: FAQ & Links styles */
+        .seo-section { margin-top: 40px; border-top: 1px solid var(--dark-light); padding-top: 20px; }
+        .faq-item { margin-bottom: 15px; }
+        .faq-q { font-weight: bold; color: var(--primary); margin-bottom: 5px; }
+        .faq-a { color: var(--text-muted); font-size: 14px; }
+        
+        .related-links ul { list-style-type: none; padding-left: 0; }
+        .related-links li { margin-bottom: 8px; }
+        .related-links a { color: var(--text-light); text-decoration: none; border-bottom: 1px dashed var(--text-muted);}
+        .related-links a:hover { color: var(--primary); border-bottom-color: var(--primary); }
 
         .buy-pro-banner {
             background: linear-gradient(135deg, #343a40, #212529);
@@ -96,16 +150,22 @@
         .buy-btn:hover { background: var(--primary-hover); }
     </style>
 
-    <!-- Підключення навігації (якщо nav.js в корені, використовуйте ../nav.js, якщо в тій самій папці — nav.js) -->
     <script src="../nav.js"></script>
 </head>
 <body>
 
-<!-- Контейнер для глобального меню -->
 <div id="global-nav-container"></div>
 
+    <!-- SEO: Breadcrumbs -->
+    <div class="breadcrumbs">
+        <a href="/" id="bcHome">Home</a> &gt; 
+        <a href="/calculators" id="bcCalc">Calculators</a> &gt; 
+        <span id="bcActive">Roof Calculator</span>
+    </div>
+
     <div class="header">
-        <div class="logo">🏠 <span>BUILD</span>calc ROOF PRO</div>
+        <!-- SEO: Змінено на H1 -->
+        <h1 class="logo">🏠 <span>BUILD</span>calc ROOF PRO</h1>
         <div class="subtitle" id="subtitle">Professional Roof Calculator</div>
 
         <div class="lang-select-wrapper">
@@ -122,7 +182,6 @@
         <button class="tab-btn" id="tabPro" onclick="setVersion('pro')">PRO <span class="badge">Business</span></button>
     </div>
 
-    <!-- Обгортка розрахунків -->
     <div id="calcForm">
         <h3 id="objectTitle">🏠 Object Data</h3>
         <div class="grid-inputs">
@@ -352,10 +411,22 @@
         <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Invoice</button>
     </div>
 
-    <h3 id="hProjects" style="clear: both; width: 100%;">💾 Project Vault</h3>
+    <!-- ФІЧА: ЄДИНИЙ КОШТОРИС ДЛЯ ВСІХ КАЛЬКУЛЯТОРІВ -->
+    <h3 id="hGlobalEst" style="clear: both; width: 100%; border-left-color: #28a745;">🌍 Global Estimate (All Calculators)</h3>
+    <p style="font-size:12px; color:var(--text-muted);" id="txtGlobalDesc">Combine costs from Roof, Facade, Screed etc. into one unified project estimate.</p>
+    
     <div class="buttons-container">
-        <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Save</button>
-        <button class="action-btn" onclick="showHistory()" id="btnHistory">📂 History</button>
+        <button class="action-btn global-btn" onclick="addToGlobalEstimate()" id="btnAddGlobal">➕ Add to Global Estimate</button>
+        <button class="action-btn global-btn" onclick="showGlobalEstimate()" id="btnViewGlobal">👁 View Global Estimate</button>
+        <button class="action-btn global-btn" onclick="clearGlobalEstimate()" id="btnClearGlobal" style="background:transparent; border-color:red; color:red;">🗑 Clear Global</button>
+    </div>
+    <div id="globalBox" class="global-box" style="display:none; border-color: #28a745;"></div>
+
+    <!-- ІСТОРІЯ ТІЛЬКИ ЦЬОГО КАЛЬКУЛЯТОРА -->
+    <h3 id="hProjects" style="clear: both; width: 100%;">💾 Roof Project Vault</h3>
+    <div class="buttons-container">
+        <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Save Local</button>
+        <button class="action-btn" onclick="showHistory()" id="btnHistory">📂 Local History</button>
         <button class="action-btn" onclick="clearHistory()" id="btnClear">🗑 Clear</button>
     </div>
 
@@ -365,6 +436,35 @@
         <h3 style="border:none; padding:0; margin:0;" id="proTitle">🔓 BUILDcalc PRO</h3>
         <p id="proDesc">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
         <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
+    </div>
+
+    <!-- SEO: FAQ SECTION -->
+    <div class="seo-section">
+        <h3 id="faqTitle" style="border-left:none; margin-top:0;">❓ Frequently Asked Questions</h3>
+        
+        <div class="faq-item">
+            <div class="faq-q" id="faq1Q">How much extra material should I add for waste?</div>
+            <div class="faq-a" id="faq1A">For gable roofs, a 5-7% waste margin is standard. For complex hip roofs with many valleys, we recommend 10-15%.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" id="faq2Q">How are rafters calculated?</div>
+            <div class="faq-a" id="faq2A">The calculator divides the roof length by the rafter spacing (gauge) and adds the necessary volume for both sides of the roof, taking into account the chosen timber cross-section.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" id="faq3Q">Is timber included in the final price?</div>
+            <div class="faq-a" id="faq3A">Yes, if you input a price per m³ in the Labor & Logistics section, the total cost of framework timber is added to the grand total.</div>
+        </div>
+    </div>
+
+    <!-- SEO: ВНУТРІШНІ ПОСИЛАННЯ (ПЕРЕЛІНКОВКА) -->
+    <div class="seo-section related-links">
+        <h3 id="relatedTitle" style="border-left:none; margin-top:0;">🔗 Related Calculators</h3>
+        <ul>
+            <li><a href="/facade-calculator" id="linkFacade">Facade Insulation Calculator</a></li>
+            <li><a href="/screed-calculator" id="linkScreed">Floor Screed Calculator</a></li>
+            <li><a href="/plaster-calculator" id="linkPlaster">Plastering Calculator</a></li>
+            <li><a href="/foundation-calculator" id="linkFoundation">Concrete Foundation Calculator</a></li>
+        </ul>
     </div>
 
 <!-- ================= SCRIPTS ================= -->
@@ -494,6 +594,9 @@ function calculateEstimate() {
     document.getElementById("salaryTotal").innerHTML = salaryCost.toFixed(2) + " €";
     document.getElementById("profitTotal").innerHTML = profitCost.toFixed(2) + " €";
     document.getElementById("deliveryTotal").innerHTML = (delivery + other).toFixed(2) + " €";
+    
+    // Зберігаємо число для глобального кошторису
+    document.getElementById("clientTotal").setAttribute("data-raw", total);
     document.getElementById("clientTotal").innerHTML = total.toFixed(2) + " €";
 }
 
@@ -600,7 +703,7 @@ function saveProject() {
     let list = JSON.parse(localStorage.getItem("roofProjects")) || [];
     list.unshift(project);
     localStorage.setItem("roofProjects", JSON.stringify(list));
-    alert("Project saved to history!");
+    alert("Project saved to local history!");
 }
 
 function showHistory() {
@@ -625,6 +728,99 @@ function clearHistory() {
     }
 }
 
+// ----------------------------------------------------
+// ФУНКЦІЇ ДЛЯ ЄДИНОГО КОШТОРИСУ (GLOBAL ESTIMATE)
+// ----------------------------------------------------
+function addToGlobalEstimate() {
+    let rawPrice = parseFloat(document.getElementById("clientTotal").getAttribute("data-raw")) || 0;
+    if (rawPrice === 0) {
+        alert("Please calculate the estimate first.");
+        return;
+    }
+
+    let objName = document.getElementById("object").value || "Unnamed Object";
+    let clientName = document.getElementById("client").value || "-";
+    
+    let globalItem = {
+        id: Date.now(),
+        calculator: "Roof",
+        object: objName,
+        client: clientName,
+        price: rawPrice,
+        currency: "€",
+        date: new Date().toLocaleDateString()
+    };
+
+    let globalList = JSON.parse(localStorage.getItem("buildCalcGlobalEstimate")) || [];
+    globalList.push(globalItem);
+    localStorage.setItem("buildCalcGlobalEstimate", JSON.stringify(globalList));
+    
+    alert(`Successfully added to Global Estimate!\nItem: Roof (${objName})\nValue: ${rawPrice.toFixed(2)} €`);
+    
+    // Якщо відкритий блок глобального кошторису - оновлюємо його
+    if (document.getElementById("globalBox").style.display === "block") {
+        showGlobalEstimate(true);
+    }
+}
+
+function showGlobalEstimate(forceUpdate = false) {
+    let box = document.getElementById("globalBox");
+    if (!forceUpdate) {
+        box.style.display = box.style.display === "none" ? "block" : "none";
+        if (box.style.display === "none") return;
+    }
+    
+    let globalList = JSON.parse(localStorage.getItem("buildCalcGlobalEstimate")) || [];
+    if (globalList.length === 0) {
+        box.innerHTML = "<p style='color:var(--text-muted);'>Global estimate is empty. Add calculations from different calculators.</p>";
+        return;
+    }
+
+    let html = `<h4 style="margin-top:0; color: #28a745;">Unified Project Invoice</h4>`;
+    let grandTotal = 0;
+
+    globalList.forEach(item => {
+        grandTotal += item.price;
+        html += `
+            <div style="margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <b>[${item.calculator}]</b> ${item.object}
+                    <div style="font-size:11px; color:#aaa;">${item.date} | Client: ${item.client}</div>
+                </div>
+                <div style="text-align:right;">
+                    <span style="color:var(--primary); font-weight:bold;">${item.price.toFixed(2)} ${item.currency}</span>
+                    <br>
+                    <button onclick="removeGlobalItem(${item.id})" style="background:none; border:none; color:red; font-size:12px; cursor:pointer; padding:0;">Remove</button>
+                </div>
+            </div>
+            <hr style="border-top:1px dashed #444; margin:5px 0;">
+        `;
+    });
+
+    html += `
+        <div style="margin-top: 15px; font-size: 20px; text-align: right;">
+            GRAND TOTAL: <strong style="color: #28a745;">${grandTotal.toFixed(2)} €</strong>
+        </div>
+    `;
+    box.innerHTML = html;
+}
+
+function removeGlobalItem(id) {
+    let globalList = JSON.parse(localStorage.getItem("buildCalcGlobalEstimate")) || [];
+    globalList = globalList.filter(item => item.id !== id);
+    localStorage.setItem("buildCalcGlobalEstimate", JSON.stringify(globalList));
+    showGlobalEstimate(true);
+}
+
+function clearGlobalEstimate() {
+    if(confirm("Are you sure you want to delete the ENTIRE Global Estimate? This affects all calculators.")) {
+        localStorage.removeItem("buildCalcGlobalEstimate");
+        showGlobalEstimate(true);
+    }
+}
+// ----------------------------------------------------
+
+
 function copyEstimate() {
     let res = document.getElementById("clientTotal").innerText;
     navigator.clipboard.writeText(`Roof Estimate for ${document.getElementById("object").value}:\nTotal Price: ${res}`);
@@ -633,6 +829,7 @@ function copyEstimate() {
 
 const langData = {
     en: {
+        bcHome: "Home", bcCalc: "Calculators", bcActive: "Roof Calculator",
         subtitle: "Professional Roof Calculator",
         objectTitle: "🏠 Object Data", objectLabel: "Object Name", addressLabel: "Address", clientLabel: "Client",
         hRoof: "🏠 Roof Specs", lblRoofType: "Roof Type", optGable: "Gable", optHip: "Hip", optShed: "Shed", optFlat: "Flat",
@@ -647,14 +844,29 @@ const langData = {
         lblWoodPrice: "Timber Price €/m³", lblSalaryPrice: "Labor Cost €/m²", lblProfitPrice: "Markup/Profit €/m²", lblDeliveryPrice: "Logistics €", lblOtherPrice: "Other Costs €",
         hFinal: "📊 Financial Summary", txtClientPrice: "Total Client Price", btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice",
         hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
-        hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
+        
+        hGlobalEst: "🌍 Global Estimate (All Calculators)", txtGlobalDesc: "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.",
+        btnAddGlobal: "➕ Add to Global Estimate", btnViewGlobal: "👁 View Global Estimate", btnClearGlobal: "🗑 Clear Global",
+        
+        hProjects: "💾 Roof Project Vault", btnSave: "💾 Save Local", btnHistory: "📂 Local History", btnClear: "🗑 Clear",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing",
         txtRafters: "Rafters", txtMauerlat: "Wall Plate", txtCounter: "Counter Batten", txtBatten: "Battens", txtWoodCube: "Total Timber",
         txtCover: "Covering (with waste)", txtParo: "Vapour Barrier", txtHydro: "Underlay Membrane", txtDiff: "Breather Membrane",
         txtScrewRes: "Screws", txtNailRes: "Nails", txtAnchorRes: "Anchors",
-        txtFWood: "Timber", txtFCover: "Covering", txtFMemb: "Membranes", txtFFix: "Fasteners", txtFMat: "Materials", txtFWork: "Labor", txtFProf: "Markup/Profit", txtFLog: "Logistics"
+        txtFWood: "Timber", txtFCover: "Covering", txtFMemb: "Membranes", txtFFix: "Fasteners", txtFMat: "Materials", txtFWork: "Labor", txtFProf: "Markup/Profit", txtFLog: "Logistics",
+        
+        faqTitle: "❓ Frequently Asked Questions",
+        faq1Q: "How much extra material should I add for waste?",
+        faq1A: "For gable roofs, a 5-7% waste margin is standard. For complex hip roofs with many valleys, we recommend 10-15%.",
+        faq2Q: "How are rafters calculated?",
+        faq2A: "The calculator divides the roof length by the rafter spacing (gauge) and adds the necessary volume for both sides of the roof, taking into account the chosen timber cross-section.",
+        faq3Q: "Is timber included in the final price?",
+        faq3A: "Yes, if you input a price per m³ in the Labor & Logistics section, the total cost of framework timber is added to the grand total.",
+        relatedTitle: "🔗 Related Calculators",
+        linkFacade: "Facade Insulation Calculator", linkScreed: "Floor Screed Calculator", linkPlaster: "Plastering Calculator", linkFoundation: "Concrete Foundation Calculator"
     },
     ua: {
+        bcHome: "Головна", bcCalc: "Калькулятори", bcActive: "Калькулятор даху",
         subtitle: "Професійний калькулятор даху",
         objectTitle: "🏠 Дані об'єкта", objectLabel: "Назва об'єкта", addressLabel: "Адреса", clientLabel: "Клієнт",
         hRoof: "🏠 Покрівля", lblRoofType: "Тип даху", optGable: "Двосхилий", optHip: "Чотирисхилий", optShed: "Односхилий", optFlat: "Плоский",
@@ -670,14 +882,29 @@ const langData = {
         lblWoodPrice: "Деревина €/м³", lblSalaryPrice: "Робота €/м²", lblProfitPrice: "Прибуток €/м²", lblDeliveryPrice: "Логістика €", lblOtherPrice: "Інші витрати €",
         hFinal: "📊 Фінансовий підсумок", txtClientPrice: "Ціна клієнту", btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF",
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
-        hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
+        
+        hGlobalEst: "🌍 Єдиний кошторис", txtGlobalDesc: "Об'єднайте розрахунки даху, фасаду, стяжки тощо в один загальний чек.",
+        btnAddGlobal: "➕ Додати у Єдиний кошторис", btnViewGlobal: "👁 Відкрити Єдиний кошторис", btnClearGlobal: "🗑 Очистити все",
+
+        hProjects: "💾 Локальні проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія дахів", btnClear: "🗑 Очистити",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість",
         txtRafters: "Крокви", txtMauerlat: "Мауерлат", txtCounter: "Контробрешітка", txtBatten: "Обрешітка", txtWoodCube: "Деревина (загалом)",
         txtCover: "Покриття (із запасом)", txtParo: "Паробар'єр", txtHydro: "Гідробар'єр", txtDiff: "Дифузійна мембрана",
         txtScrewRes: "Саморізи", txtNailRes: "Цвяхи", txtAnchorRes: "Анкери",
-        txtFWood: "Деревина", txtFCover: "Покриття", txtFMemb: "Мембрани", txtFFix: "Кріплення", txtFMat: "Матеріали", txtFWork: "Робота", txtFProf: "Прибуток", txtFLog: "Логістика"
+        txtFWood: "Деревина", txtFCover: "Покриття", txtFMemb: "Мембрани", txtFFix: "Кріплення", txtFMat: "Матеріали", txtFWork: "Робота", txtFProf: "Прибуток", txtFLog: "Логістика",
+        
+        faqTitle: "❓ Поширені запитання (FAQ)",
+        faq1Q: "Скільки відсотків додавати на підрізку матеріалу?",
+        faq1A: "Для звичайного двосхилого даху стандарт – 5-7%. Якщо дах складний, чотирисхилий з розжолобками, ми рекомендуємо ставити 10-15%.",
+        faq2Q: "Як рахуються крокви у калькуляторі?",
+        faq2A: "Калькулятор ділить довжину даху на крок крокв та вираховує необхідний об'єм кубатури з урахуванням обраного перерізу деревини на обидва схили.",
+        faq3Q: "Чи враховується дерево у фінансовий підсумок?",
+        faq3A: "Так, якщо ви вкажете ціну за куб у блоці 'Вартість робіт та логістики', вартість усього каркасу автоматично додасться до ціни для клієнта.",
+        relatedTitle: "🔗 Інші калькулятори",
+        linkFacade: "Калькулятор утеплення фасаду", linkScreed: "Калькулятор стяжки підлоги", linkPlaster: "Калькулятор штукатурки", linkFoundation: "Калькулятор фундаменту"
     },
     sk: {
+        bcHome: "Domov", bcCalc: "Kalkulačky", bcActive: "Kalkulačka strechy",
         subtitle: "Profesionálna strešná kalkulačka",
         objectTitle: "🏠 Údaje o objekte", objectLabel: "Názov objektu", addressLabel: "Adresa", clientLabel: "Klient",
         hRoof: "🏠 Strecha", lblRoofType: "Typ strechy", optGable: "Sedlová", optHip: "Valbová", optShed: "Pultová", optFlat: "Plochá",
@@ -692,12 +919,26 @@ const langData = {
         lblWoodPrice: "Drevo €/m³", lblSalaryPrice: "Práca €/m²", lblProfitPrice: "Zisk €/m²", lblDeliveryPrice: "Logistika €", lblOtherPrice: "Ostatné náklady €",
         hFinal: "📊 Finančný prehľad", txtClientPrice: "Cena pre klienta", btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument",
         hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
-        hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
+        
+        hGlobalEst: "🌍 Globálny rozpočet", txtGlobalDesc: "Spojte rozpočty zo strechy, fasády atď. do jedného celkového projektu.",
+        btnAddGlobal: "➕ Pridať do Globálneho rozpočtu", btnViewGlobal: "👁 Zobraziť Globálny rozpočet", btnClearGlobal: "🗑 Vymazať Všetko",
+
+        hProjects: "💾 Lokálne projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História striech", btnClear: "🗑 Vymazať",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu",
         txtRafters: "Krokvy", txtMauerlat: "Murovanica", txtCounter: "Kontralata", txtBatten: "Latovanie", txtWoodCube: "Drevo (spolu)",
         txtCover: "Krytina (s rezervou)", txtParo: "Parozábrana", txtHydro: "Hydroizolácia", txtDiff: "Difúzna membrána",
         txtScrewRes: "Skrutky", txtNailRes: "Klince", txtAnchorRes: "Kotvy",
-        txtFWood: "Drevo", txtFCover: "Krytina", txtFMemb: "Membrány", txtFFix: "Spojovací materiál", txtFMat: "Materiály", txtFWork: "Práca", txtFProf: "Zisk", txtFLog: "Logistika"
+        txtFWood: "Drevo", txtFCover: "Krytina", txtFMemb: "Membrány", txtFFix: "Spojovací materiál", txtFMat: "Materiály", txtFWork: "Práca", txtFProf: "Zisk", txtFLog: "Logistika",
+        
+        faqTitle: "❓ Často kladené otázky",
+        faq1Q: "Akú rezervu pridať na odrezky?",
+        faq1A: "Pre klasickú sedlovú strechu odporúčame 5-7%. Pri zložitejších valbových strechách s úžľabiami je lepšie zvoliť 10-15%.",
+        faq2Q: "Ako sa počítajú krokvy?",
+        faq2A: "Kalkulačka vydelí dĺžku strechy krokom latovania a vypočíta presný objem dreva podľa zvoleného prierezu na obidve strany strechy.",
+        faq3Q: "Je drevo započítané do koncovej ceny?",
+        faq3A: "Áno, ak zadáte cenu za kubík dreva v sekcii Cena práce a logistiky, celková cena krovu sa automaticky pripočíta k celkovej cene.",
+        relatedTitle: "🔗 Ďalšie kalkulačky",
+        linkFacade: "Kalkulačka zateplenia fasády", linkScreed: "Kalkulačka podlahových poterov", linkPlaster: "Kalkulačka omietok", linkFoundation: "Kalkulačka základov"
     }
 };
 
