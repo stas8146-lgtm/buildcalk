@@ -144,6 +144,7 @@
         .related-links a:hover { color: var(--primary); }
     </style>
     <script src="../nav.js"></script>
+<div id="global-estimate-container"></div>
 </head>
 <body>
 
@@ -347,15 +348,7 @@
         <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Invoice</button>
     </div>
 
-    <!-- GLOBAL ESTIMATE SECTION -->
-    <div class="global-section">
-        <h3 id="hGlobalTitle">🌍 Global Estimate (All Calculators)</h3>
-        <p class="global-desc" id="hGlobalDesc">Combine costs from Roof, Facade, Screed etc. into one unified project estimate.</p>
-        <div class="buttons-container">
-            <button class="action-btn btn-green" onclick="addToGlobalEstimate()" id="btnGlobalAdd">➕ Add to Global Estimate</button>
-            <button class="action-btn btn-green" onclick="viewGlobalEstimate()" id="btnGlobalView">👁 View Global Estimate</button>
-            <button class="action-btn btn-outline-red" onclick="clearGlobalEstimate()" id="btnGlobalClear">🗑 Clear Global</button>
-        </div>
+    <div id="global-estimate-container"></div>
     </div>
 
     <!-- PROJECT VAULT SECTION -->
