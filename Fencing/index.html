@@ -28,6 +28,9 @@
             --dark-light: #343a40;
             --text-light: #ffffff;
             --text-muted: #a0a0a0;
+            --success: #28a745;
+            --success-hover: #218838;
+            --danger: #dc3545;
         }
 
         body {
@@ -59,6 +62,7 @@
         .badge { background: red; color: white; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 5px; }
 
         h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; color: var(--text-light); }
+        .h-green { border-left: 4px solid var(--success); } /* Стиль для Global Estimate */
 
         .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px; }
         .input-group { display: flex; flex-direction: column; }
@@ -78,9 +82,15 @@
         .buttons-container { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; width: 100%; clear: both; }
         .action-btn {
             flex: 1; min-width: 100px; background: var(--dark-light); color: white; border: 1px solid var(--primary);
-            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold;
+            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; text-align: center;
         }
         .action-btn:hover { background: var(--primary); color: var(--dark); }
+
+        /* Стилі для кнопок Global Estimate (згідно зі скріншотом) */
+        .btn-green { background: var(--success); color: white; border: 1px solid var(--success); }
+        .btn-green:hover { background: var(--success-hover); color: white; border-color: var(--success-hover); }
+        .btn-red-outline { background: var(--dark-light); color: var(--danger); border: 1px solid var(--danger); }
+        .btn-red-outline:hover { background: var(--danger); color: white; }
 
         .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
 
@@ -267,13 +277,26 @@
     <div class="buttons-container">
         <button class="action-btn" onclick="calculateAll()" id="btnCalc">💰 Calculate</button>
         <button class="action-btn" onclick="copyEstimate()" id="btnCopy">📋 Copy</button>
-        <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Estimate</button>
+        <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Invoice</button>
     </div>
 
-    <h3 id="hProjects" style="clear: both; width: 100%;">💾 Project Vault</h3>
+    <!-- ================= БЛОК GLOBAL ESTIMATE ================= -->
+    <h3 id="hGlobal" class="h-green" style="clear: both; width: 100%;">🌍 Global Estimate (All Calculators)</h3>
+    <p id="descGlobal" style="color: var(--text-muted); font-size: 14px; margin-top: 5px;">Combine costs from Roof, Facade, Screed etc. into one unified project estimate.</p>
+    
     <div class="buttons-container">
-        <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Save</button>
-        <button class="action-btn" onclick="showHistory()" id="btnHistory">📂 History</button>
+        <button class="action-btn btn-green" onclick="addToGlobal()" id="btnAddGlobal">➕ Add to Global Estimate</button>
+        <button class="action-btn btn-green" onclick="viewGlobal()" id="btnViewGlobal">👁 View Global Estimate</button>
+        <button class="action-btn btn-red-outline" onclick="clearGlobal()" id="btnClearGlobal">🗑 Clear Global</button>
+    </div>
+
+    <div id="globalHistoryBox" class="history-box" style="display:none; border-color: var(--success);"></div>
+    <!-- ======================================================== -->
+
+    <h3 id="hProjects" style="clear: both; width: 100%;">💾 Local Project Vault</h3>
+    <div class="buttons-container">
+        <button class="action-btn" onclick="saveProject()" id="btnSave">💾 Save Local</button>
+        <button class="action-btn" onclick="showHistory()" id="btnHistory">📂 Local History</button>
         <button class="action-btn" onclick="btnClear()" id="btnClear">🗑 Clear</button>
     </div>
 
@@ -312,7 +335,7 @@
     </div>
 
     <div class="buy-pro-banner">
-        <h3 style="border:none; padding:0; margin:0;" id="proTitle">🔓 BUILDcalc PRO</h3>
+        <h3 style="border:none; padding:0; margin:0;" id="proTitle">🔒 BUILDcalc PRO</h3>
         <p id="proDesc">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
         <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
     </div>
@@ -444,7 +467,7 @@ function showHistory() {
 }
 
 function btnClear() {
-    if(confirm("Clear history?")) {
+    if(confirm("Clear local history?")) {
         localStorage.removeItem("fencingProjects");
         showHistory();
     }
@@ -455,6 +478,61 @@ function copyEstimate() {
     navigator.clipboard.writeText(`Fencing Estimate for ${document.getElementById("object").value}:\nTotal Price: ${res}`);
     alert("Copied to clipboard!");
 }
+
+/* ================= ЛОГІКА GLOBAL ESTIMATE ================= */
+function addToGlobal() {
+    let objName = document.getElementById("object").value || "Unnamed Object";
+    let totalRaw = document.getElementById("clientTotal").innerText;
+    
+    let item = {
+        category: "Fencing / Gates",
+        object: objName,
+        price: totalRaw,
+        date: new Date().toLocaleString()
+    };
+    
+    let globalList = JSON.parse(localStorage.getItem("buildcalcGlobalEstimate")) || [];
+    globalList.push(item);
+    localStorage.setItem("buildcalcGlobalEstimate", JSON.stringify(globalList));
+    alert("Successfully added to Global Estimate!");
+}
+
+function viewGlobal() {
+    let box = document.getElementById("globalHistoryBox");
+    box.style.display = box.style.display === "none" ? "block" : "none";
+    let list = JSON.parse(localStorage.getItem("buildcalcGlobalEstimate")) || [];
+    
+    if (list.length === 0) {
+        box.innerHTML = "<p style='color:var(--text-muted);'>Global Estimate is empty</p>";
+        return;
+    }
+    
+    let html = `<h4 style='margin-top:0; color:var(--success);'>🌍 Combined Global Estimate</h4>`;
+    let totalSum = 0;
+    
+    list.forEach(p => {
+        html += `<div style="margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                    <div style="font-size:14px;"><b>${p.category}</b><br><span style="color:#aaa;">${p.object}</span></div>
+                    <div style="color:var(--primary); font-weight:bold;">${p.price}</div>
+                 </div>`;
+        // Витягуємо числа з рядка ціни
+        let num = parseFloat(p.price.replace(/[^\d.-]/g, ''));
+        if(!isNaN(num)) totalSum += num;
+    });
+    
+    html += `<hr style="border-top:1px solid #444; margin:15px 0 10px 0;">`;
+    html += `<div style="font-size:18px; font-weight:bold; text-align:right;">Total Project: <span style="color:var(--success);">${totalSum.toFixed(2)} €</span></div>`;
+    box.innerHTML = html;
+}
+
+function clearGlobal() {
+    if(confirm("Are you sure you want to clear the unified Global Estimate?")) {
+        localStorage.removeItem("buildcalcGlobalEstimate");
+        let box = document.getElementById("globalHistoryBox");
+        if(box.style.display === "block") viewGlobal(); 
+    }
+}
+/* ========================================================== */
 
 const langData = {
     en: {
@@ -467,7 +545,13 @@ const langData = {
         hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
         hFinal: "📊 Financial Summary", txtCostPosts: "Posts Cost", txtCostFill: "Filling Cost", txtCostConcrete: "Total Concrete (Posts + Foundation)",
         txtFMat: "Total Materials", txtFWork: "Installation Labor", txtClientPrice: "Total Project Price",
-        btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Estimate", hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
+        btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice", 
+        
+        /* Глобальні переклади */
+        hGlobal: "🌍 Global Estimate (All Calculators)", descGlobal: "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.",
+        btnAddGlobal: "➕ Add to Global Estimate", btnViewGlobal: "👁 View Global Estimate", btnClearGlobal: "🗑 Clear Global",
+        
+        hProjects: "💾 Local Project Vault", btnSave: "💾 Save Local", btnHistory: "📂 Local History", btnClear: "🗑 Clear",
         seoTitle: "About Professional Fencing Calculation",
         seoText: "Accurate estimation of fencing materials prevents unnecessary expenses and project delays. Our online calculator allows contractors and homeowners to precisely calculate the number of support posts, panel filling area, concrete volume for post holes and strip foundations, as well as total installation labor costs.",
         faqHeaderTitle: "Frequently Asked Questions",
@@ -477,7 +561,7 @@ const langData = {
         faqA2: "Yes, the tool computes both individual post hole concrete and continuous strip foundation volume based on your width and depth inputs.",
         linkHeaderTitle: "Explore Other BUILDcalc Tools",
         linkConcrete: "Concrete Calculator", linkBlocks: "Masonry Blocks", linkPavers: "Pavers & Paving", linkRoofing: "Roofing Estimator",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing"
+        proTitle: "🔒 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing"
     },
     ua: {
         subtitle: "Калькулятор парканів та огорож",
@@ -489,7 +573,13 @@ const langData = {
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
         hFinal: "📊 Фінансовий підсумок", txtCostPosts: "Вартість стовпчиків", txtCostFill: "Вартість заповнення", txtCostConcrete: "Бетон (стовпчики + фундамент)",
         txtFMat: "Всього матеріалів", txtFWork: "Монтажні роботи", txtClientPrice: "Загальна ціна проєкту",
-        btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF", hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
+        btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF", 
+        
+        /* Глобальні переклади */
+        hGlobal: "🌍 Глобальний кошторис (Всі калькулятори)", descGlobal: "Об'єднайте витрати на дах, фасад, стяжку тощо в єдиний загальний кошторис проєкту.",
+        btnAddGlobal: "➕ Додати в Глобальний", btnViewGlobal: "👁 Перегляд Глобального", btnClearGlobal: "🗑 Очистити Глобальний",
+        
+        hProjects: "💾 Локальні проєкти", btnSave: "💾 Зберегти локально", btnHistory: "📂 Локальна історія", btnClear: "🗑 Очистити",
         seoTitle: "Про професійний розрахунок паркану",
         seoText: "Точний розрахунок матеріалів для огорожі запобігає зайвим витратам і затримкам проєкту. Наш калькулятор дозволяє підрядникам і власникам будівель розрахувати кількість стовпів, площу заповнення, об'єм бетону для фундаменту та вартість монтажних робіт.",
         faqHeaderTitle: "Часті запитання (FAQ)",
@@ -499,7 +589,7 @@ const langData = {
         faqA2: "Так, інструмент автоматично обчислює як об'єм бетону під ями для стовпів, так і для безперервного стрічкового фундаменту за вашими розмірами.",
         linkHeaderTitle: "Інші інструменти BUILDcalc",
         linkConcrete: "Калькулятор бетону", linkBlocks: "Будівельні блоки", linkPavers: "Бруківка та плитка", linkRoofing: "Розрахунок покрівлі",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість"
+        proTitle: "🔒 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість"
     },
     sk: {
         subtitle: "Kalkulačka plotov a oplotenia",
@@ -511,7 +601,13 @@ const langData = {
         hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
         hFinal: "📊 Finančný prehľad", txtCostPosts: "Cena stĺpikov", txtCostFill: "Cena výplne", txtCostConcrete: "Celkový betón (stĺpiky + základ)",
         txtFMat: "Celkovo materiály", txtFWork: "Montážne práce", txtClientPrice: "Celková cena projektu",
-        btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument", hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
+        btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument", 
+        
+        /* Глобальні переклади */
+        hGlobal: "🌍 Globálny rozpočet (Všetky kalkulačky)", descGlobal: "Spojte náklady na strechu, fasádu, poter atď. do jedného celkového rozpočtu projektu.",
+        btnAddGlobal: "➕ Pridať do Globálneho", btnViewGlobal: "👁 Zobraziť Globálny", btnClearGlobal: "🗑 Vymazať Globálny",
+        
+        hProjects: "💾 Lokálne projekty", btnSave: "💾 Uložiť lokálne", btnHistory: "📂 Lokálna história", btnClear: "🗑 Vymazať",
         seoTitle: "O profesionálnom výpočte plotov",
         seoText: "Presný odhad materiálov na oplotenie zabraňuje zbytočným výdavkom a meškaniu projektu. Naša online kalkulačka umožňuje presne vypočítať počet stĺpikov, plochu výplne, objem betónu a náklady na prácu.",
         faqHeaderTitle: "Často kladené otázky (FAQ)",
@@ -521,7 +617,7 @@ const langData = {
         faqA2: "Áno, nástroj počíta objem betónu pre jamky stĺpikov aj pre priebežný základ na základe vami zadaných rozmerov.",
         linkHeaderTitle: "Preskúmajte ďalšie nástroje BUILDcalc",
         linkConcrete: "Kalkulačka betónu", linkBlocks: "Stavebné bloky", linkPavers: "Dlažba", linkRoofing: "Kalkulačka strechy",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu"
+        proTitle: "🔒 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu"
     }
 };
 
