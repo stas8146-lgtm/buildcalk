@@ -35,8 +35,9 @@
             --dark-light: #343a40;
             --text-light: #ffffff;
             --text-muted: #a0a0a0;
-            --global-btn: #9c27b0;
-            --global-btn-hover: #7b1fa2;
+            --success: #28a745;
+            --success-hover: #218838;
+            --danger: #dc3545;
         }
 
         body {
@@ -72,7 +73,7 @@
         .tab-btn.active { background: var(--primary); color: var(--dark); font-weight: bold; }
         .badge { background: red; color: white; font-size: 10px; padding: 2px 5px; border-radius: 3px; margin-left: 5px; }
 
-        h2, h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; color: var(--text-light); }
+        h2, h3 { border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; color: var(--text-light); display: flex; align-items: center; gap: 8px; }
         
         .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px; }
         .input-group { display: flex; flex-direction: column; }
@@ -89,15 +90,24 @@
 
         hr { border: 0; border-top: 1px solid #555; margin: 10px 0; }
 
-        .buttons-container { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; width: 100%; clear: both; }
+        /* BUTTONS CONTAINER & STYLING */
+        .buttons-container { display: flex; gap: 10px; margin: 15px 0 25px 0; flex-wrap: wrap; width: 100%; clear: both; }
         .action-btn {
-            flex: 1; min-width: 100px; background: var(--dark-light); color: white; border: 1px solid var(--primary);
-            padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; text-align: center;
+            flex: 1; min-width: 100px; background: var(--dark-light); color: var(--text-light); 
+            border: 1px solid var(--primary); padding: 12px; border-radius: 6px; 
+            cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: normal;
         }
-        .action-btn:hover { background: var(--primary); color: var(--dark); }
+        .action-btn:hover { background: #3a4047; }
         
-        .global-btn { border-color: var(--global-btn); color: var(--global-btn); }
-        .global-btn:hover { background: var(--global-btn); color: white; }
+        /* Global Estimate Specific Styles */
+        .global-section h3 { border-left-color: var(--success); margin-bottom: 5px; }
+        .global-desc { color: var(--text-muted); font-size: 13px; margin: 0 0 15px 14px; }
+        
+        .btn-green { background: var(--success) !important; color: white !important; border: none !important; }
+        .btn-green:hover { background: var(--success-hover) !important; }
+        
+        .btn-outline-red { background: transparent !important; color: var(--danger) !important; border: 1px solid var(--danger) !important; }
+        .btn-outline-red:hover { background: rgba(220, 53, 69, 0.1) !important; }
 
         .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
 
@@ -114,11 +124,13 @@
         .buy-pro-banner {
             background: linear-gradient(135deg, #343a40, #212529);
             border: 2px dashed var(--primary); padding: 20px; text-align: center;
-            border-radius: 8px; margin-top: 30px; width: 100%; box-sizing: border-box; clear: both;
+            border-radius: 12px; margin-top: 30px; width: 100%; box-sizing: border-box; clear: both;
         }
+        .buy-pro-banner h3 { margin: 0 0 10px 0; border: none; padding: 0; justify-content: center; color: var(--text-light); display: flex; align-items: center; gap: 8px;}
+        .buy-pro-banner p { color: var(--text-muted); font-size: 14px; margin-bottom: 15px; }
         .buy-btn {
             background: var(--primary); color: var(--dark); border: none;
-            padding: 10px 20px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px;
+            padding: 12px 25px; font-weight: bold; border-radius: 6px; cursor: pointer;
         }
         .buy-btn:hover { background: var(--primary-hover); }
     </style>
@@ -303,15 +315,22 @@
         </div>
     </div>
 
-    <div class="buttons-container">
-        <!-- Глобальний кошторис -->
-        <button class="action-btn global-btn" onclick="addToGlobalEstimate()" id="btnGlobal">🌍 Add to Global Estimate</button>
-    </div>
-    
+    <!-- MAIN ACTION BUTTONS -->
     <div class="buttons-container">
         <button class="action-btn" onclick="calculateAll()" id="btnCalc">💰 Calculate</button>
         <button class="action-btn" onclick="copyEstimate()" id="btnCopy">📋 Copy</button>
         <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Invoice</button>
+    </div>
+
+    <!-- GLOBAL ESTIMATE SECTION -->
+    <div class="global-section">
+        <h3 id="hGlobalTitle">🌍 Global Estimate (All Calculators)</h3>
+        <p class="global-desc" id="hGlobalDesc">Combine costs from Roof, Facade, Screed etc. into one unified project estimate.</p>
+        <div class="buttons-container">
+            <button class="action-btn btn-green" onclick="addToGlobalEstimate()" id="btnGlobalAdd">➕ Add to Global Estimate</button>
+            <button class="action-btn btn-green" onclick="viewGlobalEstimate()" id="btnGlobalView">👁 View Global Estimate</button>
+            <button class="action-btn btn-outline-red" onclick="clearGlobalEstimate()" id="btnGlobalClear">🗑 Clear Global</button>
+        </div>
     </div>
 
     <h3 id="hProjects" style="clear: both; width: 100%;">💾 Project Vault</h3>
@@ -358,7 +377,7 @@
     </div>
 
     <div class="buy-pro-banner">
-        <h3 style="border:none; padding:0; margin:0;" id="proTitle">🔓 BUILDcalc PRO</h3>
+        <h3 id="proTitle">🔓 BUILDcalc PRO</h3>
         <p id="proDesc">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
         <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
     </div>
@@ -429,7 +448,7 @@ function calculateAll() {
     document.getElementById("clientTotal").innerHTML = formatEur(clientTotal);
 }
 
-// === НОВА ФУНКЦІЯ: ДОДАТИ ДО СПІЛЬНОГО КОШТОРИСУ ===
+// === ФУНКЦІЇ ЄДИНОГО КОШТОРИСУ ===
 function addToGlobalEstimate() {
     let objName = document.getElementById("object").value || "Unnamed Object";
     let totalStr = document.getElementById("clientTotal").innerText;
@@ -452,17 +471,33 @@ function addToGlobalEstimate() {
     globalEst.push(item);
     localStorage.setItem("buildcalc_global", JSON.stringify(globalEst));
     
-    let btn = document.getElementById("btnGlobal");
-    let originalText = btn.innerText;
-    btn.innerText = "✅ Added to Global!";
-    btn.style.backgroundColor = "var(--global-btn)";
-    btn.style.color = "white";
-    
-    setTimeout(() => {
-        btn.innerText = originalText;
-        btn.style.backgroundColor = "";
-        btn.style.color = "";
-    }, 2000);
+    let btn = document.getElementById("btnGlobalAdd");
+    let originalText = btn.innerHTML;
+    btn.innerHTML = "✅ Added!";
+    setTimeout(() => { btn.innerHTML = originalText; }, 2000);
+}
+
+function viewGlobalEstimate() {
+    let globalEst = JSON.parse(localStorage.getItem("buildcalc_global")) || [];
+    if(globalEst.length === 0) {
+        alert("Global Estimate is empty.");
+        return;
+    }
+    let text = "=== Global Estimate ===\n\n";
+    let total = 0;
+    globalEst.forEach((item, index) => {
+        text += `${index + 1}. ${item.category} (${item.object}): ${item.cost.toFixed(2)} ${item.currency}\n`;
+        total += item.cost;
+    });
+    text += `\nTotal: ${total.toFixed(2)} €`;
+    alert(text);
+}
+
+function clearGlobalEstimate() {
+    if(confirm("Clear the entire Global Estimate?")) {
+        localStorage.removeItem("buildcalc_global");
+        alert("Global Estimate cleared.");
+    }
 }
 
 function generatePDF() {
@@ -620,7 +655,9 @@ const langData = {
         hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
         hFinal: "📊 Financial Summary", txtFTherm: "Insulation", txtFMix: "Wet Mixes (Glue, Primer, Plaster)", txtFProf: "Mesh, Dowels, Profiles",
         txtFMat: "Total Materials", txtFWork: "Labor", txtFLog: "Logistics & Scaffolding", txtClientPrice: "GRAND TOTAL",
-        btnGlobal: "🌍 Add to Global Estimate", btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice",
+        hGlobalTitle: "🌍 Global Estimate (All Calculators)", hGlobalDesc: "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.",
+        btnGlobalAdd: "➕ Add to Global Estimate", btnGlobalView: "👁 View Global Estimate", btnGlobalClear: "🗑 Clear Global",
+        btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice",
         hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
         faqTitle: "❓ Frequently Asked Questions", 
         faq1Q: "How much insulation waste should I account for?", faq1A: "Typically, a 5% waste margin is recommended for standard walls, and up to 10% for complex facades with many windows.",
@@ -647,7 +684,9 @@ const langData = {
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
         hFinal: "📊 Фінансовий підсумок", txtFTherm: "Утеплювач", txtFMix: "Суміші (Клей, Грунт, Штук.)", txtFProf: "Комплектуючі (Сітка, Дюбелі, Профілі)",
         txtFMat: "Матеріали (Разом)", txtFWork: "Робота", txtFLog: "Логістика та Ліси", txtClientPrice: "ЗАГАЛЬНА ВАРТІСТЬ",
-        btnGlobal: "🌍 В єдиний кошторис", btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF",
+        hGlobalTitle: "🌍 Єдиний кошторис", hGlobalDesc: "Об'єднайте витрати на дах, фасад, стяжку тощо в один загальний кошторис проєкту.",
+        btnGlobalAdd: "➕ Додати до кошторису", btnGlobalView: "👁 Переглянути кошторис", btnGlobalClear: "🗑 Очистити глобальний",
+        btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF",
         hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
         faqTitle: "❓ Часті питання", 
         faq1Q: "Який запас утеплювача потрібно враховувати?", faq1A: "Зазвичай рекомендується запас 5% для рівних стін, і до 10% для складних фасадів з багатьма вікнами.",
@@ -674,7 +713,9 @@ const langData = {
         hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
         hFinal: "📊 Finančný prehľad", txtFTherm: "Izolácia", txtFMix: "Zmesi (Lepidlo, Pen., Omietka)", txtFProf: "Príslušenstvo (Mriežka, Hmoždinky, Profily)",
         txtFMat: "Materiály Spolu", txtFWork: "Práca", txtFLog: "Logistika a Lešenie", txtClientPrice: "CELKOVÁ CENA",
-        btnGlobal: "🌍 Do celkového rozpočtu", btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument",
+        hGlobalTitle: "🌍 Celkový rozpočet", hGlobalDesc: "Spojte náklady na strechu, fasádu, poter atď. do jedného celkového rozpočtu projektu.",
+        btnGlobalAdd: "➕ Pridať do celkového", btnGlobalView: "👁 Zobraziť celkový", btnGlobalClear: "🗑 Vymazať celkový",
+        btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument",
         hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
         faqTitle: "❓ Často kladené otázky", 
         faq1Q: "Akú rezervu izolácie by som mal počítať?", faq1A: "Zvyčajne sa odporúča 5% rezerva pre rovné steny a až 10% pre zložité fasády s množstvom okien.",
