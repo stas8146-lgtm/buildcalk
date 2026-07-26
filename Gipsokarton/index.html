@@ -487,31 +487,54 @@
                             <span class="font-extrabold text-white text-base" id="lbl-grand-total">Grand Total:</span>
                             <span class="text-2xl font-black text-yellow-400"><span id="val-grand-total">0.00</span> <span class="currency-symbol">€</span></span>
                         </div>
-
-                        <!-- ADD TO GLOBAL PROJECT ESTIMATE BUTTON -->
-                        <button onclick="addToGlobalEstimate()" class="w-full mt-3 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-yellow-500/30 text-yellow-400 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer">
-                            <i data-lucide="folder-plus" class="w-4 h-4"></i> <span id="lbl-add-global">Add to Global Project Estimate</span>
-                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- GLOBAL PROJECT ESTIMATE WIDGET -->
-            <div class="bg-neutral-950 border border-yellow-500/30 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
-                <div class="flex items-center justify-between mb-3 border-b border-neutral-900 pb-3">
-                    <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <i data-lucide="briefcase" class="w-5 h-5 text-yellow-500"></i>
-                        <span id="t-global-estimate-title">Global Project Budget (All Calculators)</span>
+            <!-- GLOBAL PROJECT ESTIMATE WIDGET (Змінено під дизайн зі скріншота) -->
+            <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-1.5 h-6 bg-green-600 rounded-full"></div>
+                    <h3 class="text-base font-medium text-white flex items-center gap-2">
+                        <span class="text-xl">🌍</span> <span id="t-global-estimate-title">Global Estimate (All Calculators)</span>
                     </h3>
-                    <button onclick="clearGlobalEstimate()" class="text-xs text-neutral-500 hover:text-red-400 transition-colors" id="btn-clear-global">Clear All</button>
                 </div>
-                <p class="text-xs text-neutral-400 mb-4" id="t-global-estimate-desc">Accumulate estimates from Drywall, Facade, Screed, Roof and Plaster calculators into a unified project estimate.</p>
-                <div id="global-estimate-items" class="space-y-2 mb-4 max-h-[150px] overflow-y-auto pr-1 text-xs">
-                    <p class="text-neutral-500 text-center py-2" id="t-global-empty">No estimates added to project yet.</p>
+                
+                <p class="text-xs text-neutral-400 mb-4 leading-relaxed" id="t-global-estimate-desc">
+                    Combine costs from Roof, Facade, Screed etc. into one unified project estimate.
+                </p>
+
+                <div class="grid grid-cols-3 gap-3">
+                    <button onclick="addToGlobalEstimate()" class="flex flex-col items-center justify-center py-3 px-1 sm:px-2 bg-green-600 hover:bg-green-500 text-white rounded-lg transition-all text-[11px] font-medium text-center leading-tight shadow-md cursor-pointer">
+                        <div class="flex items-center justify-center gap-1">
+                            <i data-lucide="plus" class="w-3.5 h-3.5 text-white font-bold"></i> Add to
+                        </div>
+                        <div>Global Estimate</div>
+                    </button>
+                    
+                    <button onclick="toggleGlobalView()" class="flex flex-col items-center justify-center py-3 px-1 sm:px-2 bg-green-600 hover:bg-green-500 text-white rounded-lg transition-all text-[11px] font-medium text-center leading-tight shadow-md cursor-pointer">
+                        <div class="flex items-center justify-center gap-1">
+                            <i data-lucide="eye" class="w-3.5 h-3.5 text-white"></i> View Global
+                        </div>
+                        <div>Estimate</div>
+                    </button>
+                    
+                    <button onclick="clearGlobalEstimate()" class="flex flex-col items-center justify-center py-3 px-1 sm:px-2 bg-[#1a1c23] border border-red-900/60 hover:bg-red-950/40 text-red-500 rounded-lg transition-all text-[11px] font-medium text-center gap-1 shadow-md cursor-pointer">
+                        <div class="flex items-center justify-center gap-1">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5 text-red-400"></i> Clear Global
+                        </div>
+                    </button>
                 </div>
-                <div class="flex justify-between items-center bg-yellow-500/20 border border-yellow-500/40 px-4 py-3 rounded-xl">
-                    <span class="font-extrabold text-white text-sm" id="lbl-global-total">Total Project Cost:</span>
-                    <span class="text-xl font-black text-yellow-400"><span id="val-global-total">0.00</span> €</span>
+
+                <!-- Випадаючий блок кошторису -->
+                <div id="global-estimate-view" class="hidden mt-4 bg-neutral-900 border border-neutral-800 p-4 rounded-xl shadow-inner transition-all">
+                    <div id="global-estimate-items" class="space-y-2 mb-4 max-h-[150px] overflow-y-auto pr-1 text-xs">
+                        <p class="text-neutral-500 text-center py-2" id="t-global-empty">No estimates added to project yet.</p>
+                    </div>
+                    <div class="flex justify-between items-center bg-yellow-500/10 border border-yellow-500/30 px-4 py-3 rounded-xl">
+                        <span class="font-extrabold text-white text-sm" id="lbl-global-total">Total Project Cost:</span>
+                        <span class="text-xl font-black text-yellow-400"><span id="val-global-total">0.00</span> €</span>
+                    </div>
                 </div>
             </div>
 
@@ -638,10 +661,8 @@
                 "t-history-empty": "No calculations saved yet.",
                 "t-faq-title": "Frequently Asked Questions",
                 "t-related-title": "Related Calculators (BUILDcalc Ecosystem)",
-                "t-global-estimate-title": "Global Project Budget (All Calculators)",
-                "t-global-estimate-desc": "Accumulate estimates from Drywall, Facade, Screed, Roof and Plaster calculators into a unified project estimate.",
-                "lbl-add-global": "Add to Global Project Estimate",
-                "btn-clear-global": "Clear All",
+                "t-global-estimate-title": "Global Estimate (All Calculators)",
+                "t-global-estimate-desc": "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.",
                 "t-global-empty": "No estimates added to project yet.",
                 "lbl-global-total": "Total Project Cost:",
                 "unit-pcs": "pcs",
@@ -707,10 +728,8 @@
                 "t-history-empty": "Збережених розрахунків поки немає.",
                 "t-faq-title": "Поширені запитання (FAQ)",
                 "t-related-title": "Супутні калькулятори (Екосистема BUILDcalc)",
-                "t-global-estimate-title": "Суспільний кошторис проєкту (Усі калькулятори)",
-                "t-global-estimate-desc": "Об'єднуйте кошториси з калькуляторів гіпсокартону, фасаду, стяжки та даху в єдиний загальний бюджет.",
-                "lbl-add-global": "Додати до загального кошторису",
-                "btn-clear-global": "Очистити",
+                "t-global-estimate-title": "Global Estimate (Усі калькулятори)",
+                "t-global-estimate-desc": "Об'єднуйте кошториси з калькуляторів даху, фасаду, стяжки тощо в єдиний загальний бюджет.",
                 "t-global-empty": "До кошторису ще нічого не додано.",
                 "lbl-global-total": "Загальна вартість проєкту:",
                 "unit-pcs": "шт",
@@ -776,10 +795,8 @@
                 "t-history-empty": "Zatiaľ žiadne uložené výpočty.",
                 "t-faq-title": "Často kladené otázky (FAQ)",
                 "t-related-title": "Súvisiace kalkulačky (Ekosystém BUILDcalc)",
-                "t-global-estimate-title": "Spoločný rozpočet projektu (Všetky kalkulačky)",
-                "t-global-estimate-desc": "Zoskupujte výpočty zo sadrokartónu, fasády, poteru a strechy do jednotného celkového rozpočtu.",
-                "lbl-add-global": "Pridať do spoločného rozpočtu",
-                "btn-clear-global": "Vymazať",
+                "t-global-estimate-title": "Global Estimate (Všetky kalkulačky)",
+                "t-global-estimate-desc": "Kombinujte náklady zo strechy, fasády, poteru atď. do jedného celkového rozpočtu.",
                 "t-global-empty": "Zatiaľ žiadne položky v rozpočte.",
                 "lbl-global-total": "Celkový rozpočet projektu:",
                 "unit-pcs": "ks",
@@ -1030,7 +1047,18 @@
 
             localStorage.setItem('global_project_estimate', JSON.stringify(globalList));
             loadGlobalEstimate();
-            alert("Added to Global Project Estimate!");
+            alert("Added to Global Estimate!");
+        }
+
+        function toggleGlobalView() {
+            const viewPanel = document.getElementById('global-estimate-view');
+            if (viewPanel.classList.contains('hidden')) {
+                viewPanel.classList.remove('hidden');
+                loadGlobalEstimate();
+                if(typeof lucide !== 'undefined') lucide.createIcons();
+            } else {
+                viewPanel.classList.add('hidden');
+            }
         }
 
         function loadGlobalEstimate() {
@@ -1049,7 +1077,7 @@
             globalList.forEach((item, index) => {
                 sum += item.cost;
                 const row = document.createElement('div');
-                row.className = "flex justify-between items-center bg-neutral-900 px-3 py-2 rounded-lg";
+                row.className = "flex justify-between items-center bg-neutral-950 px-3 py-2 rounded-lg border border-neutral-800";
                 row.innerHTML = `
                     <span class="text-white font-medium">${index + 1}. ${item.name} <span class="text-[10px] text-neutral-500">(${item.timestamp})</span></span>
                     <span class="text-yellow-400 font-bold">${item.cost.toFixed(2)} €</span>
