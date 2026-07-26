@@ -43,6 +43,7 @@
         }
     </style>
     <script src="../nav.js"></script>
+<script src="../global-estimate.js"></script>
 </head>
 
 <body class="text-neutral-100 min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
@@ -432,24 +433,7 @@
 
                 </div>
 
-                <!-- GLOBAL ESTIMATE (ALL CALCULATORS) SECTION -->
-                <div class="no-print bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
-                    <h3 class="text-sm font-bold uppercase tracking-widest text-yellow-500 mb-3 flex items-center gap-2">
-                        <i data-lucide="globe" class="w-4 h-4"></i> <span id="t-global-estimate-title">Global Estimate (All Calculators)</span>
-                    </h3>
-                    <p class="text-xs text-neutral-400 mb-4" id="t-global-estimate-desc">Combine costs from Roof, Plumb, Screed etc. into one unified project estimate.</p>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <button onclick="addToGlobalEstimate()" class="bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg">
-                            <i data-lucide="plus-circle" class="w-4 h-4"></i> <span id="btn-global-add">Add to Global</span>
-                        </button>
-                        <button onclick="viewGlobalEstimate()" class="bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg">
-                            <i data-lucide="eye" class="w-4 h-4"></i> <span id="btn-global-view">View Global</span>
-                        </button>
-                        <button onclick="clearGlobalEstimate()" class="bg-neutral-900 hover:bg-neutral-800 border border-red-500/50 text-red-400 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i> <span id="btn-global-clear">Clear Global</span>
-                        </button>
-                    </div>
+                <div id="global-estimate-container"></div>
                 </div>
 
                 <!-- PROJECT VAULT / LOCAL HISTORY SECTION -->
