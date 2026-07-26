@@ -43,6 +43,7 @@
         }
     </style>
     <script src="../nav.js"></script>
+<script src="../global-estimate.js"></script>
 </head>
 
 <body class="text-neutral-100 min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
@@ -491,14 +492,7 @@
                 </div>
             </div>
 
-            <!-- GLOBAL PROJECT ESTIMATE WIDGET (Змінено під дизайн зі скріншота) -->
-            <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="w-1.5 h-6 bg-green-600 rounded-full"></div>
-                    <h3 class="text-base font-medium text-white flex items-center gap-2">
-                        <span class="text-xl">🌍</span> <span id="t-global-estimate-title">Global Estimate (All Calculators)</span>
-                    </h3>
-                </div>
+            <div id="global-estimate-container"></div>
                 
                 <p class="text-xs text-neutral-400 mb-4 leading-relaxed" id="t-global-estimate-desc">
                     Combine costs from Roof, Facade, Screed etc. into one unified project estimate.
