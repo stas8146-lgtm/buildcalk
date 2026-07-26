@@ -1,4 +1,30 @@
 document.addEventListener("DOMContentLoaded", function() {
+    // Автоматично додаємо стилі кнопок на всі сторінки
+    if (!document.getElementById("global-estimate-styles")) {
+        const style = document.createElement("style");
+        style.id = "global-estimate-styles";
+        style.innerHTML = `
+            .action-btn.green {
+                background: #28a745 !important;
+                border-color: #28a745 !important;
+                color: white !important;
+            }
+            .action-btn.green:hover {
+                background: #218838 !important;
+            }
+            .action-btn.red-border {
+                border-color: #dc3545 !important;
+                color: #dc3545 !important;
+                background: var(--dark-light) !important;
+            }
+            .action-btn.red-border:hover {
+                background: #dc3545 !important;
+                color: white !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
     const container = document.getElementById("global-estimate-container");
     if (container) {
         container.innerHTML = `
