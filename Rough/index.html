@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professional Rough Construction Calculator | BUILDcalc</title>
-    <meta name="description" content="Professional shell and core construction calculator. Estimate foundation, walls (brick/ytong), glue/foam, roof, and total project costs.">
+    <meta name="description" content="Professional shell and core construction calculator. Estimate foundation, walls (brick/ytong), glue/foam, roof, and total project costs with unified master estimates.">
     
     <!-- ================= GOOGLE ANALYTICS ================= -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPRB8JPVM2"></script>
@@ -13,6 +13,23 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-RPRB8JPVM2');
+    </script>
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "BUILDcalc Rough PRO",
+      "operatingSystem": "All",
+      "applicationCategory": "ConstructionCalculator",
+      "description": "Professional shell and core construction calculator for foundation, walls, and roof estimations.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    }
     </script>
 
     <!-- Бібліотека для генерації PDF -->
@@ -36,6 +53,13 @@
             margin: 0;
             padding: 15px;
         }
+
+        .breadcrumb {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
 
         .header {
             text-align: center;
@@ -83,6 +107,16 @@
 
         .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; clear: both; }
 
+        .seo-section { margin-top: 40px; padding: 20px; background: var(--dark-light); border-radius: 8px; }
+        .seo-section h4 { color: var(--primary); margin-top: 0; }
+        .seo-section ul { padding-left: 20px; color: var(--text-muted); }
+        .seo-section ul li a { color: var(--primary); text-decoration: none; }
+        .seo-section ul li a:hover { text-decoration: underline; }
+
+        .faq-item { margin-bottom: 15px; }
+        .faq-question { font-weight: bold; color: var(--text-light); }
+        .faq-answer { color: var(--text-muted); font-size: 14px; margin-top: 3px; }
+
         .buy-pro-banner {
             background: linear-gradient(135deg, #343a40, #212529);
             border: 2px dashed var(--primary); padding: 20px; text-align: center;
@@ -103,8 +137,14 @@
 <!-- Контейнер для глобального меню -->
 <div id="global-nav-container"></div>
 
+    <!-- Breadcrumbs -->
+    <div class="breadcrumb">
+        <a href="/">Home</a> &gt; <a href="/calculators">Calculators</a> &gt; Rough Construction Calculator
+    </div>
+
     <div class="header">
         <div class="logo">🏠 <span>BUILD</span>calc ROUGH PRO</div>
+        <h1 style="font-size: 20px; margin: 5px 0; color: #fff;">Rough Construction & Shell Calculator</h1>
         <div class="subtitle" id="subtitle">Professional Shell & Core Construction Calculator</div>
 
         <div class="lang-select-wrapper">
@@ -283,8 +323,8 @@
         </div>
     </div>
 
-    <!-- ЗАГАЛЬНИЙ ФІНАНСОВИЙ ПІДСУМОК -->
-    <h3 id="hFinal" style="clear: both; width: 100%;">📊 Financial Summary</h3>
+    <!-- ЄДИНИЙ КОШТОРИС (MASTER ESTIMATE) -->
+    <h3 id="hFinal" style="clear: both; width: 100%;">📊 Unified Master Estimate</h3>
     <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
         <div><span>🏗 <span id="txtFFoundCost">Foundation Materials</span></span> <span id="foundCost">0 €</span></div>
         <div><span>🧱 <span id="txtFWallCost">Walls & Masonry</span></span> <span id="wallsCost">0 €</span></div>
@@ -295,7 +335,7 @@
         <div><span>🚛 <span id="txtFLog">Logistics & Equipment</span></span> <span id="deliveryTotal">0 €</span></div>
         <hr>
         <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; width: 100%;">
-            <span>💰 <span id="txtClientPrice">Total Project Price</span></span> <span id="clientTotal">0 €</span>
+            <span>💰 <span id="txtClientPrice">Total Master Project Price</span></span> <span id="clientTotal">0 €</span>
         </div>
     </div>
 
@@ -314,6 +354,31 @@
 
     <div id="historyBox" class="history-box" style="display:none;"></div>
 
+    <!-- SEO FAQ Section -->
+    <div class="seo-section">
+        <h4>Frequently Asked Questions (FAQ)</h4>
+        <div class="faq-item">
+            <div class="faq-question">How is the unified master estimate calculated?</div>
+            <div class="faq-answer">The master estimate aggregates all structural elements—foundation, masonry, roof systems, labor, and logistics—into a single transparent budget summary.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">What is included in the rough construction price?</div>
+            <div class="faq-answer">It covers core shell elements including concrete works, rebar, structural blocks, mortar, timber framing, and contractor labor fees.</div>
+        </div>
+    </div>
+
+    <!-- Related Calculators (Internal Links) -->
+    <div class="seo-section" style="margin-top: 20px;">
+        <h4>Related Calculators</h4>
+        <ul>
+            <li><a href="/calculators/foundation-calculator">Foundation Calculator</a></li>
+            <li><a href="/calculators/roof-calculator">Roof Calculator</a></li>
+            <li><a href="/calculators/screed-calculator">Screed Calculator</a></li>
+            <li><a href="/calculators/plaster-calculator">Plaster Calculator</a></li>
+            <li><a href="/calculators/facade-calculator">Facade Calculator</a></li>
+        </ul>
+    </div>
+
     <div class="buy-pro-banner">
         <h3 style="border:none; padding:0; margin:0;" id="proTitle">🔓 BUILDcalc PRO</h3>
         <p id="proDesc">Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages</p>
@@ -324,22 +389,13 @@
 <script>
 document.getElementById('calcForm').addEventListener('input', calculateAll);
 
-function parseSize(sizeStr) {
-    let parts = sizeStr.split('x');
-    return {
-        w: Number(parts[0]) / 1000, 
-        h: Number(parts[1]) / 1000,
-        vol: (Number(parts[0]) / 1000) * (Number(parts[1]) / 1000)
-    };
-}
-
 function calculateFoundation() {
     let area = Number(document.getElementById("houseArea").value) || 0;
     let depth = Number(document.getElementById("foundDepth").value) || 0;
     let rebarDensity = Number(document.getElementById("rebarKg").value) || 0;
     let type = document.getElementById("foundType").value;
 
-    let concreteVol = type === 'slab' ? area * depth : area * 0.4 * 0.3; // спрощений розрахунок для стрічки або плити
+    let concreteVol = type === 'slab' ? area * depth : area * 0.4 * 0.3;
     let rebarKg = concreteVol * rebarDensity;
     let formworkArea = type === 'slab' ? Math.sqrt(area) * 4 * depth : Math.sqrt(area) * 4 * 0.8;
 
@@ -356,22 +412,20 @@ function calculateWalls() {
     let wallMat = document.getElementById("wallMat").value;
     let bindMethod = document.getElementById("bindMethod").value;
 
-    let wallArea = perimeter * height; // без урахування вікон для грубого розрахунку із запасом
+    let wallArea = perimeter * height;
     let blocksCount = 0;
-    let binderCount = 0; // мішки клею або балони піни
+    let binderCount = 0;
 
     if (wallMat === 'ytong') {
-        // Стандартний блок ітонг 600x200x300 мм -> біля 8.3 шт на м²
         blocksCount = Math.ceil(wallArea * 8.3);
         if (bindMethod === 'glue') {
-            binderCount = Math.ceil(blocksCount / 35); // 1 мішок на ~35 блоків
+            binderCount = Math.ceil(blocksCount / 35);
         } else {
-            binderCount = Math.ceil(wallArea / 12); // 1 балон на ~12 м²
+            binderCount = Math.ceil(wallArea / 12);
         }
     } else {
-        // Цегла (формат NF) -> біля 50 шт на м² стіни в 1 цеглину або перерахунок
         blocksCount = Math.ceil(wallArea * 51);
-        binderCount = Math.ceil(wallArea * 0.25); // мішки розчину
+        binderCount = Math.ceil(wallArea * 0.25);
     }
 
     document.getElementById("blocksResult").innerText = blocksCount + " pcs";
@@ -382,13 +436,10 @@ function calculateWalls() {
 
 function calculateRoof() {
     let area = Number(document.getElementById("roofArea").value) || 0;
-    let angle = Number(document.getElementById("roofAngle").value) || 0;
     let reserve = Number(document.getElementById("roofReserve").value) || 0;
 
     let coef = 1 + reserve / 100;
     let roofCover = area * coef;
-    
-    // Приблизний розрахунок кубатури деревини для даху (стропила + обрешітка ~ 0.05 м³ на 1 м² даху)
     let totalWoodCube = area * 0.055;
 
     document.getElementById("woodCubeResult").innerText = totalWoodCube.toFixed(2) + " m³";
@@ -412,13 +463,8 @@ function calculateEstimate() {
     let deliveryPrice = Number(document.getElementById("deliveryPrice").value) || 0;
     let houseArea = Number(document.getElementById("houseArea").value) || 0;
 
-    // Вартість фундаменту (бетон + арматура)
     let foundCost = (found.concreteVol * concrPrice) + (found.rebarKg * rebarPrice);
-    
-    // Вартість стін (блоки + клей/піна)
     let wallsCost = (walls.blocksCount * blockPrice) + (walls.binderCount * bindPrice);
-
-    // Вартість даху (деревина + покрівельний матеріал)
     let roofTotalCost = (roof.totalWoodCube * woodPrice) + (roof.roofCover * roofMatPrice);
 
     let materialsTotal = foundCost + wallsCost + roofTotalCost;
@@ -448,7 +494,7 @@ function generatePDF() {
     
     let printHtml = `
     <div style="padding: 30px; font-family: Arial, sans-serif; color: #333; background: #fff;">
-        <h2>Rough Construction Estimate: ${objName}</h2>
+        <h2>Unified Master Estimate: ${objName}</h2>
         <p>Client: ${clientName} | Contractor: ${compName}</p>
         <hr>
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
@@ -477,12 +523,12 @@ function generatePDF() {
                 <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("deliveryTotal").innerText}</td>
             </tr>
         </table>
-        <h3 style="text-align: right; margin-top: 30px;">Total Price: <span style="color: #d32f2f;">${document.getElementById("clientTotal").innerText}</span></h3>
+        <h3 style="text-align: right; margin-top: 30px;">Total Master Price: <span style="color: #d32f2f;">${document.getElementById("clientTotal").innerText}</span></h3>
     </div>`;
 
     let opt = {
         margin: 10,
-        filename: `Rough_Estimate_${objName}.pdf`,
+        filename: `Master_Estimate_${objName}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -527,7 +573,7 @@ function btnClear() {
 
 function copyEstimate() {
     let res = document.getElementById("clientTotal").innerText;
-    navigator.clipboard.writeText(`Rough Construction Estimate for ${document.getElementById("object").value}:\nTotal Price: ${res}`);
+    navigator.clipboard.writeText(`Unified Master Estimate for ${document.getElementById("object").value}:\nTotal Price: ${res}`);
     alert("Copied to clipboard!");
 }
 
@@ -547,8 +593,8 @@ const langData = {
         lblBlockPrice: "Block Price €/pcs", lblBindPrice: "Glue/Foam Price €/unit", lblWoodPrice: "Timber Price €/m³",
         lblRoofMatPrice: "Roof Material €/m²", lblLaborPrice: "Rough Work €/m² (Floor)", lblDeliveryPrice: "Logistics & Crane €",
         hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
-        hFinal: "📊 Financial Summary", txtFFoundCost: "Foundation Materials", txtFWallCost: "Walls & Masonry", txtFRoofCost: "Roof (Timber + Covering)",
-        txtFMat: "Total Materials", txtFWork: "Rough Construction Labor", txtFLog: "Logistics & Equipment", txtClientPrice: "Total Project Price",
+        hFinal: "📊 Unified Master Estimate", txtFFoundCost: "Foundation Materials", txtFWallCost: "Walls & Masonry", txtFRoofCost: "Roof (Timber + Covering)",
+        txtFMat: "Total Materials", txtFWork: "Rough Construction Labor", txtFLog: "Logistics & Equipment", txtClientPrice: "Total Master Project Price",
         btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Estimate", hProjects: "💾 Project Vault", btnSave: "💾 Save", btnHistory: "📂 History", btnClear: "🗑 Clear",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing"
     },
@@ -567,7 +613,7 @@ const langData = {
         lblBlockPrice: "Блок €/шт", lblBindPrice: "Клей/Піна €/од", lblWoodPrice: "Деревина €/м³",
         lblRoofMatPrice: "Покрівля €/м²", lblLaborPrice: "Робота (коробка) €/м²", lblDeliveryPrice: "Логістика та кран €",
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
-        hFinal: "📊 Фінансовий підсумок", txtFFoundCost: "Матеріали на фундамент", txtFWallCost: "Стіни та кладка", txtFRoofCost: "Дах (дерево + покриття)",
+        hFinal: "📊 Єдиний зведений кошторис", txtFFoundCost: "Матеріали на фундамент", txtFWallCost: "Стіни та кладка", txtFRoofCost: "Дах (дерево + покриття)",
         txtFMat: "Всього матеріалів", txtFWork: "Робота (грубе будівництво)", txtFLog: "Логістика та обладнання", txtClientPrice: "Загальна ціна проєкту",
         btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF", hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія", btnClear: "🗑 Очистити",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість"
@@ -587,7 +633,7 @@ const langData = {
         lblBlockPrice: "Blok €/ks", lblBindPrice: "Lepidlo/Pena €/ks", lblWoodPrice: "Drevo €/m³",
         lblRoofMatPrice: "Krytina €/m²", lblLaborPrice: "Práca (hrubá stavba) €/m²", lblDeliveryPrice: "Logistika a žeriav €",
         hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
-        hFinal: "📊 Finančný prehľad", txtFFoundCost: "Materiál na základy", txtFWallCost: "Steny a murovanie", txtFRoofCost: "Strecha (drevo + krytina)",
+        hFinal: "📊 Jednotný súhrnný rozpočet", txtFFoundCost: "Materiál na základy", txtFWallCost: "Steny a murovanie", txtFRoofCost: "Strecha (drevo + krytina)",
         txtFMat: "Celkovo materiály", txtFWork: "Práce (hrubá stavba)", txtFLog: "Logistika a vybavenie", txtClientPrice: "Celková cena projektu",
         btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument", hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História", btnClear: "🗑 Vymazať",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu"
