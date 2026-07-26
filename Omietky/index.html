@@ -105,6 +105,7 @@
 
         .footer { margin-top: 30px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 15px; font-size: 0.8rem; color: var(--text-muted); }
     </style>
+<script src="../global-estimate.js"></script>
 </head>
 <body>
 
@@ -296,11 +297,7 @@
                 </button>
             </div>
 
-            <!-- GLOBAL ESTIMATE SECTION (Matching Screenshot Style) -->
-            <div class="bg-neutral-950 border border-neutral-800 rounded-xl p-4 mb-6" data-html2canvas-ignore="true">
-                <div class="text-yellow-400 font-bold text-sm mb-1 flex items-center gap-2">
-                    🌍 <span id="global-est-title">Global Estimate (All Calculators)</span>
-                </div>
+            <div id="global-estimate-container"></div>
                 <div class="text-neutral-400 text-xs mb-3" id="global-est-desc">
                     Combine costs from Roof, Facade, Screed etc. into one unified project estimate.
                 </div>
