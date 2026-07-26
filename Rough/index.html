@@ -151,6 +151,7 @@
 
     <!-- Підключення навігації -->
     <script src="../nav.js"></script>
+<script src="../global-estimate.js"></script>
 </head>
 <body>
 
@@ -342,21 +343,7 @@
             </div>
         </div>
     </div>
-
-    <!-- ЄДИНИЙ КОШТОРИС (MASTER ESTIMATE) -->
-    <h3 id="hFinal" style="clear: both; width: 100%;">📊 Unified Master Estimate</h3>
-    <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
-        <div><span>🏗 <span id="txtFFoundCost">Foundation Materials</span></span> <span id="foundCost">0 €</span></div>
-        <div><span>🧱 <span id="txtFWallCost">Walls & Masonry</span></span> <span id="wallsCost">0 €</span></div>
-        <div><span>🪵 <span id="txtFRoofCost">Roof (Timber + Covering)</span></span> <span id="roofTotalCost">0 €</span></div>
-        <hr>
-        <div><span>📦 <span id="txtFMat">Total Materials</span></span> <span id="materialsTotal">0 €</span></div>
-        <div><span>👷 <span id="txtFWork">Rough Construction Labor</span></span> <span id="laborTotal">0 €</span></div>
-        <div><span>🚛 <span id="txtFLog">Logistics & Equipment</span></span> <span id="deliveryTotal">0 €</span></div>
-        <hr>
-        <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; width: 100%;">
-            <span>💰 <span id="txtClientPrice">Total Master Project Price</span></span> <span id="clientTotal">0 €</span>
-        </div>
+<div id="global-estimate-container"></div>
     </div>
 
     <!-- Основні кнопки дій -->
