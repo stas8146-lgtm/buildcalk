@@ -467,6 +467,7 @@ window.onclick = function(event) {
     if (event.target == modal) { modal.style.display = "none"; }
 }
 
+/* Англійська перша, всі втрачені ключі для PDF відновлені */
 const langData = {
     en: {
         breadHome: "Home", breadCalc: "Calculators", breadCurrent: "Foundation Calculator", subtitle: "Professional Foundation Calculator", 
@@ -491,16 +492,16 @@ const langData = {
         breadHome: "Головна", breadCalc: "Калькулятори", breadCurrent: "Фундамент", subtitle: "Професійний калькулятор", 
         objectTitle: "🏠 Дані об'єкта", objectLabel: "Назва об'єкта", addressLabel: "Адреса", clientLabel: "Клієнт",
         hParams: "📐 Параметри", lblType: "Тип", optStrip: "Стрічковий", optSlab: "Плитний",
-        lblLength: "Довжина стін (м)", lblSlabL: "Довжина плити (м)", lblSlabW: "Ширина плити (м)", lblDepth: "Глибина (м)", lblThickness: "Товщина (м)",
+        lblLength: "Довжина стін (m)", lblSlabL: "Довжина плити (m)", lblSlabW: "Ширина плити (m)", lblDepth: "Глибина (m)", lblThickness: "Товщина (m)",
         hVolumes: "📊 Об'єми", txtVolConc: "Бетон", txtVolForm: "Опалубка", txtVolRebar: "Арматура", txtVolCushion: "Подушка",
         hPrices: "💰 Ціни на матеріали", lblPConc: "Бетон м³", lblPRebar: "Арматура 1 т", lblPForm: "Опалубка м²", lblPCushion: "Подушка м³",
         hEstimate: "💶 Робота і Логістика", lblSalaryPrice: "Робота (за м³)", lblProfitPrice: "Прибуток", lblDeliveryPrice: "Доставка/Насос", lblOtherPrice: "Інше",
         hCompany: "🏢 Дані фірми (PRO)", lblCompName: "Назва фірми", lblCompPhone: "Телефон",
         txtFConc: "Бетон", txtFRebar: "Арматура", txtFForm: "Опалубка", txtFCushion: "Подушка",
-        txtFMat: "Матеріали", txtFWork: "Робота", txtFProf: "Прибуток", txtFLog: "Логістика", txtClientPrice: "Разом до оплати",
+        txtFMat: "Матеріали", txtFWork: "Робота", txtFProf: "Прибуток", txtFLog: "Логістика", txtClientPrice: "Total Client Price",
         lblBtnCalc: "Рахувати", lblBtnCopy: "Копіювати", lblBtnPdf: "Бланк PDF",
         hGlobalEst: "🌍 Загальний Кошторис", descGlobal: "Об'єднайте витрати з усіх калькуляторів в один проєкт.",
-        lblBtnGlobalAdd: "В Кошторис", lblBtnGlobalView: "Відкрити Кошторис", lblBtnGlobalClear: "Очистити",
+        lblBtnGlobalAdd: "Add to Global Estimate", lblBtnGlobalView: "View Global Estimate", lblBtnGlobalClear: "Clear Global",
         hVault: "💾 Збережені Проєкти", lblBtnSaveLoc: "Зберегти", lblBtnLocHist: "Історія", lblBtnVaultClear: "Очистити",
         modalTitle: "Загальний Кошторис", modalTotalText: "Разом:", modalClearBtn: "🗑 Очистити все",
         proTitle: "🔒 BUILDcalc PRO", proDesc: "Повний розрахунок, експорт PDF, історія, профілі фірм, 3 мови.", btnBuyPro: "Оформити PRO",
@@ -564,6 +565,7 @@ function setVersion(version) {
     }
 }
 
+// ПОВНІСТЮ ВІДНОВЛЕНА ОРИГІНАЛЬНА ФУНКЦІЯ PDF
 function generatePDF() {
     let t = currentTranslations; 
     let compName = document.getElementById("companyName").value || "-";
