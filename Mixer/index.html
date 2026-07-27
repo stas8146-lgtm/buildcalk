@@ -74,12 +74,6 @@
         .btn { background: var(--bg-input); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 5px; font-weight: 600; font-size: 0.85rem; color: var(--text-light); transition: 0.2s;}
         .btn:hover { border-color: var(--accent-yellow); }
         .btn:active { transform: scale(0.95); background: rgba(255, 204, 0, 0.2); }
-        
-        /* Screenshot-matched button variants */
-        .btn-green { background: #2E7D32; border: 1px solid #4CAF50; color: #FFFFFF; }
-        .btn-green:hover { background: #388E3C; border-color: #66BB6A; }
-        .btn-red-border { background: var(--bg-input); border: 1px solid var(--danger-red); color: var(--danger-red); }
-        .btn-red-border:hover { background: rgba(255, 51, 51, 0.1); }
 
         .section-title { font-size: 0.9rem; color: var(--accent-yellow); font-weight: bold; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;}
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
@@ -111,10 +105,6 @@
         .history-info strong { color: var(--accent-yellow); display: block; margin-bottom: 3px; font-size: 0.95rem;}
         .del-btn { background: rgba(255,51,51,0.2); border: 1px solid var(--danger-red); color: var(--danger-red); padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s;}
         .del-btn:hover { background: var(--danger-red); color: #FFF; }
-
-        /* Global Estimate Block (Styled exactly as screenshot) */
-        .unified-estimate-card { background: var(--bg-input); border: 1px solid var(--accent-yellow); border-radius: 8px; padding: 15px; margin-top: 20px; }
-        .unified-total-row { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; color: var(--accent-yellow); margin-top: 10px; border-top: 1px solid var(--border-color); padding-top: 8px; }
 
         /* SEO Sections: FAQ & Related Calculators */
         .seo-section { margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px; }
@@ -295,28 +285,7 @@
         <div id="history-list"></div>
     </div>
 
-    <!-- Відновлений блок Global Estimate -->
-    <div class="unified-estimate-card" data-html2canvas-ignore="true">
-        <div class="section-title" id="sec-global">🌍 Global Estimate (All Calculators)</div>
-        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;" id="sec-global-desc">
-            Combine costs from Roof, Facade, Screed etc. into one unified project estimate.
-        </div>
-        <div class="action-panel" style="margin-bottom: 10px;">
-            <button class="btn btn-green" onclick="addToGlobalEstimate()"><span id="txt-add-global">➕ Add Global</span></button>
-            <button class="btn" onclick="toggleGlobalModal()"><span id="txt-view-global">👁️ View Global</span></button>
-            <button class="btn btn-red-border" onclick="clearGlobalEstimate()"><span id="txt-clear-global">🗑️ Clear Global</span></button>
-        </div>
-        <div id="global-estimate-container"></div>
-        
-        <div class="history-box" id="global-history-section" style="display:none; margin-top:10px;">
-            <div id="global-history-list"></div>
-        </div>
-
-        <div class="unified-total-row">
-            <span id="lbl-unified-total">Total Client Price:</span>
-            <span id="out-unified-total">0.00 €</span>
-        </div>
-    </div>
+    <!-- Блок глобального кошторису генерується автоматично через global-estimate.js -->
 
     <!-- SEO FAQ Section -->
     <div class="seo-section">
@@ -371,8 +340,6 @@
             share: "📤 Share", copy: "📋 Copy", pdf: "📄 PDF", vault: "💾 Project Vault", save: "💾 Save", history: "📂 History", clear: "🗑 Clear",
             secObj: "📐 Object Area & Base", area: "Wall Area (m²)", surf: "Surface Type", optSm: "Smooth (0.12 L/m²)", optWl: "Wallpaper (0.15 L/m²)", optRg: "Rough (0.25 L/m²)", doors: "Doors / Windows", layers: "Layers", baseType: "Paint Base Type", optBa: "Base A (White)", optBc: "Base C (Clear)", secEco: "💶 Economics", pBase: "Base Price (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Labor (€/m²)", otherExp: "Other Expenses (€)", rNeed: "Base Needed:", matCost: "Material Cost:", labCost: "Labor Cost:", othCost: "Other Expenses:", grandTotal: "Grand Total:", prev: "Mixed Color", warn: "WARNING: 10% Pigment Limit Reached!", tot: "Total pigment:", promptMsg: "Enter object name:", del: "Delete", clearBase: "Clear base", emptyHist: "History is empty",
             bcHome: "Home", bcCalcs: "Calculators", bcCurr: "Paint Mixer",
-            secGlobal: "🌍 Global Estimate (All Calculators)", secGlobalDesc: "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.",
-            addGlobal: "➕ Add Global", viewGlobal: "👁️ View Global", clearGlobal: "🗑️ Clear Global", lblUnifiedTot: "Total Client Price:",
             secFaq: "FAQ", faqQ1: "How much paint do I need for 30 m²?", faqA1: "On smooth surfaces with 2 layers, approx. 7.2 liters of base paint are required.", faqQ2: "What is the maximum pigment limit?", faqA2: "To maintain paint integrity and adhesion, do not exceed 10% of total volume with pigment.",
             secRelated: "Related Calculators"
         },
@@ -380,8 +347,6 @@
             share: "📤 Поділитися", copy: "📋 Копіювати", pdf: "📄 PDF", vault: "💾 Проєкти", save: "💾 Зберегти", history: "📂 Історія", clear: "🗑 Очистити",
             secObj: "📐 Площа та База", area: "Площа стін (м²)", surf: "Тип поверхні", optSm: "Гладка (0.12 л/м²)", optWl: "Шпалери (0.15 л/м²)", optRg: "Короїд (0.25 л/м²)", doors: "Двері / Вікна", layers: "Шари", baseType: "Тип бази", optBa: "База А (Біла)", optBc: "База С (Прозора)", secEco: "💶 Економіка", pBase: "Ціна бази (€/Л)", pPig: "Пігмент (€/100мл)", laborRate: "Робота (€/m²)", otherExp: "Інші витрати (€)", rNeed: "Потрібно бази:", matCost: "Вартість матеріалів:", labCost: "Вартість робіт:", othCost: "Інші витрати:", grandTotal: "Загальна вартість:", prev: "Колір суміші", warn: "УВАГА: Ліміт 10% пігменту!", tot: "Всього пігменту:", promptMsg: "Введіть назву об'єкта:", del: "Видалити", clearBase: "Прозора база", emptyHist: "Історія порожня",
             bcHome: "Головна", bcCalcs: "Калькулятори", bcCurr: "Міксер фарби",
-            secGlobal: "🌍 Глобальний кошторис (Усі калькулятори)", secGlobalDesc: "Об'єднуйте витрати з даху, фасаду, стяжки тощо в єдиний зведений кошторис проєкту.",
-            addGlobal: "➕ Додати в глобальний", viewGlobal: "👁️ Переглянути глобальний", clearGlobal: "🗑️ Очистити глобальний", lblUnifiedTot: "Загальна ціна клієнта:",
             secFaq: "Часті запитання (FAQ)", faqQ1: "Скільки фарби потрібно на 30 м²?", faqA1: "На гладких поверхнях у 2 шари потрібно приблизно 7.2 літра базової фарби.", faqQ2: "Який максимальний ліміт пігменту?", faqA2: "Для збереження адгезії та властивостей фарби не перевищуйте 10% пігменту від загального об'єму.",
             secRelated: "Схожі калькулятори"
         },
@@ -389,8 +354,6 @@
             share: "📤 Zdielať", copy: "📋 Kopírovať", pdf: "📄 PDF", vault: "💾 Projekty", save: "💾 Uložiť", history: "📂 História", clear: "🗑 Vymazať",
             secObj: "📐 Plocha a Základ", area: "Plocha stien (m²)", surf: "Typ povrchu", optSm: "Hladký (0.12 l/m²)", optWl: "Tapeta (0.15 l/m²)", optRg: "Drsný (0.25 l/m²)", doors: "Dvere / Okná", layers: "Vrstvy", baseType: "Typ základu", optBa: "Báza A (Biela)", optBc: "Priesvitný základ (C)", secEco: "💶 Ekonomika", pBase: "Cena bázy (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Práca (€/m²)", otherExp: "Iné náklady (€)", rNeed: "Potrebný základ:", matCost: "Cena materiálu:", labCost: "Cena práce:", othCost: "Iné náklady:", grandTotal: "Celková cena:", prev: "Výsledná farba", warn: "POZOR: Limit 10% pigmentu!", tot: "Pigment celkom:", promptMsg: "Zadajte názov objektu:", del: "Vymazať", clearBase: "Priesvitný základ", emptyHist: "História je prázdna",
             bcHome: "Domov", bcCalcs: "Kalkulačky", bcCurr: "Miešač farieb",
-            secGlobal: "🌍 Globálny rozpočet (Všetky kalkulačky)", secGlobalDesc: "Kombinujte náklady zo strechy, fasády, poteru atď. do jedného celkového rozpočtu projektu.",
-            addGlobal: "➕ Pridať do globálneho", viewGlobal: "👁️ Zobraziť globálny", clearGlobal: "🗑️ Vymazať globálny", lblUnifiedTot: "Celková cena pre klienta:",
             secFaq: "Často kladené otázky (FAQ)", faqQ1: "Koľko farby potrebujem na 30 m²?", faqA1: "Na hladkých povrchoch v 2 vrstvách je potrebných cca 7.2 litra základnej farby.", faqQ2: "Aký je maximálny limit pigmentu?", faqA2: "Pre zachovanie vlastností farby neprekračujte 10% objemu pigmentu.",
             secRelated: "Súvisiace kalkulačky"
         }
@@ -399,9 +362,8 @@
     let currentLang = 'en';
     let baseLiters = 0, baseMl = 0, maxLimitMl = 0;
     let isHistoryVisible = false;
-    let isGlobalModalVisible = false;
 
-    // Інтеграція з глобальним кошторисом
+    // Інтеграція з глобальним кошторисом (викликається автоматично з global-estimate.js)
     window.getGlobalEstimateData = function() {
         let baseLitersVal = parseFloat(baseLiters) || 0;
         let totalPrice = parseFloat(document.getElementById('out-cost').innerText) || 0;
@@ -470,16 +432,10 @@
         document.getElementById('warning-banner').innerText = d.warn;
         document.getElementById('lbl-total-pigment').innerText = d.tot;
 
-        // Breadcrumbs & SEO & Global
+        // Breadcrumbs & SEO
         document.getElementById('bc-home').innerText = d.bcHome;
         document.getElementById('bc-calcs').innerText = d.bcCalcs;
         document.getElementById('bc-current').innerText = d.bcCurr;
-        document.getElementById('sec-global').innerText = d.secGlobal;
-        document.getElementById('sec-global-desc').innerText = d.secGlobalDesc;
-        document.getElementById('txt-add-global').innerText = d.addGlobal;
-        document.getElementById('txt-view-global').innerText = d.viewGlobal;
-        document.getElementById('txt-clear-global').innerText = d.clearGlobal;
-        document.getElementById('lbl-unified-total').innerText = d.lblUnifiedTot;
         document.getElementById('sec-faq').innerText = d.secFaq;
         document.getElementById('faq-q1').innerText = d.faqQ1;
         document.getElementById('faq-a1').innerText = d.faqA1;
@@ -490,8 +446,6 @@
         initDropdowns();
         recalc();
         if(isHistoryVisible) renderHistory();
-        if(isGlobalModalVisible) renderGlobalHistory();
-        updateUnifiedEstimate();
     }
 
     function recalc() {
@@ -675,97 +629,10 @@
         }
     }
 
-    // --- Global Estimate Shared Logic (Cross-Calculator) ---
-    function addToGlobalEstimate() {
-        const name = prompt(dict[currentLang].promptMsg, "Paint Calculator Project");
-        if (!name) return;
-
-        let rawCost = parseFloat(document.getElementById('out-cost').innerText) || 0;
-        let base = document.getElementById('out-liters').innerText;
-
-        const record = {
-            id: Date.now(),
-            calculator: 'Paint Mixer',
-            name: name,
-            date: new Date().toLocaleDateString(),
-            base: base,
-            cost: document.getElementById('out-cost').innerText,
-            rawCost: rawCost
-        };
-
-        try {
-            let globalList = JSON.parse(localStorage.getItem('buildcalc_global_estimate')) || [];
-            globalList.unshift(record);
-            localStorage.setItem('buildcalc_global_estimate', JSON.stringify(globalList));
-            if(isGlobalModalVisible) renderGlobalHistory();
-            else toggleGlobalModal();
-            updateUnifiedEstimate();
-        } catch (e) {
-            alert("Storage error.");
-        }
-    }
-
-    function toggleGlobalModal() {
-        let box = document.getElementById("global-history-section");
-        isGlobalModalVisible = !isGlobalModalVisible;
-        box.style.display = isGlobalModalVisible ? "block" : "none";
-        if(isGlobalModalVisible) renderGlobalHistory();
-    }
-
-    function renderGlobalHistory() {
-        try {
-            const globalList = JSON.parse(localStorage.getItem('buildcalc_global_estimate')) || [];
-            const list = document.getElementById('global-history-list');
-            list.innerHTML = '';
-
-            if (globalList.length > 0) {
-                globalList.forEach(item => {
-                    list.innerHTML += `
-                        <div class="history-item">
-                            <div class="history-info">
-                                <strong>[${item.calculator}] ${item.name}</strong>
-                                ${item.date} | Base: ${item.base} | <span style="color:var(--accent-yellow); font-weight:bold;">${item.cost}</span>
-                            </div>
-                            <button class="del-btn" onclick="deleteGlobalItem(${item.id})">${dict[currentLang].del}</button>
-                        </div>`;
-                });
-            } else {
-                list.innerHTML = `<p style='color:var(--text-muted); text-align:center;'>${dict[currentLang].emptyHist}</p>`;
-            }
-        } catch (e) {}
-    }
-
-    function deleteGlobalItem(id) {
-        let globalList = JSON.parse(localStorage.getItem('buildcalc_global_estimate')) || [];
-        globalList = globalList.filter(item => item.id !== id);
-        localStorage.setItem('buildcalc_global_estimate', JSON.stringify(globalList));
-        renderGlobalHistory();
-        updateUnifiedEstimate();
-    }
-
-    function clearGlobalEstimate() {
-        if(confirm("Are you sure you want to clear the global estimate?")) {
-            localStorage.removeItem("buildcalc_global_estimate");
-            if(isGlobalModalVisible) renderGlobalHistory();
-            updateUnifiedEstimate();
-        }
-    }
-
-    function updateUnifiedEstimate() {
-        try {
-            const globalList = JSON.parse(localStorage.getItem('buildcalc_global_estimate')) || [];
-            let totalSum = globalList.reduce((sum, item) => sum + (item.rawCost || parseFloat(item.cost) || 0), 0);
-            document.getElementById('out-unified-total').innerText = totalSum.toFixed(2) + " €";
-        } catch (e) {
-            document.getElementById('out-unified-total').innerText = "0.00 €";
-        }
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
         initDropdowns();
         document.getElementById("language").value = "en";
         changeLanguage();
-        updateUnifiedEstimate();
     });
 </script>
 
