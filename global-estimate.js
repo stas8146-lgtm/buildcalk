@@ -157,20 +157,21 @@ window.addToGlobalEstimate = function() {
     }
 };
 
-
+// Оновлена логіка відображення кошторису
 window.viewGlobalEstimate = function() {
     let globalData = JSON.parse(localStorage.getItem("buildCalcGlobal"));
     let box = document.getElementById("globalResultBox");
     if (!box) return;
     
-    if (!globalData || globalData.items.length === 0) {
+    // Захист від битих даних: якщо даних немає, примусово виводимо нулі
+    if (!globalData || !globalData.items || globalData.items.length === 0) {
         box.style.display = "block";
         let listEl = document.getElementById("globalItemsList");
         if (listEl) listEl.innerHTML = "Global estimate is empty.";
-        if (document.getElementById("globalMatTotal")) document.getElementById("globalMatTotal").innerText = "0 €";
-        if (document.getElementById("globalWorkTotal")) document.getElementById("globalWorkTotal").innerText = "0 €";
-        if (document.getElementById("globalLogTotal")) document.getElementById("globalLogTotal").innerText = "0 €";
-        if (document.getElementById("globalGrandTotal")) document.getElementById("globalGrandTotal").innerText = "0 €";
+        if (document.getElementById("globalMatTotal")) document.getElementById("globalMatTotal").innerText = "0.00 €";
+        if (document.getElementById("globalWorkTotal")) document.getElementById("globalWorkTotal").innerText = "0.00 €";
+        if (document.getElementById("globalLogTotal")) document.getElementById("globalLogTotal").innerText = "0.00 €";
+        if (document.getElementById("globalGrandTotal")) document.getElementById("globalGrandTotal").innerText = "0.00 €";
         return;
     }
     
@@ -187,10 +188,20 @@ window.viewGlobalEstimate = function() {
     if (document.getElementById("globalGrandTotal")) document.getElementById("globalGrandTotal").innerText = globalData.total.toFixed(2) + " €";
 };
 
+// Жорстка логіка очищення
 window.clearGlobalEstimate = function() {
-    if (confirm("Clear global estimate?")) {
+    if (confirm("Are you sure you want to clear the global estimate?")) {
+        // 1. Видаляємо дані з пам'яті
         localStorage.removeItem("buildCalcGlobal");
-        window.viewGlobalEstimate();
-        alert("Global estimate cleared.");
+        
+        // 2. ПРИМУСОВО обнуляємо текст на екрані
+        let listEl = document.getElementById("globalItemsList");
+        if (listEl) listEl.innerHTML = "Global estimate is empty.";
+        if (document.getElementById("globalMatTotal")) document.getElementById("globalMatTotal").innerText = "0.00 €";
+        if (document.getElementById("globalWorkTotal")) document.getElementById("globalWorkTotal").innerText = "0.00 €";
+        if (document.getElementById("globalLogTotal")) document.getElementById("globalLogTotal").innerText = "0.00 €";
+        if (document.getElementById("globalGrandTotal")) document.getElementById("globalGrandTotal").innerText = "0.00 €";
+        
+        alert("✅ Global estimate cleared.");
     }
 };
