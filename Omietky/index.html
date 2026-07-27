@@ -280,7 +280,7 @@
                 
                 <div class="result-row total">
                     <span id="res-cost">Grand Total:</span>
-                    <span id="out-cost">0.00 €</span>
+                    <span id="grandTotal">0.00 €</span>
                 </div>
             </div>
 
@@ -456,6 +456,22 @@
 
         let currentLang = 'en';
 
+        // Функція для інтеграції з глобальним кошторисом (global-estimate.js)
+        window.getGlobalEstimateData = function() {
+            let matCost = parseFloat(document.getElementById('out-mat-cost').innerText) || 0;
+            let laborCost = parseFloat(document.getElementById('out-lab-cost').innerText) || 0;
+            let otherExp = parseFloat(document.getElementById('out-oth-cost').innerText) || 0;
+            let totalPrice = parseFloat(document.getElementById('grandTotal').innerText) || 0;
+            
+            return {
+                name: "VIP Plaster Calculator Project",
+                materials: matCost,
+                labor: laborCost,
+                logistics: otherExp,
+                total: totalPrice
+            };
+        };
+
         function updateConsumption() {
             let type = document.getElementById('in-plaster-type').value;
             let thickGroup = document.getElementById('group-thickness');
@@ -477,12 +493,6 @@
             document.getElementById('btn-calc-text').innerText = dict[lang].calcBtn;
             document.getElementById('btn-copy-text').innerText = dict[lang].copyBtn;
             document.getElementById('btn-pdf-text').innerText = dict[lang].pdfBtn;
-
-            document.getElementById('global-est-title').innerText = dict[lang].globalTitle;
-            document.getElementById('global-est-desc').innerText = dict[lang].globalDesc;
-            document.getElementById('btn-add-global').innerText = dict[lang].addGlobal;
-            document.getElementById('btn-view-global').innerText = dict[lang].viewGlobal;
-            document.getElementById('btn-clear-global').innerText = dict[lang].clearGlobal;
 
             document.getElementById('vault-title').innerText = dict[lang].vaultTitle;
             document.getElementById('btn-save-local').innerText = dict[lang].saveLocal;
@@ -613,14 +623,14 @@
             document.getElementById('out-mat-cost').innerText = matCost.toFixed(2) + " €";
             document.getElementById('out-lab-cost').innerText = laborCost.toFixed(2) + " €";
             document.getElementById('out-oth-cost').innerText = otherExp.toFixed(2) + " €";
-            document.getElementById('out-cost').innerText = grandTotal.toFixed(2) + " €";
+            document.getElementById('grandTotal').innerText = grandTotal.toFixed(2) + " €";
         }
 
         function saveToHistory() {
             const name = prompt(dict[currentLang].promptMsg, "Object Plaster 1");
             if (!name) return;
 
-            let rawCost = parseFloat(document.getElementById('out-cost').innerText) || 0;
+            let rawCost = parseFloat(document.getElementById('grandTotal').innerText) || 0;
 
             const record = {
                 id: Date.now(),
@@ -628,7 +638,7 @@
                 date: new Date().toLocaleDateString(),
                 area: document.getElementById('out-net-area').innerText,
                 bags: document.getElementById('out-bags').innerText,
-                cost: document.getElementById('out-cost').innerText,
+                cost: document.getElementById('grandTotal').innerText,
                 rawCost: rawCost
             };
 
@@ -707,7 +717,7 @@
         }
 
         function copyEstimate() {
-            const text = `VIP Plaster Estimate:\nNet Area: ${document.getElementById('out-net-area').innerText}\nDry Mix: ${document.getElementById('out-bags').innerText}\nGrand Total: ${document.getElementById('out-cost').innerText}`;
+            const text = `VIP Plaster Estimate:\nNet Area: ${document.getElementById('out-net-area').innerText}\nDry Mix: ${document.getElementById('out-bags').innerText}\nGrand Total: ${document.getElementById('grandTotal').innerText}`;
             navigator.clipboard.writeText(text).then(() => {
                 alert("Estimate copied to clipboard!");
             }).catch(err => {
