@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -151,7 +150,7 @@
     </style>
 
     <script src="../nav.js"></script>
-<script src="../global-estimate.js"></script>
+    <script src="../global-estimate.js"></script>
 </head>
 <body>
 
@@ -337,17 +336,6 @@
             </div>
         </div>
 
-        <h3 id="hMatResult">📦 Material Consumption</h3>
-        <div class="result-box">
-            <div><span id="txtCover">Covering (with waste)</span> <span id="roofCoverResult">0 m²</span></div>
-            <div><span id="txtParo">Vapour Barrier</span> <span id="paroResult">0 m²</span></div>
-            <div><span id="txtHydro">Underlay Membrane</span> <span id="hydroResult">0 m²</span></div>
-            <div><span id="txtDiff">Breather Membrane</span> <span id="diffResult">0 m²</span></div>
-            <div><span id="txtScrewRes">Screws</span> <span id="screwResult">0 pcs</span></div>
-            <div><span id="txtNailRes">Nails</span> <span id="nailResult">0 kg</span></div>
-            <div><span id="txtAnchorRes">Anchors</span> <span id="anchorResult">0 pcs</span></div>
-        </div>
-
         <h3 id="hEstimate">💶 Labor & Logistics Cost</h3>
         <div class="grid-inputs">
             <div class="input-group">
@@ -412,8 +400,8 @@
         <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Invoice</button>
     </div>
 
-    
-<div id="global-estimate-container"></div>
+    <!-- БЛОК ГЛОБАЛЬНОГО КОШТОРИСУ -->
+    <div id="global-estimate-container"></div>
 
     <!-- ІСТОРІЯ ТІЛЬКИ ЦЬОГО КАЛЬКУЛЯТОРА -->
     <h3 id="hProjects" style="clear: both; width: 100%;">💾 Roof Project Vault</h3>
@@ -481,6 +469,30 @@ function parseSize(sizeStr) {
         vol: (Number(parts[0]) / 1000) * (Number(parts[1]) / 1000)
     };
 }
+
+// ----------------------------------------------------
+// ФУНКЦІЯ ДЛЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS
+// ----------------------------------------------------
+window.getGlobalEstimateData = function() {
+    let materials = parseFloat(document.getElementById("materialsTotal").innerText) || 0;
+    let labor = parseFloat(document.getElementById("salaryTotal").innerText) || 0;
+    
+    // В калькуляторі даху ми маємо ще "Profit", тому додамо його до labor
+    let profit = parseFloat(document.getElementById("profitTotal").innerText) || 0;
+    let totalLaborAndProfit = labor + profit;
+
+    let logistics = parseFloat(document.getElementById("deliveryTotal").innerText) || 0;
+    let total = parseFloat(document.getElementById("clientTotal").innerText) || 0;
+    let objName = document.getElementById("object").value || "Roof";
+
+    return {
+        name: "Roof Project: " + objName,
+        materials: materials,
+        labor: totalLaborAndProfit,
+        logistics: logistics,
+        total: total
+    };
+};
 
 function calculateWood() {
     let area = Number(document.getElementById("roofArea").value) || 0;
@@ -583,13 +595,12 @@ function calculateEstimate() {
     document.getElementById("roofCost").innerHTML = roofCost.toFixed(2) + " €";
     document.getElementById("membraneCost").innerHTML = membraneCost.toFixed(2) + " €";
     document.getElementById("fixCost").innerHTML = fixCost.toFixed(2) + " €";
+    
     document.getElementById("materialsTotal").innerHTML = materials.toFixed(2) + " €";
     document.getElementById("salaryTotal").innerHTML = salaryCost.toFixed(2) + " €";
     document.getElementById("profitTotal").innerHTML = profitCost.toFixed(2) + " €";
     document.getElementById("deliveryTotal").innerHTML = (delivery + other).toFixed(2) + " €";
     
-    // Зберігаємо число для глобального кошторису
-    document.getElementById("clientTotal").setAttribute("data-raw", total);
     document.getElementById("clientTotal").innerHTML = total.toFixed(2) + " €";
 }
 
@@ -721,99 +732,6 @@ function clearHistory() {
     }
 }
 
-// ----------------------------------------------------
-// ФУНКЦІЇ ДЛЯ ЄДИНОГО КОШТОРИСУ (GLOBAL ESTIMATE)
-// ----------------------------------------------------
-function addToGlobalEstimate() {
-    let rawPrice = parseFloat(document.getElementById("clientTotal").getAttribute("data-raw")) || 0;
-    if (rawPrice === 0) {
-        alert("Please calculate the estimate first.");
-        return;
-    }
-
-    let objName = document.getElementById("object").value || "Unnamed Object";
-    let clientName = document.getElementById("client").value || "-";
-    
-    let globalItem = {
-        id: Date.now(),
-        calculator: "Roof",
-        object: objName,
-        client: clientName,
-        price: rawPrice,
-        currency: "€",
-        date: new Date().toLocaleDateString()
-    };
-
-    let globalList = JSON.parse(localStorage.getItem("buildCalcGlobalEstimate")) || [];
-    globalList.push(globalItem);
-    localStorage.setItem("buildCalcGlobalEstimate", JSON.stringify(globalList));
-    
-    alert(`Successfully added to Global Estimate!\nItem: Roof (${objName})\nValue: ${rawPrice.toFixed(2)} €`);
-    
-    // Якщо відкритий блок глобального кошторису - оновлюємо його
-    if (document.getElementById("globalBox").style.display === "block") {
-        showGlobalEstimate(true);
-    }
-}
-
-function showGlobalEstimate(forceUpdate = false) {
-    let box = document.getElementById("globalBox");
-    if (!forceUpdate) {
-        box.style.display = box.style.display === "none" ? "block" : "none";
-        if (box.style.display === "none") return;
-    }
-    
-    let globalList = JSON.parse(localStorage.getItem("buildCalcGlobalEstimate")) || [];
-    if (globalList.length === 0) {
-        box.innerHTML = "<p style='color:var(--text-muted);'>Global estimate is empty. Add calculations from different calculators.</p>";
-        return;
-    }
-
-    let html = `<h4 style="margin-top:0; color: #28a745;">Unified Project Invoice</h4>`;
-    let grandTotal = 0;
-
-    globalList.forEach(item => {
-        grandTotal += item.price;
-        html += `
-            <div style="margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
-                <div>
-                    <b>[${item.calculator}]</b> ${item.object}
-                    <div style="font-size:11px; color:#aaa;">${item.date} | Client: ${item.client}</div>
-                </div>
-                <div style="text-align:right;">
-                    <span style="color:var(--primary); font-weight:bold;">${item.price.toFixed(2)} ${item.currency}</span>
-                    <br>
-                    <button onclick="removeGlobalItem(${item.id})" style="background:none; border:none; color:red; font-size:12px; cursor:pointer; padding:0;">Remove</button>
-                </div>
-            </div>
-            <hr style="border-top:1px dashed #444; margin:5px 0;">
-        `;
-    });
-
-    html += `
-        <div style="margin-top: 15px; font-size: 20px; text-align: right;">
-            GRAND TOTAL: <strong style="color: #28a745;">${grandTotal.toFixed(2)} €</strong>
-        </div>
-    `;
-    box.innerHTML = html;
-}
-
-function removeGlobalItem(id) {
-    let globalList = JSON.parse(localStorage.getItem("buildCalcGlobalEstimate")) || [];
-    globalList = globalList.filter(item => item.id !== id);
-    localStorage.setItem("buildCalcGlobalEstimate", JSON.stringify(globalList));
-    showGlobalEstimate(true);
-}
-
-function clearGlobalEstimate() {
-    if(confirm("Are you sure you want to delete the ENTIRE Global Estimate? This affects all calculators.")) {
-        localStorage.removeItem("buildCalcGlobalEstimate");
-        showGlobalEstimate(true);
-    }
-}
-// ----------------------------------------------------
-
-
 function copyEstimate() {
     let res = document.getElementById("clientTotal").innerText;
     navigator.clipboard.writeText(`Roof Estimate for ${document.getElementById("object").value}:\nTotal Price: ${res}`);
@@ -837,10 +755,6 @@ const langData = {
         lblWoodPrice: "Timber Price €/m³", lblSalaryPrice: "Labor Cost €/m²", lblProfitPrice: "Markup/Profit €/m²", lblDeliveryPrice: "Logistics €", lblOtherPrice: "Other Costs €",
         hFinal: "📊 Financial Summary", txtClientPrice: "Total Client Price", btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice",
         hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
-        
-        hGlobalEst: "🌍 Global Estimate (All Calculators)", txtGlobalDesc: "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.",
-        btnAddGlobal: "➕ Add to Global Estimate", btnViewGlobal: "👁 View Global Estimate", btnClearGlobal: "🗑 Clear Global",
-        
         hProjects: "💾 Roof Project Vault", btnSave: "💾 Save Local", btnHistory: "📂 Local History", btnClear: "🗑 Clear",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing",
         txtRafters: "Rafters", txtMauerlat: "Wall Plate", txtCounter: "Counter Batten", txtBatten: "Battens", txtWoodCube: "Total Timber",
@@ -876,9 +790,6 @@ const langData = {
         hFinal: "📊 Фінансовий підсумок", txtClientPrice: "Ціна клієнту", btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF",
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
         
-        hGlobalEst: "🌍 Єдиний кошторис", txtGlobalDesc: "Об'єднайте розрахунки даху, фасаду, стяжки тощо в один загальний чек.",
-        btnAddGlobal: "➕ Додати у Єдиний кошторис", btnViewGlobal: "👁 Відкрити Єдиний кошторис", btnClearGlobal: "🗑 Очистити все",
-
         hProjects: "💾 Локальні проєкти", btnSave: "💾 Зберегти", btnHistory: "📂 Історія дахів", btnClear: "🗑 Очистити",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість",
         txtRafters: "Крокви", txtMauerlat: "Мауерлат", txtCounter: "Контробрешітка", txtBatten: "Обрешітка", txtWoodCube: "Деревина (загалом)",
@@ -913,9 +824,6 @@ const langData = {
         hFinal: "📊 Finančný prehľad", txtClientPrice: "Cena pre klienta", btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument",
         hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
         
-        hGlobalEst: "🌍 Globálny rozpočet", txtGlobalDesc: "Spojte rozpočty zo strechy, fasády atď. do jedného celkového projektu.",
-        btnAddGlobal: "➕ Pridať do Globálneho rozpočtu", btnViewGlobal: "👁 Zobraziť Globálny rozpočet", btnClearGlobal: "🗑 Vymazať Všetko",
-
         hProjects: "💾 Lokálne projekty", btnSave: "💾 Uložiť", btnHistory: "📂 História striech", btnClear: "🗑 Vymazať",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu",
         txtRafters: "Krokvy", txtMauerlat: "Murovanica", txtCounter: "Kontralata", txtBatten: "Latovanie", txtWoodCube: "Drevo (spolu)",
