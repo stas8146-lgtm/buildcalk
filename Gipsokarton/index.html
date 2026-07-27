@@ -494,43 +494,7 @@
 
             <div id="global-estimate-container"></div>
                 
-                <p class="text-xs text-neutral-400 mb-4 leading-relaxed" id="t-global-estimate-desc">
-                    Combine costs from Roof, Facade, Screed etc. into one unified project estimate.
-                </p>
-
-                <div class="grid grid-cols-3 gap-3">
-                    <button onclick="addToGlobalEstimate()" class="flex flex-col items-center justify-center py-3 px-1 sm:px-2 bg-green-600 hover:bg-green-500 text-white rounded-lg transition-all text-[11px] font-medium text-center leading-tight shadow-md cursor-pointer">
-                        <div class="flex items-center justify-center gap-1">
-                            <i data-lucide="plus" class="w-3.5 h-3.5 text-white font-bold"></i> Add to
-                        </div>
-                        <div>Global Estimate</div>
-                    </button>
-                    
-                    <button onclick="toggleGlobalView()" class="flex flex-col items-center justify-center py-3 px-1 sm:px-2 bg-green-600 hover:bg-green-500 text-white rounded-lg transition-all text-[11px] font-medium text-center leading-tight shadow-md cursor-pointer">
-                        <div class="flex items-center justify-center gap-1">
-                            <i data-lucide="eye" class="w-3.5 h-3.5 text-white"></i> View Global
-                        </div>
-                        <div>Estimate</div>
-                    </button>
-                    
-                    <button onclick="clearGlobalEstimate()" class="flex flex-col items-center justify-center py-3 px-1 sm:px-2 bg-[#1a1c23] border border-red-900/60 hover:bg-red-950/40 text-red-500 rounded-lg transition-all text-[11px] font-medium text-center gap-1 shadow-md cursor-pointer">
-                        <div class="flex items-center justify-center gap-1">
-                            <i data-lucide="trash-2" class="w-3.5 h-3.5 text-red-400"></i> Clear Global
-                        </div>
-                    </button>
-                </div>
-
-                <!-- Випадаючий блок кошторису -->
-                <div id="global-estimate-view" class="hidden mt-4 bg-neutral-900 border border-neutral-800 p-4 rounded-xl shadow-inner transition-all">
-                    <div id="global-estimate-items" class="space-y-2 mb-4 max-h-[150px] overflow-y-auto pr-1 text-xs">
-                        <p class="text-neutral-500 text-center py-2" id="t-global-empty">No estimates added to project yet.</p>
-                    </div>
-                    <div class="flex justify-between items-center bg-yellow-500/10 border border-yellow-500/30 px-4 py-3 rounded-xl">
-                        <span class="font-extrabold text-white text-sm" id="lbl-global-total">Total Project Cost:</span>
-                        <span class="text-xl font-black text-yellow-400"><span id="val-global-total">0.00</span> €</span>
-                    </div>
-                </div>
-            </div>
+                
 
             <!-- CALCULATION HISTORY -->
             <div class="no-print bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
