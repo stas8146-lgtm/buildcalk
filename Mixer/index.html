@@ -130,7 +130,7 @@
     </style>
     
     <script src="../nav.js"></script>
-<script src="../global-estimate.js"></script>
+    <script src="../global-estimate.js"></script>
 </head>
 <body>
 
@@ -294,8 +294,19 @@
     <div class="history-box" id="history-section" data-html2canvas-ignore="true">
         <div id="history-list"></div>
     </div>
-<div id="global-estimate-container"></div>
 
+    <!-- Відновлений блок Global Estimate -->
+    <div class="unified-estimate-card" data-html2canvas-ignore="true">
+        <div class="section-title" id="sec-global">🌍 Global Estimate (All Calculators)</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;" id="sec-global-desc">
+            Combine costs from Roof, Facade, Screed etc. into one unified project estimate.
+        </div>
+        <div class="action-panel" style="margin-bottom: 10px;">
+            <button class="btn btn-green" onclick="addToGlobalEstimate()"><span id="txt-add-global">➕ Add Global</span></button>
+            <button class="btn" onclick="toggleGlobalModal()"><span id="txt-view-global">👁️ View Global</span></button>
+            <button class="btn btn-red-border" onclick="clearGlobalEstimate()"><span id="txt-clear-global">🗑️ Clear Global</span></button>
+        </div>
+        <div id="global-estimate-container"></div>
         
         <div class="history-box" id="global-history-section" style="display:none; margin-top:10px;">
             <div id="global-history-list"></div>
@@ -389,6 +400,24 @@
     let baseLiters = 0, baseMl = 0, maxLimitMl = 0;
     let isHistoryVisible = false;
     let isGlobalModalVisible = false;
+
+    // Інтеграція з глобальним кошторисом
+    window.getGlobalEstimateData = function() {
+        let baseLitersVal = parseFloat(baseLiters) || 0;
+        let totalPrice = parseFloat(document.getElementById('out-cost').innerText) || 0;
+        let matCost = parseFloat(document.getElementById('out-mat-cost').innerText) || 0;
+        let laborCost = parseFloat(document.getElementById('out-lab-cost').innerText) || 0;
+        let otherExp = parseFloat(document.getElementById('out-oth-cost').innerText) || 0;
+        
+        return {
+            name: "Paint Calculator Project",
+            base: baseLitersVal.toFixed(2) + " L",
+            materials: matCost,
+            labor: laborCost,
+            logistics: otherExp,
+            total: totalPrice
+        };
+    };
 
     function initDropdowns() {
         const selects = [document.getElementById('color-1'), document.getElementById('color-2'), document.getElementById('color-3')];
