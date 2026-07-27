@@ -1,25 +1,75 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Автоматично додаємо стилі кнопок на всі сторінки
+    // Додаємо власні автономні стилі, які ідеально працюють на будь-якій сторінці
     if (!document.getElementById("global-estimate-styles")) {
         const style = document.createElement("style");
         style.id = "global-estimate-styles";
         style.innerHTML = `
-            .action-btn.green {
-                background: #28a745 !important;
-                border-color: #28a745 !important;
-                color: white !important;
+            .ge-container {
+                background: #171717;
+                border: 1px solid #262626;
+                border-radius: 12px;
+                padding: 20px;
+                margin: 24px 0;
+                box-sizing: border-box;
+                color: #e5e5e5;
+                font-family: inherit;
+                width: 100%;
+                clear: both;
             }
-            .action-btn.green:hover {
-                background: #218838 !important;
+            .ge-title {
+                font-size: 15px;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: #fbbf24;
+                margin-bottom: 6px;
             }
-            .action-btn.red-border {
-                border-color: #dc3545 !important;
-                color: #dc3545 !important;
-                background: var(--dark-light) !important;
+            .ge-desc {
+                font-size: 13px;
+                color: #a3a3a3;
+                margin-bottom: 16px;
             }
-            .action-btn.red-border:hover {
-                background: #dc3545 !important;
-                color: white !important;
+            .ge-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 0;
+            }
+            .ge-btn {
+                padding: 10px 18px;
+                font-size: 14px;
+                font-weight: 600;
+                border-radius: 8px;
+                cursor: pointer;
+                border: 1px solid transparent;
+                transition: background 0.2s;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .ge-btn-green {
+                background: #16a34a !important;
+                color: #ffffff !important;
+                border-color: #16a34a !important;
+            }
+            .ge-btn-green:hover {
+                background: #15803d !important;
+            }
+            .ge-btn-red {
+                background: #262626 !important;
+                color: #f87171 !important;
+                border-color: rgba(248, 113, 113, 0.3) !important;
+            }
+            .ge-btn-red:hover {
+                background: #7f1d1d !important;
+                color: #ffffff !important;
+            }
+            .ge-result-box {
+                display: none;
+                margin-top: 16px;
+                padding-top: 16px;
+                border-top: 1px solid #262626;
+                font-size: 14px;
             }
         `;
         document.head.appendChild(style);
@@ -27,24 +77,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const container = document.getElementById("global-estimate-container");
     if (container) {
+        container.className = "ge-container";
         container.innerHTML = `
-            <h3 id="hGlobal" style="clear: both; width: 100%;">🌍 Global Estimate (All Calculators)</h3>
-            <div class="subtitle" id="globalDesc" style="margin-bottom: 10px;">Combine costs from Roof, Facade, Screed etc. into one unified project estimate.</div>
-            <div class="buttons-container">
-                <button class="action-btn green" onclick="addToGlobalEstimate()" id="btnAddGlobal">➕ Add to Global</button>
-                <button class="action-btn green" onclick="viewGlobalEstimate()" id="btnViewGlobal">👁 View Global</button>
-                <button class="action-btn red-border" onclick="clearGlobalEstimate()" id="btnClearGlobal">🗑 Clear Global</button>
+            <div class="ge-title">🌍 Global Estimate (All Calculators)</div>
+            <div class="ge-desc">Combine costs from Roof, Facade, Screed etc. into one unified project estimate.</div>
+            <div class="ge-buttons">
+                <button class="ge-btn ge-btn-green" onclick="addToGlobalEstimate()">➕ Add to Global</button>
+                <button class="ge-btn ge-btn-green" onclick="viewGlobalEstimate()">👁 View Global</button>
+                <button class="ge-btn ge-btn-red" onclick="clearGlobalEstimate()">🗑 Clear Global</button>
             </div>
-            <div class="result-box" id="globalResultBox" style="display:none; width: 100%; box-sizing: border-box; clear: both;">
-                <div style="font-weight:bold; color:var(--primary); margin-bottom: 8px; font-size: 16px;">🌍 <span id="txtGlobalTitle">Global Estimate Summary</span></div>
-                <div id="globalItemsList" style="font-size: 14px; color: var(--text-light); margin-bottom: 10px;"></div>
-                <hr>
-                <div><span>📦 <span id="txtGlobalMat">Total Materials</span></span> <span id="globalMatTotal">0 €</span></div>
-                <div><span>👷 <span id="txtGlobalWork">Total Labor</span></span> <span id="globalWorkTotal">0 €</span></div>
-                <div><span>🚛 <span id="txtGlobalLog">Total Logistics</span></span> <span id="globalLogTotal">0 €</span></div>
-                <hr>
-                <div style="font-size:18px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between;">
-                    <span>💰 <span id="txtGlobalGrand">Grand Total</span></span> <span id="globalGrandTotal">0 €</span>
+            <div class="ge-result-box" id="globalResultBox">
+                <div style="font-weight:bold; color:#fbbf24; margin-bottom: 8px;">🌍 Global Estimate Summary</div>
+                <div id="globalItemsList" style="color: #d4d4d4; margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px;"></div>
+                <hr style="border:0; border-top:1px solid #262626; margin: 10px 0;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #d4d4d4;"><span>📦 Total Materials</span> <span id="globalMatTotal">0 €</span></div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #d4d4d4;"><span>👷 Total Labor</span> <span id="globalWorkTotal">0 €</span></div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #d4d4d4;"><span>🚛 Total Logistics</span> <span id="globalLogTotal">0 €</span></div>
+                <hr style="border:0; border-top:1px solid #262626; margin: 10px 0;">
+                <div style="font-size:16px; font-weight:bold; color:#fbbf24; display: flex; justify-content: space-between;">
+                    <span>💰 Grand Total</span> <span id="globalGrandTotal">0 €</span>
                 </div>
             </div>
         `;
@@ -98,7 +149,7 @@ window.viewGlobalEstimate = function() {
     box.style.display = "block";
     let itemsHtml = "";
     globalData.items.forEach(i => {
-        itemsHtml += `<div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span>• ${i.name}</span> <span style="color:var(--primary); font-weight:bold;">${i.total.toFixed(2)} €</span></div>`;
+        itemsHtml += `<div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span>• ${i.name}</span> <span style="color:#fbbf24; font-weight:bold;">${i.total.toFixed(2)} €</span></div>`;
     });
     
     if (document.getElementById("globalItemsList")) document.getElementById("globalItemsList").innerHTML = itemsHtml;
