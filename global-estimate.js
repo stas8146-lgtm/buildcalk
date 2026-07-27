@@ -103,30 +103,54 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // Логіка роботи глобального кошторису
+// Вдосконалена логіка роботи глобального кошторису
 window.addToGlobalEstimate = function() {
     let objName = document.getElementById("object") ? (document.getElementById("object").value || "Object") : "Object";
     
-    function getVal(id) {
-        let el = document.getElementById(id);
-        if (!el) return 0;
-        return Number(el.innerText.replace(' €','').replace(/ /g,'')) || 0;
+    // Розумна функція для отримання чисел
+    function getVal(idList) {
+        // Проходимося по масиву можливих ID
+        for (let id of idList) {
+            let el = document.getElementById(id);
+            if (el) {
+                // Регулярний вираз [^\d.-] видаляє ВСЕ, крім цифр та крапки.
+                // Це вирішує проблему з будь-якими пробілами, символами € та текстом
+                let cleanText = el.innerText.replace(/[^\d.-]/g, '');
+                let num = Number(cleanText);
+                if (!isNaN(num) && num > 0) return num;
+            }
+        }
+        return 0; // Якщо жоден ID не знайдено або значення нульове
     }
 
-    let materials = getVal("materialsTotal");
-    let labor = getVal("laborTotal");
-    let logistics = getVal("deliveryTotal");
-    let total = getVal("clientTotal");
+    // Шукаємо дані за кількома варіантами ID (додайте сюди свої, якщо вони специфічні)
+    let materials = getVal(["materialsTotal", "materials-cost", "matTotal", "materials"]);
+    let labor = getVal(["laborTotal", "labor-cost", "workTotal", "labor"]);
+    let logistics = getVal(["deliveryTotal", "logisticsTotal", "logistics-cost", "logistics"]);
+    let total = getVal(["clientTotal", "grandTotal", "total-client", "totalPrice"]);
+
+    // Запобіжник: якщо загальна сума не знайдена, але є складові, просто сумуємо їх
+    if (total === 0 && (materials > 0 || labor > 0)) {
+        total = materials + labor + logistics;
+    }
 
     let globalData = JSON.parse(localStorage.getItem("buildCalcGlobal")) || { materials: 0, labor: 0, logistics: 0, total: 0, items: [] };
     
+    // Додаємо нові значення до існуючих
     globalData.materials += materials;
     globalData.labor += labor;
     globalData.logistics += logistics;
     globalData.total += total;
-    globalData.items.push({ name: objName, total: total });
+    
+    // Зберігаємо назву калькулятора (з Title сторінки) для зручності
+    let calcTitle = document.title.split('-')[0].trim() || "Calc";
+    globalData.items.push({ name: `${calcTitle} (${objName})`, total: total });
 
+    // Зберігаємо у локальне сховище
     localStorage.setItem("buildCalcGlobal", JSON.stringify(globalData));
-    alert("Added to Global Estimate successfully!");
+    
+    // Оновлюємо інтерфейс і показуємо повідомлення
+    alert(`Successfully added to Global Estimate!\nItem: ${calcTitle} (${objName})\nValue: ${total.toFixed(2)} €`);
     window.viewGlobalEstimate();
 };
 
