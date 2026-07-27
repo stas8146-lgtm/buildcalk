@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" translate="no" class="notranslate">
 <head>
@@ -43,7 +42,7 @@
         }
     </style>
     <script src="../nav.js"></script>
-<script src="../global-estimate.js"></script>
+    <script src="../global-estimate.js"></script>
 </head>
 
 <body class="text-neutral-100 min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
@@ -492,10 +491,9 @@
                 </div>
             </div>
 
+            <!-- Контейнер для зовнішнього global-estimate.js -->
             <div id="global-estimate-container"></div>
                 
-                
-
             <!-- CALCULATION HISTORY -->
             <div class="no-print bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
                 <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
@@ -619,10 +617,6 @@
                 "t-history-empty": "No calculations saved yet.",
                 "t-faq-title": "Frequently Asked Questions",
                 "t-related-title": "Related Calculators (BUILDcalc Ecosystem)",
-                "t-global-estimate-title": "Global Estimate (All Calculators)",
-                "t-global-estimate-desc": "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.",
-                "t-global-empty": "No estimates added to project yet.",
-                "lbl-global-total": "Total Project Cost:",
                 "unit-pcs": "pcs",
                 "unit-m": "m",
                 "unit-kg": "kg"
@@ -686,10 +680,6 @@
                 "t-history-empty": "Збережених розрахунків поки немає.",
                 "t-faq-title": "Поширені запитання (FAQ)",
                 "t-related-title": "Супутні калькулятори (Екосистема BUILDcalc)",
-                "t-global-estimate-title": "Global Estimate (Усі калькулятори)",
-                "t-global-estimate-desc": "Об'єднуйте кошториси з калькуляторів даху, фасаду, стяжки тощо в єдиний загальний бюджет.",
-                "t-global-empty": "До кошторису ще нічого не додано.",
-                "lbl-global-total": "Загальна вартість проєкту:",
                 "unit-pcs": "шт",
                 "unit-m": "м",
                 "unit-kg": "кг"
@@ -753,10 +743,6 @@
                 "t-history-empty": "Zatiaľ žiadne uložené výpočty.",
                 "t-faq-title": "Často kladené otázky (FAQ)",
                 "t-related-title": "Súvisiace kalkulačky (Ekosystém BUILDcalc)",
-                "t-global-estimate-title": "Global Estimate (Všetky kalkulačky)",
-                "t-global-estimate-desc": "Kombinujte náklady zo strechy, fasády, poteru atď. do jedného celkového rozpočtu.",
-                "t-global-empty": "Zatiaľ žiadne položky v rozpočte.",
-                "lbl-global-total": "Celkový rozpočet projektu:",
                 "unit-pcs": "ks",
                 "unit-m": "m",
                 "unit-kg": "kg"
@@ -768,7 +754,6 @@
             setStructureType('wall'); 
             changeLanguage('en');
             loadHistory();
-            loadGlobalEstimate();
         };
 
         function changeLanguage(lang) {
@@ -856,6 +841,19 @@
         }
 
         let globalGrandTotal = 0;
+
+        // Інтерфейс для зовнішнього файлу global-estimate.js
+        window.getGlobalEstimateData = function() {
+            let typeLabel = structureType === 'wall' ? 'Wall' : 
+                            (structureType === 'partition' ? 'Partition' : 'Ceiling');
+            return {
+                name: `Drywall (${typeLabel})`,
+                materials: parseFloat(document.getElementById('val-total-materials').innerText) || 0,
+                labor: parseFloat(document.getElementById('val-total-labor').innerText) || 0,
+                logistics: parseFloat(document.getElementById('val-total-other').innerText) || 0,
+                total: globalGrandTotal
+            };
+        };
 
         function calculate() {
             const btnMain = document.getElementById('btn-calculate-main');
@@ -991,63 +989,6 @@
             if (baseArea > 0) {
                 saveToHistoryDebounced(width, height, baseArea);
             }
-        }
-
-        function addToGlobalEstimate() {
-            let globalList = JSON.parse(localStorage.getItem('global_project_estimate')) || [];
-            const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            
-            globalList.push({
-                name: `Drywall (${structureType.toUpperCase()})`,
-                cost: globalGrandTotal,
-                timestamp
-            });
-
-            localStorage.setItem('global_project_estimate', JSON.stringify(globalList));
-            loadGlobalEstimate();
-            alert("Added to Global Estimate!");
-        }
-
-        function toggleGlobalView() {
-            const viewPanel = document.getElementById('global-estimate-view');
-            if (viewPanel.classList.contains('hidden')) {
-                viewPanel.classList.remove('hidden');
-                loadGlobalEstimate();
-                if(typeof lucide !== 'undefined') lucide.createIcons();
-            } else {
-                viewPanel.classList.add('hidden');
-            }
-        }
-
-        function loadGlobalEstimate() {
-            let globalList = JSON.parse(localStorage.getItem('global_project_estimate')) || [];
-            const container = document.getElementById('global-estimate-items');
-            const totalEl = document.getElementById('val-global-total');
-
-            if (globalList.length === 0) {
-                container.innerHTML = `<p class="text-neutral-500 text-center py-2" id="t-global-empty">${translations[currentLang]['t-global-empty']}</p>`;
-                totalEl.innerText = "0.00";
-                return;
-            }
-
-            container.innerHTML = "";
-            let sum = 0;
-            globalList.forEach((item, index) => {
-                sum += item.cost;
-                const row = document.createElement('div');
-                row.className = "flex justify-between items-center bg-neutral-950 px-3 py-2 rounded-lg border border-neutral-800";
-                row.innerHTML = `
-                    <span class="text-white font-medium">${index + 1}. ${item.name} <span class="text-[10px] text-neutral-500">(${item.timestamp})</span></span>
-                    <span class="text-yellow-400 font-bold">${item.cost.toFixed(2)} €</span>
-                `;
-                container.appendChild(row);
-            });
-            totalEl.innerText = sum.toFixed(2);
-        }
-
-        function clearGlobalEstimate() {
-            localStorage.removeItem('global_project_estimate');
-            loadGlobalEstimate();
         }
 
         let debounceTimer;
