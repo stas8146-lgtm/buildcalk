@@ -102,57 +102,61 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// Логіка роботи глобального кошторису
-// Вдосконалена логіка роботи глобального кошторису
 window.addToGlobalEstimate = function() {
     let objName = document.getElementById("object") ? (document.getElementById("object").value || "Object") : "Object";
     
-    // Розумна функція для отримання чисел
     function getVal(idList) {
-        // Проходимося по масиву можливих ID
         for (let id of idList) {
             let el = document.getElementById(id);
             if (el) {
-                // Регулярний вираз [^\d.-] видаляє ВСЕ, крім цифр та крапки.
-                // Це вирішує проблему з будь-якими пробілами, символами € та текстом
+                // Витягуємо лише цифри
                 let cleanText = el.innerText.replace(/[^\d.-]/g, '');
                 let num = Number(cleanText);
                 if (!isNaN(num) && num > 0) return num;
             }
         }
-        return 0; // Якщо жоден ID не знайдено або значення нульове
+        return 0; 
     }
 
-    // Шукаємо дані за кількома варіантами ID (додайте сюди свої, якщо вони специфічні)
-    let materials = getVal(["materialsTotal", "materials-cost", "matTotal", "materials"]);
-    let labor = getVal(["laborTotal", "labor-cost", "workTotal", "labor"]);
-    let logistics = getVal(["deliveryTotal", "logisticsTotal", "logistics-cost", "logistics"]);
-    let total = getVal(["clientTotal", "grandTotal", "total-client", "totalPrice"]);
+    // МАКСИМАЛЬНО РОЗШИРЕНИЙ СПИСОК МОЖЛИВИХ ID
+    let materials = getVal(["materialsTotal", "materials-cost", "matTotal", "materials", "totalMaterials", "materialPrice", "materialsPrice"]);
+    let labor = getVal(["laborTotal", "labor-cost", "workTotal", "labor", "totalLabor", "workPrice", "laborPrice", "totalWork"]);
+    let logistics = getVal(["deliveryTotal", "logisticsTotal", "logistics-cost", "logistics", "totalLogistics", "deliveryPrice", "craneTotal"]);
+    
+    // Шукаємо загальну суму за всіма можливими назвами
+    let total = getVal(["clientTotal", "grandTotal", "total-client", "totalPrice", "totalProjectPrice", "projectPrice", "finalTotal", "total"]);
 
-    // Запобіжник: якщо загальна сума не знайдена, але є складові, просто сумуємо їх
+    // Якщо раптом загальної суми немає, але є складові - додаємо їх
     if (total === 0 && (materials > 0 || labor > 0)) {
         total = materials + labor + logistics;
     }
 
+    // ЗАХИСТ ВІД НУЛІВ: Якщо сума все ще 0, зупиняємо процес і повідомляємо про це
+    if (total === 0) {
+        alert("⚠️ Помилка: Скрипт не зміг знайти загальну суму на цій сторінці!\n\nПеревірте в HTML-коді цього калькулятора, чи має поле з фінальною сумою один з цих ID: id='clientTotal' або id='grandTotal'.");
+        return; // Зупиняємо код, щоб не записувати нуль у Global
+    }
+
     let globalData = JSON.parse(localStorage.getItem("buildCalcGlobal")) || { materials: 0, labor: 0, logistics: 0, total: 0, items: [] };
     
-    // Додаємо нові значення до існуючих
     globalData.materials += materials;
     globalData.labor += labor;
     globalData.logistics += logistics;
     globalData.total += total;
     
-    // Зберігаємо назву калькулятора (з Title сторінки) для зручності
     let calcTitle = document.title.split('-')[0].trim() || "Calc";
     globalData.items.push({ name: `${calcTitle} (${objName})`, total: total });
 
-    // Зберігаємо у локальне сховище
     localStorage.setItem("buildCalcGlobal", JSON.stringify(globalData));
     
-    // Оновлюємо інтерфейс і показуємо повідомлення
-    alert(`Successfully added to Global Estimate!\nItem: ${calcTitle} (${objName})\nValue: ${total.toFixed(2)} €`);
-    window.viewGlobalEstimate();
+    alert(`✅ Успішно додано до Global Estimate!\nКалькулятор: ${calcTitle}\nОб'єкт: ${objName}\nСума: ${total.toFixed(2)} €`);
+    
+    // Оновлюємо вікно, якщо функція існує
+    if (typeof window.viewGlobalEstimate === "function") {
+        window.viewGlobalEstimate();
+    }
 };
+
 
 window.viewGlobalEstimate = function() {
     let globalData = JSON.parse(localStorage.getItem("buildCalcGlobal"));
