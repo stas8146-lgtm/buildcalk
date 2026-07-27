@@ -32,14 +32,14 @@
 </script>
 <style>
 :root {
-    --bg-dark: #0f172a;
-    --card-bg: #1e293b;
+    --bg-dark: #0b0b0b;
+    --card-bg: #161616;
     --primary: #38bdf8;
-    --accent: #f5a623;
-    --accent-hover: #e0961b;
+    --accent: #eab308;
+    --accent-hover: #ca8a04;
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
-    --border: #334155;
+    --border: #262626;
 }
 body {
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -72,7 +72,7 @@ body {
     border: 1px solid var(--border);
 }
 .header {
-    background: linear-gradient(135deg, #0f172a, #1e293b);
+    background: linear-gradient(135deg, #0b0b0b, #161616);
     color: white;
     padding: 35px 25px;
     text-align: center;
@@ -98,15 +98,15 @@ h1.logo span { color: var(--accent); }
 select {
     padding: 8px 16px;
     border-radius: 8px;
-    background: #273549;
+    background: #222222;
     color: white;
-    border: 1px solid #3d526e;
+    border: 1px solid #333333;
     font-weight: 600;
     cursor: pointer;
 }
 .version-switcher {
     display: flex;
-    background: #0f172a;
+    background: #0b0b0b;
     padding: 6px;
     border-radius: 14px;
     margin: 25px;
@@ -131,7 +131,7 @@ select {
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 .tab-btn .badge {
-    background: #0f172a;
+    background: #0b0b0b;
     color: var(--accent);
     font-size: 11px;
     padding: 2px 6px;
@@ -164,19 +164,19 @@ input {
     border-radius: 10px;
     font-size: 15px;
     color: #fff;
-    background: #0f172a;
+    background: #0b0b0b;
 }
 input:focus {
     outline: none;
     border-color: var(--accent);
-    background: #1e293b;
+    background: #161616;
 }
 .buttons-container { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 25px; }
 button.action-btn {
     padding: 14px 24px;
     border: 0;
     border-radius: 12px;
-    background: #334155;
+    background: #262626;
     color: white;
     font-size: 15px;
     font-weight: 700;
@@ -187,23 +187,9 @@ button.action-btn:hover { background: var(--accent); color: #000; }
 button#calcBtn { background: var(--accent); color: #000; flex-grow: 2; }
 button#calcBtn:hover { background: var(--accent-hover); }
 
-/* Global Estimate Buttons */
-.btn-green { background: #22c55e !important; color: #fff !important; }
-.btn-green:hover { background: #16a34a !important; }
-.btn-outline-red { background: transparent !important; color: #ef4444 !important; border: 1px solid #ef4444 !important; }
-.btn-outline-red:hover { background: rgba(239, 68, 68, 0.1) !important; }
-
-.global-box {
-    margin-top: 25px;
-    background: #1e293b;
-    border: 1px solid var(--border);
-    padding: 15px 20px 25px 20px;
-    border-radius: 16px;
-}
-
 .result-box {
     margin-top: 25px;
-    background: #0f172a;
+    background: #0b0b0b;
     border: 2px dashed var(--border);
     padding: 20px;
     border-radius: 16px;
@@ -212,9 +198,9 @@ button#calcBtn:hover { background: var(--accent-hover); }
 .pro-only-block.locked { opacity: 0.35; pointer-events: none; user-select: none; }
 .lock-badge { display: none; background: #ef4444; color: white; font-size: 11px; font-weight: bold; padding: 3px 8px; border-radius: 6px; }
 .locked .lock-badge { display: inline-block; }
-.history-box { margin-top: 25px; background: #0f172a; border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: var(--text-main); }
+.history-box { margin-top: 25px; background: #0b0b0b; border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: var(--text-main); }
 .buy-pro-banner {
-    background: linear-gradient(135deg, #f5a623, #d97706);
+    background: linear-gradient(135deg, #eab308, #ca8a04);
     color: #000;
     padding: 20px;
     border-radius: 16px;
@@ -223,7 +209,7 @@ button#calcBtn:hover { background: var(--accent-hover); }
 }
 .buy-pro-banner h4 { margin: 0 0 10px 0; font-size: 20px; font-weight: 800; }
 .buy-btn {
-    background: #0f172a;
+    background: #0b0b0b;
     color: white;
     border: 0;
     padding: 12px 25px;
@@ -235,7 +221,7 @@ button#calcBtn:hover { background: var(--accent-hover); }
     display: inline-block;
     margin-top: 5px;
 }
-.buy-btn:hover { background: #1e293b; }
+.buy-btn:hover { background: #161616; }
 @media(max-width: 600px) { 
     .grid-inputs { grid-template-columns: 1fr; }
     h1.logo { font-size: 28px; }
@@ -327,7 +313,7 @@ button#calcBtn:hover { background: var(--accent-hover); }
                 <div class="input-group"><label id="sandPriceLabel">Пісок €/м³</label><input id="sandPrice" type="number" value="20"></div>
                 <div class="input-group"><label id="fiberPriceLabel">Фібра €/кг</label><input id="fiberPrice" type="number" value="3"></div>
                 <div class="input-group"><label id="plasticPriceLabel">Пластифікатор €/л</label><input id="plasticPrice" type="number" value="4"></div>
-                <div class="input-group"><label id="logisticsLabel">Доставка, податки, інше €/м²</label><input id="logisticsPrice" type="number" value="3.95"></div>
+                <div class="input-group"><label id="logisticsLabel">Доставка, податки, інше €/m²</label><input id="logisticsPrice" type="number" value="3.95"></div>
             </div>
         </div>
         
@@ -346,8 +332,12 @@ button#calcBtn:hover { background: var(--accent-hover); }
         </div>
 
         <div class="result-box" id="result">Тут з'явиться ваш розрахунок...</div>
-<div id="global-estimate-container"></div>
         
+        <!-- Схований або необов'язковий елемент для повної суми, щоб global-estimate.js міг її зчитати -->
+        <div style="display:none;"><span id="clientTotal">0.00</span></div>
+
+        <!-- Глобальний кошторис (автоматично з global-estimate.js) -->
+        <div id="global-estimate-container"></div>
         
         <div class="buy-pro-banner" id="promoBanner">
             <h4 id="bannerTitle">🔓 Відкрийте повну версію PRO</h4>
@@ -382,7 +372,7 @@ button#calcBtn:hover { background: var(--accent-hover); }
 let report = "";
 let htmlReportForPDF = "";
 let currentVersion = "free";
-let windowCurrentClientTotal = 0; // Для єдиного кошторису
+let windowCurrentClientTotal = 0;
 
 const words = {
     ua: {
@@ -395,7 +385,6 @@ const words = {
         bannerT: "🔓 Відкрийте повну версію PRO", bannerD: "Точний розхід матеріалів у мішках та кубах, редагування цін, збереження об'єктів та генерація PDF кошторисів для клієнтів!", bannerB: "Дізнатися вартість PRO",
         compTitle: "Дані фірми", compName: "Назва фірми", phone: "Телефон", email: "Email", pdfBtn: "📄 Згенерувати PDF звіт",
         resEstimate: "Кошторис BUILDcalc PRO", resVolume: "Об'єм", resCement: "Цемент", resSand: "Пісок", resFiber: "Фібра", resPlastic: "Пластифікатор", resMatCost: "Матеріали", resSalary: "Зарплата", resProfit: "Прибуток", resLogTotal: "Доставка та податки", resTotal: "ЦІНА КЛІЄНТА",
-        globalT: "🌍 Єдиний кошторис (Всі калькулятори)", globalD: "Об'єднайте витрати на дах, фасад, стяжку тощо в один загальний кошторис проєкту.", addGl: "➕ Додати до кошторису", viewGl: "👁 Переглянути кошторис", clearGl: "🗑 Очистити кошторис", alertGlAdd: "Успішно додано до Єдиного кошторису!", alertGlClear: "Єдиний кошторис очищено!", alertGlEmpty: "Єдиний кошторис порожній.",
         alertFree: "💡 Детальний розхід матеріалів, кошторис робіт, кнопки збереження та друку заблоковані.", alertNoCalc: "Спочатку зробіть розрахунок", alertCopied: "Скопійовано!", alertSaved: "Збережено!", alertNoHist: "Збережень немає", alertHistTitle: "Історія кошторисів", alertConfirmClear: "Видалити всю історію?", alertHistCleared: "Історія очищена", alertProOnly: "Функція доступна тільки в PRO версії"
     },
     sk: {
@@ -408,7 +397,6 @@ const words = {
         bannerT: "🔓 Otvorte plnú verziu PRO", bannerD: "Presná spotreba materiálu vo vreciach a kubíkoch, úprava cien, ukladanie objektov a generovanie PDF rozpočtov pre klientov!", bannerB: "Zistiť cenu PRO",
         compTitle: "Údaje o firme", compName: "Názov firmy", phone: "Telefón", email: "Email", pdfBtn: "📄 Vygenerovať PDF správu",
         resEstimate: "Rozpočet BUILDcalc PRO", resVolume: "Objem", resCement: "Cement", resSand: "Piesok", resFiber: "Vlákno", resPlastic: "Plastifikátor", resMatCost: "Materiály", resSalary: "Mzda", resProfit: "Zisk", resLogTotal: "Doprava a dane", resTotal: "CENA PRE KLIENTA",
-        globalT: "🌍 Celkový rozpočet (Všetky kalkulačky)", globalD: "Spojte náklady na strechu, fasádu, poter atď. do jedného celkového rozpočtu projektu.", addGl: "➕ Pridať do celkového", viewGl: "👁 Zobraziť celkový", clearGl: "🗑 Vymazať celkový", alertGlAdd: "Úspešne pridané do Celkového rozpočtu!", alertGlClear: "Celkový rozpočet bol vymazaný!", alertGlEmpty: "Celkový rozpočet je prázdny.",
         alertFree: "💡 Detailná spotreba materiálu, rozpočet prác, tlačidlá na uloženie a tlač sú zablokované.", alertNoCalc: "Najprv vykonajte výpočet", alertCopied: "Skopírované!", alertSaved: "Uložené!", alertNoHist: "Žiadne záznamy", alertHistTitle: "História rozpočtov", alertConfirmClear: "Vymazať celú históriu?", alertHistCleared: "História bola vymazaná", alertProOnly: "Funkcia je dostupná iba v PRO verzii"
     },
     en: {
@@ -421,9 +409,42 @@ const words = {
         bannerT: "🔓 Unlock full PRO version", bannerD: "Accurate material consumption in bags and cubic meters, price editing, saving objects and generating PDF estimates for clients!", bannerB: "Find out PRO price",
         compTitle: "Company Info", compName: "Company Name", phone: "Phone", email: "Email", pdfBtn: "📄 Generate PDF report",
         resEstimate: "BUILDcalc PRO Estimate", resVolume: "Volume", resCement: "Cement", resSand: "Sand", resFiber: "Fiber", resPlastic: "Plasticizer", resMatCost: "Materials", resSalary: "Salary", resProfit: "Profit", resLogTotal: "Delivery & Taxes", resTotal: "CLIENT PRICE",
-        globalT: "🌍 Global Estimate (All Calculators)", globalD: "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.", addGl: "➕ Add to Global Estimate", viewGl: "👁 View Global Estimate", clearGl: "🗑 Clear Global", alertGlAdd: "Successfully added to Global Estimate!", alertGlClear: "Global Estimate cleared!", alertGlEmpty: "Global Estimate is empty.",
         alertFree: "💡 Detailed material consumption, work budget, save and print buttons are locked.", alertNoCalc: "Perform calculation first", alertCopied: "Copied!", alertSaved: "Saved!", alertNoHist: "No records found", alertHistTitle: "Estimate History", alertConfirmClear: "Delete all history?", alertHistCleared: "History cleared", alertProOnly: "Feature available only in PRO version"
     }
+};
+
+// Інтеграція з глобальним кошторисом (global-estimate.js)
+window.getGlobalEstimateData = function() {
+    let materials = 0, labor = 0, logistics = 0;
+    let area = Number(document.getElementById("area").value) || 0;
+    let thickness = Number(document.getElementById("thickness").value) || 0;
+    let volume = (area * thickness) / 100;
+
+    let cementNorm = Number(document.getElementById("cementNorm").value) || 0;
+    let sandNorm = Number(document.getElementById("sandNorm").value) || 0;
+    let fiberNorm = Number(document.getElementById("fiberNorm").value) || 0;
+    let plasticNorm = Number(document.getElementById("plasticNorm").value) || 0;
+
+    let cementPrice = Number(document.getElementById("cementPrice").value) || 0;
+    let sandPrice = Number(document.getElementById("sandPrice").value) || 0;
+    let fiberPrice = Number(document.getElementById("fiberPrice").value) || 0;
+    let plasticPrice = Number(document.getElementById("plasticPrice").value) || 0;
+    let logisticsPrice = Number(document.getElementById("logisticsPrice").value) || 0;
+
+    let salaryPrice = Number(document.getElementById("salary").value) || 0;
+    let profitPrice = Number(document.getElementById("profit").value) || 0;
+
+    materials = (volume * cementNorm * cementPrice) + (volume * sandNorm * sandPrice) + (volume * fiberNorm * fiberPrice) + (volume * plasticNorm * plasticPrice);
+    labor = (area * salaryPrice) + (area * profitPrice);
+    logistics = area * logisticsPrice;
+
+    return {
+        name: "Floor Screed: " + (document.getElementById("object").value || "Object"),
+        materials: materials,
+        labor: labor,
+        logistics: logistics,
+        total: windowCurrentClientTotal
+    };
 };
 
 function setVersion(version) {
@@ -477,8 +498,11 @@ function calculate(){
     let logisticsTotal = area * logisticsPrice;
     let clientTotal = materialsCost + salary + profit + logisticsTotal;
     
-    // Save to global variable for Global Estimate feature
     windowCurrentClientTotal = clientTotal;
+    let clientTotalEl = document.getElementById("clientTotal");
+    if(clientTotalEl) {
+        clientTotalEl.innerText = clientTotal.toFixed(2);
+    }
 
     if(typeof gtag === 'function') {
         gtag('event', 'click_calculate', { 'version_type': currentVersion, 'area_size': area });
@@ -497,7 +521,7 @@ function calculate(){
             "<b>"+t.resVolume+":</b> "+volume.toFixed(2)+" м³<br><hr style='border-color:var(--border)'>"+
             "🧪 <b>"+t.resCement+":</b> "+cementBags.toFixed(1)+" міш.<br>⏳ <b>"+t.resSand+":</b> "+sandM3.toFixed(2)+" м³<br>🕸 <b>"+t.resFiber+":</b> "+fiberKg.toFixed(1)+" кг<br>💧 <b>"+t.resPlastic+":</b> "+plasticL.toFixed(1)+" л<br><hr style='border-color:var(--border)'>"+
             "📦 <b>"+t.resMatCost+":</b> "+materialsCost.toFixed(2)+" €<br>👷‍♂️ <b>"+t.resSalary+":</b> "+salary.toFixed(2)+" €<br>📈 <b>"+t.resProfit+":</b> "+profit.toFixed(2)+" €<br>🚛 <b>"+t.resLogTotal+":</b> "+logisticsTotal.toFixed(2)+" €<br><br>"+
-            "<div style='font-size:20px; background:rgba(22, 101, 52, 0.4); padding:10px; border-radius:8px; color:#4ade80; border:1px solid #166534;'><b>"+t.resTotal+": "+clientTotal.toFixed(2)+" € ("+(clientTotal/area).toFixed(2)+" €/м²)</b></div>";
+            "<div style='font-size:20px; background:rgba(234, 179, 8, 0.15); padding:10px; border-radius:8px; color:var(--accent); border:1px solid var(--accent);'><b>"+t.resTotal+": "+clientTotal.toFixed(2)+" € ("+(clientTotal/area).toFixed(2)+" €/м²)</b></div>";
 
         document.getElementById("result").innerHTML = resultHTML;
         htmlReportForPDF = resultHTML;
@@ -508,7 +532,7 @@ function calculate(){
             "<h3 style='color:#f8fafc; border-left-color:var(--accent);'>"+t.resEstimate+"</h3>"+
             "<b>"+t.object+":</b> "+object+"<br><b>"+t.area+":</b> "+area+" м²<br><b>"+t.thickness+":</b> "+thickness+" см<br>"+
             "<b>"+t.resVolume+":</b> "+volume.toFixed(2)+" м³<br><br>"+
-            "<div style='font-size:20px; background:#0f172a; padding:10px; border-radius:8px; color:#f8fafc; border:1px solid var(--border);'><b>"+t.resTotal+": "+clientTotal.toFixed(2)+" € ("+(clientTotal/area).toFixed(2)+" €/м²)</b></div>"+
+            "<div style='font-size:20px; background:#0b0b0b; padding:10px; border-radius:8px; color:#f8fafc; border:1px solid var(--border);'><b>"+t.resTotal+": "+clientTotal.toFixed(2)+" € ("+(clientTotal/area).toFixed(2)+" €/м²)</b></div>"+
             "<p style='color:#ef4444; font-size:13px; margin-top:10px;'>"+t.alertFree+"</p>";
         htmlReportForPDF = "";
     }
@@ -561,13 +585,6 @@ function changeLanguage(){
     document.getElementById("emailLabel").innerHTML = t.email;
     document.getElementById("pdfBtn").innerHTML = t.pdfBtn;
     
-    // Global Estimate Translations
-    document.getElementById("globalTitle").innerHTML = t.globalT;
-    document.getElementById("globalDesc").innerHTML = t.globalD;
-    document.getElementById("addGlobalBtn").innerHTML = t.addGl;
-    document.getElementById("viewGlobalBtn").innerHTML = t.viewGl;
-    document.getElementById("clearGlobalBtn").innerHTML = t.clearGl;
-    
     calculate();
 }
 
@@ -589,6 +606,8 @@ function newProject(){
     document.getElementById("thickness").value = 6;
     document.getElementById("result").innerHTML = "Тут з'явиться ваш розрахунок...";
     report = ""; htmlReportForPDF = ""; windowCurrentClientTotal = 0;
+    let clientTotalEl = document.getElementById("clientTotal");
+    if(clientTotalEl) clientTotalEl.innerText = "0.00";
 }
 
 function saveProject(){
@@ -625,55 +644,6 @@ function clearHistory(){
     }
 }
 
-/* === Global Estimate Functions === */
-function addToGlobal() {
-    let lang = document.getElementById("language").value;
-    if(currentVersion === 'free') { alert(words[lang].alertProOnly); return; }
-    if(report === "") { alert(words[lang].alertNoCalc); return; }
-
-    let globalList = JSON.parse(localStorage.getItem("buildGlobalList") || "[]");
-    let objName = document.getElementById("object").value;
-    
-    globalList.push({
-        name: objName + " (Стяжка/Screed)",
-        total: windowCurrentClientTotal
-    });
-    
-    localStorage.setItem("buildGlobalList", JSON.stringify(globalList));
-    alert(words[lang].alertGlAdd);
-}
-
-function viewGlobal() {
-    let lang = document.getElementById("language").value;
-    if(currentVersion === 'free') { alert(words[lang].alertProOnly); return; }
-    
-    let globalList = JSON.parse(localStorage.getItem("buildGlobalList") || "[]");
-    if (globalList.length === 0) {
-        alert(words[lang].alertGlEmpty);
-        return;
-    }
-
-    let totalSum = 0;
-    let text = "=== " + words[lang].globalT + " ===\n\n";
-    globalList.forEach((item, index) => {
-        text += `${index + 1}. ${item.name}: ${item.total.toFixed(2)} €\n`;
-        totalSum += item.total;
-    });
-    text += `\n----------------------\nВсього / Total: ${totalSum.toFixed(2)} €`;
-
-    alert(text);
-}
-
-function clearGlobal() {
-    let lang = document.getElementById("language").value;
-    if(currentVersion === 'free') { alert(words[lang].alertProOnly); return; }
-    
-    if(confirm(words[lang].alertConfirmClear)) {
-        localStorage.removeItem("buildGlobalList");
-        alert(words[lang].alertGlClear);
-    }
-}
-
 function createPDF() {
     let lang = document.getElementById("language").value;
     if(currentVersion === 'free') { alert("Друк PDF доступний тільки в PRO версії"); return; }
@@ -683,13 +653,13 @@ function createPDF() {
     let compEmail = document.getElementById("companyEmail").value;
     let printWindow = window.open('', '_blank');
     printWindow.document.write('<html><head><title>Кошторис</title>');
-    printWindow.document.write('<style>body{font-family:Arial,sans-serif; padding:40px; color:#222;} h3{background:#1e293b; color:#fff; padding:12px; border-radius:6px;} hr{border:1px solid #e2e8f0;}</style>');
+    printWindow.document.write('<style>body{font-family:Arial,sans-serif; padding:40px; color:#222;} h3{background:#161616; color:#fff; padding:12px; border-radius:6px;} hr{border:1px solid #262626;}</style>');
     printWindow.document.write('</head><body>');
     printWindow.document.write('<div style="text-align:right; margin-bottom:20px; font-size:14px;">');
     printWindow.document.write('<strong>' + compName + '</strong><br>');
     if(compPhone) printWindow.document.write('Тел: ' + compPhone + '<br>');
     if(compEmail) printWindow.document.write('Email: ' + compEmail + '<br>');
-    printWindow.document.write('</div><hr style="border-color:#cbd5e1">');
+    printWindow.document.write('</div><hr style="border-color:#262626">');
     printWindow.document.write(htmlReportForPDF);
     printWindow.document.write('</body></html>');
     printWindow.document.close();
