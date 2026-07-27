@@ -233,7 +233,7 @@
         
         <div class="result-row total">
             <span id="res-cost">Grand Total:</span>
-            <span id="out-cost">0.00 €</span>
+            <span id="grandTotal">0.00 €</span>
         </div>
         <div class="preview-box" id="preview-container">
             <div id="lbl-preview" class="preview-label">Mixed Color</div>
@@ -286,6 +286,7 @@
     </div>
 
     <!-- Блок глобального кошторису генерується автоматично через global-estimate.js -->
+    <div id="global-estimate-container"></div>
 
     <!-- SEO FAQ Section -->
     <div class="seo-section">
@@ -366,7 +367,7 @@
     // Інтеграція з глобальним кошторисом (викликається автоматично з global-estimate.js)
     window.getGlobalEstimateData = function() {
         let baseLitersVal = parseFloat(baseLiters) || 0;
-        let totalPrice = parseFloat(document.getElementById('out-cost').innerText) || 0;
+        let totalPrice = parseFloat(document.getElementById('grandTotal').innerText) || 0;
         let matCost = parseFloat(document.getElementById('out-mat-cost').innerText) || 0;
         let laborCost = parseFloat(document.getElementById('out-lab-cost').innerText) || 0;
         let otherExp = parseFloat(document.getElementById('out-oth-cost').innerText) || 0;
@@ -504,7 +505,7 @@
         document.getElementById('out-mat-cost').innerText = matCost.toFixed(2) + " €";
         document.getElementById('out-lab-cost').innerText = laborCost.toFixed(2) + " €";
         document.getElementById('out-oth-cost').innerText = otherExp.toFixed(2) + " €";
-        document.getElementById('out-cost').innerText = grandTotal.toFixed(2) + " €";
+        document.getElementById('grandTotal').innerText = grandTotal.toFixed(2) + " €";
 
         const p1 = pigments.find(p => p.id === document.getElementById('color-1').value);
         const p2 = pigments.find(p => p.id === document.getElementById('color-2').value);
@@ -526,7 +527,7 @@
     }
 
     function copyEstimate() {
-        let res = document.getElementById("out-cost").innerText;
+        let res = document.getElementById("grandTotal").innerText;
         let base = document.getElementById("out-liters").innerText;
         navigator.clipboard.writeText(`Paint Estimate:\nBase Needed: ${base}\nTotal Price: ${res}`);
         alert("Summary copied to clipboard!");
@@ -536,7 +537,7 @@
         if (navigator.share) {
             navigator.share({
                 title: 'VIP Paint Mixer Estimate',
-                text: `I need ${document.getElementById('out-liters').innerText} of paint. Total Estimated Cost: ${document.getElementById('out-cost').innerText}.`,
+                text: `I need ${document.getElementById('out-liters').innerText} of paint. Total Estimated Cost: ${document.getElementById('grandTotal').innerText}.`,
                 url: window.location.href
             }).catch(console.error);
         } else {
@@ -563,12 +564,12 @@
             return val > 0 ? `${sel.options[sel.selectedIndex].text}: ${val}ml` : null;
         }).filter(Boolean).join(' + ');
 
-        let rawCost = parseFloat(document.getElementById('out-cost').innerText) || 0;
+        let rawCost = parseFloat(document.getElementById('grandTotal').innerText) || 0;
 
         const record = {
             id: Date.now(), name: name, date: new Date().toLocaleDateString(),
             base: document.getElementById('out-liters').innerText,
-            cost: document.getElementById('out-cost').innerText,
+            cost: document.getElementById('grandTotal').innerText,
             rawCost: rawCost,
             mix: mixDetails || dict[currentLang].clearBase
         };
