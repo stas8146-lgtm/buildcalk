@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" translate="no" class="notranslate">
 <head>
@@ -485,7 +486,7 @@
                         
                         <div class="flex justify-between items-center bg-yellow-500/10 border border-yellow-500/30 px-4 py-3 rounded-xl mt-3">
                             <span class="font-extrabold text-white text-base" id="lbl-grand-total">Grand Total:</span>
-                            <span class="text-2xl font-black text-yellow-400"><span id="val-grand-total">0.00</span> <span class="currency-symbol">€</span></span>
+                            <span class="text-2xl font-black text-yellow-400"><span id="grandTotal">0.00</span> <span class="currency-symbol">€</span></span>
                         </div>
                     </div>
                 </div>
@@ -984,7 +985,7 @@
             document.getElementById('val-total-labor').innerText = totalLabor.toFixed(2);
             document.getElementById('val-total-profit').innerText = totalProfit.toFixed(2);
             document.getElementById('val-total-other').innerText = otherExpenses.toFixed(2);
-            document.getElementById('val-grand-total').innerText = grandTotal.toFixed(2);
+            document.getElementById('grandTotal').innerText = grandTotal.toFixed(2);
 
             if (baseArea > 0) {
                 saveToHistoryDebounced(width, height, baseArea);
