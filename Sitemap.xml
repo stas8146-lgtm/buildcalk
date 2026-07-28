@@ -6,24 +6,78 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://stas8146-lgtm.github.io/buildcalk/Mixer/</loc>
+    <loc>https://stas8146-lgtm.github.io/buildcalk/Mixer/index.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Додайте сюди посилання на інші калькулятори -->
-https://stas8146-lgtm.github.io/buildcalk/Mixer/index.html
-https://stas8146-lgtm.github.io/buildcalk/Gipsokarton/index.html
-https://stas8146-lgtm.github.io/buildcalk/Omietky/index.html
-https://stas8146-lgtm.github.io/buildcalk/Roof/
-https://stas8146-lgtm.github.io/buildcalk/Styazhka/index.html
-https://stas8146-lgtm.github.io/buildcalk/ProWall%20&%20Floor/index.html
-https://stas8146-lgtm.github.io/buildcalk/Foundation/index.html
-https://stas8146-lgtm.github.io/buildcalk/Electric/index.html
-https://stas8146-lgtm.github.io/buildcalk/Facade/index.html
-https://stas8146-lgtm.github.io/buildcalk/Plumbing/index.html
-https://stas8146-lgtm.github.io/buildcalk/Rough/index.html
-https://stas8146-lgtm.github.io/buildcalk/Paving/index.html
-https://stas8146-lgtm.github.io/buildcalk/Painting/index.html
-https://stas8146-lgtm.github.io/buildcalk/Fencing/index.html
-https://stas8146-lgtm.github.io/buildcalk/Earthworks/index.html
+  <url>
+    <loc>https://stas8146-lgtm.github.io/buildcalk/Gipsokarton/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stas8146-lgtm.github.io/buildcalk/Omietky/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stas8146-lgtm.github.io/buildcalk/Roof/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stas8146-lgtm.github.io/buildcalk/Styazhka/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stas8146-lgtm.github.io/buildcalk/ProWall%20&%20Floor/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stas8146-lgtm.github.io/buildcalk/Foundation/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stas8146-lgtm.github.io/buildcalk/Electric/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stas8146-lgtm.github.io/buildcalk/Facade/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stas8146-lgtm.github.io/buildcalk/Plumbing/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stas8146-lgtm.github.io/buildcalk/Rough/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stas8146-lgtm.github.io/buildcalk/Paving/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stas8146-lgtm.github.io/buildcalk/Painting/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stas8146-lgtm.github.io/buildcalk/Fencing/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stas8146-lgtm.github.io/buildcalk/Earthworks/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
