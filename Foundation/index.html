@@ -87,7 +87,7 @@
             align-items: center; justify-content: center; gap: 4px;
         }
         
-        /* Main action buttons layout (Side-by-side icon & text matching screenshot) */
+        /* Main action buttons layout */
         .main-btn-row button {
             flex-direction: row;
             gap: 6px;
@@ -111,15 +111,6 @@
         .related-links a { color: var(--primary); text-decoration: none; font-size: 15px; }
         .related-links a:hover { text-decoration: underline; }
 
-        /* Modal */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); }
-        .modal-content { background-color: var(--dark); margin: 10% auto; padding: 20px; border: 1px solid var(--primary); border-radius: 8px; width: 90%; max-width: 500px; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #555; padding-bottom: 10px; }
-        .modal-header h2 { margin: 0; color: var(--primary); font-size: 20px; }
-        .close-btn { color: white; font-size: 24px; cursor: pointer; background: none; border: none; }
-        .global-item { background: var(--dark-light); padding: 10px; margin: 10px 0; border-radius: 5px; display: flex; justify-content: space-between; }
-        .global-total { font-size: 20px; font-weight: bold; text-align: right; margin-top: 15px; color: #28a745; }
-
         /* PRO Banner Update */
         .buy-pro-banner {
             background: var(--dark-light); border: 1px dashed var(--primary); padding: 20px; 
@@ -129,7 +120,7 @@
         .buy-btn:hover { background: var(--primary-hover); }
     </style>
     <script src="../nav.js"></script>
-<script src="../global-estimate.js"></script>
+    <script src="../global-estimate.js"></script>
 </head>
 <body>
 <div id="global-nav-container"></div>
@@ -245,7 +236,12 @@
         <div><span style="color:white; font-weight:normal;">🚛 <span id="txtFLog">Logistics</span></span> <span id="deliveryTotal" style="color:var(--primary); font-weight:bold;">0</span></div>
         <hr>
         <div style="font-size:20px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; align-items: center;">
-            <span>💰 <span id="txtClientPrice">Total Client Price</span></span> <span id="clientTotal" style="color:var(--primary);">0</span>
+            <span>💰 <span id="txtClientPrice">Total Client Price</span></span> 
+            <div>
+                <span id="clientTotal" style="color:var(--primary);">0</span>
+                <!-- ПРИХОВАНИЙ ІНПУТ ДЛЯ GLOBAL-ESTIMATE.JS -->
+                <input type="hidden" id="grandTotal" value="0">
+            </div>
         </div>
     </div>
 
@@ -257,13 +253,14 @@
         <span id="costCushion">0</span>
     </div>
 
-    <!-- MAIN ACTION BUTTONS (Horizontal Row matching screenshot) -->
+    <!-- MAIN ACTION BUTTONS -->
     <div class="btn-row main-btn-row">
         <button class="btn-outline" onclick="calculateAll()" id="btnCalc"><span>💰</span> <span id="lblBtnCalc">Calculate</span></button>
         <button class="btn-outline" onclick="copyEstimate()" id="btnCopy"><span>📋</span> <span id="lblBtnCopy">Copy</span></button>
         <button class="btn-outline" onclick="generatePDF()" id="btnPdf"><span>📄</span> <span id="lblBtnPdf">PDF Invoice</span></button>
     </div>
 
+    <!-- БЛОК ГЛОБАЛЬНОГО КОШТОРИСУ -->
     <div id="global-estimate-container"></div>
 
     <!-- PROJECT VAULT MODULE -->
@@ -305,34 +302,12 @@
         <button class="buy-btn" id="btnBuyPro">Check Pricing</button>
     </div>
 
-    <!-- GLOBAL ESTIMATE MODAL -->
-    <div id="globalModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">Global Estimate Dashboard</h2>
-                <button class="close-btn" onclick="closeGlobalModal()">&times;</button>
-            </div>
-            <div id="globalList" style="max-height: 300px; overflow-y: auto; margin-top: 15px;">
-            </div>
-            <div class="global-total">
-                <span id="modalTotalText">Total:</span> <span id="globalSum">0</span>
-            </div>
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button class="btn-red-outline" style="width:100%; padding: 12px; font-weight:bold; cursor:pointer;" onclick="clearGlobalEstimateModal()" id="modalClearBtn">🗑 Clear All</button>
-            </div>
-        </div>
-    </div>
-
-<script src="nav.js"></script>
-
 <script>
 document.querySelectorAll('input, select').forEach(el => {
     if (el.id !== 'language' && el.id !== 'currency' && el.id !== 'fundType') {
         el.addEventListener('input', calculateAll);
     }
 });
-
-let currentNumericTotal = 0; 
 
 function toggleInputs() {
     let type = document.getElementById("fundType").value;
@@ -347,6 +322,30 @@ function toggleInputs() {
     }
     calculateAll();
 }
+
+// ----------------------------------------------------
+// ФУНКЦІЯ ДЛЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS
+// ----------------------------------------------------
+window.getGlobalEstimateData = function() {
+    let materials = parseFloat(document.getElementById("materialsTotal").innerText) || 0;
+    let labor = parseFloat(document.getElementById("salaryTotal").innerText) || 0;
+    
+    // В калькуляторі фундаменту ми маємо "Profit", додамо його до labor
+    let profit = parseFloat(document.getElementById("profitTotal").innerText) || 0;
+    let totalLaborAndProfit = labor + profit;
+
+    let logistics = parseFloat(document.getElementById("deliveryTotal").innerText) || 0;
+    let total = parseFloat(document.getElementById("clientTotal").innerText) || 0;
+    let objName = document.getElementById("object").value || "Foundation";
+
+    return {
+        name: "Foundation Project: " + objName,
+        materials: materials,
+        labor: totalLaborAndProfit,
+        logistics: logistics,
+        total: total
+    };
+};
 
 function calculateAll() {
     let type = document.getElementById("fundType").value;
@@ -393,7 +392,6 @@ function calculateAll() {
     let delivery = (Number(document.getElementById("deliveryPrice").value) || 0) + (Number(document.getElementById("otherPrice").value) || 0);
 
     let clientTotal = materialsTotal + salary + profit + delivery;
-    currentNumericTotal = clientTotal;
 
     document.getElementById("costConcrete").innerText = costConc.toFixed(2) + " " + cur;
     document.getElementById("costRebar").innerText = costRebar.toFixed(2) + " " + cur;
@@ -404,63 +402,13 @@ function calculateAll() {
     document.getElementById("salaryTotal").innerText = salary.toFixed(2) + " " + cur;
     document.getElementById("deliveryTotal").innerText = delivery.toFixed(2) + " " + cur;
     document.getElementById("profitTotal").innerText = profit.toFixed(2) + " " + cur;
+    
     document.getElementById("clientTotal").innerText = clientTotal.toFixed(2) + " " + cur;
-}
-
-function addToGlobalEstimate() {
-    let objName = document.getElementById("object").value || "Unnamed Object";
-    let cur = document.getElementById("currency").value;
     
-    let item = {
-        id: Date.now(), category: "Foundation", object: objName,
-        priceFormatted: document.getElementById("clientTotal").innerText,
-        priceValue: currentNumericTotal, currency: cur, date: new Date().toLocaleDateString()
-    };
-
-    let globalList = JSON.parse(localStorage.getItem("globalEstimates")) || [];
-    globalList.push(item);
-    localStorage.setItem("globalEstimates", JSON.stringify(globalList));
-    alert("✅ Foundation added to Global Estimate!");
-}
-
-function openGlobalModal() {
-    let listContainer = document.getElementById("globalList");
-    listContainer.innerHTML = "";
-    
-    let globalList = JSON.parse(localStorage.getItem("globalEstimates")) || [];
-    let totalSum = 0;
-    let mainCurrency = document.getElementById("currency").value;
-
-    if (globalList.length === 0) {
-        listContainer.innerHTML = "<p style='color: #a0a0a0; text-align:center;'>List is empty.</p>";
-    } else {
-        globalList.forEach(item => {
-            totalSum += item.priceValue;
-            listContainer.innerHTML += `
-                <div class="global-item">
-                    <div><strong style="color:var(--primary);">${item.category}</strong> - ${item.object}<br><small style="color:#777;">${item.date}</small></div>
-                    <div style="font-weight:bold;">${item.priceFormatted}</div>
-                </div>`;
-        });
+    // Оновлення прихованого поля для global-estimate.js
+    if(document.getElementById("grandTotal")) {
+        document.getElementById("grandTotal").value = clientTotal.toFixed(2);
     }
-
-    document.getElementById("globalSum").innerText = totalSum.toFixed(2) + " " + mainCurrency;
-    document.getElementById("globalModal").style.display = "block";
-}
-
-function closeGlobalModal() { document.getElementById("globalModal").style.display = "none"; }
-
-function clearGlobalEstimate() {
-    if (confirm("Are you sure you want to clear the entire global estimate?")) {
-        localStorage.removeItem("globalEstimates");
-        alert("Global estimate cleared.");
-    }
-}
-function clearGlobalEstimateModal() { clearGlobalEstimate(); openGlobalModal(); }
-
-window.onclick = function(event) {
-    let modal = document.getElementById("globalModal");
-    if (event.target == modal) { modal.style.display = "none"; }
 }
 
 const langData = {
@@ -476,10 +424,7 @@ const langData = {
         txtFConc: "Concrete", txtFRebar: "Rebar", txtFForm: "Formwork", txtFCushion: "Cushion",
         txtFMat: "Materials", txtFWork: "Labor", txtFProf: "Markup/Profit", txtFLog: "Logistics", txtClientPrice: "Total Client Price",
         lblBtnCalc: "Calculate", lblBtnCopy: "Copy", lblBtnPdf: "PDF Invoice",
-        hGlobalEst: "🌍 Global Estimate (All Calculators)", descGlobal: "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.",
-        lblBtnGlobalAdd: "Add to Global Estimate", lblBtnGlobalView: "View Global Estimate", lblBtnGlobalClear: "Clear Global",
         hVault: "💾 Foundation Project Vault", lblBtnSaveLoc: "Save Local", lblBtnLocHist: "Local History", lblBtnVaultClear: "Clear",
-        modalTitle: "Global Estimate Dashboard", modalTotalText: "Total:", modalClearBtn: "🗑 Clear All",
         proTitle: "🔒 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing",
         pdfTitle: "Foundation Estimate", pdfDate: "Date", pdfClient: "Client", pdfObject: "Object", pdfMat: "Materials", pdfItem: "Item", pdfCost: "Amount", pdfLabor: "Labor & Services", pdfTotalDue: "Total Due:"
     },
@@ -495,10 +440,7 @@ const langData = {
         txtFConc: "Бетон", txtFRebar: "Арматура", txtFForm: "Опалубка", txtFCushion: "Подушка",
         txtFMat: "Матеріали", txtFWork: "Робота", txtFProf: "Прибуток", txtFLog: "Логістика", txtClientPrice: "Total Client Price",
         lblBtnCalc: "Рахувати", lblBtnCopy: "Копіювати", lblBtnPdf: "Бланк PDF",
-        hGlobalEst: "🌍 Загальний Кошторис", descGlobal: "Об'єднайте витрати з усіх калькуляторів в один проєкт.",
-        lblBtnGlobalAdd: "Add to Global Estimate", lblBtnGlobalView: "View Global Estimate", lblBtnGlobalClear: "Clear Global",
         hVault: "💾 Збережені Проєкти", lblBtnSaveLoc: "Зберегти", lblBtnLocHist: "Історія", lblBtnVaultClear: "Очистити",
-        modalTitle: "Загальний Кошторис", modalTotalText: "Разом:", modalClearBtn: "🗑 Очистити все",
         proTitle: "🔒 BUILDcalc PRO", proDesc: "Повний розрахунок, експорт PDF, історія, профілі фірм, 3 мови.", btnBuyPro: "Оформити PRO",
         pdfTitle: "Кошторис: Фундамент", pdfDate: "Дата", pdfClient: "Клієнт", pdfObject: "Об'єкт", pdfMat: "Матеріали", pdfItem: "Найменування", pdfCost: "Сума", pdfLabor: "Роботи та Логістика", pdfTotalDue: "Разом до оплати:"
     },
@@ -514,10 +456,7 @@ const langData = {
         txtFConc: "Betón", txtFRebar: "Oceľ", txtFForm: "Debnenie", txtFCushion: "Podklad",
         txtFMat: "Materiály", txtFWork: "Práca", txtFProf: "Zisk/Marža", txtFLog: "Logistika", txtClientPrice: "Cena pre klienta",
         lblBtnCalc: "Počítať", lblBtnCopy: "Kopírovať", lblBtnPdf: "PDF Dokument",
-        hGlobalEst: "🌍 Celkový Rozpočet", descGlobal: "Spojte náklady zo všetkých kalkulačiek do jedného rozpočtu.",
-        lblBtnGlobalAdd: "Pridať do Rozpočtu", lblBtnGlobalView: "Zobraziť Rozpočet", lblBtnGlobalClear: "Vymazať",
         hVault: "💾 Uložené Projekty", lblBtnSaveLoc: "Uložiť", lblBtnLocHist: "História", lblBtnVaultClear: "Vymazať",
-        modalTitle: "Celkový Rozpočet", modalTotalText: "Spolu:", modalClearBtn: "🗑 Vymazať všetko",
         proTitle: "🔒 BUILDcalc PRO", proDesc: "Kompletný výpočet, PDF export, história, firemné profily, 3 jazyky.", btnBuyPro: "Zistiť cenu",
         pdfTitle: "Rozpočet: Základy", pdfDate: "Dátum", pdfClient: "Klient", pdfObject: "Objekt", pdfMat: "Materiály", pdfItem: "Položka", pdfCost: "Suma", pdfLabor: "Práca a služby", pdfTotalDue: "Spolu na úhradu:"
     }
@@ -548,15 +487,13 @@ function setVersion(version) {
     if (version === 'free') {
         document.getElementById("tabFree").classList.add("active");
         proFeatures.style.opacity = "0.5"; proFeatures.style.pointerEvents = "none";
-        document.getElementById("btnPdf").style.display = "none";
-        document.getElementById("globalEstimateButtons").style.display = "none";
-        document.getElementById("vaultButtons").style.display = "none";
+        if(document.getElementById("btnPdf")) document.getElementById("btnPdf").style.display = "none";
+        if(document.getElementById("vaultButtons")) document.getElementById("vaultButtons").style.display = "none";
     } else {
         document.getElementById("tabPro").classList.add("active");
         proFeatures.style.opacity = "1"; proFeatures.style.pointerEvents = "auto";
-        document.getElementById("btnPdf").style.display = "flex";
-        document.getElementById("globalEstimateButtons").style.display = "flex";
-        document.getElementById("vaultButtons").style.display = "flex";
+        if(document.getElementById("btnPdf")) document.getElementById("btnPdf").style.display = "flex";
+        if(document.getElementById("vaultButtons")) document.getElementById("vaultButtons").style.display = "flex";
     }
 }
 
