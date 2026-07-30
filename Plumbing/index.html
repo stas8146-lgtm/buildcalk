@@ -8,7 +8,6 @@
     <meta name="description" content="Free professional plumbing and heating calculator. Calculate pipes, radiators, floor heating, fittings, labor costs, and generate PDF estimates in seconds.">
     
     <!-- Tailwind CSS -->
-    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/lib/index.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -43,7 +42,7 @@
         }
     </style>
     <script src="../nav.js"></script>
-<script src="../global-estimate.js"></script>
+    <script src="../global-estimate.js"></script>
 </head>
 
 <body class="text-neutral-100 min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
@@ -413,12 +412,15 @@
                             
                             <div class="flex justify-between items-center bg-yellow-500/10 border border-yellow-500/30 px-4 py-3 rounded-xl mt-3">
                                 <span class="font-extrabold text-white text-base" id="lbl-grand-total">Grand Total:</span>
-                                <span class="text-2xl font-black text-yellow-400"><span id="val-grand-total">0.00</span> <span class="currency-symbol">€</span></span>
+                                <div>
+                                    <span class="text-2xl font-black text-yellow-400"><span id="val-grand-total">0.00</span> <span class="currency-symbol">€</span></span>
+                                    <input type="hidden" id="grandTotal" value="0">
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- UNIFIED ACTION BUTTONS (Matching Screenshot Design) -->
+                    <!-- UNIFIED ACTION BUTTONS -->
                     <div class="no-print grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6 pt-4 border-t border-neutral-800">
                         <button onclick="calculate()" class="bg-neutral-900 hover:bg-neutral-800 border border-yellow-500/40 text-yellow-400 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer">
                             <i data-lucide="calculator" class="w-4 h-4"></i> <span id="btn-action-calc">Calculate</span>
@@ -484,7 +486,7 @@
             </div>
         </section>
 
-        <!-- RELATED CALCULATORS (Internal Ecosystem Links) -->
+        <!-- RELATED CALCULATORS -->
         <section class="no-print bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl">
             <h3 class="text-sm font-bold uppercase tracking-widest text-yellow-500 mb-4 flex items-center gap-2">
                 <i data-lucide="grid" class="w-4 h-4"></i> Related Calculators
@@ -568,11 +570,6 @@
                 "btn-vault-history": "Local History",
                 "btn-vault-clear": "Clear",
                 "t-history-empty": "No calculations saved yet.",
-                "t-global-estimate-title": "Global Estimate (All Calculators)",
-                "t-global-estimate-desc": "Combine costs from Roof, Plumb, Screed etc. into one unified project estimate.",
-                "btn-global-add": "Add to Global",
-                "btn-global-view": "View Global",
-                "btn-global-clear": "Clear Global",
                 "unit-pcs": "pcs",
                 "unit-m": "m"
             },
@@ -632,11 +629,6 @@
                 "btn-vault-history": "Історія",
                 "btn-vault-clear": "Очистити",
                 "t-history-empty": "Збережених розрахунків поки немає.",
-                "t-global-estimate-title": "Глобальний кошторис (Всі калькулятори)",
-                "t-global-estimate-desc": "Об'єднуйте витрати з даху, сантехніки, стяжки тощо в єдиний проєктний кошторис.",
-                "btn-global-add": "Додати до глобального",
-                "btn-global-view": "Переглянути глобальний",
-                "btn-global-clear": "Очистити глобальний",
                 "unit-pcs": "шт",
                 "unit-m": "м"
             },
@@ -696,11 +688,6 @@
                 "btn-vault-history": "Lokálna história",
                 "btn-vault-clear": "Vymazať",
                 "t-history-empty": "Zatiaľ žiadne uložené výpočty.",
-                "t-global-estimate-title": "Globálny rozpočet (Všetky kalkulačky)",
-                "t-global-estimate-desc": "Skombinujte náklady zrekonštruovaného projektu do jedného súhrnného rozpočtu.",
-                "btn-global-add": "Pridať do globálneho",
-                "btn-global-view": "Zobraziť globálny",
-                "btn-global-clear": "Vymazať globálny",
                 "unit-pcs": "ks",
                 "unit-m": "m"
             }
@@ -847,7 +834,33 @@
             document.getElementById('val-total-profit').innerText = totalProfit.toFixed(2);
             document.getElementById('val-total-other').innerText = logistics.toFixed(2);
             document.getElementById('val-grand-total').innerText = currentGrandTotal.toFixed(2);
+            
+            // Оновлюємо приховане поле для global-estimate.js
+            if(document.getElementById("grandTotal")) {
+                document.getElementById("grandTotal").value = currentGrandTotal.toFixed(2);
+            }
         }
+
+        // --- МІСТ ДЛЯ GLOBAL-ESTIMATE.JS ---
+        window.getGlobalEstimateData = function() {
+            let materials = parseFloat(document.getElementById('val-total-materials').innerText) || 0;
+            let labor = parseFloat(document.getElementById('val-total-labor').innerText) || 0;
+            let profit = parseFloat(document.getElementById('val-total-profit').innerText) || 0;
+            let logistics = parseFloat(document.getElementById('val-total-other').innerText) || 0;
+            let total = parseFloat(document.getElementById('val-grand-total').innerText) || 0;
+            let area = document.getElementById('inp-area').value || "0";
+            
+            let totalLaborAndProfit = labor + profit;
+
+            return {
+                name: "Plumbing & Heating (" + area + " m²)",
+                materials: materials,
+                labor: totalLaborAndProfit,
+                work: totalLaborAndProfit, // Запасний ключ для ідеальної сумісності
+                logistics: logistics,
+                total: total
+            };
+        };
 
         function copyEstimate() {
             const area = document.getElementById('inp-area').value;
@@ -903,23 +916,6 @@
                 `;
                 container.appendChild(box);
             });
-        }
-
-        function addToGlobalEstimate() {
-            let globalEst = parseFloat(localStorage.getItem('global_estimate')) || 0;
-            globalEst += currentGrandTotal;
-            localStorage.setItem('global_estimate', globalEst.toFixed(2));
-            alert(`Added ${currentGrandTotal.toFixed(2)} € to Global Estimate! Total: ${globalEst.toFixed(2)} €`);
-        }
-
-        function viewGlobalEstimate() {
-            const globalEst = parseFloat(localStorage.getItem('global_estimate')) || 0;
-            alert(`Global Estimate Total: ${globalEst.toFixed(2)} €`);
-        }
-
-        function clearGlobalEstimate() {
-            localStorage.setItem('global_estimate', '0.00');
-            alert("Global Estimate cleared!");
         }
 
         function resetInputs() {
