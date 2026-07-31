@@ -147,7 +147,7 @@
     </style>
 
     <script src="../nav.js"></script>
-<script src="../global-estimate.js"></script>
+    <script src="../global-estimate.js"></script>
 </head>
 <body>
 
@@ -155,7 +155,7 @@
     <h1 class="seo-h1">Professional Painting & Putty Calculator</h1>
 
     <div class="breadcrumb">
-        <a href="#" id="bc-home">Home</a> &gt; <a href="#" id="bc-calcs">Calculators</a> &gt; <span id="bc-current">Painting & Putty Calculator</span>
+        <a href="/" id="bc-home">Home</a> &gt; <a href="/calculators" id="bc-calcs">Calculators</a> &gt; <span id="bc-current">Painting & Putty Calculator</span>
     </div>
 
     <div id="global-nav-container"></div>
@@ -338,7 +338,7 @@
         </div>
     </div>
 
-    <!-- ФІНАНСОВИЙ ПІДСУМОК (Відповідно до скріншота) -->
+    <!-- ФІНАНСОВИЙ ПІДСУМОК -->
     <h3 id="hFinal" style="clear: both; width: 100%;">📊 Financial Summary</h3>
     <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
         <div><span>📦 <span id="txtFMat">Materials</span></span> <span id="materialsTotal">0.00 €</span></div>
@@ -347,7 +347,12 @@
         <div><span>🚚 <span id="txtLogisticsCost">Logistics</span></span> <span id="logisticsTotal">0.00 €</span></div>
         <hr>
         <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; width: 100%;">
-            <span>💰 <span id="txtClientPrice">Total Client Price</span></span> <span id="clientTotal">0.00 €</span>
+            <span>💰 <span id="txtClientPrice">Total Client Price</span></span>
+            <div>
+                <span id="clientTotal">0.00 €</span>
+                <!-- ПРИХОВАНЕ ПОЛЕ ДЛЯ ГЛОБАЛЬНОГО КОШТОРИСУ -->
+                <input type="hidden" id="grandTotal" value="0">
+            </div>
         </div>
     </div>
 
@@ -358,9 +363,9 @@
         <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Invoice</button>
     </div>
 
+    <!-- КОНТЕЙНЕР ГЛОБАЛЬНОГО КОШТОРИСУ -->
     <div id="global-estimate-container"></div>
         
-
     <!-- ПРОЄКТИ (PROJECT VAULT) -->
     <h3 id="hProjects" style="clear: both; width: 100%;">💾 Project Vault</h3>
     <div class="buttons-container">
@@ -382,11 +387,11 @@
     <div class="seo-section">
         <h3 id="sec-related" style="border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 0; color: var(--text-light);">Related calculators</h3>
         <ul class="related-list">
-            <li><a href="../Styazhka/">Screed Calculator</a></li>
-            <li><a href="../Roof/">Roof Calculator</a></li>
-            <li><a href="../Omietky/">Plaster Calculator</a></li>
-            <li><a href="../Mixer/">Paint Calculator</a></li>
-            <li><a href="../Gipsokarton/">Gipsokarton Calculator</a></li>
+            <li><a href="/screed-calculator">Screed Calculator</a></li>
+            <li><a href="/roof-calculator">Roof Calculator</a></li>
+            <li><a href="/plaster-calculator">Plaster Calculator</a></li>
+            <li><a href="/drywall-calculator">Drywall Calculator</a></li>
+            <li><a href="/facade-calculator">Facade Calculator</a></li>
         </ul>
     </div>
 
@@ -491,6 +496,11 @@ function calculateEstimate() {
     document.getElementById("markupTotal").innerText = markupTotal.toFixed(2) + " €";
     document.getElementById("logisticsTotal").innerText = logisticsCost.toFixed(2) + " €";
     document.getElementById("clientTotal").innerText = clientTotal.toFixed(2) + " €";
+    
+    // Оновлення прихованого поля для global-estimate.js
+    if(document.getElementById("grandTotal")) {
+        document.getElementById("grandTotal").value = clientTotal.toFixed(2);
+    }
 
     return clientTotal;
 }
@@ -498,6 +508,35 @@ function calculateEstimate() {
 function calculateAll() {
     calculateEstimate();
 }
+
+// === МІСТ ДЛЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS ===
+window.getGlobalEstimateData = function() {
+    let materialsStr = document.getElementById("materialsTotal").innerText;
+    let laborStr = document.getElementById("laborTotal").innerText;
+    let markupStr = document.getElementById("markupTotal").innerText;
+    let logisticsStr = document.getElementById("logisticsTotal").innerText;
+    let totalStr = document.getElementById("clientTotal").innerText;
+    let objName = document.getElementById("object").value || "Painting & Putty";
+
+    let materials = parseFloat(materialsStr.replace(/[^\d.-]/g, '')) || 0;
+    let labor = parseFloat(laborStr.replace(/[^\d.-]/g, '')) || 0;
+    let markup = parseFloat(markupStr.replace(/[^\d.-]/g, '')) || 0;
+    let logistics = parseFloat(logisticsStr.replace(/[^\d.-]/g, '')) || 0;
+    let total = parseFloat(totalStr.replace(/[^\d.-]/g, '')) || 0;
+
+    // Щоб глобальний кошторис не показував 0 за роботу і правильно балансував загальну суму,
+    // ми додаємо Націнку (Markup/Profit) до вартості Робіт (Labor).
+    let totalLaborAndProfit = labor + markup;
+
+    return {
+        name: "Painting: " + objName,
+        materials: materials,
+        labor: totalLaborAndProfit,
+        work: totalLaborAndProfit, // Запасний ключ для гарантованої сумісності
+        logistics: logistics,
+        total: total
+    };
+};
 
 function generatePDF() {
     let objName = document.getElementById("object").value || "Object";
@@ -570,48 +609,6 @@ function btnClear() {
     }
 }
 
-function addToGlobalEstimate() {
-    let totalVal = calculateEstimate();
-    let objName = document.getElementById("object").value || "Unnamed Object";
-    let item = {
-        id: Date.now(),
-        name: objName,
-        cost: totalVal,
-        date: new Date().toLocaleString()
-    };
-    let globalList = JSON.parse(localStorage.getItem("buildcalc_global")) || [];
-    globalList.push(item);
-    localStorage.setItem("buildcalc_global", JSON.stringify(globalList));
-    alert("Added to Global Estimate!");
-}
-
-function viewGlobalEstimate() {
-    let box = document.getElementById("globalEstimateBox");
-    box.style.display = box.style.display === "none" ? "block" : "none";
-    let globalList = JSON.parse(localStorage.getItem("buildcalc_global")) || [];
-    if (globalList.length === 0) {
-        box.innerHTML = "<p style='color:var(--text-muted);'>Global estimate is empty.</p>";
-        return;
-    }
-    let total = 0;
-    let html = "<b style='color:var(--primary);'>Global Estimate Items:</b><br><br>";
-    globalList.forEach(item => {
-        total += item.cost;
-        html += `<div><b>${item.name}</b>: <span style='color:var(--primary);'>${item.cost.toFixed(2)} €</span><br><small style='color:var(--text-muted);'>${item.date}</small><hr style='border-top:1px solid #444; margin:5px 0;'></div>`;
-    });
-    html += `<div style='margin-top:10px; font-weight:bold;'>Total Global Budget: <span style='color:var(--primary);'>${total.toFixed(2)} €</span></div>`;
-    box.innerHTML = html;
-}
-
-function clearGlobalEstimate() {
-    if(confirm("Clear Global Estimate?")) {
-        localStorage.removeItem("buildcalc_global");
-        let box = document.getElementById("globalEstimateBox");
-        box.innerHTML = "<p style='color:var(--text-muted);'>Global estimate is empty.</p>";
-        alert("Global estimate cleared!");
-    }
-}
-
 function copyEstimate() {
     let res = document.getElementById("clientTotal").innerText;
     navigator.clipboard.writeText(`Estimate for ${document.getElementById("object").value || "Object"}:\nTotal Client Price: ${res}`);
@@ -637,7 +634,6 @@ const langData = {
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing",
         bcHome: "Home", bcCalcs: "Calculators", bcCurr: "Painting & Putty Calculator",
         secGlobalTitle: "🌍 Global Estimate (All Calculators)", secGlobalDesc: "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.",
-        btnAddGlobal: "+ Add to Global Estimate", btnViewGlobal: "👁 View Global Estimate", btnClearGlobal: "🗑 Clear Global",
         secFaq: "FAQ", faqQ1: "How many layers of putty should I apply?", faqA1: "Typically 2 layers are used for a smooth finish (base + finish layer).",
         secRelated: "Related calculators"
     },
@@ -659,7 +655,6 @@ const langData = {
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість",
         bcHome: "Головна", bcCalcs: "Калькулятори", bcCurr: "Калькулятор шпаклювання",
         secGlobalTitle: "🌍 Глобальний кошторис (Всі калькулятори)", secGlobalDesc: "Об'єднуйте витрати з даху, фасаду, стяжки тощо в єдиний зведений кошторис.",
-        btnAddGlobal: "+ Додати в глобальний", btnViewGlobal: "👁 Переглянути глобальний", btnClearGlobal: "🗑 Очистити глобальний",
         secFaq: "Часті запитання (FAQ)", faqQ1: "Скільки шарів шпаклівки зазвичай роблять?", faqA1: "Зазвичай роблять 2 шари (стартовий та фінішний) для досягнення ідеально рівної поверхні.",
         secRelated: "Схожі калькулятори"
     },
@@ -681,7 +676,6 @@ const langData = {
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu",
         bcHome: "Domov", bcCalcs: "Kalkulačky", bcCurr: "Kalkulačka tmelenia",
         secGlobalTitle: "🌍 Globálny rozpočet (Všetky kalkulačky)", secGlobalDesc: "Skombinujte náklady z tok, strechy, fasády do jedného projektu.",
-        btnAddGlobal: "+ Pridať do globálneho", btnViewGlobal: "👁 Zobraziť globálny", btnClearGlobal: "🗑 Vymazať globálny",
         secFaq: "Často kladené otázky (FAQ)", faqQ1: "Koľko vrstiev tmelu sa zvyčajne nanáša?", faqA1: "Zvyčajne sa nanášajú 2 vrstvy (základná a finálna) pre dosiahnutie hladkého povrchu.",
         secRelated: "Súvisiace kalkulačky"
     }
