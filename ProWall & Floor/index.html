@@ -433,9 +433,18 @@
 
                     </div>
                 </div>
+                
+                <!-- HIDDEN FIELDS FOR GLOBAL-ESTIMATE.JS -->
+                <div style="display:none;">
+                    <input type="hidden" id="grandTotal" value="0">
+                    <span id="clientTotal">0.00</span>
+                    <span id="materialsTotal">0.00</span>
+                    <span id="laborTotal">0.00</span>
+                    <span id="logisticsTotal">0.00</span>
+                </div>
             </div>
-<div id="global-estimate-container"></div>
-            </div>
+            
+            <div id="global-estimate-container"></div>
 
             <!-- CALCULATION HISTORY -->
             <div class="no-print bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
@@ -552,7 +561,7 @@
                 "bc-current": "Калькулятор плитки",
                 "t-faq-title": "Часті питання (FAQ)",
                 "faq-q1": "Скільки плитки брати на запас (підрізку)?",
-                "faq-a1": "Для стандартного прямого укладання додайте 5%. Для великих форматів або діагонального укладання додайте 7-10%. Схема «Ялинка» зазвичай потребує до 10-15% запасу.",
+                "faq-a1": "Для standard прямого укладання додайте 5%. Для великих форматів або діагонального укладання додайте 7-10%. Схема «Ялинка» зазвичай потребує до 10-15% запасу.",
                 "faq-q2": "Яка витрата клею для плитки на 1 м²?",
                 "faq-a2": "Стандартна норма — 1,3 кг на 1 м² при товщині суцільного шару 1 мм. Під зубчастий шпатель 10 мм товщина клею складе 4-5 мм, отже витрата буде ~5-6.5 кг на м².",
                 "faq-q3": "Як розраховується кількість СВП (кліпсів)?",
@@ -710,6 +719,25 @@
             calculate();
         };
 
+        // ----------------------------------------------------
+        // ФУНКЦІЯ ДЛЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS
+        // ----------------------------------------------------
+        window.getGlobalEstimateData = function() {
+            let labor = parseFloat(document.getElementById("laborTotal").innerText) || 0;
+            let total = parseFloat(document.getElementById("clientTotal").innerText) || 0;
+            let formatEl = document.getElementById("inp-tile");
+            let format = formatEl.options[formatEl.selectedIndex].text.split('(')[0].trim();
+
+            return {
+                name: "Tile Project (" + format + ")",
+                materials: 0,
+                labor: labor,
+                work: labor, // Запасний ключ для global-estimate
+                logistics: 0,
+                total: total
+            };
+        };
+
         function changeLanguage(lang) {
             currentLang = lang;
             document.documentElement.lang = lang;
@@ -840,6 +868,12 @@
             document.getElementById('lbl-res-labor').innerText = t['lbl-res-labor'];
             document.getElementById('lbl-res-labor-sub').innerText = t['lbl-res-labor-sub'];
             document.getElementById('res-labor').innerText = laborCost.toLocaleString('uk-UA', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+
+            // ОНОВЛЕННЯ ТЕХНІЧНИХ ПОЛІВ ДЛЯ GLOBAL ESTIMATE
+            if(document.getElementById("grandTotal")) document.getElementById("grandTotal").value = laborCost.toFixed(2);
+            if(document.getElementById("clientTotal")) document.getElementById("clientTotal").innerText = laborCost.toFixed(2);
+            if(document.getElementById("laborTotal")) document.getElementById("laborTotal").innerText = laborCost.toFixed(2);
+            // Матеріали та Логістика залишаються 0, оскільки в цьому калькуляторі їх вартість не рахується
 
             if (area > 0) {
                 saveToHistoryDebounced(w, l, area, tileSelect.join('x'));
