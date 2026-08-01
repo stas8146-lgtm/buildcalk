@@ -434,14 +434,13 @@
                     </div>
                 </div>
                 
-                <!-- HIDDEN FIELDS FOR GLOBAL-ESTIMATE.JS -->
-                <!-- Використовуємо sr-only (Tailwind) замість display:none, щоб .textContent міг зчитувати дані -->
-                <div class="sr-only">
-                    <input type="hidden" id="grandTotal" value="0">
-                    <span id="clientTotal">0.00</span>
-                    <span id="materialsTotal">0.00</span>
-                    <span id="laborTotal">0.00</span>
-                    <span id="logisticsTotal">0.00</span>
+                <!-- ОБОВ'ЯЗКОВІ ТЕХНІЧНІ ПОЛЯ ДЛЯ GLOBAL-ESTIMATE.JS (Скрипт шукає їх саме як інпути через .value) -->
+                <div style="display:none;">
+                    <input type="text" id="grandTotal" value="0">
+                    <input type="text" id="clientTotal" value="0">
+                    <input type="text" id="materialsTotal" value="0">
+                    <input type="text" id="laborTotal" value="0">
+                    <input type="text" id="logisticsTotal" value="0">
                 </div>
             </div>
             
@@ -724,12 +723,8 @@
         // ФУНКЦІЯ ДЛЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS
         // ----------------------------------------------------
         window.getGlobalEstimateData = function() {
-            // Використовуємо .textContent замість .innerText для гарантованого читання з sr-only
-            let labor = parseFloat(document.getElementById("laborTotal").textContent) || 0;
-            
-            // Беремо фінальну суму з прихованого інпута (найбільш надійний спосіб)
-            let total = parseFloat(document.getElementById("grandTotal").value) || parseFloat(document.getElementById("clientTotal").textContent) || 0;
-            
+            let labor = parseFloat(document.getElementById("laborTotal").value) || 0;
+            let total = parseFloat(document.getElementById("grandTotal").value) || 0;
             let formatEl = document.getElementById("inp-tile");
             let format = formatEl.options[formatEl.selectedIndex].text.split('(')[0].trim();
 
@@ -874,12 +869,12 @@
             document.getElementById('lbl-res-labor-sub').innerText = t['lbl-res-labor-sub'];
             document.getElementById('res-labor').innerText = laborCost.toLocaleString('uk-UA', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
-            // ОНОВЛЕННЯ ТЕХНІЧНИХ ПОЛІВ ДЛЯ GLOBAL ESTIMATE
+            // ОНОВЛЕННЯ ЗОБРАЖЕННЯ ЗНАЧЕНЬ У СКРИТЫХ ІНПУТАХ ДЛЯ GLOBAL ESTIMATE
             if(document.getElementById("grandTotal")) document.getElementById("grandTotal").value = laborCost.toFixed(2);
-            if(document.getElementById("clientTotal")) document.getElementById("clientTotal").textContent = laborCost.toFixed(2);
-            if(document.getElementById("laborTotal")) document.getElementById("laborTotal").textContent = laborCost.toFixed(2);
-            if(document.getElementById("materialsTotal")) document.getElementById("materialsTotal").textContent = "0.00";
-            if(document.getElementById("logisticsTotal")) document.getElementById("logisticsTotal").textContent = "0.00";
+            if(document.getElementById("clientTotal")) document.getElementById("clientTotal").value = laborCost.toFixed(2);
+            if(document.getElementById("laborTotal")) document.getElementById("laborTotal").value = laborCost.toFixed(2);
+            if(document.getElementById("materialsTotal")) document.getElementById("materialsTotal").value = "0.00";
+            if(document.getElementById("logisticsTotal")) document.getElementById("logisticsTotal").value = "0.00";
 
             if (area > 0) {
                 saveToHistoryDebounced(w, l, area, tileSelect.join('x'));
