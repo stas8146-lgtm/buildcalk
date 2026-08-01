@@ -19,8 +19,8 @@
     
     <!-- SEO Optimization -->
     <title>PRO Tile & Grout Calculator | Tile Estimate</title>
-    <meta name="description" content="Free professional tile calculator. Calculate floor and wall tiles, adhesive, grout, SVP levelling clips, labor costs and generate PDF estimates in seconds.">
-    <meta name="keywords" content="tile calculator, grout calculator, adhesive calculation, SVP clips, tile layout waste, herringbone pattern, labor cost calculation">
+    <meta name="description" content="Free professional tile calculator with full material and labor cost breakdown. Calculate floor and wall tiles, adhesive, grout, SVP clips, and generate estimates.">
+    <meta name="keywords" content="tile calculator, grout calculator, adhesive calculation, SVP clips, tile layout waste, herringbone pattern, labor cost calculation, material pricing">
     
     <!-- Schema.org Microdata -->
     <script type="application/ld+json">
@@ -32,7 +32,7 @@
           "name": "PRO Tile & Grout Calculator",
           "operatingSystem": "Web",
           "applicationCategory": "BusinessApplication",
-          "description": "Professional tile calculator online. Calculate floor and wall tiles, adhesive, grout, SVP levelling clips, and labor cost.",
+          "description": "Professional tile calculator online with full cost estimation for materials and labor.",
           "offers": {
             "@type": "Offer",
             "price": "0",
@@ -48,35 +48,6 @@
           },{
             "@type": "ListItem", "position": 3, "name": "Tile Calculator"
           }]
-        },
-        {
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "How much extra tile should I buy for waste?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "For a standard straight layout, add 5%. For large format tiles or diagonal layouts, add 7-10%. Herringbone patterns usually require up to 10-15% extra for waste."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "How much tile adhesive do I need per m²?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Standard consumption is about 1.3 kg per m² for every 1mm of adhesive thickness. With a 10mm notched trowel, expect about 4-5mm of solid glue, meaning ~5-6.5 kg per m²."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "How are SVP levelling clips calculated?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "The amount of clips depends on the tile dimensions. Smaller tiles require more clips per square meter. Wedges are reusable, so you only need enough for your daily laying rate."
-              }
-            }
-          ]
         }
       ]
     }
@@ -126,7 +97,7 @@
                 <div>
                     <span class="text-xs uppercase tracking-widest text-yellow-500 font-bold">BUILDcalc Suite</span>
                     <h1 class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
-                        TILE<span class="text-yellow-400">PRO</span> <span class="text-xs bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded-full">v2.0</span>
+                        TILE<span class="text-yellow-400">PRO</span> <span class="text-xs bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded-full">v2.1</span>
                     </h1>
                 </div>
             </div>
@@ -166,7 +137,7 @@
     <!-- MAIN APP WRAPPER -->
     <main class="max-w-7xl mx-auto px-4 lg:px-8 py-4 w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- LEFT COLUMN: INPUTS & SETTINGS -->
+        <!-- LEFT COLUMN: INPUTS & PRICING SETTINGS -->
         <div class="no-print lg:col-span-5 space-y-6">
             <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
                 <div class="absolute -right-16 -top-16 w-32 h-32 bg-yellow-500/5 rounded-full blur-3xl"></div>
@@ -194,7 +165,7 @@
 
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-labor" for="inp-labor">Labor Rate (per m²)</label>
-                        <input type="number" id="inp-labor" value="0" min="0" step="1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all" placeholder="0">
+                        <input type="number" id="inp-labor" value="15" min="0" step="1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all" placeholder="0">
                     </div>
 
                     <div>
@@ -237,6 +208,36 @@
                 <button id="btn-calculate-main" onclick="calculate()" class="w-full mt-6 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold uppercase tracking-widest rounded-xl transition-all shadow-lg">
                     Calculate
                 </button>
+            </div>
+
+            <!-- MATERIAL PRICING (Ціни матеріалів) -->
+            <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
+                <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2 border-b border-neutral-900 pb-3">
+                    <i data-lucide="tag" class="w-5 h-5 text-yellow-500" aria-hidden="true"></i>
+                    <span id="t-pricing">Material Unit Prices</span>
+                </h2>
+                <div class="space-y-3 text-xs">
+                    <div class="flex justify-between items-center gap-4">
+                        <label class="text-neutral-400" id="lbl-price-tile">Tile price (per pc / m² equivalent)</label>
+                        <input type="number" id="price-tile" value="12" min="0" step="0.5" oninput="calculate()" class="w-24 bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white font-bold text-right">
+                    </div>
+                    <div class="flex justify-between items-center gap-4">
+                        <label class="text-neutral-400" id="lbl-price-glue">Adhesive price (per kg)</label>
+                        <input type="number" id="price-glue" value="0.8" min="0" step="0.1" oninput="calculate()" class="w-24 bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white font-bold text-right">
+                    </div>
+                    <div class="flex justify-between items-center gap-4">
+                        <label class="text-neutral-400" id="lbl-price-grout">Grout price (per kg)</label>
+                        <input type="number" id="price-grout" value="3.5" min="0" step="0.1" oninput="calculate()" class="w-24 bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white font-bold text-right">
+                    </div>
+                    <div class="flex justify-between items-center gap-4">
+                        <label class="text-neutral-400" id="lbl-price-primer">Primer price (per Liter)</label>
+                        <input type="number" id="price-primer" value="2.0" min="0" step="0.1" oninput="calculate()" class="w-24 bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white font-bold text-right">
+                    </div>
+                    <div class="flex justify-between items-center gap-4">
+                        <label class="text-neutral-400" id="lbl-price-clips">SVP Clips price (per 100 pcs)</label>
+                        <input type="number" id="price-clips" value="5.0" min="0" step="0.5" oninput="calculate()" class="w-24 bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white font-bold text-right">
+                    </div>
+                </div>
             </div>
 
             <!-- PRO BRANDING CARD -->
@@ -309,10 +310,13 @@
                         <p class="text-xs text-neutral-400 mt-1" id="lbl-waste-info">Calculated Waste: <span id="waste-percent" class="text-yellow-400 font-bold">5%</span></p>
                     </div>
                     
-                    <!-- Standardized Action Button: Export PDF -->
+                    <!-- Export PDF & Add to Global Buttons -->
                     <div class="flex flex-wrap gap-2">
                         <button id="btn-pdf" onclick="exportToPDF()" class="no-print px-4 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-yellow-400 font-extrabold rounded-xl transition-all shadow-lg flex items-center gap-2 text-xs">
                             <i data-lucide="printer" class="w-4 h-4" aria-hidden="true"></i> <span id="lbl-pdf-btn">Export PDF</span>
+                        </button>
+                        <button onclick="addToUnifiedEstimate()" class="no-print px-4 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-black font-extrabold rounded-xl transition-all shadow-lg flex items-center gap-2 text-xs">
+                            <i data-lucide="plus-circle" class="w-4 h-4" aria-hidden="true"></i> <span id="lbl-add-global">Add to Global</span>
                         </button>
                     </div>
                 </div>
@@ -323,43 +327,53 @@
                     <!-- LABOR COST ITEM -->
                     <div class="grid grid-cols-12 items-center bg-yellow-500/10 border border-yellow-500/30 px-4 py-4 rounded-xl print-card relative overflow-hidden">
                         <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-500"></div>
-                        <div class="col-span-8 flex items-center gap-3 pl-2">
+                        <div class="col-span-7 flex items-center gap-3 pl-2">
                             <div class="p-2.5 bg-yellow-500/20 text-yellow-400 rounded-lg"><i data-lucide="banknote" class="w-5 h-5" aria-hidden="true"></i></div>
                             <div>
                                 <h4 class="font-bold text-white text-base" id="lbl-res-labor">Labor Cost</h4>
                                 <p class="text-xs text-neutral-400" id="lbl-res-labor-sub">Calculated based on area</p>
                             </div>
                         </div>
-                        <div class="col-span-4 text-right">
-                            <span class="text-2xl font-black text-yellow-400" id="res-labor">0</span>
+                        <div class="col-span-5 text-right">
+                            <span class="text-2xl font-black text-yellow-400" id="res-labor">0</span> <span class="text-xs text-neutral-400">€</span>
                         </div>
                     </div>
 
                     <!-- TILES -->
                     <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-4 rounded-xl print-card relative overflow-hidden">
-                        <div class="col-span-8 flex items-center gap-3">
+                        <div class="col-span-7 flex items-center gap-3">
                             <div class="p-2.5 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="layers" class="w-5 h-5" aria-hidden="true"></i></div>
                             <div>
                                 <h4 class="font-bold text-white text-base" id="lbl-mat-tiles">Tiles (Pieces)</h4>
-                                <p class="text-xs text-neutral-400" id="lbl-mat-tiles-sub">Area including waste buffer: <span id="tile-m2" class="text-white font-semibold">12.6</span> m²</p>
+                                <p class="text-xs text-neutral-400" id="lbl-mat-tiles-sub">Area including waste: <span id="tile-m2" class="text-white font-semibold">12.6</span> m²</p>
                             </div>
                         </div>
-                        <div class="col-span-4 text-right">
-                            <span class="text-3xl font-black text-white" id="val-tiles">35</span> <span class="text-sm font-bold text-neutral-500" id="unit-pcs1">pcs</span>
+                        <div class="col-span-5 text-right flex items-center justify-end gap-2">
+                            <div>
+                                <span class="text-xl font-black text-white" id="val-tiles">35</span> <span class="text-xs text-neutral-500" id="unit-pcs1">pcs</span>
+                            </div>
+                            <div class="text-yellow-400 font-bold text-sm bg-neutral-950 px-2 py-1 rounded-lg border border-neutral-800">
+                                <span id="cost-tiles">0</span> €
+                            </div>
                         </div>
                     </div>
 
                     <!-- ADHESIVE -->
                     <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
-                        <div class="col-span-8 flex items-center gap-3">
+                        <div class="col-span-7 flex items-center gap-3">
                             <div class="p-2 bg-neutral-800 text-neutral-300 rounded-lg"><i data-lucide="waves" class="w-4 h-4" aria-hidden="true"></i></div>
                             <div>
                                 <h4 class="font-bold text-white" id="lbl-mat-glue">Tile Adhesive</h4>
-                                <p class="text-[11px] text-neutral-400" id="lbl-mat-glue-sub">Based on solid glue thickness ~<span id="glue-mm">5</span>mm (1.3 kg/m²/mm)</p>
+                                <p class="text-[11px] text-neutral-400" id="lbl-mat-glue-sub">Solid thickness ~<span id="glue-mm">5</span>mm</p>
                             </div>
                         </div>
-                        <div class="col-span-4 text-right">
-                            <span class="text-xl font-extrabold text-yellow-400" id="val-glue">78</span> <span class="text-xs text-neutral-400" id="unit-kg1">kg</span>
+                        <div class="col-span-5 text-right flex items-center justify-end gap-2">
+                            <div>
+                                <span class="text-lg font-extrabold text-yellow-400" id="val-glue">78</span> <span class="text-xs text-neutral-400" id="unit-kg1">kg</span>
+                            </div>
+                            <div class="text-yellow-400 font-bold text-xs bg-neutral-950 px-2 py-1 rounded-lg border border-neutral-800">
+                                <span id="cost-glue">0</span> €
+                            </div>
                         </div>
                     </div>
 
@@ -377,64 +391,64 @@
 
                         <!-- GROUT -->
                         <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
-                            <div class="col-span-8 flex items-center gap-3">
+                            <div class="col-span-7 flex items-center gap-3">
                                 <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="paintbrush" class="w-4 h-4" aria-hidden="true"></i></div>
                                 <div>
                                     <h4 class="font-bold text-white" id="lbl-mat-grout">Joint Grout</h4>
-                                    <p class="text-[11px] text-neutral-400" id="lbl-mat-grout-sub">Depends on joint width and tile size</p>
+                                    <p class="text-[11px] text-neutral-400" id="lbl-mat-grout-sub">Depends on joint width</p>
                                 </div>
                             </div>
-                            <div class="col-span-4 text-right">
-                                <span class="text-xl font-extrabold text-yellow-400" id="val-grout">2.5</span> <span class="text-xs text-neutral-400" id="unit-kg2">kg</span>
+                            <div class="col-span-5 text-right flex items-center justify-end gap-2">
+                                <div>
+                                    <span class="text-lg font-extrabold text-yellow-400" id="val-grout">2.5</span> <span class="text-xs text-neutral-400" id="unit-kg2">kg</span>
+                                </div>
+                                <div class="text-yellow-400 font-bold text-xs bg-neutral-950 px-2 py-1 rounded-lg border border-neutral-800">
+                                    <span id="cost-grout">0</span> €
+                                </div>
                             </div>
                         </div>
 
                         <!-- PRIMER -->
                         <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
-                            <div class="col-span-8 flex items-center gap-3">
+                            <div class="col-span-7 flex items-center gap-3">
                                 <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="droplet" class="w-4 h-4" aria-hidden="true"></i></div>
                                 <div>
-                                    <h4 class="font-bold text-white" id="lbl-mat-primer">Deep Penetrating Primer</h4>
-                                    <p class="text-[11px] text-neutral-400" id="lbl-mat-primer-sub">Consumption ~150-200 ml per m²</p>
+                                    <h4 class="font-bold text-white" id="lbl-mat-primer">Deep Primer</h4>
+                                    <p class="text-[11px] text-neutral-400" id="lbl-mat-primer-sub">~150-200 ml per m²</p>
                                 </div>
                             </div>
-                            <div class="col-span-4 text-right">
-                                <span class="text-xl font-extrabold text-yellow-400" id="val-primer">2.5</span> <span class="text-xs text-neutral-400" id="unit-l">Liters</span>
+                            <div class="col-span-5 text-right flex items-center justify-end gap-2">
+                                <div>
+                                    <span class="text-lg font-extrabold text-yellow-400" id="val-primer">2.5</span> <span class="text-xs text-neutral-400" id="unit-l">L</span>
+                                </div>
+                                <div class="text-yellow-400 font-bold text-xs bg-neutral-950 px-2 py-1 rounded-lg border border-neutral-800">
+                                    <span id="cost-primer">0</span> €
+                                </div>
                             </div>
                         </div>
 
                         <!-- SVP CLIPS -->
                         <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
-                            <div class="col-span-8 flex items-center gap-3">
+                            <div class="col-span-7 flex items-center gap-3">
                                 <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="scissors" class="w-4 h-4" aria-hidden="true"></i></div>
                                 <div>
                                     <h4 class="font-bold text-white" id="lbl-mat-clips">Levelling Clips (SVP)</h4>
-                                    <p class="text-[11px] text-neutral-400" id="lbl-mat-clips-sub">Disposable levelling elements</p>
+                                    <p class="text-[11px] text-neutral-400" id="lbl-mat-clips-sub">Disposable elements</p>
                                 </div>
                             </div>
-                            <div class="col-span-4 text-right">
-                                <span class="text-xl font-extrabold text-yellow-400" id="val-clips">135</span> <span class="text-xs text-neutral-400" id="unit-pcs2">pcs</span>
-                            </div>
-                        </div>
-
-                        <!-- SVP WEDGES -->
-                        <div class="grid grid-cols-12 items-center bg-neutral-900/50 border border-neutral-900 px-4 py-3 rounded-xl print-card">
-                            <div class="col-span-8 flex items-center gap-3">
-                                <div class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg"><i data-lucide="triangle" class="w-4 h-4" aria-hidden="true"></i></div>
+                            <div class="col-span-5 text-right flex items-center justify-end gap-2">
                                 <div>
-                                    <h4 class="font-bold text-white" id="lbl-mat-wedges">Levelling Wedges</h4>
-                                    <p class="text-[11px] text-neutral-400" id="lbl-mat-wedges-sub">Reusable, estimated for daily laying rate</p>
+                                    <span class="text-lg font-extrabold text-yellow-400" id="val-clips">135</span> <span class="text-xs text-neutral-400" id="unit-pcs2">pcs</span>
+                                </div>
+                                <div class="text-yellow-400 font-bold text-xs bg-neutral-950 px-2 py-1 rounded-lg border border-neutral-800">
+                                    <span id="cost-clips">0</span> €
                                 </div>
                             </div>
-                            <div class="col-span-4 text-right">
-                                <span class="text-xl font-extrabold text-yellow-400" id="val-wedges">45</span> <span class="text-xs text-neutral-400" id="unit-pcs3">pcs</span>
-                            </div>
                         </div>
-
                     </div>
                 </div>
                 
-                <!-- ОБОВ'ЯЗКОВІ ТЕХНІЧНІ ПОЛЯ ДЛЯ GLOBAL-ESTIMATE.JS (Скрипт шукає їх саме як інпути через .value) -->
+                <!-- ТЕХНІЧНІ ПОЛЯ ДЛЯ GLOBAL-ESTIMATE.JS -->
                 <div style="display:none;">
                     <input type="text" id="grandTotal" value="0">
                     <input type="text" id="clientTotal" value="0">
@@ -458,28 +472,6 @@
             </div>
         </div>
     </main>
-
-    <!-- SEO FAQ SECTION -->
-    <section class="no-print max-w-4xl mx-auto px-4 lg:px-8 py-12 w-full mt-8">
-        <h2 class="text-xl font-bold text-white mb-6 text-center" id="t-faq-title">Frequently Asked Questions</h2>
-        
-        <div class="space-y-4 text-sm">
-            <div class="bg-neutral-900/80 p-5 rounded-xl border border-neutral-800">
-                <h3 class="font-bold text-yellow-500 mb-2 flex items-center gap-2" id="faq-q1"><i data-lucide="help-circle" class="w-4 h-4"></i> How much extra tile should I buy for waste?</h3>
-                <p class="text-neutral-300 leading-relaxed" id="faq-a1">For a standard straight layout, add 5%. For large format tiles or diagonal layouts, add 7-10%. Herringbone patterns usually require up to 10-15% extra for waste.</p>
-            </div>
-
-            <div class="bg-neutral-900/80 p-5 rounded-xl border border-neutral-800">
-                <h3 class="font-bold text-yellow-500 mb-2 flex items-center gap-2" id="faq-q2"><i data-lucide="help-circle" class="w-4 h-4"></i> How much tile adhesive do I need per m²?</h3>
-                <p class="text-neutral-300 leading-relaxed" id="faq-a2">Standard consumption is about 1.3 kg per m² for every 1mm of adhesive thickness. With a 10mm notched trowel, expect about 4-5mm of solid glue, meaning ~5-6.5 kg per m².</p>
-            </div>
-            
-            <div class="bg-neutral-900/80 p-5 rounded-xl border border-neutral-800">
-                <h3 class="font-bold text-yellow-500 mb-2 flex items-center gap-2" id="faq-q3"><i data-lucide="help-circle" class="w-4 h-4"></i> How are SVP levelling clips calculated?</h3>
-                <p class="text-neutral-300 leading-relaxed" id="faq-a3">The amount of clips depends on the tile dimensions. Smaller tiles require more clips per square meter. Wedges are reusable, so you only need enough for your daily laying rate.</p>
-            </div>
-        </div>
-    </section>
 
     <!-- INTERNAL LINKS: RELATED CALCULATORS -->
     <section class="no-print border-t border-neutral-900 bg-neutral-950 py-10 w-full">
@@ -518,6 +510,12 @@
                 "lbl-joint": "Шов (мм)",
                 "lbl-glue": "Шар клею (мм)",
                 "btn-reset": "Новий Проект",
+                "t-pricing": "Ціни матеріалів за одиницю",
+                "lbl-price-tile": "Ціна плитки (за шт / еквівалент м²)",
+                "lbl-price-glue": "Ціна клею (за кг)",
+                "lbl-price-grout": "Ціна затірки (за кг)",
+                "lbl-price-primer": "Ціна грунтовки (за Літр)",
+                "lbl-price-clips": "Ціна СВП кліпсів (за 100 шт)",
                 "lbl-labor": "Вартість укладки (за м²)",
                 "lbl-res-labor": "Вартість робіт",
                 "lbl-res-labor-sub": "Розрахунок за площею приміщення",
@@ -528,44 +526,30 @@
                 "lbl-unlock-btn": "Активувати PRO",
                 "t-estimate": "Розрахунок Матеріалів та Робіт",
                 "lbl-pdf-btn": "Експорт PDF",
-                "t-global-est": "Глобальний кошторис (Всі калькулятори)",
-                "t-global-desc": "Об'єднуйте витрати з усіх калькуляторів в один загальний проектний кошторис.",
-                "lbl-add-global": "Додати в глобальний кошторис",
-                "lbl-view-global": "Переглянути глобальний кошторис",
-                "lbl-clear-global": "Очистити глобальний",
+                "lbl-add-global": "Додати в глобальний",
                 "toast-success": "Додано до глобального кошторису!",
-                "toast-clear": "Глобальний кошторис очищено!",
                 "lbl-waste-info": "Розрахований запас: ",
                 "lbl-mat-tiles": "Плитка (Кількість)",
-                "lbl-mat-tiles-sub": "Площа з урахуванням запасу на підрізку: ",
+                "lbl-mat-tiles-sub": "Площа з урахуванням запасу: ",
                 "lbl-mat-glue": "Клей для плитки",
-                "lbl-mat-glue-sub": "При товщині шару клею під плиткою ~",
+                "lbl-mat-glue-sub": "Шар ~",
                 "t-pro-unlock-items": "Розблокувати: Затірку, Грунтовку та Розрахунок СВП",
                 "lbl-unlock-now": "Відкрити Доступ",
-                "lbl-mat-grout": "Затірка для швів (Фугування)",
-                "lbl-mat-grout-sub": "Залежить від ширини шва та формату плитки",
+                "lbl-mat-grout": "Затірка для швів",
+                "lbl-mat-grout-sub": "Залежить від ширини шва",
                 "lbl-mat-primer": "Грунтовка глибокого проникнення",
-                "lbl-mat-primer-sub": "Норма витрати ~150-200 мл на м²",
-                "lbl-mat-clips": "СВП (Кліпси / Основи)",
-                "lbl-mat-clips-sub": "Одноразові елементи системи вирівнювання",
-                "lbl-mat-wedges": "СВП (Клини)",
-                "lbl-mat-wedges-sub": "Багаторазові, розраховано на денну норму укладки",
+                "lbl-mat-primer-sub": "~150-200 мл на м²",
+                "lbl-mat-clips": "СВП (Кліпси)",
+                "lbl-mat-clips-sub": "Одноразові елементи",
                 "t-history": "Історія Розрахунків",
                 "t-history-empty": "Немає збережених розрахунків.",
                 "unit-pcs": "шт",
                 "unit-kg": "кг",
-                "unit-l": "Літрів",
+                "unit-l": "Л",
                 "calc-btn": "Розрахувати",
                 "bc-home": "Головна",
                 "bc-calcs": "Калькулятори",
                 "bc-current": "Калькулятор плитки",
-                "t-faq-title": "Часті питання (FAQ)",
-                "faq-q1": "Скільки плитки брати на запас (підрізку)?",
-                "faq-a1": "Для standard прямого укладання додайте 5%. Для великих форматів або діагонального укладання додайте 7-10%. Схема «Ялинка» зазвичай потребує до 10-15% запасу.",
-                "faq-q2": "Яка витрата клею для плитки на 1 м²?",
-                "faq-a2": "Стандартна норма — 1,3 кг на 1 м² при товщині суцільного шару 1 мм. Під зубчастий шпатель 10 мм товщина клею складе 4-5 мм, отже витрата буде ~5-6.5 кг на м².",
-                "faq-q3": "Як розраховується кількість СВП (кліпсів)?",
-                "faq-a3": "Кількість кліпсів залежить від формату плитки. Чим дрібніша плитка, тим більше кліпсів на 1 м². Клини є багаторазовими, тому їх рахують із запасом лише на денну норму укладання.",
                 "t-related": "Інші калькулятори екосистеми",
                 "rel-screed": "Калькулятор стяжки",
                 "rel-plaster": "Калькулятор штукатурки",
@@ -586,6 +570,12 @@
                 "lbl-joint": "Joint (mm)",
                 "lbl-glue": "Glue Layer (mm)",
                 "btn-reset": "New Project",
+                "t-pricing": "Material Unit Prices",
+                "lbl-price-tile": "Tile price (per pc / m² equivalent)",
+                "lbl-price-glue": "Adhesive price (per kg)",
+                "lbl-price-grout": "Grout price (per kg)",
+                "lbl-price-primer": "Primer price (per Liter)",
+                "lbl-price-clips": "SVP Clips price (per 100 pcs)",
                 "t-branding": "PDF Branding Info",
                 "lbl-firm": "Company Name",
                 "lbl-labor": "Labor Rate (per m²)",
@@ -596,44 +586,30 @@
                 "lbl-unlock-btn": "Go PRO",
                 "t-estimate": "Materials & Labor Estimate",
                 "lbl-pdf-btn": "Export PDF",
-                "t-global-est": "Global Estimate (All Calculators)",
-                "t-global-desc": "Combine costs from Tile, Screed, Plaster etc. into one unified project estimate.",
-                "lbl-add-global": "Add to Global Estimate",
-                "lbl-view-global": "View Global Estimate",
-                "lbl-clear-global": "Clear Global",
+                "lbl-add-global": "Add to Global",
                 "toast-success": "Added to Global Estimate!",
-                "toast-clear": "Global estimate cleared!",
                 "lbl-waste-info": "Calculated Waste: ",
                 "lbl-mat-tiles": "Tiles (Pieces)",
-                "lbl-mat-tiles-sub": "Area including waste buffer: ",
+                "lbl-mat-tiles-sub": "Area including waste: ",
                 "lbl-mat-glue": "Tile Adhesive",
-                "lbl-mat-glue-sub": "Based on solid glue thickness ~",
+                "lbl-mat-glue-sub": "Solid thickness ~",
                 "t-pro-unlock-items": "Unlock: Grout, Primer and Levelling Clips (SVP)",
                 "lbl-unlock-now": "Unlock Now",
                 "lbl-mat-grout": "Joint Grout",
-                "lbl-mat-grout-sub": "Depends on joint width and tile size",
-                "lbl-mat-primer": "Deep Penetrating Primer",
-                "lbl-mat-primer-sub": "Consumption ~150-200 ml per m²",
+                "lbl-mat-grout-sub": "Depends on joint width",
+                "lbl-mat-primer": "Deep Primer",
+                "lbl-mat-primer-sub": "~150-200 ml per m²",
                 "lbl-mat-clips": "Levelling Clips (SVP)",
-                "lbl-mat-clips-sub": "Disposable levelling elements",
-                "lbl-mat-wedges": "Levelling Wedges",
-                "lbl-mat-wedges-sub": "Reusable, estimated for daily laying rate",
+                "lbl-mat-clips-sub": "Disposable elements",
                 "t-history": "Calculation History",
                 "t-history-empty": "No calculations saved yet.",
                 "unit-pcs": "pcs",
                 "unit-kg": "kg",
-                "unit-l": "Liters",
+                "unit-l": "L",
                 "calc-btn": "Calculate",
                 "bc-home": "Home",
                 "bc-calcs": "Calculators",
                 "bc-current": "Tile Calculator",
-                "t-faq-title": "Frequently Asked Questions",
-                "faq-q1": "How much extra tile should I buy for waste?",
-                "faq-a1": "For a standard straight layout, add 5%. For large format tiles or diagonal layouts, add 7-10%. Herringbone patterns usually require up to 10-15% extra for waste.",
-                "faq-q2": "How much tile adhesive do I need per m²?",
-                "faq-a2": "Standard consumption is about 1.3 kg per m² for every 1mm of adhesive thickness. With a 10mm notched trowel, expect about 4-5mm of solid glue, meaning ~5-6.5 kg per m².",
-                "faq-q3": "How are SVP levelling clips calculated?",
-                "faq-a3": "The amount of clips depends on the tile dimensions. Smaller tiles require more clips per square meter. Wedges are reusable, so you only need enough for your daily laying rate.",
                 "t-related": "Related Ecosystem Calculators",
                 "rel-screed": "Screed Calculator",
                 "rel-plaster": "Plaster Calculator",
@@ -654,6 +630,12 @@
                 "lbl-joint": "Špára (mm)",
                 "lbl-glue": "Vrstva lepidla (mm)",
                 "btn-reset": "Nový projekt",
+                "t-pricing": "Jednotkové ceny materiálov",
+                "lbl-price-tile": "Cena dlaždíc (za ks / ekvivalent m²)",
+                "lbl-price-glue": "Cena lepidla (za kg)",
+                "lbl-price-grout": "Cena škárovačky (za kg)",
+                "lbl-price-primer": "Cena penetrácie (za Liter)",
+                "lbl-price-clips": "Cena SVP spôn (za 100 ks)",
                 "t-branding": "Informácie pre PDF",
                 "lbl-firm": "Názov firmy",
                 "lbl-labor": "Cena práce (za m²)",
@@ -664,44 +646,30 @@
                 "lbl-unlock-btn": "Aktivovať PRO",
                 "t-estimate": "Odhad materiálu a práce",
                 "lbl-pdf-btn": "Export PDF",
-                "t-global-est": "Globálny rozpočet (Všetky kalkulačky)",
-                "t-global-desc": "Kombinujte náklady zo všetkých kalkulačiek do jedného spoločného projektu.",
-                "lbl-add-global": "Pridať do globálneho rozpočtu",
-                "lbl-view-global": "Zobraziť globálny rozpočet",
-                "lbl-clear-global": "Vymazať globálny",
+                "lbl-add-global": "Pridať do globálneho",
                 "toast-success": "Pridané do globálneho rozpočtu!",
-                "toast-clear": "Globálny rozpočet vymazaný!",
                 "lbl-waste-info": "Vypočítaný prerez: ",
                 "lbl-mat-tiles": "Dlaždice (Kusy)",
-                "lbl-mat-tiles-sub": "Plocha vrátane rezervy na prerez: ",
+                "lbl-mat-tiles-sub": "Plocha vrátane rezervy: ",
                 "lbl-mat-glue": "Lepidlo na obklady",
-                "lbl-mat-glue-sub": "Pri hrúbke súvislej vrstvy ~",
+                "lbl-mat-glue-sub": "Súvislá vrstva ~",
                 "t-pro-unlock-items": "Odomknúť: Škárovačku, Penetrák a Vyrovnávací systém",
                 "lbl-unlock-now": "Odomknúť prístup",
                 "lbl-mat-grout": "Škárovacia hmota",
-                "lbl-mat-grout-sub": "Závisí od šírky špáry a formátu dlažby",
+                "lbl-mat-grout-sub": "Závisí od šírky špáry",
                 "lbl-mat-primer": "Hĺbková penetrácia",
-                "lbl-mat-primer-sub": "Spotreba ~150-200 ml na m²",
-                "lbl-mat-clips": "SVP spony (Klipy)",
-                "lbl-mat-clips-sub": "Jednorazové vyrovnávacie prvky",
-                "lbl-mat-wedges": "SVP kliny",
-                "lbl-mat-wedges-sub": "Opakovane použiteľné, na dennú pokládku",
+                "lbl-mat-primer-sub": "~150-200 ml na m²",
+                "lbl-mat-clips": "SVP spony",
+                "lbl-mat-clips-sub": "Jednorazové prvky",
                 "t-history": "História výpočtov",
                 "t-history-empty": "Zatiaľ žiadne uložené výpočty.",
                 "unit-pcs": "ks",
                 "unit-kg": "kg",
-                "unit-l": "Litre",
+                "unit-l": "L",
                 "calc-btn": "Vypočítať",
                 "bc-home": "Domov",
                 "bc-calcs": "Kalkulačky",
                 "bc-current": "Kalkulačka dlažby",
-                "t-faq-title": "Často kladené otázky (FAQ)",
-                "faq-q1": "Koľko dlažby navyše potrebujem na prerez?",
-                "faq-a1": "Pre štandardnú rovnú pokládku pridajte 5%. Pre veľké formáty alebo diagonálnu pokládku 7-10%. Rybia kosť si bežne vyžaduje až 10-15% rezervu na prerez.",
-                "faq-q2": "Aká je spotreba lepidla na 1 m²?",
-                "faq-a2": "Štandardná spotreba je 1,3 kg na 1 m² pri 1 mm hrúbke lepidla. Pri použití 10 mm zubového hladidla zostane asi 4-5 mm súvislej vrstvy, t.j. spotreba bude ~5-6,5 kg na m².",
-                "faq-q3": "Ako sa počíta množstvo SVP spôn?",
-                "faq-a3": "Množstvo spôn závisí od formátu obkladu/dlažby. Menšie dlaždice si vyžadujú viac spôn na meter štvorcový. Kliny sú na viacnásobné použitie, počítajú sa iba na dennú kapacitu.",
                 "t-related": "Ďalšie kalkulačky ekosystému",
                 "rel-screed": "Kalkulačka poteru",
                 "rel-plaster": "Kalkulačka omietky",
@@ -720,9 +688,10 @@
         };
 
         // ----------------------------------------------------
-        // ФУНКЦІЯ ДЛЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS
+        // ФУНКЦІЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS
         // ----------------------------------------------------
         window.getGlobalEstimateData = function() {
+            let materials = parseFloat(document.getElementById("materialsTotal").value) || 0;
             let labor = parseFloat(document.getElementById("laborTotal").value) || 0;
             let total = parseFloat(document.getElementById("grandTotal").value) || 0;
             let formatEl = document.getElementById("inp-tile");
@@ -730,9 +699,9 @@
 
             return {
                 name: "Tile Project (" + format + ")",
-                materials: 0,
+                materials: materials,
                 labor: labor,
-                work: labor, // Запасний ключ для global-estimate
+                work: labor,
                 logistics: 0,
                 total: total
             };
@@ -822,79 +791,101 @@
             const tl_m = tileL_cm / 100;
             const joint_m = joint / 1000;
             const groutPerM2 = (tw_m + tl_m) * joint_m * (thickness / 1000) * 1600 / (tw_m * tl_m);
-            const groutKg = (area * Math.max(0.3, groutPerM2) * 1.1).toFixed(1); 
+            const groutKg = parseFloat((area * Math.max(0.3, groutPerM2) * 1.1).toFixed(1)); 
 
-            const primerL = (area * 0.15).toFixed(1);
+            const primerL = parseFloat((area * 0.15).toFixed(1));
 
             const clipsPerM2 = getClipsPerM2(tileW_cm, tileL_cm);
             const clipsTotal = Math.ceil(area * clipsPerM2 * 1.1);
-            const wedgesTotal = Math.ceil(clipsTotal / 3); 
+
+            // ЗЧИТУВАННЯ ЦІН ЗА ОДИНИЦЮ
+            const pTile = parseFloat(document.getElementById('price-tile').value) || 0;
+            const pGlue = parseFloat(document.getElementById('price-glue').value) || 0;
+            const pGrout = parseFloat(document.getElementById('price-grout').value) || 0;
+            const pPrimer = parseFloat(document.getElementById('price-primer').value) || 0;
+            const pClips100 = parseFloat(document.getElementById('price-clips').value) || 0;
+
+            // РОЗРАХУНОК ВАРТОСТІ МАТЕРІАЛІВ
+            const costTile = tilePieces * pTile;
+            const costGlue = glueKg * pGlue;
+            const costGrout = groutKg * pGrout;
+            const costPrimer = primerL * pPrimer;
+            const costClips = (clipsTotal / 100) * pClips100;
+
+            const materialsTotal = costTile + costGlue + costGrout + costPrimer + costClips;
+            const grandTotal = materialsTotal + laborCost;
 
             currentCalculations = {
                 type: "Tile Install",
                 area: area.toFixed(2),
+                materialsTotal: materialsTotal,
                 laborCost: laborCost,
+                total: grandTotal,
                 tilesPcs: tilePieces,
                 glueKg: glueKg,
                 groutKg: groutKg,
                 primerL: primerL,
-                clipsPcs: clipsTotal,
-                wedgesPcs: wedgesTotal
+                clipsPcs: clipsTotal
             };
 
+            // ВІДОБРАЖЕННЯ НА ЕКРАНІ
             document.getElementById('lbl-result-area').innerText = `${area.toFixed(2)} m²`;
             document.getElementById('waste-percent').innerText = `${waste}%`;
             
             const t = translations[currentLang];
             document.getElementById('lbl-waste-info').innerHTML = `${t['lbl-waste-info']} <span id="waste-percent" class="text-yellow-400 font-bold">${waste}%</span>`;
             document.getElementById('lbl-mat-tiles-sub').innerHTML = `${t['lbl-mat-tiles-sub']} <span id="tile-m2" class="text-white font-semibold">${totalTileArea.toFixed(1)}</span> m²`;
-            document.getElementById('lbl-mat-glue-sub').innerHTML = `${t['lbl-mat-glue-sub']} <span id="glue-mm">${glue}</span>mm (1.3 kg/m²/mm)`;
+            document.getElementById('lbl-mat-glue-sub').innerHTML = `${t['lbl-mat-glue-sub']} <span id="glue-mm">${glue}</span>mm`;
             
             document.getElementById('unit-pcs1').innerText = t['unit-pcs'];
             document.getElementById('unit-pcs2').innerText = t['unit-pcs'];
-            document.getElementById('unit-pcs3').innerText = t['unit-pcs'];
             document.getElementById('unit-kg1').innerText = t['unit-kg'];
             document.getElementById('unit-kg2').innerText = t['unit-kg'];
             document.getElementById('unit-l').innerText = t['unit-l'];
 
             document.getElementById('val-tiles').innerText = tilePieces;
-            document.getElementById('val-glue').innerText = glueKg;
-            document.getElementById('val-grout').innerText = groutKg;
-            document.getElementById('val-primer').innerText = primerL;
-            document.getElementById('val-clips').innerText = clipsTotal;
-            document.getElementById('val-wedges').innerText = wedgesTotal;
+            document.getElementById('cost-tiles').innerText = costTile.toFixed(2);
 
-            document.getElementById('lbl-labor').innerText = t['lbl-labor'];
-            document.getElementById('lbl-res-labor').innerText = t['lbl-res-labor'];
-            document.getElementById('lbl-res-labor-sub').innerText = t['lbl-res-labor-sub'];
+            document.getElementById('val-glue').innerText = glueKg;
+            document.getElementById('cost-glue').innerText = costGlue.toFixed(2);
+
+            document.getElementById('val-grout').innerText = groutKg;
+            document.getElementById('cost-grout').innerText = costGrout.toFixed(2);
+
+            document.getElementById('val-primer').innerText = primerL;
+            document.getElementById('cost-primer').innerText = costPrimer.toFixed(2);
+
+            document.getElementById('val-clips').innerText = clipsTotal;
+            document.getElementById('cost-clips').innerText = costClips.toFixed(2);
+
             document.getElementById('res-labor').innerText = laborCost.toLocaleString('uk-UA', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
-            // ОНОВЛЕННЯ ЗОБРАЖЕННЯ ЗНАЧЕНЬ У СКРИТЫХ ІНПУТАХ ДЛЯ GLOBAL ESTIMATE
-            if(document.getElementById("grandTotal")) document.getElementById("grandTotal").value = laborCost.toFixed(2);
-            if(document.getElementById("clientTotal")) document.getElementById("clientTotal").value = laborCost.toFixed(2);
-            if(document.getElementById("laborTotal")) document.getElementById("laborTotal").value = laborCost.toFixed(2);
-            if(document.getElementById("materialsTotal")) document.getElementById("materialsTotal").value = "0.00";
-            if(document.getElementById("logisticsTotal")) document.getElementById("logisticsTotal").value = "0.00";
+            // ОНОВЛЕННЯ ТЕХНІЧНИХ ПОЛІВ ДЛЯ GLOBAL ESTIMATE
+            document.getElementById("grandTotal").value = grandTotal.toFixed(2);
+            document.getElementById("clientTotal").value = grandTotal.toFixed(2);
+            document.getElementById("materialsTotal").value = materialsTotal.toFixed(2);
+            document.getElementById("laborTotal").value = laborCost.toFixed(2);
+            document.getElementById("logisticsTotal").value = "0.00";
 
             if (area > 0) {
-                saveToHistoryDebounced(w, l, area, tileSelect.join('x'));
+                saveToHistoryDebounced(w, l, area, tileSelect.join('x'), grandTotal);
             }
         }
 
         let debounceTimer;
-        function saveToHistoryDebounced(w, l, a, format) {
+        function saveToHistoryDebounced(w, l, a, format, total) {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
-                saveToHistory(w, l, a, format);
+                saveToHistory(w, l, a, format, total);
             }, 1000);
         }
 
-        function saveToHistory(w, l, a, format) {
+        function saveToHistory(w, l, a, format, total) {
             let history = JSON.parse(localStorage.getItem('tile_history')) || [];
             const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             const dateStr = new Date().toLocaleDateString();
             
-            history.unshift({ w, l, a, format, timestamp, dateStr });
+            history.unshift({ w, l, a, format, total, timestamp, dateStr });
             if (history.length > 5) history.pop(); 
 
             localStorage.setItem('tile_history', JSON.stringify(history));
@@ -922,7 +913,7 @@
                         <p class="text-[10px] text-neutral-500">${item.dateStr} | ${item.timestamp}</p>
                     </div>
                     <div class="text-right">
-                        <span class="text-yellow-400 font-extrabold text-xs">${item.a.toFixed(2)} m²</span>
+                        <span class="text-yellow-400 font-extrabold text-xs">${item.total.toFixed(2)} €</span>
                     </div>
                 `;
                 container.appendChild(box);
@@ -940,7 +931,7 @@
             document.getElementById('inp-w').value = "3.0";
             document.getElementById('inp-l').value = "4.0";
             document.getElementById('inp-deduct').value = "0";
-            document.getElementById('inp-labor').value = "0";
+            document.getElementById('inp-labor').value = "15";
             document.getElementById('inp-tile').value = "60x60";
             document.getElementById('inp-pattern').value = "straight";
             document.getElementById('inp-th').value = "10";
@@ -977,13 +968,6 @@
             localStorage.setItem('unified_estimate', JSON.stringify(unifiedData));
 
             showToast(translations[currentLang]['toast-success']);
-        }
-
-        function clearGlobalEstimate() {
-            if (confirm(currentLang === 'uk' ? "Очистити глобальний кошторис?" : (currentLang === 'sk' ? "Vymazať globálny rozpočet?" : "Clear global estimate?"))) {
-                localStorage.removeItem('unified_estimate');
-                showToast(translations[currentLang]['toast-clear']);
-            }
         }
 
         function showToast(message) {
