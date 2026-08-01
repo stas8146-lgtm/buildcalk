@@ -113,6 +113,12 @@
                     </h2>
                     
                     <div class="space-y-4">
+                        <!-- Object name for Global Estimate -->
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-object-name">Object Name / Location</label>
+                            <input type="text" id="object" value="Plumbing & Heating" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-white font-semibold text-sm focus:outline-none gold-border-glow transition-all" placeholder="House Nitra">
+                        </div>
+
                         <!-- System Type Toggle -->
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2" id="t-type">System Focus</label>
@@ -414,7 +420,13 @@
                                 <span class="font-extrabold text-white text-base" id="lbl-grand-total">Grand Total:</span>
                                 <div>
                                     <span class="text-2xl font-black text-yellow-400"><span id="val-grand-total">0.00</span> <span class="currency-symbol">€</span></span>
+                                    
+                                    <!-- ОБОВ'ЯЗКОВІ ПОЛЯ ДЛЯ GLOBAL-ESTIMATE.JS -->
                                     <input type="hidden" id="grandTotal" value="0">
+                                    <span id="clientTotal" style="display:none;">0.00</span>
+                                    <span id="materialsTotal" style="display:none;">0.00</span>
+                                    <span id="laborTotal" style="display:none;">0.00</span>
+                                    <span id="logisticsTotal" style="display:none;">0.00</span>
                                 </div>
                             </div>
                         </div>
@@ -435,8 +447,8 @@
 
                 </div>
 
+                <!-- КОНТЕЙНЕР ГЛОБАЛЬНОГО КОШТОРИСУ -->
                 <div id="global-estimate-container"></div>
-                </div>
 
                 <!-- PROJECT VAULT / LOCAL HISTORY SECTION -->
                 <div class="no-print bg-neutral-950 border border-neutral-800 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
@@ -515,6 +527,7 @@
 
         const translations = {
             en: {
+                "lbl-object-name": "Object Name / Location",
                 "t-dimensions": "Object Parameters",
                 "t-type": "System Focus",
                 "lbl-water": "Water Supply",
@@ -574,6 +587,7 @@
                 "unit-m": "m"
             },
             uk: {
+                "lbl-object-name": "Назва об'єкта / Локація",
                 "t-dimensions": "Параметри об'єкта",
                 "t-type": "Тип системи",
                 "lbl-water": "Водопостачання",
@@ -633,6 +647,7 @@
                 "unit-m": "м"
             },
             sk: {
+                "lbl-object-name": "Názov objektu / Lokalita",
                 "t-dimensions": "Parametre objektu",
                 "t-type": "Typ systému",
                 "lbl-water": "Vodovod",
@@ -829,34 +844,41 @@
             const totalProfit = (totalMaterials + totalLabor) * (profitPct / 100);
             currentGrandTotal = totalMaterials + totalLabor + totalProfit + logistics;
 
-            document.getElementById('val-total-materials').innerText = totalMaterials.toFixed(2);
+            let fixedMat = totalMaterials.toFixed(2);
+            let fixedLaborAndProfit = (totalLabor + totalProfit).toFixed(2);
+            let fixedLog = logistics.toFixed(2);
+            let fixedTotal = currentGrandTotal.toFixed(2);
+
+            document.getElementById('val-total-materials').innerText = fixedMat;
             document.getElementById('val-total-labor').innerText = totalLabor.toFixed(2);
             document.getElementById('val-total-profit').innerText = totalProfit.toFixed(2);
-            document.getElementById('val-total-other').innerText = logistics.toFixed(2);
-            document.getElementById('val-grand-total').innerText = currentGrandTotal.toFixed(2);
+            document.getElementById('val-total-other').innerText = fixedLog;
+            document.getElementById('val-grand-total').innerText = fixedTotal;
             
-            // Оновлюємо приховане поле для global-estimate.js
-            if(document.getElementById("grandTotal")) {
-                document.getElementById("grandTotal").value = currentGrandTotal.toFixed(2);
-            }
+            // ОНОВЛЕННЯ ВСІХ ПОЛІВ ДЛЯ GLOBAL-ESTIMATE.JS
+            if(document.getElementById("grandTotal")) document.getElementById("grandTotal").value = fixedTotal;
+            if(document.getElementById("clientTotal")) document.getElementById("clientTotal").innerText = fixedTotal;
+            if(document.getElementById("materialsTotal")) document.getElementById("materialsTotal").innerText = fixedMat;
+            if(document.getElementById("laborTotal")) document.getElementById("laborTotal").innerText = fixedLaborAndProfit;
+            if(document.getElementById("logisticsTotal")) document.getElementById("logisticsTotal").innerText = fixedLog;
         }
 
         // --- МІСТ ДЛЯ GLOBAL-ESTIMATE.JS ---
         window.getGlobalEstimateData = function() {
+            let objName = document.getElementById("object") ? document.getElementById("object").value : "Plumbing";
             let materials = parseFloat(document.getElementById('val-total-materials').innerText) || 0;
             let labor = parseFloat(document.getElementById('val-total-labor').innerText) || 0;
             let profit = parseFloat(document.getElementById('val-total-profit').innerText) || 0;
             let logistics = parseFloat(document.getElementById('val-total-other').innerText) || 0;
             let total = parseFloat(document.getElementById('val-grand-total').innerText) || 0;
-            let area = document.getElementById('inp-area').value || "0";
             
             let totalLaborAndProfit = labor + profit;
 
             return {
-                name: "Plumbing & Heating (" + area + " m²)",
+                name: "Plumbing & Heating: " + (objName || "Object"),
                 materials: materials,
                 labor: totalLaborAndProfit,
-                work: totalLaborAndProfit, // Запасний ключ для ідеальної сумісності
+                work: totalLaborAndProfit,
                 logistics: logistics,
                 total: total
             };
