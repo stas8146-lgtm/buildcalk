@@ -336,7 +336,7 @@
             </div>
         </div>
 
-        <!-- ВІДНОВЛЕНИЙ БЛОК МАТЕРІАЛІВ (Без нього виникала помилка JS) -->
+        <!-- ВІДНОВЛЕНИЙ БЛОК МАТЕРІАЛІВ -->
         <h3 id="hMatResult">📦 Material Consumption</h3>
         <div class="result-box">
             <div><span id="txtCover">Covering (with waste)</span> <span id="roofCoverResult">0 m²</span></div>
@@ -389,24 +389,30 @@
         </div>
     </div>
 
+    <!-- ВІДКОРИГОВАНИЙ ФІНАНСОВИЙ ПІДСУМОК (Видимі поля) -->
     <h3 id="hFinal" style="clear: both; width: 100%;">📊 Financial Summary</h3>
     <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
-        <div><span>🪵 <span id="txtFWood">Timber</span></span> <span id="woodCost">0 €</span></div>
-        <div><span>🏠 <span id="txtFCover">Covering</span></span> <span id="roofCost">0 €</span></div>
-        <div><span>🛡 <span id="txtFMemb">Membranes</span></span> <span id="membraneCost">0 €</span></div>
-        <div><span>🔩 <span id="txtFFix">Fasteners</span></span> <span id="fixCost">0 €</span></div>
+        <div><span>🪵 <span id="txtFWood">Timber</span></span> <span id="visWoodCost">0.00 €</span></div>
+        <div><span>🏠 <span id="txtFCover">Covering</span></span> <span id="visRoofCost">0.00 €</span></div>
+        <div><span>🛡 <span id="txtFMemb">Membranes</span></span> <span id="visMembraneCost">0.00 €</span></div>
+        <div><span>🔩 <span id="txtFFix">Fasteners</span></span> <span id="visFixCost">0.00 €</span></div>
         <hr>
-        <div><span>📦 <span id="txtFMat">Materials</span></span> <span id="materialsTotal">0 €</span></div>
-        <div><span>👷 <span id="txtFWork">Labor</span></span> <span id="salaryTotal">0 €</span></div>
-        <div><span>📈 <span id="txtFProf">Markup/Profit</span></span> <span id="profitTotal">0 €</span></div>
-        <div><span>🚛 <span id="txtFLog">Logistics</span></span> <span id="deliveryTotal">0 €</span></div>
+        <div><span>📦 <span id="txtFMat">Materials</span></span> <span id="visMaterialsTotal">0.00 €</span></div>
+        <div><span>👷 <span id="txtFWork">Labor</span></span> <span id="visSalaryTotal">0.00 €</span></div>
+        <div><span>📈 <span id="txtFProf">Markup/Profit</span></span> <span id="visProfitTotal">0.00 €</span></div>
+        <div><span>🚛 <span id="txtFLog">Logistics</span></span> <span id="visDeliveryTotal">0.00 €</span></div>
         <hr>
         <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; width: 100%;">
             <span>💰 <span id="txtClientPrice">Total Client Price</span></span> 
             <div>
-                <span id="clientTotal">0 €</span>
-                <!-- ПРИХОВАНИЙ ІНПУТ ДЛЯ GLOBAL-ESTIMATE.JS -->
+                <span id="visClientTotal">0.00 €</span>
+                
+                <!-- ПРИХОВАНІ ПОЛЯ СПЕЦІАЛЬНО ДЛЯ GLOBAL-ESTIMATE.JS -->
                 <input type="hidden" id="grandTotal" value="0">
+                <span id="materialsTotal" style="display:none;">0.00</span>
+                <span id="laborTotal" style="display:none;">0.00</span>
+                <span id="logisticsTotal" style="display:none;">0.00</span>
+                <span id="clientTotal" style="display:none;">0.00</span>
             </div>
         </div>
     </div>
@@ -486,30 +492,6 @@ function parseSize(sizeStr) {
         vol: (Number(parts[0]) / 1000) * (Number(parts[1]) / 1000)
     };
 }
-
-// ----------------------------------------------------
-// ФУНКЦІЯ ДЛЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS
-// ----------------------------------------------------
-window.getGlobalEstimateData = function() {
-    let materials = parseFloat(document.getElementById("materialsTotal").innerText) || 0;
-    let labor = parseFloat(document.getElementById("salaryTotal").innerText) || 0;
-    
-    // В калькуляторі даху ми маємо ще "Profit", тому додамо його до labor
-    let profit = parseFloat(document.getElementById("profitTotal").innerText) || 0;
-    let totalLaborAndProfit = labor + profit;
-
-    let logistics = parseFloat(document.getElementById("deliveryTotal").innerText) || 0;
-    let total = parseFloat(document.getElementById("clientTotal").innerText) || 0;
-    let objName = document.getElementById("object").value || "Roof";
-
-    return {
-        name: "Roof Project: " + objName,
-        materials: materials,
-        labor: totalLaborAndProfit,
-        logistics: logistics,
-        total: total
-    };
-};
 
 function calculateWood() {
     let area = Number(document.getElementById("roofArea").value) || 0;
@@ -606,23 +588,33 @@ function calculateEstimate() {
     let materials = woodCost + roofCost + membraneCost + fixCost;
     let salaryCost = area * salary;
     let profitCost = area * profit;
-    let total = materials + salaryCost + profitCost + delivery + other;
+    let logisticsCost = delivery + other;
+    let total = materials + salaryCost + profitCost + logisticsCost;
 
-    document.getElementById("woodCost").innerHTML = woodCost.toFixed(2) + " €";
-    document.getElementById("roofCost").innerHTML = roofCost.toFixed(2) + " €";
-    document.getElementById("membraneCost").innerHTML = membraneCost.toFixed(2) + " €";
-    document.getElementById("fixCost").innerHTML = fixCost.toFixed(2) + " €";
+    // ВІЗУАЛЬНІ ПОЛЯ
+    document.getElementById("visWoodCost").innerHTML = woodCost.toFixed(2) + " €";
+    document.getElementById("visRoofCost").innerHTML = roofCost.toFixed(2) + " €";
+    document.getElementById("visMembraneCost").innerHTML = membraneCost.toFixed(2) + " €";
+    document.getElementById("visFixCost").innerHTML = fixCost.toFixed(2) + " €";
     
-    document.getElementById("materialsTotal").innerHTML = materials.toFixed(2) + " €";
-    document.getElementById("salaryTotal").innerHTML = salaryCost.toFixed(2) + " €";
-    document.getElementById("profitTotal").innerHTML = profitCost.toFixed(2) + " €";
-    document.getElementById("deliveryTotal").innerHTML = (delivery + other).toFixed(2) + " €";
+    document.getElementById("visMaterialsTotal").innerHTML = materials.toFixed(2) + " €";
+    document.getElementById("visSalaryTotal").innerHTML = salaryCost.toFixed(2) + " €";
+    document.getElementById("visProfitTotal").innerHTML = profitCost.toFixed(2) + " €";
+    document.getElementById("visDeliveryTotal").innerHTML = logisticsCost.toFixed(2) + " €";
     
-    document.getElementById("clientTotal").innerHTML = total.toFixed(2) + " €";
-    // ОНОВЛЕННЯ ДЛЯ GLOBAL-ESTIMATE.JS
-    if(document.getElementById("grandTotal")) {
-        document.getElementById("grandTotal").value = total.toFixed(2);
-    }
+    document.getElementById("visClientTotal").innerHTML = total.toFixed(2) + " €";
+
+    // ПРИХОВАНІ ПОЛЯ ДЛЯ GLOBAL-ESTIMATE.JS
+    let fixedTotal = parseFloat(total.toFixed(2));
+    let fixedMat = parseFloat(materials.toFixed(2));
+    let fixedLog = parseFloat(logisticsCost.toFixed(2));
+    let adjustedLabor = fixedTotal - fixedMat - fixedLog; // Закидаємо сюди Роботу + Прибуток, щоб зійшлася математика
+
+    if(document.getElementById("materialsTotal")) document.getElementById("materialsTotal").innerText = fixedMat.toFixed(2);
+    if(document.getElementById("laborTotal")) document.getElementById("laborTotal").innerText = adjustedLabor.toFixed(2);
+    if(document.getElementById("logisticsTotal")) document.getElementById("logisticsTotal").innerText = fixedLog.toFixed(2);
+    if(document.getElementById("clientTotal")) document.getElementById("clientTotal").innerText = fixedTotal.toFixed(2);
+    if(document.getElementById("grandTotal")) document.getElementById("grandTotal").value = fixedTotal.toFixed(2);
 }
 
 function calculateAll() {
@@ -631,12 +623,37 @@ function calculateAll() {
     calculateEstimate();
 }
 
+// ----------------------------------------------------
+// ФУНКЦІЯ ДЛЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS
+// ----------------------------------------------------
+window.getGlobalEstimateData = function() {
+    let objName = document.getElementById("object").value || "Roof";
+    
+    // Читаємо ідеально зведені приховані поля
+    let materials = parseFloat(document.getElementById("materialsTotal").innerText) || 0;
+    let labor = parseFloat(document.getElementById("laborTotal").innerText) || 0;
+    let logistics = parseFloat(document.getElementById("logisticsTotal").innerText) || 0;
+    let total = parseFloat(document.getElementById("clientTotal").innerText) || 0;
+
+    return {
+        name: "Roof: " + objName,
+        materials: materials,
+        labor: labor,
+        work: labor, // на всяк випадок дублюємо
+        logistics: logistics,
+        total: total
+    };
+};
+
 function generatePDF() {
     let clientName = document.getElementById("client").value || "Client";
     let objName = document.getElementById("object").value || "Object";
     let compName = document.getElementById("companyName").value || "Contractor";
     let compPhone = document.getElementById("companyPhone").value || "";
     
+    // Щоб клієнт бачив математику правильно, у PDF графа "Робота" включає і чисту зарплату, і прибуток
+    let pdfLaborAndProfit = document.getElementById("laborTotal").innerText + " €";
+
     let printHtml = `
     <div style="padding: 30px; font-family: Arial, sans-serif; color: #333; background: #fff;">
         <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #FFC107; padding-bottom: 10px;">
@@ -671,36 +688,36 @@ function generatePDF() {
             </tr>
             <tr>
                 <td style="padding: 10px; border: 1px solid #ddd;">Timber (rafters, wall plate, battens)</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("woodCost").innerText}</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("visWoodCost").innerText}</td>
             </tr>
             <tr>
                 <td style="padding: 10px; border: 1px solid #ddd;">Roof Covering</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("roofCost").innerText}</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("visRoofCost").innerText}</td>
             </tr>
             <tr>
                 <td style="padding: 10px; border: 1px solid #ddd;">Membranes & Insulation</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("membraneCost").innerText}</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("visMembraneCost").innerText}</td>
             </tr>
             <tr>
                 <td style="padding: 10px; border: 1px solid #ddd;">Fasteners</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("fixCost").innerText}</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("visFixCost").innerText}</td>
             </tr>
         </table>
 
         <h3 style="margin-top: 30px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Labor & Services</h3>
         <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
              <tr>
-                <td style="padding: 10px; border: 1px solid #ddd;">Installation Works</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("salaryTotal").innerText}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Installation Works (incl. markup)</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${pdfLaborAndProfit}</td>
             </tr>
             <tr>
                 <td style="padding: 10px; border: 1px solid #ddd;">Logistics & Extra Costs</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("deliveryTotal").innerText}</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("visDeliveryTotal").innerText}</td>
             </tr>
         </table>
 
         <div style="margin-top: 30px; text-align: right; font-size: 20px;">
-            <strong>Total Due: <span style="color: #d32f2f;">${document.getElementById("clientTotal").innerText}</span></strong>
+            <strong>Total Due: <span style="color: #d32f2f;">${document.getElementById("visClientTotal").innerText}</span></strong>
         </div>
     </div>
     `;
@@ -723,7 +740,7 @@ function saveProject() {
         date: new Date().toLocaleString(),
         object: document.getElementById("object").value || "Unnamed",
         client: document.getElementById("client").value || "-",
-        price: document.getElementById("clientTotal").innerText
+        price: document.getElementById("visClientTotal").innerText
     };
     let list = JSON.parse(localStorage.getItem("roofProjects")) || [];
     list.unshift(project);
@@ -754,7 +771,7 @@ function clearHistory() {
 }
 
 function copyEstimate() {
-    let res = document.getElementById("clientTotal").innerText;
+    let res = document.getElementById("visClientTotal").innerText;
     navigator.clipboard.writeText(`Roof Estimate for ${document.getElementById("object").value}:\nTotal Price: ${res}`);
     alert("Summary copied to clipboard!");
 }
