@@ -107,7 +107,7 @@
             .text-yellow-400, .text-yellow-500 { color: #d97706 !important; }
         }
     </style>
-<script src="../global-estimate.js"></script>
+<script src="../global-estimate.js" defer></script>
 </head>
 <body class="text-neutral-100 min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
     
@@ -435,7 +435,8 @@
                 </div>
                 
                 <!-- HIDDEN FIELDS FOR GLOBAL-ESTIMATE.JS -->
-                <div style="display:none;">
+                <!-- Використовуємо sr-only (Tailwind) замість display:none, щоб .textContent міг зчитувати дані -->
+                <div class="sr-only">
                     <input type="hidden" id="grandTotal" value="0">
                     <span id="clientTotal">0.00</span>
                     <span id="materialsTotal">0.00</span>
@@ -723,8 +724,12 @@
         // ФУНКЦІЯ ДЛЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS
         // ----------------------------------------------------
         window.getGlobalEstimateData = function() {
-            let labor = parseFloat(document.getElementById("laborTotal").innerText) || 0;
-            let total = parseFloat(document.getElementById("clientTotal").innerText) || 0;
+            // Використовуємо .textContent замість .innerText для гарантованого читання з sr-only
+            let labor = parseFloat(document.getElementById("laborTotal").textContent) || 0;
+            
+            // Беремо фінальну суму з прихованого інпута (найбільш надійний спосіб)
+            let total = parseFloat(document.getElementById("grandTotal").value) || parseFloat(document.getElementById("clientTotal").textContent) || 0;
+            
             let formatEl = document.getElementById("inp-tile");
             let format = formatEl.options[formatEl.selectedIndex].text.split('(')[0].trim();
 
@@ -871,9 +876,10 @@
 
             // ОНОВЛЕННЯ ТЕХНІЧНИХ ПОЛІВ ДЛЯ GLOBAL ESTIMATE
             if(document.getElementById("grandTotal")) document.getElementById("grandTotal").value = laborCost.toFixed(2);
-            if(document.getElementById("clientTotal")) document.getElementById("clientTotal").innerText = laborCost.toFixed(2);
-            if(document.getElementById("laborTotal")) document.getElementById("laborTotal").innerText = laborCost.toFixed(2);
-            // Матеріали та Логістика залишаються 0, оскільки в цьому калькуляторі їх вартість не рахується
+            if(document.getElementById("clientTotal")) document.getElementById("clientTotal").textContent = laborCost.toFixed(2);
+            if(document.getElementById("laborTotal")) document.getElementById("laborTotal").textContent = laborCost.toFixed(2);
+            if(document.getElementById("materialsTotal")) document.getElementById("materialsTotal").textContent = "0.00";
+            if(document.getElementById("logisticsTotal")) document.getElementById("logisticsTotal").textContent = "0.00";
 
             if (area > 0) {
                 saveToHistoryDebounced(w, l, area, tileSelect.join('x'));
