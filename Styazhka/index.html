@@ -333,8 +333,14 @@ button#calcBtn:hover { background: var(--accent-hover); }
 
         <div class="result-box" id="result">Тут з'явиться ваш розрахунок...</div>
         
-        <!-- Схований або необов'язковий елемент для повної суми, щоб global-estimate.js міг її зчитати -->
-        <div style="display:none;"><span id="clientTotal">0.00</span></div>
+        <!-- СХОВАНІ ТЕХНІЧНІ ПОЛЯ ДЛЯ GLOBAL-ESTIMATE.JS -->
+        <div style="display:none;">
+            <input type="hidden" id="grandTotal" value="0">
+            <span id="clientTotal">0.00</span>
+            <span id="materialsTotal">0.00</span>
+            <span id="laborTotal">0.00</span>
+            <span id="logisticsTotal">0.00</span>
+        </div>
 
         <!-- Глобальний кошторис (автоматично з global-estimate.js) -->
         <div id="global-estimate-container"></div>
@@ -415,35 +421,19 @@ const words = {
 
 // Інтеграція з глобальним кошторисом (global-estimate.js)
 window.getGlobalEstimateData = function() {
-    let materials = 0, labor = 0, logistics = 0;
-    let area = Number(document.getElementById("area").value) || 0;
-    let thickness = Number(document.getElementById("thickness").value) || 0;
-    let volume = (area * thickness) / 100;
-
-    let cementNorm = Number(document.getElementById("cementNorm").value) || 0;
-    let sandNorm = Number(document.getElementById("sandNorm").value) || 0;
-    let fiberNorm = Number(document.getElementById("fiberNorm").value) || 0;
-    let plasticNorm = Number(document.getElementById("plasticNorm").value) || 0;
-
-    let cementPrice = Number(document.getElementById("cementPrice").value) || 0;
-    let sandPrice = Number(document.getElementById("sandPrice").value) || 0;
-    let fiberPrice = Number(document.getElementById("fiberPrice").value) || 0;
-    let plasticPrice = Number(document.getElementById("plasticPrice").value) || 0;
-    let logisticsPrice = Number(document.getElementById("logisticsPrice").value) || 0;
-
-    let salaryPrice = Number(document.getElementById("salary").value) || 0;
-    let profitPrice = Number(document.getElementById("profit").value) || 0;
-
-    materials = (volume * cementNorm * cementPrice) + (volume * sandNorm * sandPrice) + (volume * fiberNorm * fiberPrice) + (volume * plasticNorm * plasticPrice);
-    labor = (area * salaryPrice) + (area * profitPrice);
-    logistics = area * logisticsPrice;
+    let materials = parseFloat(document.getElementById("materialsTotal").innerText) || 0;
+    let labor = parseFloat(document.getElementById("laborTotal").innerText) || 0;
+    let logistics = parseFloat(document.getElementById("logisticsTotal").innerText) || 0;
+    let total = parseFloat(document.getElementById("clientTotal").innerText) || 0;
+    let objName = document.getElementById("object").value || "Screed";
 
     return {
-        name: "Floor Screed: " + (document.getElementById("object").value || "Object"),
+        name: "Floor Screed: " + objName,
         materials: materials,
         labor: labor,
+        work: labor, // Запасний ключ для global-estimate
         logistics: logistics,
-        total: windowCurrentClientTotal
+        total: total
     };
 };
 
@@ -496,13 +486,17 @@ function calculate(){
     let salary = area * salaryPrice;
     let profit = area * profitPrice;
     let logisticsTotal = area * logisticsPrice;
-    let clientTotal = materialsCost + salary + profit + logisticsTotal;
+    let laborCombined = salary + profit; // Об'єднана вартість робіт
+    let clientTotal = materialsCost + laborCombined + logisticsTotal;
     
+    // Оновлення прихованих технічних полів для global-estimate.js
+    if(document.getElementById("grandTotal")) document.getElementById("grandTotal").value = clientTotal.toFixed(2);
+    if(document.getElementById("clientTotal")) document.getElementById("clientTotal").innerText = clientTotal.toFixed(2);
+    if(document.getElementById("materialsTotal")) document.getElementById("materialsTotal").innerText = materialsCost.toFixed(2);
+    if(document.getElementById("laborTotal")) document.getElementById("laborTotal").innerText = laborCombined.toFixed(2);
+    if(document.getElementById("logisticsTotal")) document.getElementById("logisticsTotal").innerText = logisticsTotal.toFixed(2);
+
     windowCurrentClientTotal = clientTotal;
-    let clientTotalEl = document.getElementById("clientTotal");
-    if(clientTotalEl) {
-        clientTotalEl.innerText = clientTotal.toFixed(2);
-    }
 
     if(typeof gtag === 'function') {
         gtag('event', 'click_calculate', { 'version_type': currentVersion, 'area_size': area });
@@ -606,8 +600,11 @@ function newProject(){
     document.getElementById("thickness").value = 6;
     document.getElementById("result").innerHTML = "Тут з'явиться ваш розрахунок...";
     report = ""; htmlReportForPDF = ""; windowCurrentClientTotal = 0;
-    let clientTotalEl = document.getElementById("clientTotal");
-    if(clientTotalEl) clientTotalEl.innerText = "0.00";
+    if(document.getElementById("grandTotal")) document.getElementById("grandTotal").value = 0;
+    if(document.getElementById("clientTotal")) document.getElementById("clientTotal").innerText = "0.00";
+    if(document.getElementById("materialsTotal")) document.getElementById("materialsTotal").innerText = "0.00";
+    if(document.getElementById("laborTotal")) document.getElementById("laborTotal").innerText = "0.00";
+    if(document.getElementById("logisticsTotal")) document.getElementById("logisticsTotal").innerText = "0.00";
 }
 
 function saveProject(){
