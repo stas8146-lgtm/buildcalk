@@ -318,19 +318,30 @@
         </div>
     </div>
 
+    <!-- ВІДКОРИГОВАНИЙ БЛОК ПІДСУМКУ -->
     <h3 id="hFinal" style="clear: both; width: 100%;">📊 Financial Summary</h3>
     <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
-        <div><span>🧵 <span id="txtFCable">Cable & Conduits</span></span> <span id="materialCableCost">0 €</span></div>
-        <div><span>🔌 <span id="txtFPoints">Sockets, Switches & Panel</span></span> <span id="materialPointsCost">0 €</span></div>
-        <div><span>🛡 <span id="txtFBreakers">Breakers & Protection</span></span> <span id="materialBreakersCost">0 €</span></div>
+        <div><span>🧵 <span id="txtFCable">Cable & Conduits</span></span> <span id="materialCableCost">0.00 €</span></div>
+        <div><span>🔌 <span id="txtFPoints">Sockets, Switches & Panel</span></span> <span id="materialPointsCost">0.00 €</span></div>
+        <div><span>🛡 <span id="txtFBreakers">Breakers & Protection</span></span> <span id="materialBreakersCost">0.00 €</span></div>
         <hr>
-        <div><span>📦 <span id="txtFMat">Materials Total</span></span> <span id="materialsTotal">0 €</span></div>
-        <div><span>👷 <span id="txtFWork">Labor Cost</span></span> <span id="salaryTotal">0 €</span></div>
-        <div><span>📈 <span id="txtFProf">Markup/Profit</span></span> <span id="profitTotal">0 €</span></div>
-        <div><span>🚛 <span id="txtFLog">Logistics & Other</span></span> <span id="deliveryTotal">0 €</span></div>
+        <div><span>📦 <span id="txtFMat">Materials Total</span></span> <span id="visMaterialsTotal">0.00 €</span></div>
+        <div><span>👷 <span id="txtFWork">Labor Cost</span></span> <span id="visSalaryTotal">0.00 €</span></div>
+        <div><span>📈 <span id="txtFProf">Markup/Profit</span></span> <span id="visProfitTotal">0.00 €</span></div>
+        <div><span>🚛 <span id="txtFLog">Logistics & Other</span></span> <span id="visDeliveryTotal">0.00 €</span></div>
         <hr>
         <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; width: 100%;">
-            <span>💰 <span id="txtClientPrice">Total Client Price</span></span> <span id="clientTotal">0 €</span>
+            <span>💰 <span id="txtClientPrice">Total Client Price</span></span>
+            <div>
+                <span id="visClientTotal">0.00 €</span>
+                
+                <!-- ПРИХОВАНІ ПОЛЯ СПЕЦІАЛЬНО ДЛЯ GLOBAL-ESTIMATE.JS -->
+                <input type="hidden" id="grandTotal" value="0">
+                <span id="clientTotal" style="display:none;">0.00</span>
+                <span id="materialsTotal" style="display:none;">0.00</span>
+                <span id="laborTotal" style="display:none;">0.00</span>
+                <span id="logisticsTotal" style="display:none;">0.00</span>
+            </div>
         </div>
     </div>
 
@@ -385,6 +396,26 @@
 
 <script>
 document.getElementById('calcForm').addEventListener('input', calculateAll);
+
+// ----------------------------------------------------
+// ФУНКЦІЯ ДЛЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS
+// ----------------------------------------------------
+window.getGlobalEstimateData = function() {
+    let materials = parseFloat(document.getElementById("materialsTotal").innerText) || 0;
+    let labor = parseFloat(document.getElementById("laborTotal").innerText) || 0;
+    let logistics = parseFloat(document.getElementById("logisticsTotal").innerText) || 0;
+    let total = parseFloat(document.getElementById("clientTotal").innerText) || 0;
+    let objName = document.getElementById("object").value || "Electric & Lighting";
+
+    return {
+        name: "Electrical Project: " + objName,
+        materials: materials,
+        labor: labor,
+        work: labor, // Запасний ключ
+        logistics: logistics,
+        total: total
+    };
+};
 
 function calculateElectrical() {
     let powerKW = parseFloat(document.getElementById("totalPower").value) || 0;
@@ -467,18 +498,30 @@ function calculateEstimate() {
     let materialsTotal = materialCableCost + materialPointsCost + materialBreakersCost;
     let totalPointsLabor = totalPointsCount * pointLabor;
     let totalCableLabor = cableLen * cableLabor;
-    let salaryTotal = totalPointsLabor + totalCableLabor;
     
+    let salaryTotal = totalPointsLabor + totalCableLabor;
     let clientTotal = materialsTotal + salaryTotal + profit + delivery;
+    
+    // Для Global Estimate: сумуємо чисту зарплату з прибутком, щоб математика в Global Estimate зійшлась ідеально
+    let globalLaborCombined = salaryTotal + profit;
 
+    // ВІЗУАЛЬНІ ПОЛЯ
     document.getElementById("materialCableCost").innerHTML = materialCableCost.toFixed(2) + " €";
     document.getElementById("materialPointsCost").innerHTML = materialPointsCost.toFixed(2) + " €";
     document.getElementById("materialBreakersCost").innerHTML = materialBreakersCost.toFixed(2) + " €";
-    document.getElementById("materialsTotal").innerHTML = materialsTotal.toFixed(2) + " €";
-    document.getElementById("salaryTotal").innerHTML = salaryTotal.toFixed(2) + " €";
-    document.getElementById("profitTotal").innerHTML = profit.toFixed(2) + " €";
-    document.getElementById("deliveryTotal").innerHTML = delivery.toFixed(2) + " €";
-    document.getElementById("clientTotal").innerHTML = clientTotal.toFixed(2) + " €";
+    
+    document.getElementById("visMaterialsTotal").innerHTML = materialsTotal.toFixed(2) + " €";
+    document.getElementById("visSalaryTotal").innerHTML = salaryTotal.toFixed(2) + " €";
+    document.getElementById("visProfitTotal").innerHTML = profit.toFixed(2) + " €";
+    document.getElementById("visDeliveryTotal").innerHTML = delivery.toFixed(2) + " €";
+    document.getElementById("visClientTotal").innerHTML = clientTotal.toFixed(2) + " €";
+    
+    // ПРИХОВАНІ ТЕХНІЧНІ ПОЛЯ ДЛЯ GLOBAL-ESTIMATE.JS
+    if(document.getElementById("grandTotal")) document.getElementById("grandTotal").value = clientTotal.toFixed(2);
+    if(document.getElementById("clientTotal")) document.getElementById("clientTotal").innerText = clientTotal.toFixed(2);
+    if(document.getElementById("materialsTotal")) document.getElementById("materialsTotal").innerText = materialsTotal.toFixed(2);
+    if(document.getElementById("laborTotal")) document.getElementById("laborTotal").innerText = globalLaborCombined.toFixed(2);
+    if(document.getElementById("logisticsTotal")) document.getElementById("logisticsTotal").innerText = delivery.toFixed(2);
 }
 
 function calculateAll() {
@@ -542,16 +585,16 @@ function generatePDF() {
         <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
              <tr>
                 <td style="padding: 10px; border: 1px solid #ddd;">Installation Works & Wiring</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("salaryTotal").innerText}</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("visSalaryTotal").innerText}</td>
             </tr>
             <tr>
                 <td style="padding: 10px; border: 1px solid #ddd;">Logistics & Consumables</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("deliveryTotal").innerText}</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("visDeliveryTotal").innerText}</td>
             </tr>
         </table>
 
         <div style="margin-top: 30px; text-align: right; font-size: 20px;">
-            <strong>Total Due: <span style="color: #d32f2f;">${document.getElementById("clientTotal").innerText}</span></strong>
+            <strong>Total Due: <span style="color: #d32f2f;">${document.getElementById("visClientTotal").innerText}</span></strong>
         </div>
     </div>
     `;
@@ -574,7 +617,7 @@ function saveProject() {
         date: new Date().toLocaleString(),
         object: document.getElementById("object").value || "Unnamed",
         client: document.getElementById("client").value || "-",
-        price: document.getElementById("clientTotal").innerText
+        price: document.getElementById("visClientTotal").innerText
     };
     let list = JSON.parse(localStorage.getItem("electricProjects")) || [];
     list.unshift(project);
@@ -605,7 +648,7 @@ function clearHistory() {
 }
 
 function copyEstimate() {
-    let res = document.getElementById("clientTotal").innerText;
+    let res = document.getElementById("visClientTotal").innerText;
     navigator.clipboard.writeText(`Electrical Estimate for ${document.getElementById("object").value}:\nTotal Price: ${res}`);
     alert("Summary copied to clipboard!");
 }
