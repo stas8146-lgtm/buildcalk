@@ -105,7 +105,6 @@
         }
         .action-btn:hover { background: var(--primary); color: var(--dark); }
 
-        /* Уніфіковані стилі кнопок відповідно до дизайну */
         .action-btn.green {
             background: #28a745;
             border-color: #28a745;
@@ -151,7 +150,7 @@
 
     <!-- Підключення навігації -->
     <script src="../nav.js"></script>
-<script src="../global-estimate.js"></script>
+    <script src="../global-estimate.js"></script>
 </head>
 <body>
 
@@ -343,17 +342,39 @@
             </div>
         </div>
     </div>
-<div id="global-estimate-container"></div>
-    
 
+    <!-- ВІДНОВЛЕНИЙ ФІНАНСОВИЙ ПІДСУМОК (Видимий) -->
+    <h3 id="hFinal" style="clear: both; width: 100%;">📊 Financial Summary</h3>
+    <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
+        <div><span>🏗 <span id="txtFFoundCost">Foundation Materials</span></span> <span id="foundCost">0.00 €</span></div>
+        <div><span>🧱 <span id="txtFWallCost">Walls & Masonry</span></span> <span id="wallsCost">0.00 €</span></div>
+        <div><span>🏠 <span id="txtFRoofCost">Roof Structure & Covering</span></span> <span id="roofTotalCost">0.00 €</span></div>
+        <hr>
+        <div><span>📦 <span id="txtFMat">Total Materials</span></span> <span id="materialsTotal">0.00 €</span></div>
+        <div><span>👷 <span id="txtFWork">Rough Construction Labor</span></span> <span id="laborTotal">0.00 €</span></div>
+        <div><span>🚛 <span id="txtFLog">Logistics & Equipment</span></span> <span id="deliveryTotal">0.00 €</span></div>
+        <hr>
+        <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; width: 100%;">
+            <span>💰 <span id="txtClientPrice">Total Master Project Price</span></span> 
+            <div>
+                <span id="clientTotal">0.00 €</span>
+                
+                <!-- ПРИХОВАНІ ПОЛЯ СПЕЦІАЛЬНО ДЛЯ GLOBAL-ESTIMATE.JS -->
+                <input type="hidden" id="grandTotal" value="0">
+                <span id="clientTotalHidden" style="display:none;">0.00</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- КОНТЕЙНЕР ГЛОБАЛЬНОГО КОШТОРИСУ -->
+    <div id="global-estimate-container"></div>
+    
     <!-- Основні кнопки дій -->
     <div class="buttons-container">
         <button class="action-btn" onclick="calculateAll()" id="btnCalc">💰 Calculate</button>
         <button class="action-btn" onclick="copyEstimate()" id="btnCopy">📋 Copy</button>
         <button class="action-btn" onclick="generatePDF()" id="btnPdf">📄 PDF Invoice</button>
     </div>
-
-    
 
     <!-- Сховище проєктів -->
     <h3 id="hProjects" style="clear: both; width: 100%;">💾 Project Vault</h3>
@@ -482,6 +503,7 @@ function calculateEstimate() {
     let laborTotal = houseArea * laborPrice;
     let clientTotal = materialsTotal + laborTotal + deliveryPrice;
 
+    // Оновлюємо видимі поля
     document.getElementById("foundCost").innerText = foundCost.toFixed(2) + " €";
     document.getElementById("wallsCost").innerText = wallsCost.toFixed(2) + " €";
     document.getElementById("roofTotalCost").innerText = roofTotalCost.toFixed(2) + " €";
@@ -489,14 +511,34 @@ function calculateEstimate() {
     document.getElementById("laborTotal").innerText = laborTotal.toFixed(2) + " €";
     document.getElementById("deliveryTotal").innerText = deliveryPrice.toFixed(2) + " €";
     document.getElementById("clientTotal").innerText = clientTotal.toFixed(2) + " €";
+    
+    // Оновлюємо приховані поля для global-estimate.js
+    if(document.getElementById("grandTotal")) document.getElementById("grandTotal").value = clientTotal.toFixed(2);
 }
 
 function calculateAll() {
-    calculateFoundation();
-    calculateWalls();
-    calculateRoof();
     calculateEstimate();
 }
+
+// ----------------------------------------------------
+// ФУНКЦІЯ ДЛЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS
+// ----------------------------------------------------
+window.getGlobalEstimateData = function() {
+    let objName = document.getElementById("object").value || "Rough Construction";
+    let materials = parseFloat(document.getElementById("materialsTotal").innerText) || 0;
+    let labor = parseFloat(document.getElementById("laborTotal").innerText) || 0;
+    let logistics = parseFloat(document.getElementById("deliveryTotal").innerText) || 0;
+    let total = parseFloat(document.getElementById("clientTotal").innerText) || 0;
+
+    return {
+        name: "Rough: " + objName,
+        materials: materials,
+        labor: labor,
+        work: labor,
+        logistics: logistics,
+        total: total
+    };
+};
 
 function generatePDF() {
     let objName = document.getElementById("object").value || "Object";
@@ -545,49 +587,6 @@ function generatePDF() {
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
     html2pdf().set(opt).from(printHtml).save();
-}
-
-/* Функції глобального кошторису (Global Estimate) */
-function addToGlobalEstimate() {
-    let objName = document.getElementById("object").value || "Object";
-    let materials = Number(document.getElementById("materialsTotal").innerText.replace(' €','')) || 0;
-    let labor = Number(document.getElementById("laborTotal").innerText.replace(' €','')) || 0;
-    let logistics = Number(document.getElementById("deliveryTotal").innerText.replace(' €','')) || 0;
-    let total = Number(document.getElementById("clientTotal").innerText.replace(' €','')) || 0;
-
-    let globalData = JSON.parse(localStorage.getItem("buildCalcGlobal")) || { materials: 0, labor: 0, logistics: 0, total: 0, items: [] };
-    
-    globalData.materials += materials;
-    globalData.labor += labor;
-    globalData.logistics += logistics;
-    globalData.total += total;
-    globalData.items.push({ name: objName + " (Rough)", total: total });
-
-    localStorage.setItem("buildCalcGlobal", JSON.stringify(globalData));
-    alert("Added to Global Estimate successfully!");
-}
-
-function viewGlobalEstimate() {
-    let globalData = JSON.parse(localStorage.getItem("buildCalcGlobal"));
-    if (!globalData || globalData.items.length === 0) {
-        alert("Global estimate is empty.");
-        return;
-    }
-    let msg = `🌍 Global Estimate Summary:\n`;
-    globalData.items.forEach(i => msg += `- ${i.name}: ${i.total.toFixed(2)} €\n`);
-    msg += `-------------------\n`;
-    msg += `Total Materials: ${globalData.materials.toFixed(2)} €\n`;
-    msg += `Total Labor: ${globalData.labor.toFixed(2)} €\n`;
-    msg += `Total Logistics: ${globalData.logistics.toFixed(2)} €\n`;
-    msg += `Grand Total: ${globalData.total.toFixed(2)} €`;
-    alert(msg);
-}
-
-function clearGlobalEstimate() {
-    if (confirm("Clear global estimate?")) {
-        localStorage.removeItem("buildCalcGlobal");
-        alert("Global estimate cleared.");
-    }
 }
 
 function saveProject() {
@@ -647,11 +646,9 @@ const langData = {
         lblBlockPrice: "Block Price €/pcs", lblBindPrice: "Glue/Foam Price €/unit", lblWoodPrice: "Timber Price €/m³",
         lblRoofMatPrice: "Roof Material €/m²", lblLaborPrice: "Rough Work €/m² (Floor)", lblDeliveryPrice: "Logistics & Crane €",
         hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
-        hFinal: "📊 Unified Master Estimate", txtFFoundCost: "Foundation Materials", txtFWallCost: "Walls & Masonry", txtFRoofCost: "Roof (Timber + Covering)",
+        hFinal: "📊 Financial Summary", txtFFoundCost: "Foundation Materials", txtFWallCost: "Walls & Masonry", txtFRoofCost: "Roof Structure & Covering",
         txtFMat: "Total Materials", txtFWork: "Rough Construction Labor", txtFLog: "Logistics & Equipment", txtClientPrice: "Total Master Project Price",
         btnCalc: "💰 Calculate", btnCopy: "📋 Copy", btnPdf: "📄 PDF Invoice", 
-        hGlobal: "🌍 Global Estimate (All Calculators)", globalDesc: "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.",
-        btnAddGlobal: "➕ Add to Global", btnViewGlobal: "👁 View Global", btnClearGlobal: "🗑 Clear Global",
         hProjects: "💾 Project Vault", btnSave: "💾 Save Local", btnHistory: "📁 Local History", btnClear: "🗑 Clear",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing"
     },
@@ -659,7 +656,7 @@ const langData = {
         subtitle: "Калькулятор грубого будівництва та коробки будинку",
         objectTitle: "🏠 Дані об'єкта", objectLabel: "Назва об'єкта", addressLabel: "Адреса", clientLabel: "Клієнт",
         hFoundation: "🏗 Фундамент", lblFoundType: "Тип фундаменту", optSlab: "Монолітна плита", optStrip: "Стрічковий фундамент",
-        lblHouseArea: "Площа забудови м²", lblFoundDepth: "Товщина / Глибина (м)", lblRebarKg: "Витрата арматури (кг/м³)",
+        lblHouseArea: "Площа забудови м²", lblFoundDepth: "Товщина / Глибина (m)", lblRebarKg: "Витрата арматури (кг/м³)",
         txtFConcr: "Бетон на фундамент", txtFRebar: "Арматура", txtFForm: "Площа опалубки",
         hWalls: "🧱 Стіни та матеріали кладки", lblWallMat: "Матеріал стін", optYtong: "Газобетон / Ітонг", optBrick: "Керамічна цегла",
         lblWallPerimeter: "Периметр стін (м)", lblWallHeight: "Висота стін (м)", lblBindMethod: "Тип суміші для кладки",
@@ -670,11 +667,9 @@ const langData = {
         lblBlockPrice: "Блок €/шт", lblBindPrice: "Клей/Піна €/од", lblWoodPrice: "Деревина €/м³",
         lblRoofMatPrice: "Покрівля €/м²", lblLaborPrice: "Робота (коробка) €/м²", lblDeliveryPrice: "Логістика та кран €",
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
-        hFinal: "📊 Єдиний зведений кошторис", txtFFoundCost: "Матеріали на фундамент", txtFWallCost: "Стіни та кладка", txtFRoofCost: "Дах (дерево + покриття)",
+        hFinal: "📊 Фінансовий підсумок", txtFFoundCost: "Матеріали на фундамент", txtFWallCost: "Стіни та кладка", txtFRoofCost: "Дах (дерево + покриття)",
         txtFMat: "Всього матеріалів", txtFWork: "Робота (грубе будівництво)", txtFLog: "Логістика та обладнання", txtClientPrice: "Загальна ціна проєкту",
         btnCalc: "💰 Розрахувати", btnCopy: "📋 Копіювати", btnPdf: "📄 Бланк PDF", 
-        hGlobal: "🌍 Глобальний кошторис (Всі калькулятори)", globalDesc: "Об'єднуйте витрати з даху, фасаду, стяжки тощо в єдиний кошторис проєкту.",
-        btnAddGlobal: "➕ Додати у Global", btnViewGlobal: "👁 Переглянути Global", btnClearGlobal: "🗑 Очистити Global",
         hProjects: "💾 Проєкти", btnSave: "💾 Зберегти", btnHistory: "📁 Історія", btnClear: "🗑 Очистити",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість"
     },
@@ -693,11 +688,9 @@ const langData = {
         lblBlockPrice: "Blok €/ks", lblBindPrice: "Lepidlo/Pena €/ks", lblWoodPrice: "Drevo €/m³",
         lblRoofMatPrice: "Krytina €/m²", lblLaborPrice: "Práca (hrubá stavba) €/m²", lblDeliveryPrice: "Logistika a žeriav €",
         hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
-        hFinal: "📊 Jednotný súhrnný rozpočet", txtFFoundCost: "Materiál na základy", txtFWallCost: "Steny a murovanie", txtFRoofCost: "Strecha (drevo + krytina)",
+        hFinal: "📊 Finančný prehľad", txtFFoundCost: "Materiál na základy", txtFWallCost: "Steny a murovanie", txtFRoofCost: "Strecha (drevo + krytina)",
         txtFMat: "Celkovo materiály", txtFWork: "Práce (hrubá stavba)", txtFLog: "Logistika a vybavenie", txtClientPrice: "Celková cena projektu",
         btnCalc: "💰 Vypočítať", btnCopy: "📋 Kopírovať", btnPdf: "📄 PDF Dokument", 
-        hGlobal: "🌍 Globálny rozpočet (Všetky kalkulačky)", globalDesc: "Skombinujte náklady zo strechy, fasády, poteru atď. do jedného celkového rozpočtu.",
-        btnAddGlobal: "➕ Pridať do Global", btnViewGlobal: "👁 Zobraziť Global", btnClearGlobal: "🗑 Vymazať Global",
         hProjects: "💾 Projekty", btnSave: "💾 Uložiť", btnHistory: "📁 História", btnClear: "🗑 Vymazať",
         proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu"
     }
