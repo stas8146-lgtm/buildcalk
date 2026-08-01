@@ -338,20 +338,25 @@
         </div>
     </div>
 
-    <!-- ФІНАНСОВИЙ ПІДСУМОК -->
+    <!-- ФІНАНСОВИЙ ПІДСУМОК (Видимий) -->
     <h3 id="hFinal" style="clear: both; width: 100%;">📊 Financial Summary</h3>
     <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
-        <div><span>📦 <span id="txtFMat">Materials</span></span> <span id="materialsTotal">0.00 €</span></div>
-        <div><span>👷 <span id="txtFWork">Labor</span></span> <span id="laborTotal">0.00 €</span></div>
-        <div><span>📈 <span id="txtMarkupProfit">Markup/Profit</span></span> <span id="markupTotal">0.00 €</span></div>
-        <div><span>🚚 <span id="txtLogisticsCost">Logistics</span></span> <span id="logisticsTotal">0.00 €</span></div>
+        <div><span>📦 <span id="txtFMat">Materials</span></span> <span id="visMaterialsTotal">0.00 €</span></div>
+        <div><span>👷 <span id="txtFWork">Labor</span></span> <span id="visLaborTotal">0.00 €</span></div>
+        <div><span>📈 <span id="txtMarkupProfit">Markup/Profit</span></span> <span id="visMarkupTotal">0.00 €</span></div>
+        <div><span>🚚 <span id="txtLogisticsCost">Logistics</span></span> <span id="visLogisticsTotal">0.00 €</span></div>
         <hr>
         <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; width: 100%;">
             <span>💰 <span id="txtClientPrice">Total Client Price</span></span>
             <div>
-                <span id="clientTotal">0.00 €</span>
-                <!-- ПРИХОВАНЕ ПОЛЕ ДЛЯ ГЛОБАЛЬНОГО КОШТОРИСУ -->
+                <span id="visClientTotal">0.00 €</span>
+                
+                <!-- ПРИХОВАНІ ПОЛЯ СПЕЦІАЛЬНО ДЛЯ GLOBAL-ESTIMATE.JS -->
                 <input type="hidden" id="grandTotal" value="0">
+                <span id="materialsTotal" style="display:none;">0.00</span>
+                <span id="laborTotal" style="display:none;">0.00</span>
+                <span id="logisticsTotal" style="display:none;">0.00</span>
+                <span id="clientTotal" style="display:none;">0.00</span>
             </div>
         </div>
     </div>
@@ -491,16 +496,25 @@ function calculateEstimate() {
     let markupTotal = (materialsTotal + laborTotal) * (markupPercent / 100);
     let clientTotal = materialsTotal + laborTotal + markupTotal + logisticsCost;
 
-    document.getElementById("materialsTotal").innerText = materialsTotal.toFixed(2) + " €";
-    document.getElementById("laborTotal").innerText = laborTotal.toFixed(2) + " €";
-    document.getElementById("markupTotal").innerText = markupTotal.toFixed(2) + " €";
-    document.getElementById("logisticsTotal").innerText = logisticsCost.toFixed(2) + " €";
-    document.getElementById("clientTotal").innerText = clientTotal.toFixed(2) + " €";
+    // 1. Оновлюємо видимі поля (з префіксом vis)
+    document.getElementById("visMaterialsTotal").innerText = materialsTotal.toFixed(2) + " €";
+    document.getElementById("visLaborTotal").innerText = laborTotal.toFixed(2) + " €";
+    document.getElementById("visMarkupTotal").innerText = markupTotal.toFixed(2) + " €";
+    document.getElementById("visLogisticsTotal").innerText = logisticsCost.toFixed(2) + " €";
+    document.getElementById("visClientTotal").innerText = clientTotal.toFixed(2) + " €";
     
-    // Оновлення прихованого поля для global-estimate.js
-    if(document.getElementById("grandTotal")) {
-        document.getElementById("grandTotal").value = clientTotal.toFixed(2);
-    }
+    // 2. Оновлюємо приховані поля для global-estimate.js
+    // Рахуємо так, щоб Загальна сума = Матеріали + Робота + Логістика (ідеально до цента)
+    let fixedTotal = parseFloat(clientTotal.toFixed(2));
+    let fixedMat = parseFloat(materialsTotal.toFixed(2));
+    let fixedLog = parseFloat(logisticsCost.toFixed(2));
+    let adjustedLabor = fixedTotal - fixedMat - fixedLog;
+
+    if(document.getElementById("materialsTotal")) document.getElementById("materialsTotal").innerText = fixedMat.toFixed(2);
+    if(document.getElementById("laborTotal")) document.getElementById("laborTotal").innerText = adjustedLabor.toFixed(2); // Тут Робота + Націнка
+    if(document.getElementById("logisticsTotal")) document.getElementById("logisticsTotal").innerText = fixedLog.toFixed(2);
+    if(document.getElementById("clientTotal")) document.getElementById("clientTotal").innerText = fixedTotal.toFixed(2);
+    if(document.getElementById("grandTotal")) document.getElementById("grandTotal").value = fixedTotal.toFixed(2);
 
     return clientTotal;
 }
@@ -511,28 +525,19 @@ function calculateAll() {
 
 // === МІСТ ДЛЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS ===
 window.getGlobalEstimateData = function() {
-    let materialsStr = document.getElementById("materialsTotal").innerText;
-    let laborStr = document.getElementById("laborTotal").innerText;
-    let markupStr = document.getElementById("markupTotal").innerText;
-    let logisticsStr = document.getElementById("logisticsTotal").innerText;
-    let totalStr = document.getElementById("clientTotal").innerText;
     let objName = document.getElementById("object").value || "Painting & Putty";
 
-    let materials = parseFloat(materialsStr.replace(/[^\d.-]/g, '')) || 0;
-    let labor = parseFloat(laborStr.replace(/[^\d.-]/g, '')) || 0;
-    let markup = parseFloat(markupStr.replace(/[^\d.-]/g, '')) || 0;
-    let logistics = parseFloat(logisticsStr.replace(/[^\d.-]/g, '')) || 0;
-    let total = parseFloat(totalStr.replace(/[^\d.-]/g, '')) || 0;
-
-    // Щоб глобальний кошторис не показував 0 за роботу і правильно балансував загальну суму,
-    // ми додаємо Націнку (Markup/Profit) до вартості Робіт (Labor).
-    let totalLaborAndProfit = labor + markup;
+    // Тепер ми просто читаємо ідеально збалансовані приховані поля
+    let materials = parseFloat(document.getElementById("materialsTotal").innerText) || 0;
+    let labor = parseFloat(document.getElementById("laborTotal").innerText) || 0;
+    let logistics = parseFloat(document.getElementById("logisticsTotal").innerText) || 0;
+    let total = parseFloat(document.getElementById("clientTotal").innerText) || 0;
 
     return {
         name: "Painting: " + objName,
         materials: materials,
-        labor: totalLaborAndProfit,
-        work: totalLaborAndProfit, // Запасний ключ для гарантованої сумісності
+        labor: labor,
+        work: labor,
         logistics: logistics,
         total: total
     };
@@ -553,12 +558,12 @@ function generatePDF() {
                 <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Category</th>
                 <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">Cost</th>
             </tr>
-            <tr><td style="padding: 10px; border: 1px solid #ddd;">Materials</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("materialsTotal").innerText}</td></tr>
-            <tr><td style="padding: 10px; border: 1px solid #ddd;">Labor</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("laborTotal").innerText}</td></tr>
-            <tr><td style="padding: 10px; border: 1px solid #ddd;">Markup / Profit</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("markupTotal").innerText}</td></tr>
-            <tr><td style="padding: 10px; border: 1px solid #ddd;">Logistics</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("logisticsTotal").innerText}</td></tr>
+            <tr><td style="padding: 10px; border: 1px solid #ddd;">Materials</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("visMaterialsTotal").innerText}</td></tr>
+            <tr><td style="padding: 10px; border: 1px solid #ddd;">Labor</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("visLaborTotal").innerText}</td></tr>
+            <tr><td style="padding: 10px; border: 1px solid #ddd;">Markup / Profit</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("visMarkupTotal").innerText}</td></tr>
+            <tr><td style="padding: 10px; border: 1px solid #ddd;">Logistics</td><td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("visLogisticsTotal").innerText}</td></tr>
         </table>
-        <h3 style="text-align: right; margin-top: 30px;">Total Client Price: <span style="color: #d32f2f;">${document.getElementById("clientTotal").innerText}</span></h3>
+        <h3 style="text-align: right; margin-top: 30px;">Total Client Price: <span style="color: #d32f2f;">${document.getElementById("visClientTotal").innerText}</span></h3>
     </div>`;
 
     let opt = {
@@ -578,7 +583,7 @@ function saveProject() {
         date: new Date().toLocaleString(),
         object: document.getElementById("object").value || "Unnamed",
         client: document.getElementById("client").value || "-",
-        price: document.getElementById("clientTotal").innerText,
+        price: document.getElementById("visClientTotal").innerText,
         rawCost: totalVal
     };
     let list = JSON.parse(localStorage.getItem("paintingProjects")) || [];
@@ -610,7 +615,7 @@ function btnClear() {
 }
 
 function copyEstimate() {
-    let res = document.getElementById("clientTotal").innerText;
+    let res = document.getElementById("visClientTotal").innerText;
     navigator.clipboard.writeText(`Estimate for ${document.getElementById("object").value || "Object"}:\nTotal Client Price: ${res}`);
     alert("Copied to clipboard!");
 }
