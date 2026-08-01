@@ -106,16 +106,6 @@
             cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 6px;
         }
         .action-btn:hover { background: #3a4047; }
-        
-        /* Global Estimate Specific Styles */
-        .global-section h3 { border-left-color: var(--success); margin-bottom: 5px; }
-        .global-desc { color: var(--text-muted); font-size: 13px; margin: 0 0 15px 14px; }
-        
-        .btn-green { background: var(--success) !important; color: white !important; border: none !important; }
-        .btn-green:hover { background: var(--success-hover) !important; }
-        
-        .btn-outline-red { background: transparent !important; color: var(--danger) !important; border: 1px solid var(--danger) !important; }
-        .btn-outline-red:hover { background: rgba(220, 53, 69, 0.1) !important; }
 
         .history-box { background: #1a1d20; padding: 15px; border-radius: 5px; margin-top: 10px; border: 1px solid #444; width: 100%; box-sizing: border-box; }
 
@@ -253,17 +243,21 @@
 
     <h3 id="hFinal" style="clear: both; width: 100%;">📊 Financial Summary</h3>
     <div class="result-box" id="result" style="width: 100%; box-sizing: border-box;">
-        <div><span>⛏️ <span id="txtCostExc">Excavation Cost</span></span> <span id="costExc">0 €</span></div>
-        <div><span>🚚 <span id="txtCostTrans">Transport Cost</span></span> <span id="costTrans">0 €</span></div>
-        <div><span>🚜 <span id="txtCostMach">Excavator Rental Cost</span></span> <span id="costMach">0 €</span></div>
-        <div><span>🔨 <span id="txtCostDemo">Demolition & Misc Cost</span></span> <span id="costDemo">0 €</span></div>
+        <div><span>⛏️ <span id="txtCostExc">Excavation Cost</span></span> <span id="costExc">0.00 €</span></div>
+        <div><span>🚚 <span id="txtCostTrans">Transport Cost</span></span> <span id="costTrans">0.00 €</span></div>
+        <div><span>🚜 <span id="txtCostMach">Excavator Rental Cost</span></span> <span id="costMach">0.00 €</span></div>
+        <div><span>🔨 <span id="txtCostDemo">Demolition & Misc Cost</span></span> <span id="costDemo">0.00 €</span></div>
         <hr>
         <div style="font-size:22px; font-weight:bold; color:var(--primary); display: flex; justify-content: space-between; flex-wrap: wrap;">
             <span>💰 <span id="txtClientPrice">Total Project Price</span></span>
             <div>
-                <span id="clientTotal">0 €</span>
-                <!-- ПРИХОВАНЕ ПОЛЕ ДЛЯ ГЛОБАЛЬНОГО КОШТОРИСУ -->
+                <span id="clientTotal">0.00 €</span>
+                
+                <!-- ПРИХОВАНІ ПОЛЯ СПЕЦІАЛЬНО ДЛЯ GLOBAL-ESTIMATE.JS -->
                 <input type="hidden" id="grandTotal" value="0">
+                <span id="materialsTotal" style="display:none;">0.00</span>
+                <span id="laborTotal" style="display:none;">0.00</span>
+                <span id="logisticsTotal" style="display:none;">0.00</span>
             </div>
         </div>
     </div>
@@ -350,15 +344,27 @@ function calculateEstimate() {
     
     let clientTotal = costExc + costTrans + costMach + costDemo;
 
+    // Оновлюємо видимі поля
     document.getElementById("costExc").innerText = costExc.toFixed(2) + " €";
     document.getElementById("costTrans").innerText = costTrans.toFixed(2) + " €";
     document.getElementById("costMach").innerText = costMach.toFixed(2) + " €";
     document.getElementById("costDemo").innerText = costDemo.toFixed(2) + " €";
     document.getElementById("clientTotal").innerText = clientTotal.toFixed(2) + " €";
 
-    // Оновлення прихованого поля для global-estimate.js
+    // === ОНОВЛЕННЯ ПРИХОВАНИХ ПОЛІВ ДЛЯ GLOBAL-ESTIMATE.JS ===
     if(document.getElementById("grandTotal")) {
         document.getElementById("grandTotal").value = clientTotal.toFixed(2);
+    }
+    if(document.getElementById("materialsTotal")) {
+        document.getElementById("materialsTotal").innerText = "0.00"; 
+    }
+    if(document.getElementById("laborTotal")) {
+        // Робота = Виїмка + Оренда екскаватора + Демонтаж
+        document.getElementById("laborTotal").innerText = (costExc + costMach + costDemo).toFixed(2);
+    }
+    if(document.getElementById("logisticsTotal")) {
+        // Логістика = Транспорт (ходки самоскидів)
+        document.getElementById("logisticsTotal").innerText = costTrans.toFixed(2);
     }
 }
 
@@ -366,23 +372,17 @@ function calculateAll() {
     calculateEstimate();
 }
 
-// === МІСТ ДЛЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS ===
+// === МІСТ ДЛЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS (Залишено для надійності) ===
 window.getGlobalEstimateData = function() {
-    let excStr = document.getElementById("costExc").innerText;
-    let transStr = document.getElementById("costTrans").innerText;
-    let machStr = document.getElementById("costMach").innerText;
-    let demoStr = document.getElementById("costDemo").innerText;
     let totalStr = document.getElementById("clientTotal").innerText;
     let objName = document.getElementById("object").value || "Earthworks";
 
-    let exc = parseFloat(excStr.replace(/[^\d.-]/g, '')) || 0;
-    let trans = parseFloat(transStr.replace(/[^\d.-]/g, '')) || 0;
-    let mach = parseFloat(machStr.replace(/[^\d.-]/g, '')) || 0;
-    let demo = parseFloat(demoStr.replace(/[^\d.-]/g, '')) || 0;
+    let exc = parseFloat(document.getElementById("costExc").innerText.replace(/[^\d.-]/g, '')) || 0;
+    let trans = parseFloat(document.getElementById("costTrans").innerText.replace(/[^\d.-]/g, '')) || 0;
+    let mach = parseFloat(document.getElementById("costMach").innerText.replace(/[^\d.-]/g, '')) || 0;
+    let demo = parseFloat(document.getElementById("costDemo").innerText.replace(/[^\d.-]/g, '')) || 0;
     let total = parseFloat(totalStr.replace(/[^\d.-]/g, '')) || 0;
 
-    // У земляних роботах немає класичних матеріалів.
-    // Оренда екскаватора, виїмка та демонтаж йдуть у "Роботу" (Labor), а транспорт - у "Логістику" (Logistics).
     let workCosts = exc + mach + demo;
     let logisticsCosts = trans;
 
@@ -390,7 +390,7 @@ window.getGlobalEstimateData = function() {
         name: "Earthworks: " + objName,
         materials: 0,
         labor: workCosts,
-        work: workCosts, // Запасний ключ для сумісності
+        work: workCosts, 
         logistics: logisticsCosts,
         total: total
     };
