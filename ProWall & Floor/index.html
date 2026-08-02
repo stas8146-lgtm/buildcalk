@@ -67,12 +67,6 @@
         .gold-glow { box-shadow: 0 0 20px rgba(234, 179, 8, 0.15); }
         .gold-border-glow:focus { border-color: #eab308; box-shadow: 0 0 10px rgba(234, 179, 8, 0.3); }
         
-        @keyframes slideUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .toast-animate { animation: slideUp 0.3s ease-out forwards; }
-
         @media print {
             body { background-color: #ffffff !important; color: #000000 !important; }
             .no-print { display: none !important; }
@@ -82,12 +76,11 @@
         }
     </style>
     
-    <!-- Підключення вашого глобального кошторису -->
+    <!-- Підключення скрипту глобального кошторису -->
     <script src="../global-estimate.js" defer></script>
 </head>
 <body class="text-neutral-100 min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
     
-    <!-- Unified Toast Notification Container -->
     <div id="toast-container" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-2 pointer-events-none"></div>
 
     <div id="global-nav-container"></div>
@@ -102,7 +95,7 @@
                 <div>
                     <span class="text-xs uppercase tracking-widest text-yellow-500 font-bold">BUILDcalc Suite</span>
                     <h1 class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
-                        TILE<span class="text-yellow-400">PRO</span> <span class="text-xs bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded-full">v2.2</span>
+                        TILE<span class="text-yellow-400">PRO</span> <span class="text-xs bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded-full">v2.3</span>
                     </h1>
                 </div>
             </div>
@@ -157,22 +150,22 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-width" for="inp-w">Width (m)</label>
-                            <input type="number" id="inp-w" value="3.0" min="0.1" step="0.1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
+                            <input type="text" id="inp-w" value="3.0" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-length" for="inp-l">Length (m)</label>
-                            <input type="number" id="inp-l" value="4.0" min="0.1" step="0.1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
+                            <input type="text" id="inp-l" value="4.0" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
                         </div>
                     </div>
 
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-deduct" for="inp-deduct">Minus Openings / Doors (m²)</label>
-                        <input type="number" id="inp-deduct" value="0" min="0" step="0.1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-sm focus:outline-none gold-border-glow transition-all">
+                        <input type="text" id="inp-deduct" value="0" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-sm focus:outline-none gold-border-glow transition-all">
                     </div>
 
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1.5" id="lbl-labor" for="inp-labor">Labor Rate (per m²)</label>
-                        <input type="number" id="inp-labor" value="15" min="0" step="1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
+                        <input type="text" id="inp-labor" value="15" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-white font-bold text-lg focus:outline-none gold-border-glow transition-all">
                     </div>
 
                     <div>
@@ -199,15 +192,15 @@
                     <div class="grid grid-cols-3 gap-3 pt-2">
                         <div>
                             <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-thick" for="inp-th">Thickness (mm)</label>
-                            <input type="number" id="inp-th" value="10" min="4" max="30" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white text-sm text-center">
+                            <input type="text" id="inp-th" value="10" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white text-sm text-center">
                         </div>
                         <div>
                             <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-joint" for="inp-joint">Joint (mm)</label>
-                            <input type="number" id="inp-joint" value="2" min="0" step="0.5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white text-sm text-center">
+                            <input type="text" id="inp-joint" value="2" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white text-sm text-center">
                         </div>
                         <div>
                             <label class="block text-[10px] font-semibold uppercase text-neutral-400 mb-1" id="lbl-glue" for="inp-glue">Glue Layer (mm)</label>
-                            <input type="number" id="inp-glue" value="5" min="1" step="1" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white text-sm text-center">
+                            <input type="text" id="inp-glue" value="5" oninput="calculate()" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white text-sm text-center">
                         </div>
                     </div>
                 </div> 
@@ -226,23 +219,23 @@
                 <div class="space-y-3 text-sm">
                     <div class="flex justify-between items-center gap-4">
                         <label class="text-neutral-400 font-semibold" id="lbl-price-tile">Tile price (per piece)</label>
-                        <input type="number" id="price-tile" value="12" min="0" step="0.5" oninput="calculate()" class="w-24 bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white font-bold text-right focus:border-yellow-500 focus:outline-none">
+                        <input type="text" id="price-tile" value="12" oninput="calculate()" class="w-24 bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white font-bold text-right focus:border-yellow-500 focus:outline-none">
                     </div>
                     <div class="flex justify-between items-center gap-4">
                         <label class="text-neutral-400 font-semibold" id="lbl-price-glue">Adhesive price (per kg)</label>
-                        <input type="number" id="price-glue" value="0.8" min="0" step="0.1" oninput="calculate()" class="w-24 bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white font-bold text-right focus:border-yellow-500 focus:outline-none">
+                        <input type="text" id="price-glue" value="0.8" oninput="calculate()" class="w-24 bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white font-bold text-right focus:border-yellow-500 focus:outline-none">
                     </div>
                     <div class="flex justify-between items-center gap-4">
                         <label class="text-neutral-400 font-semibold" id="lbl-price-grout">Grout price (per kg)</label>
-                        <input type="number" id="price-grout" value="3.5" min="0" step="0.1" oninput="calculate()" class="w-24 bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white font-bold text-right focus:border-yellow-500 focus:outline-none">
+                        <input type="text" id="price-grout" value="3.5" oninput="calculate()" class="w-24 bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white font-bold text-right focus:border-yellow-500 focus:outline-none">
                     </div>
                     <div class="flex justify-between items-center gap-4">
                         <label class="text-neutral-400 font-semibold" id="lbl-price-primer">Primer price (per Liter)</label>
-                        <input type="number" id="price-primer" value="2.0" min="0" step="0.1" oninput="calculate()" class="w-24 bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white font-bold text-right focus:border-yellow-500 focus:outline-none">
+                        <input type="text" id="price-primer" value="2.0" oninput="calculate()" class="w-24 bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white font-bold text-right focus:border-yellow-500 focus:outline-none">
                     </div>
                     <div class="flex justify-between items-center gap-4">
                         <label class="text-neutral-400 font-semibold" id="lbl-price-clips">SVP Clips price (per 100 pcs)</label>
-                        <input type="number" id="price-clips" value="5.0" min="0" step="0.5" oninput="calculate()" class="w-24 bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white font-bold text-right focus:border-yellow-500 focus:outline-none">
+                        <input type="text" id="price-clips" value="5.0" oninput="calculate()" class="w-24 bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white font-bold text-right focus:border-yellow-500 focus:outline-none">
                     </div>
                 </div>
             </div>
@@ -319,7 +312,6 @@
                         <p class="text-xs text-neutral-400 mt-1" id="lbl-waste-info">Calculated Waste: <span id="waste-percent" class="text-yellow-400 font-bold">5%</span></p>
                     </div>
                     
-                    <!-- PDF BUTTON (Без зайвих кнопок) -->
                     <div class="flex flex-wrap gap-2">
                         <button id="btn-pdf" onclick="exportToPDF()" class="no-print px-4 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-yellow-400 font-extrabold rounded-xl transition-all shadow-lg flex items-center gap-2 text-xs">
                             <i data-lucide="printer" class="w-4 h-4" aria-hidden="true"></i> <span id="lbl-pdf-btn">Export PDF</span>
@@ -454,8 +446,7 @@
                     </div>
                 </div>
                 
-                <!-- ОБОВ'ЯЗКОВІ ПОЛЯ ДЛЯ СУМІСНОСТІ З GLOBAL-ESTIMATE.JS (ПОМИЛКА БУЛА ТУТ) -->
-                <!-- Ці поля мають бути саме INPUT, щоб скрипт міг зчитати .value -->
+                <!-- ОБОВ'ЯЗКОВІ ПОЛЯ ДЛЯ GLOBAL-ESTIMATE.JS -->
                 <div style="display:none;" class="no-print">
                     <input type="text" id="grandTotal" value="0">
                     <input type="text" id="clientTotal" value="0">
@@ -465,7 +456,7 @@
                 </div>
             </div>
             
-            <!-- МІСЦЕ ДЛЯ ІНЖЕКЦІЇ ВАШОГО ГЛОБАЛЬНОГО КОШТОРИСУ -->
+            <!-- МІСЦЕ ДЛЯ GLOBAL-ESTIMATE.JS -->
             <div id="global-estimate-container" class="no-print w-full mt-6"></div>
 
             <!-- CALCULATION HISTORY -->
@@ -482,7 +473,7 @@
         </div>
     </main>
 
-    <!-- SEO FAQ SECTION (Безпечно розміщено внизу, щоб не зникав) -->
+    <!-- SEO FAQ SECTION -->
     <section class="no-print w-full bg-[#0b0b0b] border-t border-neutral-900 mt-8 pt-12 pb-12">
         <div class="max-w-4xl mx-auto px-4 lg:px-8">
             <h2 class="text-xl font-bold text-white mb-6 text-center" id="t-faq-title">Frequently Asked Questions</h2>
@@ -506,7 +497,7 @@
         </div>
     </section>
 
-    <!-- INTERNAL LINKS: RELATED CALCULATORS -->
+    <!-- INTERNAL LINKS -->
     <section class="no-print border-t border-neutral-900 bg-neutral-950 py-10 w-full">
         <div class="max-w-7xl mx-auto px-4 lg:px-8">
             <h3 class="text-sm uppercase tracking-widest font-bold text-neutral-500 mb-6 text-center" id="t-related">Related Ecosystem Calculators</h3>
@@ -528,7 +519,6 @@
         let currentMode = 'free'; 
         let currentLang = 'en';
 
-        // Валюти для мов
         const currencyMap = { 'uk': '₴', 'en': '$', 'sk': '€' };
 
         const translations = {
@@ -736,13 +726,20 @@
             calculate();
         };
 
-        // ----------------------------------------------------
-        // ФУНКЦІЯ ІНТЕГРАЦІЇ З GLOBAL-ESTIMATE.JS
-        // ----------------------------------------------------
+        // Допоміжна функція безпечного парсингу чисел із заміною ком на крапки
+        function parseVal(id, defaultVal = 0) {
+            let el = document.getElementById(id);
+            if (!el) return defaultVal;
+            let str = String(el.value).replace(',', '.').trim();
+            let num = parseFloat(str);
+            return isNaN(num) ? defaultVal : num;
+        }
+
+        // Інтеграція з global-estimate.js
         window.getGlobalEstimateData = function() {
-            let materials = parseFloat(document.getElementById("materialsTotal").value) || 0;
-            let labor = parseFloat(document.getElementById("laborTotal").value) || 0;
-            let total = parseFloat(document.getElementById("grandTotal").value) || 0;
+            let materials = parseVal("materialsTotal", 0);
+            let labor = parseVal("laborTotal", 0);
+            let total = parseVal("grandTotal", 0);
             let formatEl = document.getElementById("inp-tile");
             let format = formatEl.options[formatEl.selectedIndex].text.split('(')[0].trim();
 
@@ -760,7 +757,6 @@
             currentLang = lang;
             document.documentElement.lang = lang;
             
-            // Зміна символів валюти
             const currSymbol = currencyMap[lang] || '$';
             document.querySelectorAll('.val-curr').forEach(el => el.innerText = currSymbol);
             
@@ -786,13 +782,13 @@
             if (mode === 'free') {
                 btnFree.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 bg-yellow-500 text-black";
                 btnPro.className = "set-mode-pro px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 text-neutral-400 hover:text-white";
-                proLock.classList.remove('hidden');
-                brandLock.classList.remove('hidden');
+                if(proLock) proLock.classList.remove('hidden');
+                if(brandLock) brandLock.classList.remove('hidden');
             } else {
                 btnPro.className = "set-mode-pro px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 bg-yellow-500 text-black";
                 btnFree.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 flex items-center gap-1.5 text-neutral-400 hover:text-white";
-                proLock.classList.add('hidden');
-                brandLock.classList.add('hidden');
+                if(proLock) proLock.classList.add('hidden');
+                if(brandLock) brandLock.classList.add('hidden');
             }
         }
 
@@ -806,14 +802,14 @@
         }
 
         function calculate() {
-            const w = Math.max(0, parseFloat(document.getElementById('inp-w').value) || 0);
-            const l = Math.max(0, parseFloat(document.getElementById('inp-l').value) || 0);
-            const deduct = Math.max(0, parseFloat(document.getElementById('inp-deduct').value) || 0);
+            const w = Math.max(0, parseVal('inp-w', 3.0));
+            const l = Math.max(0, parseVal('inp-l', 4.0));
+            const deduct = Math.max(0, parseVal('inp-deduct', 0));
             
             let area = (w * l) - deduct;
             if (area < 0) area = 0;
 
-            const laborRate = Math.max(0, parseFloat(document.getElementById('inp-labor').value) || 0);
+            const laborRate = Math.max(0, parseVal('inp-labor', 15));
             const laborCost = area * laborRate;
 
             const tileSelect = document.getElementById('inp-tile').value.split('x');
@@ -822,9 +818,9 @@
             const tileAreaM2 = (tileW_cm / 100) * (tileL_cm / 100);
 
             const pattern = document.getElementById('inp-pattern').value;
-            const thickness = Math.max(1, parseFloat(document.getElementById('inp-th').value) || 10);
-            const joint = Math.max(0, parseFloat(document.getElementById('inp-joint').value) || 2);
-            const glue = Math.max(1, parseFloat(document.getElementById('inp-glue').value) || 5);
+            const thickness = Math.max(1, parseVal('inp-th', 10));
+            const joint = Math.max(0, parseVal('inp-joint', 2));
+            const glue = Math.max(1, parseVal('inp-glue', 5));
 
             let waste = 5; 
             let maxSide = Math.max(tileW_cm, tileL_cm);
@@ -850,14 +846,14 @@
             const clipsPerM2 = getClipsPerM2(tileW_cm, tileL_cm);
             const clipsTotal = Math.ceil(area * clipsPerM2 * 1.1);
 
-            // ЦІНИ
-            const pTile = parseFloat(document.getElementById('price-tile').value) || 0;
-            const pGlue = parseFloat(document.getElementById('price-glue').value) || 0;
-            const pGrout = parseFloat(document.getElementById('price-grout').value) || 0;
-            const pPrimer = parseFloat(document.getElementById('price-primer').value) || 0;
-            const pClips100 = parseFloat(document.getElementById('price-clips').value) || 0;
+            // Отримання цін
+            const pTile = parseVal('price-tile', 12);
+            const pGlue = parseVal('price-glue', 0.8);
+            const pGrout = parseVal('price-grout', 3.5);
+            const pPrimer = parseVal('price-primer', 2.0);
+            const pClips100 = parseVal('price-clips', 5.0);
 
-            // ВАРТІСТЬ
+            // Розрахунок вартості матеріалів
             const costTile = tilePieces * pTile;
             const costGlue = glueKg * pGlue;
             const costGrout = groutKg * pGrout;
@@ -867,7 +863,7 @@
             const materialsTotal = costTile + costGlue + costGrout + costPrimer + costClips;
             const grandTotal = materialsTotal + laborCost;
 
-            // ОНОВЛЕННЯ ЕКРАНУ
+            // Вивід на екран
             document.getElementById('lbl-result-area').innerText = `${area.toFixed(2)} m²`;
             document.getElementById('waste-percent').innerText = `${waste}%`;
             
@@ -882,7 +878,6 @@
             document.getElementById('unit-kg2').innerText = t['unit-kg'];
             document.getElementById('unit-l').innerText = t['unit-l'];
 
-            // Фізичні об'єми та їх ціни
             document.getElementById('val-tiles').innerText = tilePieces;
             document.getElementById('cost-tiles').innerText = costTile.toFixed(2);
 
@@ -900,7 +895,7 @@
 
             document.getElementById('res-labor').innerText = laborCost.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
-            // ОНОВЛЕННЯ ПРИХОВАНИХ ІНПУТІВ ДЛЯ GLOBAL-ESTIMATE (ВАЖЛИВО!)
+            // Запис суми для глобального кошторису
             document.getElementById("grandTotal").value = grandTotal.toFixed(2);
             document.getElementById("clientTotal").value = grandTotal.toFixed(2);
             document.getElementById("materialsTotal").value = materialsTotal.toFixed(2);
@@ -935,6 +930,7 @@
         function loadHistory() {
             const history = JSON.parse(localStorage.getItem('tile_history')) || [];
             const container = document.getElementById('history-container');
+            if (!container) return;
             
             if (history.length === 0) {
                 container.innerHTML = `<p class="text-xs text-neutral-500 text-center py-4" id="t-history-empty">${translations[currentLang]['t-history-empty']}</p>`;
