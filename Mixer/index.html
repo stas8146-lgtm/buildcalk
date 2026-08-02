@@ -112,10 +112,6 @@
         .faq-q { font-weight: bold; font-size: 0.85rem; color: var(--text-light); margin-bottom: 3px; }
         .faq-a { font-size: 0.8rem; color: var(--text-muted); }
 
-        .related-list { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-        .related-list li a { font-size: 0.82rem; color: var(--accent-yellow); text-decoration: none; }
-        .related-list li a:hover { text-decoration: underline; }
-
         .footer { margin-top: 30px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 15px; font-size: 0.8rem; color: var(--text-muted); }
     </style>
     
@@ -285,6 +281,14 @@
         <div id="history-list"></div>
     </div>
 
+    <!-- ПРИХОВАНІ ПОЛЯ ДЛЯ ГЛОБАЛЬНОГО КОШТОРИСУ -->
+    <div style="display:none;" class="no-print">
+        <span id="clientTotal">0</span>
+        <span id="materialsTotal">0</span>
+        <span id="laborTotal">0</span>
+        <span id="logisticsTotal">0</span>
+    </div>
+
     <!-- Блок глобального кошторису генерується автоматично через global-estimate.js -->
     <div id="global-estimate-container"></div>
 
@@ -299,18 +303,6 @@
             <div class="faq-q" id="faq-q2">What is the maximum pigment limit?</div>
             <div class="faq-a" id="faq-a2">To maintain paint integrity and adhesion, do not exceed 10% of total volume with pigment.</div>
         </div>
-    </div>
-
-    <!-- Related Calculators -->
-    <div class="seo-section">
-        <div class="section-title" id="sec-related">Related Calculators</div>
-        <ul class="related-list">
-            <li><a href="#">Screed Calculator</a></li>
-            <li><a href="#">Roof Calculator</a></li>
-            <li><a href="#">Plaster Calculator</a></li>
-            <li><a href="#">Paint Calculator</a></li>
-            <li><a href="#">Foundation Calculator</a></li>
-        </ul>
     </div>
 
     <div class="footer">
@@ -341,22 +333,19 @@
             share: "📤 Share", copy: "📋 Copy", pdf: "📄 PDF", vault: "💾 Project Vault", save: "💾 Save", history: "📂 History", clear: "🗑 Clear",
             secObj: "📐 Object Area & Base", area: "Wall Area (m²)", surf: "Surface Type", optSm: "Smooth (0.12 L/m²)", optWl: "Wallpaper (0.15 L/m²)", optRg: "Rough (0.25 L/m²)", doors: "Doors / Windows", layers: "Layers", baseType: "Paint Base Type", optBa: "Base A (White)", optBc: "Base C (Clear)", secEco: "💶 Economics", pBase: "Base Price (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Labor (€/m²)", otherExp: "Other Expenses (€)", rNeed: "Base Needed:", matCost: "Material Cost:", labCost: "Labor Cost:", othCost: "Other Expenses:", grandTotal: "Grand Total:", prev: "Mixed Color", warn: "WARNING: 10% Pigment Limit Reached!", tot: "Total pigment:", promptMsg: "Enter object name:", del: "Delete", clearBase: "Clear base", emptyHist: "History is empty",
             bcHome: "Home", bcCalcs: "Calculators", bcCurr: "Paint Mixer",
-            secFaq: "FAQ", faqQ1: "How much paint do I need for 30 m²?", faqA1: "On smooth surfaces with 2 layers, approx. 7.2 liters of base paint are required.", faqQ2: "What is the maximum pigment limit?", faqA2: "To maintain paint integrity and adhesion, do not exceed 10% of total volume with pigment.",
-            secRelated: "Related Calculators"
+            secFaq: "FAQ", faqQ1: "How much paint do I need for 30 m²?", faqA1: "On smooth surfaces with 2 layers, approx. 7.2 liters of base paint are required.", faqQ2: "What is the maximum pigment limit?", faqA2: "To maintain paint integrity and adhesion, do not exceed 10% of total volume with pigment."
         },
         uk: { 
             share: "📤 Поділитися", copy: "📋 Копіювати", pdf: "📄 PDF", vault: "💾 Проєкти", save: "💾 Зберегти", history: "📂 Історія", clear: "🗑 Очистити",
             secObj: "📐 Площа та База", area: "Площа стін (м²)", surf: "Тип поверхні", optSm: "Гладка (0.12 л/м²)", optWl: "Шпалери (0.15 л/м²)", optRg: "Короїд (0.25 л/м²)", doors: "Двері / Вікна", layers: "Шари", baseType: "Тип бази", optBa: "База А (Біла)", optBc: "База С (Прозора)", secEco: "💶 Економіка", pBase: "Ціна бази (€/Л)", pPig: "Пігмент (€/100мл)", laborRate: "Робота (€/m²)", otherExp: "Інші витрати (€)", rNeed: "Потрібно бази:", matCost: "Вартість матеріалів:", labCost: "Вартість робіт:", othCost: "Інші витрати:", grandTotal: "Загальна вартість:", prev: "Колір суміші", warn: "УВАГА: Ліміт 10% пігменту!", tot: "Всього пігменту:", promptMsg: "Введіть назву об'єкта:", del: "Видалити", clearBase: "Прозора база", emptyHist: "Історія порожня",
             bcHome: "Головна", bcCalcs: "Калькулятори", bcCurr: "Міксер фарби",
-            secFaq: "Часті запитання (FAQ)", faqQ1: "Скільки фарби потрібно на 30 м²?", faqA1: "На гладких поверхнях у 2 шари потрібно приблизно 7.2 літра базової фарби.", faqQ2: "Який максимальний ліміт пігменту?", faqA2: "Для збереження адгезії та властивостей фарби не перевищуйте 10% пігменту від загального об'єму.",
-            secRelated: "Схожі калькулятори"
+            secFaq: "Часті запитання (FAQ)", faqQ1: "Скільки фарби потрібно на 30 м²?", faqA1: "На гладких поверхнях у 2 шари потрібно приблизно 7.2 літра базової фарби.", faqQ2: "Який максимальний ліміт пігменту?", faqA2: "Для збереження адгезії та властивостей фарби не перевищуйте 10% пігменту від загального об'єму."
         },
         sk: { 
             share: "📤 Zdielať", copy: "📋 Kopírovať", pdf: "📄 PDF", vault: "💾 Projekty", save: "💾 Uložiť", history: "📂 História", clear: "🗑 Vymazať",
             secObj: "📐 Plocha a Základ", area: "Plocha stien (m²)", surf: "Typ povrchu", optSm: "Hladký (0.12 l/m²)", optWl: "Tapeta (0.15 l/m²)", optRg: "Drsný (0.25 l/m²)", doors: "Dvere / Okná", layers: "Vrstvy", baseType: "Typ základu", optBa: "Báza A (Biela)", optBc: "Priesvitný základ (C)", secEco: "💶 Ekonomika", pBase: "Cena bázy (€/L)", pPig: "Pigment (€/100ml)", laborRate: "Práca (€/m²)", otherExp: "Iné náklady (€)", rNeed: "Potrebný základ:", matCost: "Cena materiálu:", labCost: "Cena práce:", othCost: "Iné náklady:", grandTotal: "Celková cena:", prev: "Výsledná farba", warn: "POZOR: Limit 10% pigmentu!", tot: "Pigment celkom:", promptMsg: "Zadajte názov objektu:", del: "Vymazať", clearBase: "Priesvitný základ", emptyHist: "História je prázdna",
             bcHome: "Domov", bcCalcs: "Kalkulačky", bcCurr: "Miešač farieb",
-            secFaq: "Často kladené otázky (FAQ)", faqQ1: "Koľko farby potrebujem na 30 m²?", faqA1: "Na hladkých povrchoch v 2 vrstvách je potrebných cca 7.2 litra základnej farby.", faqQ2: "Aký je maximálny limit pigmentu?", faqA2: "Pre zachovanie vlastností farby neprekračujte 10% objemu pigmentu.",
-            secRelated: "Súvisiace kalkulačky"
+            secFaq: "Často kladené otázky (FAQ)", faqQ1: "Koľko farby potrebujem na 30 m²?", faqA1: "Na hladkých povrchoch v 2 vrstvách je potrebných cca 7.2 litra základnej farby.", faqQ2: "Aký je maximálny limit pigmentu?", faqA2: "Pre zachovanie vlastností farby neprekračujte 10% objemu pigmentu."
         }
     };
 
@@ -366,19 +355,12 @@
 
     // Інтеграція з глобальним кошторисом (викликається автоматично з global-estimate.js)
     window.getGlobalEstimateData = function() {
-        let baseLitersVal = parseFloat(baseLiters) || 0;
-        let totalPrice = parseFloat(document.getElementById('grandTotal').innerText) || 0;
-        let matCost = parseFloat(document.getElementById('out-mat-cost').innerText) || 0;
-        let laborCost = parseFloat(document.getElementById('out-lab-cost').innerText) || 0;
-        let otherExp = parseFloat(document.getElementById('out-oth-cost').innerText) || 0;
-        
         return {
-            name: "Paint Calculator Project",
-            base: baseLitersVal.toFixed(2) + " L",
-            materials: matCost,
-            labor: laborCost,
-            logistics: otherExp,
-            total: totalPrice
+            name: "Paint Mixer Calculator",
+            materials: parseFloat(document.getElementById('materialsTotal').innerText) || 0,
+            labor: parseFloat(document.getElementById('laborTotal').innerText) || 0,
+            logistics: parseFloat(document.getElementById('logisticsTotal').innerText) || 0,
+            total: parseFloat(document.getElementById('clientTotal').innerText) || 0
         };
     };
 
@@ -442,7 +424,6 @@
         document.getElementById('faq-a1').innerText = d.faqA1;
         document.getElementById('faq-q2').innerText = d.faqQ2;
         document.getElementById('faq-a2').innerText = d.faqA2;
-        document.getElementById('sec-related').innerText = d.secRelated;
 
         initDropdowns();
         recalc();
@@ -506,6 +487,14 @@
         document.getElementById('out-lab-cost').innerText = laborCost.toFixed(2) + " €";
         document.getElementById('out-oth-cost').innerText = otherExp.toFixed(2) + " €";
         document.getElementById('grandTotal').innerText = grandTotal.toFixed(2) + " €";
+
+        // ПРИХОВАНІ ПОЛЯ ДЛЯ ГЛОБАЛЬНОГО КОШТОРИСУ
+        if (document.getElementById('materialsTotal')) {
+            document.getElementById('clientTotal').innerText = grandTotal.toFixed(2);
+            document.getElementById('materialsTotal').innerText = matCost.toFixed(2);
+            document.getElementById('laborTotal').innerText = laborCost.toFixed(2);
+            document.getElementById('logisticsTotal').innerText = otherExp.toFixed(2);
+        }
 
         const p1 = pigments.find(p => p.id === document.getElementById('color-1').value);
         const p2 = pigments.find(p => p.id === document.getElementById('color-2').value);
