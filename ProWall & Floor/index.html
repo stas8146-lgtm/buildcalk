@@ -95,7 +95,7 @@
                 <div>
                     <span class="text-xs uppercase tracking-widest text-yellow-500 font-bold">BUILDcalc Suite</span>
                     <h1 class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
-                        TILE<span class="text-yellow-400">PRO</span> <span class="text-xs bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded-full">v2.3</span>
+                        TILE<span class="text-yellow-400">PRO</span> <span class="text-xs bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded-full">v2.4</span>
                     </h1>
                 </div>
             </div>
@@ -447,12 +447,13 @@
                 </div>
                 
                 <!-- ОБОВ'ЯЗКОВІ ПОЛЯ ДЛЯ GLOBAL-ESTIMATE.JS -->
+                <!-- Змінено на span замість input, щоб global-estimate міг зчитувати innerText -->
                 <div style="display:none;" class="no-print">
-                    <input type="text" id="grandTotal" value="0">
-                    <input type="text" id="clientTotal" value="0">
-                    <input type="text" id="materialsTotal" value="0">
-                    <input type="text" id="laborTotal" value="0">
-                    <input type="text" id="logisticsTotal" value="0">
+                    <span id="grandTotal">0</span>
+                    <span id="clientTotal">0</span>
+                    <span id="materialsTotal">0</span>
+                    <span id="laborTotal">0</span>
+                    <span id="logisticsTotal">0</span>
                 </div>
             </div>
             
@@ -494,19 +495,6 @@
                     <p class="text-neutral-300 leading-relaxed" id="faq-a3">The amount of clips depends on the tile dimensions. Smaller tiles require more clips per square meter. Wedges are reusable, so you only need enough for your daily laying rate.</p>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- INTERNAL LINKS -->
-    <section class="no-print border-t border-neutral-900 bg-neutral-950 py-10 w-full">
-        <div class="max-w-7xl mx-auto px-4 lg:px-8">
-            <h3 class="text-sm uppercase tracking-widest font-bold text-neutral-500 mb-6 text-center" id="t-related">Related Ecosystem Calculators</h3>
-            <ul class="flex flex-wrap justify-center gap-4 text-sm font-medium">
-                <li><a href="/screed-calculator" class="text-neutral-400 hover:text-black hover:bg-yellow-500 transition-all flex items-center gap-2 bg-neutral-900 px-5 py-2.5 rounded-xl border border-neutral-800"><i data-lucide="calculator" class="w-4 h-4"></i> <span id="rel-screed">Screed Calculator</span></a></li>
-                <li><a href="/plaster-calculator" class="text-neutral-400 hover:text-black hover:bg-yellow-500 transition-all flex items-center gap-2 bg-neutral-900 px-5 py-2.5 rounded-xl border border-neutral-800"><i data-lucide="calculator" class="w-4 h-4"></i> <span id="rel-plaster">Plaster Calculator</span></a></li>
-                <li><a href="/paint-calculator" class="text-neutral-400 hover:text-black hover:bg-yellow-500 transition-all flex items-center gap-2 bg-neutral-900 px-5 py-2.5 rounded-xl border border-neutral-800"><i data-lucide="calculator" class="w-4 h-4"></i> <span id="rel-paint">Paint Calculator</span></a></li>
-                <li><a href="/facade-calculator" class="text-neutral-400 hover:text-black hover:bg-yellow-500 transition-all flex items-center gap-2 bg-neutral-900 px-5 py-2.5 rounded-xl border border-neutral-800"><i data-lucide="calculator" class="w-4 h-4"></i> <span id="rel-facade">Facade Calculator</span></a></li>
-            </ul>
         </div>
     </section>
 
@@ -574,11 +562,6 @@
                 "bc-home": "Головна",
                 "bc-calcs": "Калькулятори",
                 "bc-current": "Калькулятор плитки",
-                "t-related": "Інші калькулятори екосистеми",
-                "rel-screed": "Калькулятор стяжки",
-                "rel-plaster": "Калькулятор штукатурки",
-                "rel-paint": "Калькулятор фарби",
-                "rel-facade": "Калькулятор фасаду",
                 "t-faq-title": "Часті питання (FAQ)",
                 "faq-q1": "Скільки плитки брати на запас (підрізку)?",
                 "faq-a1": "Для standard прямого укладання додайте 5%. Для великих форматів або діагонального укладання додайте 7-10%. Схема «Ялинка» зазвичай потребує до 10-15% запасу.",
@@ -639,11 +622,6 @@
                 "bc-home": "Home",
                 "bc-calcs": "Calculators",
                 "bc-current": "Tile Calculator",
-                "t-related": "Related Ecosystem Calculators",
-                "rel-screed": "Screed Calculator",
-                "rel-plaster": "Plaster Calculator",
-                "rel-paint": "Paint Calculator",
-                "rel-facade": "Facade Calculator",
                 "t-faq-title": "Frequently Asked Questions",
                 "faq-q1": "How much extra tile should I buy for waste?",
                 "faq-a1": "For a standard straight layout, add 5%. For large format tiles or diagonal layouts, add 7-10%. Herringbone patterns usually require up to 10-15% extra for waste.",
@@ -704,11 +682,6 @@
                 "bc-home": "Domov",
                 "bc-calcs": "Kalkulačky",
                 "bc-current": "Kalkulačka dlažby",
-                "t-related": "Ďalšie kalkulačky ekosystému",
-                "rel-screed": "Kalkulačka poteru",
-                "rel-plaster": "Kalkulačka omietky",
-                "rel-paint": "Kalkulačka farby",
-                "rel-facade": "Kalkulačka fasády",
                 "t-faq-title": "Často kladené otázky (FAQ)",
                 "faq-q1": "Koľko dlažby navyše potrebujem na prerez?",
                 "faq-a1": "Pre štandardnú rovnú pokládku pridajte 5%. Pre veľké formáty alebo diagonálnu pokládku 7-10%. Rybia kosť si bežne vyžaduje až 10-15% rezervu na prerez.",
@@ -726,11 +699,13 @@
             calculate();
         };
 
-        // Допоміжна функція безпечного парсингу чисел із заміною ком на крапки
+        // Допоміжна функція для парсингу даних з тегів
         function parseVal(id, defaultVal = 0) {
             let el = document.getElementById(id);
             if (!el) return defaultVal;
-            let str = String(el.value).replace(',', '.').trim();
+            // Зчитуємо дані правильно, незалежно від того, чи це input, чи текстовий тег (span)
+            let val = (el.tagName === 'INPUT' || el.tagName === 'SELECT') ? el.value : el.innerText;
+            let str = String(val).replace(',', '.').trim();
             let num = parseFloat(str);
             return isNaN(num) ? defaultVal : num;
         }
@@ -895,12 +870,12 @@
 
             document.getElementById('res-labor').innerText = laborCost.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
-            // Запис суми для глобального кошторису
-            document.getElementById("grandTotal").value = grandTotal.toFixed(2);
-            document.getElementById("clientTotal").value = grandTotal.toFixed(2);
-            document.getElementById("materialsTotal").value = materialsTotal.toFixed(2);
-            document.getElementById("laborTotal").value = laborCost.toFixed(2);
-            document.getElementById("logisticsTotal").value = "0.00";
+            // Запис суми для глобального кошторису (Текстовий формат, як вимагає скрипт)
+            document.getElementById("grandTotal").innerText = grandTotal.toFixed(2);
+            document.getElementById("clientTotal").innerText = grandTotal.toFixed(2);
+            document.getElementById("materialsTotal").innerText = materialsTotal.toFixed(2);
+            document.getElementById("laborTotal").innerText = laborCost.toFixed(2);
+            document.getElementById("logisticsTotal").innerText = "0.00";
 
             if (area > 0) {
                 saveToHistoryDebounced(w, l, area, tileSelect.join('x'), grandTotal);
