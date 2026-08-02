@@ -53,7 +53,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background-color: var(--bg-main); color: var(--text-light); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 40px; transition: background 0.3s; }
         
-        .calculator-nav::-webkit-scrollbar { display: none; }
         .wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; }
         .container { width: 100%; max-width: 600px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: background 0.3s; margin-top: 20px; }
 
@@ -105,28 +104,22 @@
 
         .footer { margin-top: 30px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 15px; font-size: 0.8rem; color: var(--text-muted); }
     </style>
-<script src="../global-estimate.js"></script>
+    
+    <!-- Підключення стандартизованої шапки та глобального кошторису -->
+    <script src="../nav.js"></script>
+    <script src="../global-estimate.js" defer></script>
 </head>
 <body>
 
     <div class="wrapper">
-        <!-- CALCULATORS SWITCHER BAR -->
-        <div class="w-full bg-neutral-950 border-b border-neutral-800 px-4 py-3">
-            <div class="max-w-4xl mx-auto flex gap-2 overflow-x-auto calculator-nav whitespace-nowrap">
-                <a href="../Mixer/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🎨 Mixer</a>
-                <a href="../Gipsokarton/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🧱 Gipsokarton</a>
-                <a href="../Omietky/" class="px-3 py-1.5 bg-yellow-500/10 border border-yellow-500 text-xs font-bold rounded-xl text-yellow-400 flex items-center gap-1.5">🏗️ Omietky</a>
-                <a href="../Roof/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🏠 Roof</a>
-                <a href="../Styazhka/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🧹 Styazhka</a>
-                <a href="../ProWall%20%26%20Floor/" class="px-3 py-1.5 bg-neutral-900 border border-neutral-800 text-xs font-bold rounded-xl hover:border-yellow-500 text-neutral-300 hover:text-white transition flex items-center gap-1.5">🟩 ProWall & Floor</a>
-            </div>
-        </div>
+        <!-- Єдина стандартизована шапка навігації (замість ручного меню) -->
+        <div id="global-nav-container" class="w-full"></div>
 
         <div class="container" id="app-container">
             <h1 class="seo-h1">VIP Plaster Material Calculator</h1>
 
             <div class="breadcrumb">
-                <a href="#" id="bc-home">Home</a> &gt; <a href="#" id="bc-calcs">Calculators</a> &gt; <span id="bc-current">Plaster Calculator</span>
+                <a href="/" id="bc-home">Home</a> &gt; <a href="/calculators" id="bc-calcs">Calculators</a> &gt; <span id="bc-current">Plaster Calculator</span>
             </div>
 
             <div class="header" data-html2canvas-ignore="true">
@@ -280,11 +273,20 @@
                 
                 <div class="result-row total">
                     <span id="res-cost">Grand Total:</span>
-                    <span id="grandTotal">0.00 €</span>
+                    <span id="vis-grandTotal">0.00 €</span>
                 </div>
             </div>
 
-            <!-- UNIFIED ACTION BUTTONS (Matching Screenshot Style) -->
+            <!-- ПРИХОВАНІ ПОЛЯ ДЛЯ ГЛОБАЛЬНОГО КОШТОРИСУ -->
+            <div style="display:none;" class="no-print">
+                <span id="grandTotal">0</span>
+                <span id="clientTotal">0</span>
+                <span id="materialsTotal">0</span>
+                <span id="laborTotal">0</span>
+                <span id="logisticsTotal">0</span>
+            </div>
+
+            <!-- UNIFIED ACTION BUTTONS -->
             <div class="grid grid-cols-3 gap-2 mb-6" data-html2canvas-ignore="true">
                 <button onclick="recalc()" class="py-2.5 px-2 bg-neutral-900 border border-neutral-700 hover:border-yellow-500 rounded-xl text-yellow-400 font-bold text-xs flex items-center justify-center gap-1 transition active:scale-95">
                     💰 <span id="btn-calc-text">Calculate</span>
@@ -299,7 +301,6 @@
 
             <div id="global-estimate-container"></div>
                 
-
             <!-- PROJECT VAULT / LOCAL HISTORY SECTION -->
             <div class="bg-neutral-950 border border-neutral-800 rounded-xl p-4 mb-6" data-html2canvas-ignore="true">
                 <div class="text-yellow-400 font-bold text-sm mb-3 flex items-center gap-2">
@@ -346,18 +347,6 @@
                 </div>
             </div>
 
-            <!-- Related Calculators -->
-            <div class="seo-section">
-                <div class="section-title" id="sec-related">Related calculators</div>
-                <ul class="related-list">
-                    <li><a href="#">Screed Calculator</a></li>
-                    <li><a href="#">Roof Calculator</a></li>
-                    <li><a href="#">Plaster Calculator</a></li>
-                    <li><a href="#">Paint Calculator</a></li>
-                    <li><a href="#">Foundation Calculator</a></li>
-                </ul>
-            </div>
-
             <div class="footer">
                 <div>✉️ info@vip-plaster.sk | 📞 +421 XX XXX XXX</div>
                 <div style="margin-top: 5px;">Created for Professionals</div>
@@ -397,8 +386,7 @@
                 secHist: "📂 Saved Objects", promptMsg: "Enter object name (e.g. Apartment Walls):", del: "Delete",
                 bcHome: "Home", bcCalcs: "Calculators", bcCurr: "Plaster Calculator",
                 secUnified: "📊 Unified Master Estimate", secUnifiedDesc: "Total accumulated budget across all saved project objects.", lblUnifiedTot: "Master Project Total:",
-                secFaq: "FAQ", faqQ1: "How much plaster do I need per m²?", faqA1: "Gypsum plaster requires roughly 9 kg/m² per 10 mm of thickness.", faqQ2: "Do I need a primer before plastering?", faqA2: "Yes, a primer ensures proper adhesion and reduces suction from the substrate.",
-                secRelated: "Related calculators"
+                secFaq: "FAQ", faqQ1: "How much plaster do I need per m²?", faqA1: "Gypsum plaster requires roughly 9 kg/m² per 10 mm of thickness.", faqQ2: "Do I need a primer before plastering?", faqA2: "Yes, a primer ensures proper adhesion and reduces suction from the substrate."
             },
             uk: {
                 calcBtn: "Порахувати", copyBtn: "Копіювати", pdfBtn: "PDF Рахунок",
@@ -423,8 +411,7 @@
                 secHist: "📂 Збережені об'єкти", promptMsg: "Введіть назву об'єкта (напр. Квартира):", del: "Видалити",
                 bcHome: "Головна", bcCalcs: "Калькулятори", bcCurr: "Штукатурний калькулятор",
                 secUnified: "📊 Єдиний зведений кошторис", secUnifiedDesc: "Загальний накопичувальний бюджет по всіх збережених об'єктах проєкту.", lblUnifiedTot: "Загальний кошторис проєкту:",
-                secFaq: "Часті запитання (FAQ)", faqQ1: "Скільки штукатурки потрібно на м²?", faqA1: "Гіпсова штукатурка вимагає приблизно 9 кг/м² на 10 мм товщини.", faqQ2: "Чи потрібна ґрунтовка перед штукатуркою?", faqA2: "Так, ґрунтовка забезпечує належну адгезію та зменшує всмоктування основи.",
-                secRelated: "Схожі калькулятори"
+                secFaq: "Часті запитання (FAQ)", faqQ1: "Скільки штукатурки потрібно на м²?", faqA1: "Гіпсова штукатурка вимагає приблизно 9 кг/м² на 10 мм товщини.", faqQ2: "Чи потрібна ґрунтовка перед штукатуркою?", faqA2: "Так, ґрунтовка забезпечує належну адгезію та зменшує всмоктування основи."
             },
             sk: {
                 calcBtn: "Vypočítať", copyBtn: "Kopírovať", pdfBtn: "PDF Faktúra",
@@ -449,18 +436,17 @@
                 secHist: "📂 Uložené objekty", promptMsg: "Zadajte názov objektu (napr. Byty):", del: "Vymazať",
                 bcHome: "Domov", bcCalcs: "Kalkulačky", bcCurr: "Omietková kalkulačka",
                 secUnified: "📊 Jednotný súhrnný rozpočet", secUnifiedDesc: "Celkový kumulovaný rozpočet pre všetky uložené objekty projektu.", lblUnifiedTot: "Celkový rozpočet projektu:",
-                secFaq: "Často kladené otázky (FAQ)", faqQ1: "Koľko omietky potrebujem na m²?", faqA1: "Sadrová omietka vyžaduje približne 9 kg/m² na 10 mm hrúbky.", faqQ2: "Je potrebná penetrácia pred omietaním?", faqA2: "Áno, penetrácia zabezpečuje správnu priľnavosť a znižuje savosť podkladu.",
-                secRelated: "Súvisiace kalkulačky"
+                secFaq: "Často kladené otázky (FAQ)", faqQ1: "Koľko omietky potrebujem na m²?", faqA1: "Sadrová omietka vyžaduje približne 9 kg/m² na 10 mm hrúbky.", faqQ2: "Je potrebná penetrácia pred omietaním?", faqA2: "Áno, penetrácia zabezpečuje správnu priľnavosť a znižuje savosť podkladu."
             }
         };
 
         let currentLang = 'en';
 
-        // Функція для інтеграції з глобальним кошторисом (global-estimate.js)
+        // Інтеграція з глобальним кошторисом (читаємо з прихованих полів)
         window.getGlobalEstimateData = function() {
-            let matCost = parseFloat(document.getElementById('out-mat-cost').innerText) || 0;
-            let laborCost = parseFloat(document.getElementById('out-lab-cost').innerText) || 0;
-            let otherExp = parseFloat(document.getElementById('out-oth-cost').innerText) || 0;
+            let matCost = parseFloat(document.getElementById('materialsTotal').innerText) || 0;
+            let laborCost = parseFloat(document.getElementById('laborTotal').innerText) || 0;
+            let otherExp = parseFloat(document.getElementById('logisticsTotal').innerText) || 0;
             let totalPrice = parseFloat(document.getElementById('grandTotal').innerText) || 0;
             
             return {
@@ -552,7 +538,6 @@
             document.getElementById('faq-a1').innerText = dict[lang].faqA1;
             document.getElementById('faq-q2').innerText = dict[lang].faqQ2;
             document.getElementById('faq-a2').innerText = dict[lang].faqA2;
-            document.getElementById('sec-related').innerText = dict[lang].secRelated;
 
             recalc();
             renderHistory();
@@ -620,10 +605,18 @@
             let laborCost = netArea * priceLabor;
             let grandTotal = matCost + laborCost + otherExp;
 
+            // Видимі результати в калькуляторі
             document.getElementById('out-mat-cost').innerText = matCost.toFixed(2) + " €";
             document.getElementById('out-lab-cost').innerText = laborCost.toFixed(2) + " €";
             document.getElementById('out-oth-cost').innerText = otherExp.toFixed(2) + " €";
-            document.getElementById('grandTotal').innerText = grandTotal.toFixed(2) + " €";
+            document.getElementById('vis-grandTotal').innerText = grandTotal.toFixed(2) + " €";
+
+            // Оновлення прихованих полів (ТІЛЬКИ цифри) для global-estimate.js
+            document.getElementById("grandTotal").innerText = grandTotal.toFixed(2);
+            document.getElementById("clientTotal").innerText = grandTotal.toFixed(2);
+            document.getElementById("materialsTotal").innerText = matCost.toFixed(2);
+            document.getElementById("laborTotal").innerText = laborCost.toFixed(2);
+            document.getElementById("logisticsTotal").innerText = otherExp.toFixed(2);
         }
 
         function saveToHistory() {
@@ -638,7 +631,7 @@
                 date: new Date().toLocaleDateString(),
                 area: document.getElementById('out-net-area').innerText,
                 bags: document.getElementById('out-bags').innerText,
-                cost: document.getElementById('grandTotal').innerText,
+                cost: document.getElementById('vis-grandTotal').innerText,
                 rawCost: rawCost
             };
 
@@ -699,7 +692,7 @@
         }
 
         function clearGlobalHistory() {
-            if (confirm("Clear all saved objects and global estimate?")) {
+            if (confirm("Clear all saved objects and local history?")) {
                 localStorage.removeItem('vipPlasterHistory');
                 renderHistory();
                 updateUnifiedEstimate();
@@ -717,7 +710,7 @@
         }
 
         function copyEstimate() {
-            const text = `VIP Plaster Estimate:\nNet Area: ${document.getElementById('out-net-area').innerText}\nDry Mix: ${document.getElementById('out-bags').innerText}\nGrand Total: ${document.getElementById('grandTotal').innerText}`;
+            const text = `VIP Plaster Estimate:\nNet Area: ${document.getElementById('out-net-area').innerText}\nDry Mix: ${document.getElementById('out-bags').innerText}\nGrand Total: ${document.getElementById('vis-grandTotal').innerText}`;
             navigator.clipboard.writeText(text).then(() => {
                 alert("Estimate copied to clipboard!");
             }).catch(err => {
