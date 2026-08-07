@@ -223,6 +223,10 @@
                 <input id="insulPrice" type="number" step="0.1" value="12.5">
             </div>
             <div class="input-group">
+                <label id="lblFoamPrice">PU Foam €/can(750ml)</label>
+                <input id="foamPrice" type="number" step="0.5" value="6.5">
+            </div>
+            <div class="input-group">
                 <label id="lblGluePrice">Glue €/bag(25kg)</label>
                 <input id="gluePrice" type="number" step="0.1" value="7.0">
             </div>
@@ -265,9 +269,10 @@
             <div><span id="txtNetArea">Net Area to Insulate</span> <span id="resNetArea">0 m²</span></div>
             <div><span id="txtInsul">Insulation Area (+5% waste)</span> <span id="resInsul">0 m²</span></div>
             <div><span id="txtInsulVol">Insulation Volume</span> <span id="resInsulVol">0 m³</span></div>
+            <div><span id="txtFoam">PU Foam (Joints)</span> <span id="resFoam">0 cans</span></div>
             <div><span id="txtGlue">Glue (Gluing + Base Coat)</span> <span id="resGlue">0 bags</span></div>
             <div><span id="txtMesh">Mesh (+10% overlap)</span> <span id="resMesh">0 m²</span></div>
-            <div><span id="txtDowel">Dowels</span> <span><span id="resDowel">0</span> pcs (<span id="resDowelLen">0</span> mm)</span></div>
+            <div><span id="txtDowel">Dowels</span> <span><span id="resDowel">0</span> <span id="unitDowel">pcs</span> (<span id="resDowelLen">0</span> mm)</span></div>
             <div><span id="txtPrimer">Primer</span> <span id="resPrimer">0 buckets</span></div>
             <div><span id="txtPlaster">Facade Plaster</span> <span id="resPlaster">0 buckets</span></div>
         </div>
@@ -305,7 +310,7 @@
     <h3 id="hFinal" style="clear: both; width: 100%;">📊 Financial Summary</h3>
     <div class="result-box" id="result" style="width: 100%; box-sizing: border-box; clear: both;">
         <div><span>🧱 <span id="txtFTherm">Insulation</span></span> <span id="costInsul">0.00 €</span></div>
-        <div><span>🧪 <span id="txtFMix">Wet Mixes (Glue, Primer, Plaster)</span></span> <span id="costMixes">0.00 €</span></div>
+        <div><span>🧪 <span id="txtFMix">Wet Mixes (Glue, Foam, Plaster)</span></span> <span id="costMixes">0.00 €</span></div>
         <div><span>🔗 <span id="txtFProf">Mesh, Dowels, Profiles</span></span> <span id="costProfiles">0.00 €</span></div>
         <hr>
         <div><span>📦 <span id="txtFMat">Total Materials</span></span> <span id="visMaterialsTotal">0.00 €</span></div>
@@ -410,6 +415,9 @@ window.getGlobalEstimateData = function() {
 };
 
 function calculateAll() {
+    let currentLang = document.getElementById("language").value;
+    let dict = langData[currentLang];
+
     let grossArea = parseFloat(document.getElementById("grossArea").value) || 0;
     let windowsArea = parseFloat(document.getElementById("windowsArea").value) || 0;
     let netArea = grossArea - windowsArea;
@@ -422,25 +430,32 @@ function calculateAll() {
 
     let insulQty = netArea * 1.05; 
     let insulVol = insulQty * (thickness / 1000); 
+    
+    // Розрахунок матеріалів
+    let foamCans = Math.ceil(netArea / 35); // 1 балон приблизно на 35м2 для стиків
     let glueBags = Math.ceil((netArea * 10) / 25); 
     let meshQty = netArea * 1.1; 
     let dowelQty = Math.ceil(netArea * 6); 
     let dowelLength = thickness + 50; 
-    
     let primerBuckets = Math.ceil((netArea * 0.3) / 10); 
     let plasterBuckets = Math.ceil((netArea * 2.8) / 25); 
 
+    // Вивід значень з перекладеними одиницями
     document.getElementById("resNetArea").innerHTML = netArea.toFixed(1) + " m²";
     document.getElementById("resInsul").innerHTML = insulQty.toFixed(1) + " m²";
     document.getElementById("resInsulVol").innerHTML = insulVol.toFixed(2) + " m³";
-    document.getElementById("resGlue").innerHTML = glueBags + " bags";
+    document.getElementById("resFoam").innerHTML = foamCans + " " + dict.unitCans;
+    document.getElementById("resGlue").innerHTML = glueBags + " " + dict.unitBags;
     document.getElementById("resMesh").innerHTML = meshQty.toFixed(1) + " m²";
     document.getElementById("resDowel").innerHTML = dowelQty;
+    document.getElementById("unitDowel").innerHTML = dict.unitPcs; // Окремий span для дюбелів
     document.getElementById("resDowelLen").innerHTML = dowelLength;
-    document.getElementById("resPrimer").innerHTML = primerBuckets + " buckets";
-    document.getElementById("resPlaster").innerHTML = plasterBuckets + " buckets";
+    document.getElementById("resPrimer").innerHTML = primerBuckets + " " + dict.unitBuckets;
+    document.getElementById("resPlaster").innerHTML = plasterBuckets + " " + dict.unitBuckets;
 
+    // Розрахунок цін
     let insulCost = insulQty * (parseFloat(document.getElementById("insulPrice").value) || 0);
+    let foamCost = foamCans * (parseFloat(document.getElementById("foamPrice").value) || 0);
     let glueCost = glueBags * (parseFloat(document.getElementById("gluePrice").value) || 0);
     let meshCost = meshQty * (parseFloat(document.getElementById("meshPrice").value) || 0);
     let dowelCost = dowelQty * (parseFloat(document.getElementById("dowelPrice").value) || 0);
@@ -452,7 +467,7 @@ function calculateAll() {
     let starterCost = starterLen * (parseFloat(document.getElementById("starterPrice").value) || 0);
 
     let costInsulTotal = insulCost;
-    let costMixesTotal = glueCost + primerCost + plasterCost;
+    let costMixesTotal = glueCost + foamCost + primerCost + plasterCost; // Піну додав до сумішей/хімії
     let costProfilesTotal = meshCost + dowelCost + cornerCost + apuCost + starterCost;
     let totalMaterials = costInsulTotal + costMixesTotal + costProfilesTotal;
 
@@ -467,13 +482,13 @@ function calculateAll() {
     document.getElementById("costMixes").innerHTML = formatEur(costMixesTotal);
     document.getElementById("costProfiles").innerHTML = formatEur(costProfilesTotal);
     
-    // Візуальні поля (з символом €)
+    // Візуальні поля
     document.getElementById("visMaterialsTotal").innerHTML = formatEur(totalMaterials);
     document.getElementById("visSalaryTotal").innerHTML = formatEur(salaryTotal);
     document.getElementById("visDeliveryTotal").innerHTML = formatEur(deliveryTotal);
     document.getElementById("visClientTotal").innerHTML = formatEur(clientTotal);
     
-    // Технічні приховані поля (чисті числа для global-estimate.js)
+    // Технічні приховані поля для global-estimate.js
     if(document.getElementById("grandTotal")) document.getElementById("grandTotal").value = clientTotal.toFixed(2);
     if(document.getElementById("clientTotal")) document.getElementById("clientTotal").innerText = clientTotal.toFixed(2);
     if(document.getElementById("materialsTotal")) document.getElementById("materialsTotal").innerText = totalMaterials.toFixed(2);
@@ -527,7 +542,7 @@ function generatePDF() {
                 <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costInsul").innerText}</td>
             </tr>
             <tr>
-                <td style="padding: 10px; border: 1px solid #ddd;">Wet Mixes (Glue, Primer, Plaster)</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Wet Mixes (Glue, Foam, Primer, Plaster)</td>
                 <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${document.getElementById("costMixes").innerText}</td>
             </tr>
             <tr>
@@ -628,15 +643,15 @@ const langData = {
         lblStarterLen: "Base Perimeter / Starter (m)", lblCornerLen: "Outside Corners (m)", lblApuLen: "Windows Perimeter (APU) (m)",
         hInsulation: "🧱 Insulation Details & Prices", lblInsulType: "Insulation Type", optEps: "EPS (Styrofoam)", optWool: "Mineral Wool",
         lblInsulThick: "Thickness (mm)",
-        lblInsulPrice: "Insulation Price €/m²", lblGluePrice: "Glue €/bag(25kg)", lblMeshPrice: "Fiberglass Mesh €/m²", lblDowelPrice: "Dowels €/pcs",
+        lblInsulPrice: "Insulation Price €/m²", lblFoamPrice: "PU Foam €/can(750ml)", lblGluePrice: "Glue €/bag(25kg)", lblMeshPrice: "Fiberglass Mesh €/m²", lblDowelPrice: "Dowels €/pcs",
         hFinishing: "🎨 Finishing & Profiles", lblPrimerPrice: "Primer €/bucket(10L)", lblPlasterPrice: "Plaster €/bucket(25kg)", 
         lblCornerPrice: "Corner Bead €/m", lblApuPrice: "APU Strip €/m", lblStarterPrice: "Starter Track €/m",
         hMatResult: "📦 Material Requirements", txtNetArea: "Net Area to Insulate", txtInsul: "Insulation Area (+5% waste)", 
-        txtInsulVol: "Insulation Volume",
+        txtInsulVol: "Insulation Volume", txtFoam: "PU Foam (Joints)",
         txtGlue: "Glue (Gluing + Base Coat)", txtMesh: "Mesh (+10% overlap)", txtDowel: "Dowels", txtPrimer: "Primer", txtPlaster: "Facade Plaster",
         hEstimate: "💶 Labor & Logistics", lblSalaryPrice: "Labor Cost €/m²", lblDeliveryPrice: "Delivery & Scaffolding €",
         hCompany: "🏢 Company Info", lblCompName: "Company Name", lblCompPhone: "Phone", lblCompEmail: "Email",
-        hFinal: "📊 Financial Summary", txtFTherm: "Insulation", txtFMix: "Wet Mixes (Glue, Primer, Plaster)", txtFProf: "Mesh, Dowels, Profiles",
+        hFinal: "📊 Financial Summary", txtFTherm: "Insulation", txtFMix: "Wet Mixes (Glue, Foam, Plaster)", txtFProf: "Mesh, Dowels, Profiles",
         txtFMat: "Total Materials", txtFWork: "Labor", txtFLog: "Logistics & Scaffolding", txtClientPrice: "GRAND TOTAL",
         hGlobalTitle: "🌍 Global Estimate (All Calculators)", hGlobalDesc: "Combine costs from Roof, Facade, Screed etc. into one unified project estimate.",
         btnGlobalAdd: "➕ Add to Global Estimate", btnGlobalView: "👁 View Global Estimate", btnGlobalClear: "🗑 Clear Global",
@@ -648,7 +663,8 @@ const langData = {
         faq3Q: "How many dowels are needed per square meter?", faq3A: "Standard application requires 5 to 6 dowels per m². For higher buildings or edge zones, this number increases to 8-12.",
         faq4Q: "What is an APU strip and why do I need it?", faq4A: "APU strips connect the facade plaster to the window frame elastically, preventing cracks and water ingress.",
         relatedTitle: "🔗 Related Calculators", linkPlaster: "Plastering & Stucco Calculator", linkDrywall: "Drywall & Partition Calculator", linkPaint: "Painting Calculator",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing"
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Full professional estimate, PDF export, History log, Company profiles, Unlimited objects, 3 languages", btnBuyPro: "Check Pricing",
+        unitBags: "bags", unitPcs: "pcs", unitBuckets: "buckets", unitCans: "cans"
     },
     ua: {
         subtitle: "Професійний калькулятор фасаду", breadCurrent: "Калькулятор фасаду",
@@ -657,15 +673,15 @@ const langData = {
         lblStarterLen: "Периметр цоколя (м)", lblCornerLen: "Довжина зовнішніх кутів (м)", lblApuLen: "Периметр вікон (м) для АПУ",
         hInsulation: "🧱 Утеплювач та Матеріали", lblInsulType: "Тип утеплювача", optEps: "Пінопласт (EPS)", optWool: "Мінеральна вата",
         lblInsulThick: "Товщина (мм)",
-        lblInsulPrice: "Ціна утеплювача €/m²", lblGluePrice: "Клей €/мішок(25кг)", lblMeshPrice: "Сітка €/м²", lblDowelPrice: "Дюбелі (грибки) €/шт",
+        lblInsulPrice: "Ціна утеплювача €/m²", lblFoamPrice: "Піна для стиків €/балон", lblGluePrice: "Клей €/мішок(25кг)", lblMeshPrice: "Сітка €/м²", lblDowelPrice: "Дюбелі (грибки) €/шт",
         hFinishing: "🎨 Оздоблення та Профілі", lblPrimerPrice: "Грунт €/відро(10л)", lblPlasterPrice: "Штукатурка €/відро(25кг)", 
         lblCornerPrice: "Кутник з сіткою €/м", lblApuPrice: "АПУ профіль €/м", lblStarterPrice: "Стартовий профіль €/м",
         hMatResult: "📦 Потреба в матеріалах", txtNetArea: "Чиста площа під утеплення", txtInsul: "Площа утеплювача (+5% запас)", 
-        txtInsulVol: "Об'єм утеплювача",
+        txtInsulVol: "Об'єм утеплювача", txtFoam: "Піна для стиків",
         txtGlue: "Клей (приклейка+армування)", txtMesh: "Сітка (+10% нахлест)", txtDowel: "Дюбелі", txtPrimer: "Грунт", txtPlaster: "Штукатурка",
         hEstimate: "💶 Робота та Логістика", lblSalaryPrice: "Робота (комплекс) €/м²", lblDeliveryPrice: "Доставка та ліси €",
         hCompany: "🏢 Дані фірми", lblCompName: "Назва фірми", lblCompPhone: "Телефон", lblCompEmail: "Email",
-        hFinal: "📊 Фінансовий підсумок", txtFTherm: "Утеплювач", txtFMix: "Суміші (Клей, Грунт, Штук.)", txtFProf: "Комплектуючі (Сітка, Дюбелі, Профілі)",
+        hFinal: "📊 Фінансовий підсумок", txtFTherm: "Утеплювач", txtFMix: "Суміші (Клей, Піна, Грунт, Штук.)", txtFProf: "Комплектуючі (Сітка, Дюбелі, Профілі)",
         txtFMat: "Матеріали (Разом)", txtFWork: "Робота", txtFLog: "Логістика та Ліси", txtClientPrice: "ЗАГАЛЬНА ВАРТІСТЬ",
         hGlobalTitle: "🌍 Єдиний кошторис", hGlobalDesc: "Об'єднайте витрати на дах, фасад, стяжку тощо в один загальний кошторис проєкту.",
         btnGlobalAdd: "➕ Додати до кошторису", btnGlobalView: "👁 Переглянути кошторис", btnGlobalClear: "🗑 Очистити глобальний",
@@ -677,7 +693,8 @@ const langData = {
         faq3Q: "Скільки дюбелів потрібно на квадратний метр?", faq3A: "Стандартно потрібно 5-6 дюбелів на м². Для високих будівель або крайових зон ця кількість зростає до 8-12.",
         faq4Q: "Що таке профіль віконний (АПУ) і навіщо він?", faq4A: "АПУ-профіль еластично з'єднує фасадну штукатурку з віконною рамою, запобігаючи тріщинам і проникненню води.",
         relatedTitle: "🔗 Інші калькулятори", linkPlaster: "Калькулятор штукатурки", linkDrywall: "Калькулятор гіпсокартону", linkPaint: "Калькулятор фарбування",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість"
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Повний професійний кошторис, PDF, Історія, Дані фірми, Необмежені об'єкти, 3 мови", btnBuyPro: "Дізнатися вартість",
+        unitBags: "міш.", unitPcs: "шт.", unitBuckets: "відер", unitCans: "балонів"
     },
     sk: {
         subtitle: "Profesionálna kalkulačka fasád", breadCurrent: "Kalkulačka fasád",
@@ -686,15 +703,15 @@ const langData = {
         lblStarterLen: "Obvod sokla (m)", lblCornerLen: "Dĺžka vonkajších rohov (m)", lblApuLen: "Obvod okien (APU) (m)",
         hInsulation: "🧱 Izolácia a Materiály", lblInsulType: "Typ izolácie", optEps: "Polystyrén (EPS)", optWool: "Minerálna vlna",
         lblInsulThick: "Hrúbka (mm)",
-        lblInsulPrice: "Cena izolácie €/m²", lblGluePrice: "Lepidlo €/vrece(25kg)", lblMeshPrice: "Sklotextilná mriežka €/m²", lblDowelPrice: "Hmoždinky €/ks",
+        lblInsulPrice: "Cena izolácie €/m²", lblFoamPrice: "PU Pena €/dóza(750ml)", lblGluePrice: "Lepidlo €/vrece(25kg)", lblMeshPrice: "Sklotextilná mriežka €/m²", lblDowelPrice: "Hmoždinky €/ks",
         hFinishing: "🎨 Omietka a Profily", lblPrimerPrice: "Penetrácia €/vedro(10L)", lblPlasterPrice: "Fasádna omietka €/vedro(25kg)", 
         lblCornerPrice: "Rohová lišta €/m", lblApuPrice: "APU lišta €/m", lblStarterPrice: "Zakladací profil €/m",
         hMatResult: "📦 Spotreba materiálov", txtNetArea: "Čistá plocha zateplenia", txtInsul: "Plocha izolácie (+5% rezerva)", 
-        txtInsulVol: "Objem izolácie",
+        txtInsulVol: "Objem izolácie", txtFoam: "PU Pena (Špáry)",
         txtGlue: "Lepidlo (lepenie + stierka)", txtMesh: "Mriežka (+10% presah)", txtDowel: "Hmoždinky", txtPrimer: "Penetrácia", txtPlaster: "Fasádna omietka",
         hEstimate: "💶 Práca a Logistika", lblSalaryPrice: "Cena práce €/m²", lblDeliveryPrice: "Doprava a lešenie €",
         hCompany: "🏢 Údaje o firme", lblCompName: "Názov firmy", lblCompPhone: "Telefón", lblCompEmail: "Email",
-        hFinal: "📊 Finančný prehľad", txtFTherm: "Izolácia", txtFMix: "Zmesi (Lepidlo, Pen., Omietka)", txtFProf: "Príslušenstvo (Mriežka, Hmoždinky, Profily)",
+        hFinal: "📊 Finančný prehľad", txtFTherm: "Izolácia", txtFMix: "Zmesi (Lepidlo, Pena, Omietka)", txtFProf: "Príslušenstvo (Mriežka, Hmoždinky, Profily)",
         txtFMat: "Materiály Spolu", txtFWork: "Práca", txtFLog: "Logistika a Lešenie", txtClientPrice: "CELKOVÁ CENA",
         hGlobalTitle: "🌍 Celkový rozpočet", hGlobalDesc: "Spojte náklady na strechu, fasádu, poter atď. do jedného celkového rozpočtu projektu.",
         btnGlobalAdd: "➕ Pridať do celkového", btnGlobalView: "👁 Zobraziť celkový", btnGlobalClear: "🗑 Vymazať celkový",
@@ -706,7 +723,8 @@ const langData = {
         faq3Q: "Koľko hmoždiniek je potrebných na meter štvorcový?", faq3A: "Štandardne je potrebných 5 až 6 hmoždiniek na m². Pre vyššie budovy alebo okrajové zóny sa tento počet zvyšuje na 8-12.",
         faq4Q: "Čo je to APU lišta a prečo ju potrebujem?", faq4A: "APU lišty elasticky spájajú fasádnu omietku s okenným rámom, čím zabraňujú prasklinám a vniknutiu vody.",
         relatedTitle: "🔗 Súvisiace kalkulačky", linkPlaster: "Kalkulačka omietok", linkDrywall: "Kalkulačka sadrokartónu", linkPaint: "Kalkulačka maľovania",
-        proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu"
+        proTitle: "🔓 BUILDcalc PRO", proDesc: "Kompletný profesionálny rozpočet, PDF, História, Údaje o firme, Neobmedzené objekty, 3 jazyky", btnBuyPro: "Zistiť cenu",
+        unitBags: "vriec", unitPcs: "ks", unitBuckets: "vedier", unitCans: "dóz"
     }
 };
 
